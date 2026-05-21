@@ -1,0 +1,21 @@
+﻿<h1>Journal d'audit</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Action</th>
+    <th>Détail</th>
+    <th>Date</th>
+</tr>
+
+{% for log in logs %}
+<tr>
+    <td>{{ log[0] }}</td>
+    <td>{{ log[1] }}</td>
+    <td>{{ log[2] }}</td>
+    <td>{{ log[3] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

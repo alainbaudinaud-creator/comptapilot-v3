@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Pièces justificatives</h1>
+
+<p>
+    Liste des justificatifs associés aux écritures avec pré-analyse IA.
+</p>
+
+<p>
+    <a href="/ecritures/reanalyser-pieces">
+        Ré-analyser les pièces IA
+    </a>
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>Fichier</th>
+        <th>Date upload</th>
+        <th>Écriture</th>
+        <th>IA Fournisseur</th>
+        <th>IA Facture</th>
+        <th>IA Date</th>
+        <th>IA TTC</th>
+        <th>IA TVA</th>
+        <th>Score IA</th>
+        <th>Statut IA</th>
+        <th>OCR</th>
+        <th>IA</th>
+    </tr>
+
+    {% for f in fichiers %}
+
+    <tr>
+
+        <td>{{ f[1] }}</td>
+
+        <td>{{ f[2] }}</td>
+
+        <td>{{ f[4] }} - {{ f[5] }}</td>
+
+        <td>{{ f[7] or "-" }}</td>
+
+        <td>{{ f[8] or "-" }}</td>
+
+        <td>{{ f[9] or "-" }}</td>
+
+        <td>{{ f[10] or "-" }}</td>
+
+        <td>{{ f[11] or "-" }}</td>
+
+        <td>{{ f[12] or 0 }}%</td>
+<td>
+
+    {% if f[13] == "COMPTABILISEE" %}
+
+        <span style="color:green;font-weight:bold;">
+            COMPTABILISÉE
+        </span>
+
+    {% elif f[13] == "PRE_ANALYSEE" %}
+
+        <span style="color:orange;font-weight:bold;">
+            PRE-ANALYSÉE
+        </span>
+
+    {% else %}
+
+        <span style="color:gray;">
+            {{ f[13] or "-" }}
+        </span>
+
+    {% endif %}
+
+</td>        <td>
+            <pre style="white-space: pre-wrap; max-width: 400px; max-height: 250px; overflow:auto;">{{ f[6] }}</pre>
+        </td>
+
+        <td>
+
+            {% if f[13] == "COMPTABILISEE" %}
+
+    <span style="color:green;font-weight:bold;">
+        ✓ Déjà comptabilisée
+    </span>
+
+{% else %}
+
+    <a
+        href="/ecritures/validation-ia/{{ f[0] }}"
+        class="btn btn-success btn-sm"
+    >
+        Créer écriture IA
+    </a>
+
+{% endif %}
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

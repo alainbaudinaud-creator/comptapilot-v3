@@ -1,0 +1,10 @@
+﻿<h1>Pilotage cashflow IA V7</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>Date</th><th>Entrées</th><th>Sorties</th><th>Cumul</th></tr>
+{% for c in cashflow %}
+<tr><td>{{ c[0] }}</td><td>{{ c[1] }}</td><td>{{ c[2] }}</td><td>{{ c[3] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

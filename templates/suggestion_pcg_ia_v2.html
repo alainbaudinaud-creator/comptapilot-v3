@@ -1,0 +1,17 @@
+﻿<h1>Suggestion automatique compte PCG</h1>
+
+<p>Document ID : {{ document_id }}</p>
+<p>Fournisseur / client : {{ fournisseur_client }}</p>
+<p>Montant TTC : {{ montant_ttc }}</p>
+
+<table border="1" cellpadding="8">
+<tr><th>Champ</th><th>Suggestion</th></tr>
+<tr><td>Compte PCG</td><td>{{ compte_pcg }}</td></tr>
+<tr><td>Compte TVA</td><td>{{ compte_tva }}</td></tr>
+<tr><td>Journal</td><td>{{ journal }}</td></tr>
+<tr><td>Taux TVA</td><td>{{ taux_tva }}</td></tr>
+<tr><td>Score</td><td>{{ score }} %</td></tr>
+<tr><td>Motif</td><td>{{ motif }}</td></tr>
+</table>
+
+<a href="/ecritures/import-documents-comptables">Retour imports</a>

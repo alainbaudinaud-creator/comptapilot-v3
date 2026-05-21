@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FactureElectronique><Numero>FD-2026-00002</Numero><DateCreation>2026-05-07 16:22:12</DateCreation><Client>murielle</Client><MontantHT>200.0</MontantHT><TVA>40.0</TVA><MontantTTC>240.0</MontantTTC><Statut>BROUILLON</Statut><Format>Factur-X simplifie ComptaPilot</Format><Version>1.0</Version></FactureElectronique>

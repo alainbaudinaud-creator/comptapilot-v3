@@ -1,0 +1,29 @@
+﻿<h1>Liste des lettrages automatiques</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Compte</th>
+    <th>Libellé</th>
+    <th>Montant</th>
+    <th>Statut</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for l in lignes %}
+<tr>
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+    <td>{{ l[2] }}</td>
+    <td>{{ l[3] }}</td>
+    <td>{{ l[4] }}</td>
+    <td>{{ l[5] }}</td>
+    <td>
+        <a href="/ecritures/valider-lettrage-v4/{{ l[0] }}">Valider</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

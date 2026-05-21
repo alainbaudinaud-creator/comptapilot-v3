@@ -1,0 +1,32 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>IA Assignation Collaborateurs</h1>
+
+<p>
+    Suggestions intelligentes d'affectation des dossiers.
+</p>
+
+{% for suggestion in suggestions %}
+
+<div class="card">
+
+    <h3>
+        {{ suggestion.collaborateur }}
+    </h3>
+
+    <p>
+        Charge actuelle :
+        <strong>{{ suggestion.charge }}</strong>
+    </p>
+
+    <p>
+        {{ suggestion.message }}
+    </p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

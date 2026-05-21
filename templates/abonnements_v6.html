@@ -1,0 +1,29 @@
+﻿<h1>Abonnements SaaS V6</h1>
+
+<form method="POST">
+    <p>Tenant :</p>
+    <input type="text" name="tenant" required>
+
+    <p>Plan :</p>
+    <select name="plan">
+        <option value="STARTER">STARTER</option>
+        <option value="PRO">PRO</option>
+        <option value="ENTERPRISE">ENTERPRISE</option>
+    </select>
+
+    <p>Prix :</p>
+    <input type="text" name="prix" value="49">
+
+    <br><br>
+
+    <button type="submit">Ajouter abonnement</button>
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Tenant</th><th>Plan</th><th>Prix</th><th>Statut</th><th>Date</th></tr>
+{% for a in abonnements %}
+<tr><td>{{ a[0] }}</td><td>{{ a[1] }}</td><td>{{ a[2] }}</td><td>{{ a[3] }}</td><td>{{ a[4] }}</td><td>{{ a[5] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/saas-securite-v6">Retour V6</a>

@@ -1,0 +1,46 @@
+﻿<h1>Factur-X simplifié</h1>
+
+<p>
+Ce module génère un PDF lisible et un XML structuré séparé.
+</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Numéro</th>
+    <th>Client</th>
+    <th>HT</th>
+    <th>TVA</th>
+    <th>TTC</th>
+    <th>Statut</th>
+    <th>Date</th>
+    <th>Actions</th>
+</tr>
+
+{% for f in factures %}
+<tr>
+    <td>{{ f[0] }}</td>
+    <td>{{ f[1] }}</td>
+    <td>{{ f[2] }}</td>
+    <td>{{ f[3] }}</td>
+    <td>{{ f[4] }}</td>
+    <td>{{ f[5] }}</td>
+    <td>{{ f[6] }}</td>
+    <td>{{ f[7] }}</td>
+    <td>
+        <a href="/ecritures/generer-pdf-facture/{{ f[0] }}">PDF</a><br>
+        <a href="/ecritures/generer-xml-facture/{{ f[0] }}">XML</a><br>
+        <a href="/ecritures/controle-facture-electronique/{{ f[0] }}">Contrôle</a>
+        <a href="/ecritures/generer-vrai-factur-x/{{ f[0] }}">Vrai Factur-X embarqué</a><br>
+        <a href="/ecritures/lignes-facture/{{ f[0] }}">Lignes détaillées</a><br>
+        <a href="/ecritures/depot-pdp/{{ f[0] }}">Dépôt PDP</a><br>
+        <a href="/ecritures/depot-pdp-v2/{{ f[0] }}">Dépôt PDP v2</a><br>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<br>
+
+<a href="/ecritures/transmission-factures">Retour transmission</a><br>
+<a href="/ecritures/pro-suite">Retour PRO</a>

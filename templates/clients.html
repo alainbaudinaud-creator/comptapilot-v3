@@ -1,0 +1,75 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="mb-4">Gestion des clients</h1>
+
+<div class="card shadow-sm p-4 mb-4">
+    <h4>Ajouter un client</h4>
+
+    <form method="POST" action="/ecritures/clients/add">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label>Nom</label>
+                <input type="text" name="nom" class="form-control" required>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control">
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label>Téléphone</label>
+                <input type="text" name="telephone" class="form-control">
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label>Adresse</label>
+                <input type="text" name="adresse" class="form-control">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>SIRET</label>
+                <input type="text" name="siret" class="form-control">
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label>TVA intracom</label>
+                <input type="text" name="tva_intra" class="form-control">
+            </div>
+        </div>
+
+        <button class="btn btn-primary">Ajouter</button>
+    </form>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>SIRET</th>
+            <th>TVA</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for c in clients %}
+        <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+            <td>{{ c[4] }}</td>
+            <td>{{ c[5] }}</td>
+            <td>{{ c[6] }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

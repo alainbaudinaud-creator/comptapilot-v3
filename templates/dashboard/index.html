@@ -1,0 +1,39 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Dashboard comptable{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+    <div class="card">
+        <h3>Balance</h3>
+        <div class="value">OK</div>
+    </div>
+    <div class="card">
+        <h3>Grand livre</h3>
+        <div class="value">OK</div>
+    </div>
+    <div class="card">
+        <h3>Bilan</h3>
+        <div class="value">OK</div>
+    </div>
+    <div class="card">
+        <h3>Résultat</h3>
+        <div class="value">OK</div>
+    </div>
+</div>
+
+<div class="actions">
+    <a class="btn" href="/balance">Voir la balance</a>
+    <a class="btn secondary" href="/grand-livre">Grand livre</a>
+    <a class="btn secondary" href="/bilan">Bilan</a>
+    <a class="btn secondary" href="/compte-resultat">Compte de résultat</a>
+</div>
+
+<div class="card">
+    <h3>État Comptapilot</h3>
+    <div class="value">ERP comptable moderne opérationnel</div>
+</div>
+
+{% endblock %}

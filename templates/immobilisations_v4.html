@@ -1,0 +1,9 @@
+﻿<h1>Immobilisations</h1>
+<p><a href="/ecritures/ajouter-immobilisation-v4">Ajouter une immobilisation</a></p>
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Nom</th><th>Valeur</th><th>Durée</th><th>Date acquisition</th><th>Compte</th></tr>
+{% for i in immos %}
+<tr><td>{{ i[0] }}</td><td>{{ i[1] }}</td><td>{{ i[2] }}</td><td>{{ i[3] }}</td><td>{{ i[4] }}</td><td>{{ i[5] }}</td></tr>
+{% endfor %}
+</table>
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

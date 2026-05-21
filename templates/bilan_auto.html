@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Bilan automatique</title>
+</head>
+<body>
+
+<h1>Bilan automatique</h1>
+
+<h2>Actif</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Compte</th>
+        <th>Libellé</th>
+        <th>Montant</th>
+    </tr>
+
+    {% for ligne in actif %}
+    <tr>
+        <td>{{ ligne[0] }}</td>
+        <td>{{ ligne[1] }}</td>
+        <td>{{ "%.2f"|format(ligne[2]) }}</td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+        <td colspan="2"><b>Total Actif</b></td>
+        <td><b>{{ "%.2f"|format(total_actif) }}</b></td>
+    </tr>
+</table>
+
+<h2>Passif</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Compte</th>
+        <th>Libellé</th>
+        <th>Montant</th>
+    </tr>
+
+    {% for ligne in passif %}
+    <tr>
+        <td>{{ ligne[0] }}</td>
+        <td>{{ ligne[1] }}</td>
+        <td>{{ "%.2f"|format(ligne[2]) }}</td>
+    </tr>
+    {% endfor %}
+
+    <tr>
+        <td colspan="2"><b>Total Passif</b></td>
+        <td><b>{{ "%.2f"|format(total_passif) }}</b></td>
+    </tr>
+</table>
+
+<hr>
+
+<h2>Compte de résultat</h2>
+
+<p>Total charges : {{ "%.2f"|format(total_charges) }}</p>
+<p>Total produits : {{ "%.2f"|format(total_produits) }}</p>
+<p>Résultat : {{ "%.2f"|format(resultat) }}</p>
+
+<br>
+
+<a href="/ecritures/bilan-auto/pdf">Télécharger le bilan PDF</a>
+<br>
+<a href="/">Retour accueil</a>
+
+</body>
+</html>

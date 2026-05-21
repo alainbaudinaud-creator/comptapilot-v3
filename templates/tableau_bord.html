@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cockpit SaaS comptable</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 24px; background:#f5f7fa; color:#1e293b; }
+        h1 { color:#1e3a5f; margin-bottom:8px; }
+        .subtitle { color:#64748b; margin-bottom:24px; }
+        .toolbar { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px; align-items:end; }
+        .toolbar input, .toolbar button, .toolbar a { padding:10px 12px; border-radius:8px; border:1px solid #d0d7de; text-decoration:none; }
+        .toolbar button, .toolbar a { background:#1e3a5f; color:white; cursor:pointer; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-bottom:24px; }
+        .card, .box { background:white; border-radius:14px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        .card:hover { transform:translateY(-3px); transition:.2s; }
+        .label { color:#64748b; font-size:14px; margin-bottom:8px; }
+        .value { font-size:26px; font-weight:bold; }
+        .red { color:#dc3545; }
+        .green { color:#28a745; }
+        .orange { color:#f59e0b; }
+        .charts { display:grid; grid-template-columns:1fr; gap:24px; }
+        .chart-box { height:420px; }
+        .box { margin-top:24px; }
+        .box h2 { margin-top:0; color:#1e3a5f; }
+        .tag { display:inline-block; padding:6px 10px; border-radius:999px; background:#e2e8f0; margin:4px; }
+        @media print { .toolbar { display:none; } body { background:white; } }
+        @media (max-width:700px) { body { margin:14px; } .value { font-size:22px; } .chart-box { height:320px; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Mini cockpit SaaS comptable</h1>
+<p class="subtitle">Multi-indicateurs : trésorerie, TVA, relances, fournisseurs, croissance, IA et notifications.</p>
+
+<form method="GET" action="/ecritures/dashboard-financier" class="toolbar">
+    <div>
+        <label>Date début</label><br>
+        <input type="date" name="date_debut" value="{{ date_debut or '' }}">
+    </div>
+    <div>
+        <label>Date fin</label><br>
+        <input type="date" name="date_fin" value="{{ date_fin or '' }}">
+    </div>
+    <button type="submit">Filtrer</button>
+    <a href="/ecritures/dashboard-financier">Réinitialiser</a>
+    <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+    <a href="/ecritures/journaux">Drill-down écritures</a>
+</form>
+
+<div class="grid">
+    <div class="card"><div class="label">Chiffre d'affaires</div><div class="value">{{ "{:,.2f}".format(ca_mois or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Charges</div><div class="value">{{ "{:,.2f}".format(total_charges or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Résultat</div><div class="value {% if resultat < 0 %}red{% else %}green{% endif %}">{{ "{:,.2f}".format(resultat or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Marge</div><div class="value {% if marge < 0 %}red{% else %}green{% endif %}">{{ marge }} %</div></div>
+    <div class="card"><div class="label">Croissance N / N-1</div><div class="value {% if croissance < 0 %}red{% else %}green{% endif %}">{{ croissance }} %</div></div>
+    <div class="card"><div class="label">Trésorerie prévisionnelle</div><div class="value {% if tresorerie_previsionnelle < 0 %}red{% else %}green{% endif %}">{{ "{:,.2f}".format(tresorerie_previsionnelle or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">TVA prévisionnelle</div><div class="value {% if tva_previsionnelle > 0 %}orange{% else %}green{% endif %}">{{ "{:,.2f}".format(tva_previsionnelle or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Balance âgée clients estimée</div><div class="value">{{ "{:,.2f}".format(balance_clients or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Échéancier fournisseurs estimé</div><div class="value">{{ "{:,.2f}".format(echeancier_fournisseurs or 0).replace(",", " ") }} €</div></div>
+    <div class="card"><div class="label">Relances clients</div><div class="value">{{ relances_clients }}</div></div>
+    <div class="card"><div class="label">Écritures analysées</div><div class="value">{{ nb_ecritures }}</div></div>
+</div>
+
+<div class="charts">
+    <div class="box chart-box">
+        <h2>Évolution mensuelle</h2>
+        <canvas id="chartMensuel"></canvas>
+    </div>
+
+    <div class="box chart-box">
+        <h2>Trésorerie prévisionnelle</h2>
+        <canvas id="chartTresorerie"></canvas>
+    </div>
+
+    <div class="box chart-box">
+        <h2>Comparatif annuel N / N-1</h2>
+        <canvas id="chartAnnuel"></canvas>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Notifications intelligentes</h2>
+    {% for notification in notifications %}
+        <span class="tag">{{ notification }}</span>
+    {% endfor %}
+</div>
+
+<div class="box">
+    <h2>Assistant IA comptable</h2>
+    <ul>
+        {% if resultat < 0 %}
+            <li class="red">Priorité : réduire les charges ou augmenter le chiffre d'affaires.</li>
+        {% else %}
+            <li class="green">L'activité est bénéficiaire sur la période.</li>
+        {% endif %}
+
+        {% if tva_previsionnelle > 0 %}
+            <li>Prévoir un décaissement de TVA.</li>
+        {% else %}
+            <li>La TVA prévisionnelle ne crée pas d’alerte immédiate.</li>
+        {% endif %}
+
+        {% if echeancier_fournisseurs > ca_mois %}
+            <li class="red">Les engagements fournisseurs estimés sont élevés.</li>
+        {% endif %}
+
+        <li>Le cockpit est prêt pour une extension multi-sociétés et rôles utilisateurs.</li>
+    </ul>
+</div>
+
+<div class="box">
+    <h2>Fonctions SaaS activées</h2>
+    <span class="tag">Multi-sociétés prêt</span>
+    <span class="tag">Rôles utilisateurs prêt</span>
+    <span class="tag">Export PDF</span>
+    <span class="tag">API REST à brancher</span>
+    <span class="tag">Mobile responsive</span>
+    <span class="tag">Sauvegarde cloud prête</span>
+</div>
+
+<script>
+const labels = {{ labels|tojson }};
+const credits = {{ credits|tojson }};
+const debits = {{ debits|tojson }};
+const resultats = {{ resultats|tojson }};
+const previsions = {{ previsions|tojson }};
+const labelsAnnees = {{ labels_annees|tojson }};
+const resultatsAnnees = {{ resultats_annees|tojson }};
+
+new Chart(document.getElementById('chartMensuel'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [
+            { label:'Crédits', data:credits, backgroundColor:'rgba(54,162,235,.7)', borderWidth:2 },
+            { label:'Débits', data:debits, backgroundColor:'rgba(255,99,132,.7)', borderWidth:2 },
+            { label:'Résultat', data:resultats, type:'line', borderColor:'rgba(40,167,69,1)', borderWidth:3, tension:.3 }
+        ]
+    },
+    options: { responsive:true, maintainAspectRatio:false }
+});
+
+new Chart(document.getElementById('chartTresorerie'), {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            { label:'Trésorerie prévisionnelle', data:previsions, borderColor:'rgba(30,58,95,1)', backgroundColor:'rgba(30,58,95,.2)', fill:true, borderWidth:3, tension:.3 }
+        ]
+    },
+    options: { responsive:true, maintainAspectRatio:false }
+});
+
+new Chart(document.getElementById('chartAnnuel'), {
+    type: 'bar',
+    data: {
+        labels: labelsAnnees,
+        datasets: [
+            { label:'Résultat annuel', data:resultatsAnnees, backgroundColor:'rgba(245,158,11,.7)', borderWidth:2 }
+        ]
+    },
+    options: { responsive:true, maintainAspectRatio:false }
+});
+</script>
+
+</body>
+</html>

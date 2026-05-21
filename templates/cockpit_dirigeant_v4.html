@@ -1,0 +1,41 @@
+﻿<h1>Cockpit dirigeant V4</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>Indicateur</th><th>Valeur</th></tr>
+<tr><td>Documents importés</td><td>{{ nb_documents }}</td></tr>
+<tr><td>Factures</td><td>{{ nb_factures }}</td></tr>
+<tr><td>Écritures automatiques</td><td>{{ nb_ecritures_auto }}</td></tr>
+<tr><td>Relances</td><td>{{ nb_relances }}</td></tr>
+<tr><td>Lettrages</td><td>{{ nb_lettrages }}</td></tr>
+<tr><td>Échéances fournisseurs</td><td>{{ nb_fournisseurs }}</td></tr>
+<tr><td>Immobilisations</td><td>{{ nb_immos }}</td></tr>
+<tr><td>Budgets</td><td>{{ nb_budgets }}</td></tr>
+<tr><td>Total débit</td><td>{{ debit }}</td></tr>
+<tr><td>Total crédit</td><td>{{ credit }}</td></tr>
+<tr><td>Résultat estimé</td><td>{{ resultat_estime }}</td></tr>
+</table>
+
+<h2>Comptabilité</h2>
+
+<ul>
+    <li><a href="/ecritures/journaux">Drill-down écritures</a></li>
+    <li><a href="/ecritures/grand-livre">Grand livre comptable</a></li>
+    <li><a href="/ecritures/balance-generale">Balance générale</a></li>
+    <li><a href="/ecritures/liasse-fiscale-auto">Liasse fiscale automatique</a></li>
+    <li><a href="/ecritures/export-fiscal-csv">Export fiscal CSV</a></li>
+</ul>
+
+<h2>Actions rapides</h2>
+
+<ul>
+    <li><a href="/ecritures/lettrage-automatique-v4">Lancer lettrage automatique</a></li>
+    <li><a href="/ecritures/relances-clients-v4">Générer relances clients</a></li>
+    <li><a href="/ecritures/echeancier-fournisseurs-v4">Générer échéancier fournisseurs</a></li>
+    <li><a href="/ecritures/ajouter-budget-v4">Ajouter budget</a></li>
+    <li><a href="/ecritures/ajouter-analytique-v4">Ajouter analytique</a></li>
+    <li><a href="/ecritures/ajouter-role-v4">Ajouter rôle utilisateur</a></li>
+    <li><a href="/ecritures/plan-paiement-fournisseurs-v4">Plan paiement fournisseurs</a></li>
+    <li><a href="/ecritures/export-tresorerie-v4">Exporter trésorerie CSV</a></li>
+</ul>
+
+<a href="/ecritures/gestion-entreprise-v4">Retour Gestion V4</a>

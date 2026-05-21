@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Cockpit IA dirigeant</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin:30px;
+            background:#f5f7fa;
+            color:#1e293b;
+        }
+
+        h1,h2 {
+            color:#1e3a5f;
+        }
+
+        .actions {
+            margin-bottom:20px;
+        }
+
+        .actions a {
+            display:inline-block;
+            background:#1e3a5f;
+            color:white;
+            padding:10px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-right:8px;
+            margin-bottom:8px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:18px;
+            margin-bottom:25px;
+        }
+
+        .card,.box {
+            background:white;
+            padding:20px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:22px;
+        }
+
+        .value {
+            font-size:30px;
+            font-weight:bold;
+            margin-top:8px;
+        }
+
+        .green { color:#16a34a; }
+        .orange { color:#ea580c; }
+        .red { color:#dc2626; }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+
+        th {
+            background:#1e3a5f;
+            color:white;
+            padding:12px;
+            text-align:left;
+        }
+
+        td {
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Cockpit IA dirigeant temps réel</h1>
+
+<div class="actions">
+    <a href="/ecritures/export-pdf-financier-ia">Export PDF financier</a>
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/previsionnel-tresorerie">Prévisionnel</a>
+    <a href="/ecritures/analyse-financiere">Analyse financière</a>
+    <a href="/ecritures/bilan-resultat">Bilan</a>
+</div>
+
+<div class="grid">
+
+    <div class="card">
+        <div>Trésorerie</div>
+
+        <div class="value {% if tresorerie < 0 %}red{% else %}green{% endif %}">
+            {{ tresorerie }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Résultat</div>
+
+        <div class="value {% if resultat < 0 %}red{% else %}green{% endif %}">
+            {{ resultat }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Burn rate mensuel</div>
+
+        <div class="value orange">
+            {{ burn_rate }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Cash runway</div>
+
+        <div class="value {% if runway < 3 %}red{% elif runway < 6 %}orange{% else %}green{% endif %}">
+            {{ runway }} mois
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Score santé IA</div>
+
+        <div class="value {% if score < 40 %}red{% elif score < 70 %}orange{% else %}green{% endif %}">
+            {{ score }}/100
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Niveau global</div>
+
+        <div class="value {% if niveau == 'Critique' %}red{% elif niveau == 'Fragile' %}orange{% else %}green{% endif %}">
+            {{ niveau }}
+        </div>
+    </div>
+
+</div>
+
+<div class="box">
+
+    <h2>Prévisions trésorerie</h2>
+
+    <table>
+
+        <tr>
+            <th>Période</th>
+            <th>Trésorerie estimée</th>
+        </tr>
+
+        {% for p in prevision_6_mois %}
+
+        <tr>
+
+            <td>{{ p.periode }}</td>
+
+            <td class="{% if p.tresorerie < 0 %}red{% else %}green{% endif %}">
+                {{ p.tresorerie }} €
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+<div class="box">
+
+    <h2>Alertes IA</h2>
+
+    {% if alertes %}
+
+        <ul>
+
+            {% for a in alertes %}
+                <li>{{ a }}</li>
+            {% endfor %}
+
+        </ul>
+
+    {% else %}
+
+        <p class="green">Aucune alerte détectée.</p>
+
+    {% endif %}
+
+</div>
+
+<div class="box">
+
+    <h2>Recommandations IA</h2>
+
+    <ul>
+
+        {% for r in recommandations %}
+            <li>{{ r }}</li>
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+</body>
+</html>

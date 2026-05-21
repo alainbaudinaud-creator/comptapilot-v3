@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ComptaPilot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #1F3A5F;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding-top: 90px;
+        }
+
+        h1 {
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .menu {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 0 30px;
+        }
+
+        .menu a {
+            background: #1F3A5F;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 14px 24px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .menu a:hover {
+            background: #294d7a;
+        }
+
+        #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: #222;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 9999;
+            font-family: Arial, sans-serif;
+        }
+
+        #cookie-banner button {
+            margin-left: 20px;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>ComptaPilot</h1>
+
+        <p>Logiciel de gestion comptable</p>
+
+        <div class="menu">
+            <a href="/ecritures/dashboard">Dashboard</a>
+            <a href="/ecritures/factures">Factures</a>
+            <a href="/ecritures/impayes">Impayés</a>
+            <a href="/ecritures/">Écritures</a>
+            <a href="/ecritures/bilan">Bilan</a>
+            <a href="/ecritures/import-balance">Import balance</a>
+            <a href="/ecritures/import-fec">Import FEC</a>
+            <a href="/ecritures/balance-generale">Balance générale</a>
+            <a href="/ecritures/journaux">Journaux</a>
+            <a href="/ecritures/controle-equilibre">Contrôle équilibre</a>
+            <a href="/ecritures/rapprochement-bancaire">Rapprochement bancaire</a>
+            <a href="/ecritures/lettrage-auto">Lettrage automatique</a>
+            <a href="/ecritures/cloture-exercice">Clôture exercice</a>
+        </div>
+
+    </div>
+
+    <div id="cookie-banner">
+        Ce site utilise des cookies nécessaires au fonctionnement de l'application.
+
+        <button onclick="acceptCookies()">
+            Accepter
+        </button>
+    </div>
+
+    <script>
+    function acceptCookies() {
+        fetch("/rgpd/cookies/accept")
+        .then(function() {
+            document.getElementById("cookie-banner").style.display = "none";
+        });
+    }
+    </script>
+
+</body>
+</html>
+

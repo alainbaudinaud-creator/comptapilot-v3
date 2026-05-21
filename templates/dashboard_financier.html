@@ -1,0 +1,52 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Dashboard financier</h1>
+
+<div class="card">
+    <h2>CA du mois</h2>
+    <p style="font-size:48px;font-weight:bold;">
+        {{ chiffre_affaires }} €
+    </p>
+</div>
+
+<div class="card">
+    <h2>TVA à payer</h2>
+    <p style="font-size:48px;font-weight:bold;">
+        {{ tva }} €
+    </p>
+</div>
+
+<div class="card">
+    <h2>Résultat</h2>
+    <p style="font-size:48px;font-weight:bold;">
+        {{ resultat }} €
+    </p>
+</div>
+
+<div class="card">
+    <h2>Évolution financière</h2>
+
+    <canvas id="graphique" height="100"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('graphique');
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Fév', 'Mars', 'Avr', 'Mai', 'Juin'],
+        datasets: [{
+            label: 'CA',
+            data: [1200, 1900, 1700, 2200, 2600, 3000],
+            borderWidth: 3
+        }]
+    }
+});
+</script>
+
+{% endblock %}

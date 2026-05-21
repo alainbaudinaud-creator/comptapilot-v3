@@ -1,0 +1,44 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Fiscal IA{% endblock %}
+
+{% block content %}
+
+<h1>Fiscal IA</h1>
+
+<div class="grid">
+
+<div class="card">
+<h3>Imports FEC</h3>
+<div class="value">{{ stats.fec_imports }}</div>
+</div>
+
+<div class="card">
+<h3>OCR Factures</h3>
+<div class="value">{{ stats.ocr_factures }}</div>
+</div>
+
+<div class="card">
+<h3>TVA Auto</h3>
+<div class="value">{{ stats.tva_auto }}</div>
+</div>
+
+<div class="card">
+<h3>Liasses</h3>
+<div class="value">{{ stats.liasses_auto }}</div>
+</div>
+
+<div class="card">
+<h3>Workflow</h3>
+<div class="value">{{ stats.workflow_cabinet }}</div>
+</div>
+
+<div class="card">
+<h3>Notifications IA</h3>
+<div class="value">{{ stats.notifications_auto }}</div>
+</div>
+
+</div>
+
+{% endblock %}

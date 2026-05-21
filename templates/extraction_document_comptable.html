@@ -1,0 +1,44 @@
+﻿<h1>Extraction intelligente document comptable</h1>
+
+<p>Fichier : {{ nom_fichier }}</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Champ</th>
+    <th>Valeur détectée</th>
+</tr>
+<tr>
+    <td>Fournisseur / Client probable</td>
+    <td>{{ fournisseur_probable }}</td>
+</tr>
+<tr>
+    <td>Numéro facture</td>
+    <td>{{ numero_facture }}</td>
+</tr>
+<tr>
+    <td>Date document</td>
+    <td>{{ date_document }}</td>
+</tr>
+<tr>
+    <td>Montant TTC</td>
+    <td>{{ montant_ttc }}</td>
+</tr>
+<tr>
+    <td>SIRET</td>
+    <td>{{ siret }}</td>
+</tr>
+<tr>
+    <td>TVA intracom</td>
+    <td>{{ tva_intracom }}</td>
+</tr>
+<tr>
+    <td>Type document</td>
+    <td>{{ type_document }}</td>
+</tr>
+</table>
+
+<h2>Texte extrait</h2>
+
+<pre>{{ texte }}</pre>
+
+<a href="/ecritures/import-documents-comptables">Retour imports</a>

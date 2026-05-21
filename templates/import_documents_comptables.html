@@ -1,0 +1,69 @@
+﻿<h1>Importation des documents comptables extérieurs</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <p>Document :</p>
+    <input type="file" name="file" required>
+
+    <p>Type de document :</p>
+    <select name="type_document">
+        <option value="FACTURE_CLIENT">Facture client</option>
+        <option value="FACTURE_FOURNISSEUR">Facture fournisseur</option>
+        <option value="RELEVE_BANCAIRE">Relevé bancaire</option>
+        <option value="JUSTIFICATIF">Justificatif</option>
+        <option value="FEC">FEC</option>
+        <option value="EXPORT_LOGICIEL">Export logiciel externe</option>
+        <option value="AUTRE">Autre</option>
+    </select>
+
+    <p>Commentaire :</p>
+    <textarea name="commentaire"></textarea>
+
+    <br><br>
+
+    <button type="submit">Importer le document</button>
+</form>
+
+<hr>
+
+<h2>Documents importés</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Nom fichier</th>
+    <th>Type</th>
+    <th>Extension</th>
+    <th>Taille Ko</th>
+    <th>Statut</th>
+    <th>Date import</th>
+    <th>Empreinte SHA-256</th>
+    <th>Actions</th>
+</tr>
+
+{% for d in documents %}
+<tr>
+    <td>{{ d[0] }}</td>
+    <td>{{ d[1] }}</td>
+    <td>{{ d[2] }}</td>
+    <td>{{ d[3] }}</td>
+    <td>{{ d[5] }}</td>
+    <td>{{ d[7] }}</td>
+    <td>{{ d[8] }}</td>
+    <td><small>{{ d[6] }}</small></td>
+    <td>
+        <a href="/ecritures/analyser-document-comptable/{{ d[0] }}">Analyser</a><br>
+        <a href="/ecritures/extraire-document-comptable/{{ d[0] }}">Extraction intelligente</a><br>
+        <a href="/ecritures/analyse-ia-document/{{ d[0] }}">Analyse IA</a><br>
+        <a href="/ecritures/precomptabiliser-document/{{ d[0] }}">Pré-comptabiliser</a><br>
+        <a href="/ecritures/changer-statut-document-comptable/{{ d[0] }}/A_TRAITER">À traiter</a><br>
+        <a href="/ecritures/changer-statut-document-comptable/{{ d[0] }}/TRAITE">Traité</a><br>
+        <a href="/ecritures/changer-statut-document-comptable/{{ d[0] }}/REJETE">Rejeté</a><br>
+        <a href="/ecritures/changer-statut-document-comptable/{{ d[0] }}/ARCHIVE">Archivé</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<br>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

@@ -1,0 +1,59 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Périodes clôturées</h1>
+
+<p>
+    Verrouillage comptable des périodes validées.
+</p>
+
+<div class="card">
+
+    <form method="POST">
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <p>
+            <label>Date limite clôturée</label><br>
+            <input type="date" name="date_limite" required>
+        </p>
+
+        <p>
+            <label>Commentaire</label><br>
+            <input type="text" name="commentaire" placeholder="Clôture mensuelle, annuelle...">
+        </p>
+
+        <button type="submit">
+            Ajouter la clôture
+        </button>
+
+    </form>
+
+</div>
+
+<hr>
+
+<h2>Historique des clôtures</h2>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>Date limite</th>
+        <th>Commentaire</th>
+        <th>Date création</th>
+    </tr>
+
+    {% for p in periodes %}
+
+    <tr>
+        <td>{{ p[1] }}</td>
+        <td>{{ p[2] }}</td>
+        <td>{{ p[3] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

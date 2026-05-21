@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<title>Centre de contrôle comptable</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:30px;
+    background:#f5f7fa;
+    color:#1e293b;
+}
+
+h1{
+    color:#1e3a5f;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+a{
+    display:inline-block;
+    margin-top:10px;
+    background:#1e3a5f;
+    color:white;
+    text-decoration:none;
+    padding:10px 14px;
+    border-radius:8px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Centre de contrôle comptable IA</h1>
+
+<p>
+Nombre total d'écritures :
+<strong>{{ nb_ecritures }}</strong>
+</p>
+
+<div class="grid">
+
+{% for module in modules %}
+
+<div class="card">
+
+<h2>{{ module }}</h2>
+
+<p>
+Module intelligent prêt à être utilisé.
+</p>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<br>
+
+<a href="/ecritures/import-bancaire-ia">
+Import bancaire IA
+</a>
+
+<a href="/ecritures/copilote-comptable">
+Copilote comptable
+</a>
+
+<a href="/ecritures/dashboard-financier">
+Dashboard financier
+</a>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Upload pièce justificative</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <p>
+        Écriture :
+    </p>
+
+    <select name="ecriture_id" required>
+
+        {% for e in ecritures %}
+
+        <option value="{{ e[0] }}">
+            {{ e[1] }} - {{ e[2] }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <input type="file" name="fichier" required>
+
+    <br><br>
+
+    <button type="submit">
+        Upload
+    </button>
+
+</form>
+
+{% endblock %}

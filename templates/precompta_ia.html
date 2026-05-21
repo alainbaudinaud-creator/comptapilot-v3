@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<title>Pré-comptabilité IA</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:30px;
+    background:#f5f7fa;
+    color:#1e293b;
+}
+
+h1{
+    color:#1e3a5f;
+}
+
+.actions{
+    margin-bottom:20px;
+}
+
+.actions a{
+    display:inline-block;
+    background:#1e3a5f;
+    color:white;
+    padding:10px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    margin-right:10px;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+}
+
+.validee{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.rejetee{
+    color:#dc3545;
+    font-weight:bold;
+}
+
+.proposee{
+    color:#f59e0b;
+    font-weight:bold;
+}
+
+.btn{
+    display:inline-block;
+    padding:8px 10px;
+    border-radius:8px;
+    text-decoration:none;
+    color:white;
+    margin-right:6px;
+}
+
+.btn-ok{
+    background:#16a34a;
+}
+
+.btn-ko{
+    background:#dc3545;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Pré-comptabilité IA</h1>
+
+<div class="actions">
+
+<a href="/ecritures/import-bancaire-ia">
+Import bancaire IA
+</a>
+
+<a href="/ecritures/dashboard-financier">
+Dashboard
+</a>
+
+<a href="/ecritures/api/precompta-ia">
+API Précompta
+</a>
+
+</div>
+
+<div class="box">
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Date</th>
+<th>Description</th>
+<th>Montant</th>
+<th>Compte suggéré</th>
+<th>Libellé IA</th>
+<th>Confiance</th>
+<th>Statut</th>
+<th>Actions</th>
+</tr>
+
+{% for row in rows %}
+
+<tr>
+
+<td>{{ row[0] }}</td>
+<td>{{ row[1] }}</td>
+<td>{{ row[2] }}</td>
+<td>{{ row[3] }} €</td>
+<td>{{ row[4] }}</td>
+<td>{{ row[5] }}</td>
+<td>{{ row[6] }} %</td>
+
+<td>
+
+{% if row[7] == 'validee' %}
+
+<span class="validee">
+VALIDÉE
+</span>
+
+{% elif row[7] == 'rejetee' %}
+
+<span class="rejetee">
+REJETÉE
+</span>
+
+{% else %}
+
+<span class="proposee">
+PROPOSÉE
+</span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if row[7] == 'proposee' %}
+
+<a class="btn btn-ok"
+   href="/ecritures/precompta-ia/valider/{{ row[0] }}">
+Valider
+</a>
+
+<a class="btn btn-ko"
+   href="/ecritures/precompta-ia/rejeter/{{ row[0] }}">
+Rejeter
+</a>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Enterprise{% endblock %}
+
+{% block content %}
+
+<h2>Enterprise SaaS</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Users</h3>
+<div class="value">{{ stats.users }}</div>
+</div>
+
+<div class="card">
+<h3>Companies</h3>
+<div class="value">{{ stats.companies }}</div>
+</div>
+
+<div class="card">
+<h3>Clients</h3>
+<div class="value">{{ stats.clients }}</div>
+</div>
+
+<div class="card">
+<h3>Documents</h3>
+<div class="value">{{ stats.documents }}</div>
+</div>
+
+<div class="card">
+<h3>Scheduler Jobs</h3>
+<div class="value">{{ stats.scheduler_jobs }}</div>
+</div>
+
+<div class="card">
+<h3>PostgreSQL</h3>
+<div class="value">{{ stats.postgresql }}</div>
+</div>
+
+<div class="card">
+<h3>SaaS</h3>
+<div class="value">{{ stats.saas }}</div>
+</div>
+
+</div>
+
+{% endblock %}

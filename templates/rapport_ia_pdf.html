@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapport IA comptable</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; color: #1e293b; }
+        h1, h2 { color: #1e3a5f; }
+        .section { margin-bottom: 25px; }
+        .kpi { margin-bottom: 8px; }
+        @media print { button { display:none; } }
+    </style>
+</head>
+
+<body>
+
+<button onclick="window.print()">Exporter en PDF</button>
+
+<h1>Rapport IA comptable</h1>
+
+<div class="section">
+    <h2>Synthèse financière</h2>
+    <div class="kpi">Chiffre d'affaires : {{ analyse.ca }} €</div>
+    <div class="kpi">Charges : {{ analyse.charges }} €</div>
+    <div class="kpi">Résultat : {{ analyse.resultat }} €</div>
+    <div class="kpi">Marge : {{ analyse.marge }} %</div>
+    <div class="kpi">TVA estimée : {{ analyse.tva }} €</div>
+    <div class="kpi">Nombre d'écritures : {{ analyse.nb_ecritures }}</div>
+</div>
+
+<div class="section">
+    <h2>Score de risque</h2>
+    <p>{{ analyse.risque }} / 100</p>
+</div>
+
+<div class="section">
+    <h2>Anomalies détectées</h2>
+    <ul>
+        {% for anomalie in analyse.anomalies %}
+            <li>{{ anomalie }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Recommandations IA</h2>
+    <ul>
+        {% for recommandation in analyse.recommandations %}
+            <li>{{ recommandation }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+</body>
+</html>

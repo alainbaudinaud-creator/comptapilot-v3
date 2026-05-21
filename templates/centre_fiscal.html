@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Centre fiscal automatique</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1 { color:#1e3a5f; }
+        .actions { margin-bottom: 20px; }
+        .actions a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; margin-right:8px; margin-bottom:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px; margin-bottom:25px; }
+        .card, .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        .value { font-size:28px; font-weight:bold; color:#1e3a5f; }
+        .red { color:#dc3545; font-weight:bold; }
+        .green { color:#16a34a; font-weight:bold; }
+        .orange { color:#f59e0b; font-weight:bold; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Centre fiscal automatique</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/liasse-fiscale-auto">Préparation liasse</a>
+    <a href="/ecritures/export-fiscal-csv">Export fiscal CSV</a>
+    <a href="/ecritures/api/centre-fiscal">API fiscale</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card"><div>CA fiscal</div><div class="value">{{ ca_fiscal }} €</div></div>
+    <div class="card"><div>Charges fiscales</div><div class="value">{{ charges_fiscales }} €</div></div>
+    <div class="card"><div>Résultat fiscal</div><div class="value {% if resultat_fiscal < 0 %}red{% else %}green{% endif %}">{{ resultat_fiscal }} €</div></div>
+    <div class="card"><div>TVA collectée</div><div class="value">{{ tva_collectee }} €</div></div>
+    <div class="card"><div>TVA déductible</div><div class="value">{{ tva_deductible }} €</div></div>
+    <div class="card"><div>TVA à payer</div><div class="value {% if tva_a_payer > 0 %}orange{% else %}green{% endif %}">{{ tva_a_payer }} €</div></div>
+    <div class="card"><div>Écart débit/crédit</div><div class="value {% if ecart_balance != 0 %}red{% else %}green{% endif %}">{{ ecart_balance }} €</div></div>
+    <div class="card"><div>Écritures</div><div class="value">{{ nb_ecritures }}</div></div>
+</div>
+
+<div class="box">
+    <h2>Alertes avant clôture</h2>
+    <ul>
+        {% for alerte in alertes %}
+            <li>{{ alerte }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="box">
+    <h2>Production fiscale</h2>
+    <p>Ce centre prépare la TVA, le contrôle de balance, l’export fiscal, le FEC renforcé et la liasse fiscale.</p>
+</div>
+
+</body>
+</html>

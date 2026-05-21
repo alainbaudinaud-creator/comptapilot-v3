@@ -1,0 +1,36 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Documents officiels DGFiP{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h3>Liasse fiscale 2026 — Télétransmission</h3>
+    <p>Formulaires officiels, notices et guides EDI-TDFC nécessaires à la préparation fiscale.</p>
+</div>
+
+<br>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>Document</th>
+    <th>Taille</th>
+    <th>Actions</th>
+</tr>
+
+{% for d in docs %}
+<tr>
+    <td>{{ d.name }}</td>
+    <td>{{ d.size }} octets</td>
+    <td>
+        <a class="btn" href="/fiscal/documents/view/{{ d.name }}" target="_blank">Afficher</a>
+        <a class="btn secondary" href="/fiscal/documents/download/{{ d.name }}">Télécharger</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

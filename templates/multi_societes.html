@@ -1,0 +1,29 @@
+﻿<h1>Multi-sociétés</h1>
+
+<p><a href="/ecritures/ajouter-societe">Ajouter une société</a></p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>SIRET</th>
+    <th>Adresse</th>
+    <th>Action</th>
+</tr>
+
+{% for s in societes %}
+<tr>
+    <td>{{ s[0] }}</td>
+    <td>{{ s[1] }}</td>
+    <td>{{ s[2] }}</td>
+    <td>{{ s[3] }}</td>
+    <td>
+        <a href="/ecritures/selectionner-societe/{{ s[0] }}">
+            Sélectionner
+        </a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

@@ -1,0 +1,29 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Envoyer au client{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h3>{{ title }}</h3>
+
+    <form method="post" style="margin-top:20px;">
+        <label>Email du client</label><br>
+        <input name="email" type="email" required placeholder="client@example.com"
+               style="width:100%;padding:12px;margin:8px 0 16px;border:1px solid #e5e7eb;border-radius:12px;">
+
+        <label>Message</label><br>
+        <textarea name="message" rows="6"
+                  style="width:100%;padding:12px;margin:8px 0 16px;border:1px solid #e5e7eb;border-radius:12px;">Bonjour,
+
+Veuillez trouver ci-joint votre document comptable généré par ComptaPilot.
+
+Cordialement,</textarea>
+
+        <button class="btn" type="submit">Préparer l’envoi</button>
+        <a class="btn secondary" href="/documents">Annuler</a>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+﻿<h1>Liste des clôtures comptables</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Date</th><th>Débit</th><th>Crédit</th><th>Résultat</th><th>Empreinte</th><th>Statut</th></tr>
+{% for c in clotures %}
+<tr>
+<td>{{ c[0] }}</td><td>{{ c[1] }}</td><td>{{ c[2] }}</td><td>{{ c[3] }}</td><td>{{ c[4] }}</td><td><small>{{ c[5] }}</small></td><td>{{ c[6] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/production-comptable-v3">Retour production</a>

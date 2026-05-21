@@ -1,0 +1,161 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <h1>Dashboard Supervision Cabinet</h1>
+
+    <p class="text-muted">
+        Pilotage temps réel de la production comptable.
+    </p>
+
+    <div class="row mb-4">
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ total_taches }}</h2>
+                    <p>Total tâches</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ a_faire }}</h2>
+                    <p>À faire</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ en_cours }}</h2>
+                    <p>En cours</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ revision }}</h2>
+                    <p>Révision</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ validation_ec }}</h2>
+                    <p>Validation EC</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h2>{{ termine }}</h2>
+                    <p>Terminé</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-header">
+                    Charge collaborateurs
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th>Collaborateur</th>
+                                <th>Tâches</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for c in collaborateurs %}
+
+                            <tr>
+                                <td>{{ c[0] }}</td>
+                                <td>{{ c[1] }}</td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-header">
+                    Tâches urgentes
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered">
+
+                        <thead>
+                            <tr>
+                                <th>Dossier</th>
+                                <th>Tâche</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {% for u in urgences %}
+
+                            <tr>
+                                <td>{{ u[0] }}</td>
+                                <td>{{ u[1] }}</td>
+                                <td>{{ u[2] }}</td>
+                                <td>{{ u[3] }}</td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

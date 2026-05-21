@@ -1,0 +1,25 @@
+﻿<h1>Plan de paiement fournisseurs V4</h1>
+
+<p>Total à payer : {{ total_a_payer }}</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Fournisseur</th>
+    <th>Facture</th>
+    <th>Montant</th>
+    <th>Échéance</th>
+    <th>Statut</th>
+</tr>
+
+{% for l in lignes %}
+<tr>
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+    <td>{{ l[2] }}</td>
+    <td>{{ l[3] }}</td>
+    <td>{{ l[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/gestion-entreprise-v4">Retour Gestion V4</a>

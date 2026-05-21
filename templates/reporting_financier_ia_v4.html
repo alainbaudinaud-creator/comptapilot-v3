@@ -1,0 +1,10 @@
+﻿<h1>Reporting financier IA</h1>
+<p>Total débit : {{ debit }}</p>
+<p>Total crédit : {{ credit }}</p>
+<p>Résultat estimé : {{ resultat }}</p>
+<ul>
+{% for m in messages %}
+<li>{{ m }}</li>
+{% endfor %}
+</ul>
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

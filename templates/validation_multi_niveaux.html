@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation multi-niveaux</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .actions {
+            margin-bottom: 20px;
+        }
+
+        .actions a {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .flash {
+            background: #dbeafe;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .ok {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .wait {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .btn-n1 {
+            background: #2563eb;
+        }
+
+        .btn-n2 {
+            background: #7c3aed;
+        }
+
+        .btn-n3 {
+            background: #16a34a;
+        }
+
+        .btn-reset {
+            background: #dc2626;
+        }
+
+        @media (max-width: 800px) {
+            body {
+                margin: 15px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            .btn {
+                display: block;
+                margin-bottom: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Validation multi-niveaux</h1>
+
+    <div class="actions">
+        <a href="/ecritures/dashboard-financier">Dashboard</a>
+        <a href="/ecritures/workflow-validation">Workflow simple</a>
+        <a href="/ecritures/audit-actions">Journal d'audit</a>
+        <a href="/ecritures/api/validation-multi-niveaux">API validation</a>
+        <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Pièce</th>
+                <th>Libellé</th>
+                <th>Débit</th>
+                <th>Crédit</th>
+                <th>Niveau 1<br>Collaborateur</th>
+                <th>Niveau 2<br>Superviseur</th>
+                <th>Niveau 3<br>Expert-comptable</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+
+                    <td>
+                        {% if row[6] == 1 %}
+                            <span class="ok">VALIDÉ</span>
+                        {% else %}
+                            <span class="wait">ATTENTE</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if row[7] == 1 %}
+                            <span class="ok">VALIDÉ</span>
+                        {% else %}
+                            <span class="wait">ATTENTE</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if row[8] == 1 %}
+                            <span class="ok">VALIDÉ</span>
+                        {% else %}
+                            <span class="wait">ATTENTE</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <a class="btn btn-n1"
+                           href="/ecritures/validation-multi-niveaux/valider/1/{{ row[0] }}">
+                            Valider N1
+                        </a>
+
+                        <a class="btn btn-n2"
+                           href="/ecritures/validation-multi-niveaux/valider/2/{{ row[0] }}">
+                            Valider N2
+                        </a>
+
+                        <a class="btn btn-n3"
+                           href="/ecritures/validation-multi-niveaux/valider/3/{{ row[0] }}">
+                            Valider N3
+                        </a>
+
+                        <a class="btn btn-reset"
+                           href="/ecritures/validation-multi-niveaux/reinitialiser/{{ row[0] }}">
+                            Réinitialiser
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

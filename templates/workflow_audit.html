@@ -1,0 +1,61 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <h1>Audit Workflow Cabinet</h1>
+
+    <p class="text-muted">
+        Historique complet des actions workflow.
+    </p>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            {% if audits %}
+
+            <table class="table table-striped">
+
+                <thead>
+                    <tr>
+                        <th>Utilisateur</th>
+                        <th>Action</th>
+                        <th>Dossier</th>
+                        <th>Date</th>
+                        <th>Commentaire</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for a in audits %}
+
+                    <tr>
+                        <td>{{ a[0] }}</td>
+                        <td>{{ a[1] }}</td>
+                        <td>{{ a[2] }}</td>
+                        <td>{{ a[3] }}</td>
+                        <td>{{ a[4] }}</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+            <p>Aucun audit workflow.</p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

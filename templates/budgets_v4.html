@@ -1,0 +1,8 @@
+﻿<h1>Budgets prévisionnels</h1>
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Axe</th><th>Budget</th><th>Réalisé</th><th>Écart</th></tr>
+{% for b in budgets %}
+<tr><td>{{ b[0] }}</td><td>{{ b[1] }}</td><td>{{ b[2] }}</td><td>{{ b[3] }}</td><td>{{ b[4] }}</td></tr>
+{% endfor %}
+</table>
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

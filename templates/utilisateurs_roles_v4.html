@@ -1,0 +1,8 @@
+﻿<h1>Utilisateurs, rôles et permissions</h1>
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Utilisateur</th><th>Rôle</th><th>Permission</th><th>Statut</th></tr>
+{% for r in roles %}
+<tr><td>{{ r[0] }}</td><td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[3] }}</td><td>{{ r[4] }}</td></tr>
+{% endfor %}
+</table>
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

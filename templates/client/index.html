@@ -1,0 +1,26 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Portail client sécurisé{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3>Envoyer un document au client</h3>
+
+    <form method="post" action="/client/envoyer-document">
+        <label>Email client</label><br>
+        <input name="email" type="email" required style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <label>Document</label><br>
+        <select name="document" style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+            <option value="balance">Balance</option>
+            <option value="grand_livre">Grand livre</option>
+            <option value="bilan">Bilan</option>
+            <option value="resultat">Compte de résultat</option>
+            <option value="liasse">Liasse fiscale</option>
+        </select>
+
+        <button class="btn" type="submit">Envoyer au client</button>
+    </form>
+</div>
+{% endblock %}

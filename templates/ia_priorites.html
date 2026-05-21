@@ -1,0 +1,48 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>IA Priorisation Cabinet</h1>
+
+<p>
+    Classement intelligent des dossiers selon le risque opérationnel.
+</p>
+
+{% for item in priorites %}
+
+<div class="card">
+
+    <h3>
+        {{ item.dossier }}
+    </h3>
+
+    <p>
+        Collaborateur :
+        <strong>{{ item.collaborateur }}</strong>
+    </p>
+
+    <p>
+        Priorité :
+        <strong>{{ item.priorite }}</strong>
+    </p>
+
+    <p>
+        Statut :
+        <strong>{{ item.statut }}</strong>
+    </p>
+
+    <p>
+        Score IA :
+        <strong>{{ item.score }}</strong>
+    </p>
+
+    <p>
+        Niveau :
+        <strong>{{ item.niveau }}</strong>
+    </p>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}

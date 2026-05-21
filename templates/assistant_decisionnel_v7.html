@@ -1,0 +1,16 @@
+﻿<h1>Assistant IA décisionnel V7</h1>
+
+<form method="POST">
+    <p>Question :</p>
+    <input type="text" name="question" style="width:500px;" required>
+    <button type="submit">Analyser</button>
+</form>
+
+{% if reponse %}
+<h2>Réponse</h2>
+<p>{{ reponse }}</p>
+{% endif %}
+
+<p>Exemples : risque, cashflow, trésorerie, priorité</p>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

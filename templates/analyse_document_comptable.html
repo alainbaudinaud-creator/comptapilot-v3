@@ -1,0 +1,14 @@
+﻿<h1>Analyse document comptable</h1>
+
+<p>Fichier : {{ nom_fichier }}</p>
+<p>Type : {{ type_document }}</p>
+<p>Extension : {{ extension }}</p>
+<p>Commentaire : {{ commentaire }}</p>
+
+<h2>Résultat</h2>
+
+{% for ligne in resultat %}
+    <pre>{{ ligne }}</pre>
+{% endfor %}
+
+<a href="/ecritures/import-documents-comptables">Retour imports</a>

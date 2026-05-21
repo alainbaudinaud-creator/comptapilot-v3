@@ -1,0 +1,31 @@
+﻿<h1>Relances clients automatiques</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Client</th>
+    <th>Facture</th>
+    <th>Montant</th>
+    <th>Niveau</th>
+    <th>Message</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for r in relances %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+    <td>{{ r[3] }}</td>
+    <td>{{ r[4] }}</td>
+    <td>{{ r[5] }}</td>
+    <td>{{ r[6] }}</td>
+    <td>
+        <a href="/ecritures/marquer-relance-envoyee-v4/{{ r[0] }}">Marquer envoyée</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

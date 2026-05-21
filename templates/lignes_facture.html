@@ -1,0 +1,59 @@
+﻿<h1>Lignes détaillées facture</h1>
+
+{% if facture %}
+<p>Facture : {{ facture[0] }}</p>
+<p>Client : {{ facture[1] }}</p>
+<p>Total HT : {{ facture[2] }}</p>
+<p>Total TVA : {{ facture[3] }}</p>
+<p>Total TTC : {{ facture[4] }}</p>
+{% endif %}
+
+<h2>Ajouter une ligne</h2>
+
+<form method="POST">
+    <p>Désignation :</p>
+    <input type="text" name="designation" required>
+
+    <p>Quantité :</p>
+    <input type="text" name="quantite" value="1">
+
+    <p>Prix unitaire HT :</p>
+    <input type="text" name="prix_unitaire" required>
+
+    <p>Taux TVA :</p>
+    <input type="text" name="taux_tva" value="20">
+
+    <br><br>
+
+    <button type="submit">Ajouter la ligne</button>
+</form>
+
+<h2>Lignes</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Désignation</th>
+    <th>Quantité</th>
+    <th>Prix unitaire</th>
+    <th>TVA %</th>
+    <th>Total HT</th>
+    <th>Total TVA</th>
+    <th>Total TTC</th>
+</tr>
+
+{% for l in lignes %}
+<tr>
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+    <td>{{ l[2] }}</td>
+    <td>{{ l[3] }}</td>
+    <td>{{ l[4] }}</td>
+    <td>{{ l[5] }}</td>
+    <td>{{ l[6] }}</td>
+    <td>{{ l[7] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/factur-x">Retour Factur-X</a>

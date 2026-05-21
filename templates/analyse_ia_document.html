@@ -1,0 +1,36 @@
+﻿<h1>Analyse IA document comptable</h1>
+
+<p>Fichier : {{ nom_fichier }}</p>
+<p>Fournisseur / client : {{ fournisseur_client }}</p>
+<p>Numéro facture : {{ numero_facture }}</p>
+<p>Montant TTC : {{ montant_ttc }}</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Élément</th>
+    <th>Résultat</th>
+</tr>
+<tr>
+    <td>Compte suggéré</td>
+    <td>{{ compte_suggere }}</td>
+</tr>
+<tr>
+    <td>Journal suggéré</td>
+    <td>{{ journal_suggere }}</td>
+</tr>
+<tr>
+    <td>Règle trouvée</td>
+    <td>{{ regle_trouvee }}</td>
+</tr>
+<tr>
+    <td>Score confiance</td>
+    <td>{{ score }} %</td>
+</tr>
+<tr>
+    <td>Doublon détecté</td>
+    <td>{% if doublon %}OUI{% else %}NON{% endif %}</td>
+</tr>
+</table>
+
+<a href="/ecritures/import-documents-comptables">Retour imports</a><br>
+<a href="/ecritures/liste-analyses-ia">Voir analyses IA</a>

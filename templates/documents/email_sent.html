@@ -1,0 +1,20 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Envoi préparé{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h3>Email préparé</h3>
+
+    <p><b>Document :</b> {{ title }}</p>
+    <p><b>Fichier :</b> {{ file }}</p>
+    <p><b>Destinataire :</b> {{ email }}</p>
+
+    <p>Le module est prêt. Il reste à brancher le serveur SMTP réel pour envoyer automatiquement les pièces jointes.</p>
+
+    <a class="btn" href="/documents">Retour aux documents</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}GED{% endblock %}
+
+{% block content %}
+
+<h1>GED / OCR / FEC</h1>
+
+<div class="grid">
+
+<div class="card">
+<h3>Documents clients</h3>
+<div class="value">
+{{ stats.documents_clients }}
+</div>
+</div>
+
+<div class="card">
+<h3>Imports FEC</h3>
+<div class="value">
+{{ stats.imports_fec_reels }}
+</div>
+</div>
+
+<div class="card">
+<h3>OCR Factures</h3>
+<div class="value">
+{{ stats.ocr_analyse }}
+</div>
+</div>
+
+</div>
+
+{% endblock %}

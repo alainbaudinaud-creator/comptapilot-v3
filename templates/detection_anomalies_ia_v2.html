@@ -1,0 +1,12 @@
+﻿<h1>Détection anomalies IA</h1>
+
+<p>Document ID : {{ document_id }}</p>
+<p>Fichier : {{ nom_fichier }}</p>
+
+<ul>
+{% for a in anomalies %}
+    <li>{{ a }}</li>
+{% endfor %}
+</ul>
+
+<a href="/ecritures/import-documents-comptables">Retour imports</a>

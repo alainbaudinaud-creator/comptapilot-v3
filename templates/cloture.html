@@ -1,0 +1,58 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Clôture d’exercice</h2>
+
+<div class="alert alert-warning">
+    Cette fonction est une clôture simplifiée : elle bloque l’ajout de nouvelles écritures pour la société sélectionnée.
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Choisir une société</div>
+    <div class="card-body">
+        <select id="societe_id" class="form-select mb-3"></select>
+
+        <button class="btn btn-danger" onclick="cloturer()">
+            Clôturer l’exercice
+        </button>
+    </div>
+</div>
+
+<div id="resultat"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', chargerSocietes);
+
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    const select = document.getElementById('societe_id');
+    select.innerHTML = '<option value="">Choisir une société</option>';
+
+    data.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name || s.nom || 'Société';
+        select.appendChild(opt);
+    });
+}
+
+async function cloturer() {
+    const societeId = document.getElementById('societe_id').value;
+
+    if (!societeId) {
+        alert("Choisis une société.");
+        return;
+    }
+
+    const res = await fetch('/ecritures/cloture/' + societeId, { method: 'POST' });
+    const data = await res.json();
+
+    document.getElementById('resultat').innerHTML =
+        '<div class="alert alert-success mt-3">' + data.message + '</div>';
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+﻿<h1>Exercices comptables V5</h1>
+
+<form method="POST">
+    <p>Nom exercice :</p>
+    <input type="text" name="nom" required>
+
+    <p>Date début :</p>
+    <input type="date" name="date_debut" required>
+
+    <p>Date fin :</p>
+    <input type="date" name="date_fin" required>
+
+    <br><br>
+
+    <button type="submit">Créer exercice</button>
+</form>
+
+<h2>Liste des exercices</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>Début</th>
+    <th>Fin</th>
+    <th>Statut</th>
+    <th>Date création</th>
+    <th>Action</th>
+</tr>
+
+{% for e in exercices %}
+<tr>
+    <td>{{ e[0] }}</td>
+    <td>{{ e[1] }}</td>
+    <td>{{ e[2] }}</td>
+    <td>{{ e[3] }}</td>
+    <td>{{ e[4] }}</td>
+    <td>{{ e[5] }}</td>
+    <td><a href="/ecritures/verrouiller-exercice-v5/{{ e[0] }}">Verrouiller</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

@@ -1,0 +1,42 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Cabinet Expert Comptable{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+
+<div class="card">
+<h3>Tâches</h3>
+<div class="value">{{ data.workflow_taches }}</div>
+</div>
+
+<div class="card">
+<h3>Alertes IA</h3>
+<div class="value">{{ data.ia_alertes }}</div>
+</div>
+
+<div class="card">
+<h3>Emails</h3>
+<div class="value">{{ data.mail_queue }}</div>
+</div>
+
+<div class="card">
+<h3>Dépôts fiscaux</h3>
+<div class="value">{{ data.depot_fiscal_auto }}</div>
+</div>
+
+<div class="card">
+<h3>Ecritures</h3>
+<div class="value">{{ data.ecritures }}</div>
+</div>
+
+<div class="card">
+<h3>Comptes</h3>
+<div class="value">{{ data.plan_comptable }}</div>
+</div>
+
+</div>
+
+{% endblock %}

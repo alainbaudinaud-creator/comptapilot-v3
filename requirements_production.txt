@@ -1,0 +1,11 @@
+
+flask
+gunicorn
+reportlab
+psycopg2-binary
+sqlalchemy
+flask_sqlalchemy
+pytest
+prometheus-client
+redis
+celery

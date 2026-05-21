@@ -1,0 +1,29 @@
+
+version: "3.9"
+
+services:
+  comptapilot:
+    build: ..
+    container_name: comptapilot
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - DATABASE_URL=postgresql://comptapilot:CHANGE_ME@postgres:5432/comptapilot
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: comptapilot_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: comptapilot
+      POSTGRES_PASSWORD: CHANGE_ME
+      POSTGRES_DB: comptapilot
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

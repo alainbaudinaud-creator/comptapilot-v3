@@ -1,0 +1,63 @@
+﻿<h1>Automatisation IA + orchestration métier V7</h1>
+
+<ul>
+    <li><a href="/ecritures/taches-automatiques-v7">Moteur tâches automatiques</a></li>
+    <li><a href="/ecritures/scenarios-intelligents-v7">Scénarios intelligents</a></li>
+    <li><a href="/ecritures/centre-alertes-v7">Centre alertes</a></li>
+    <li><a href="/ecritures/notifications-internes-v7">Notifications internes</a></li>
+    <li><a href="/ecritures/emails-automatiques-v7">Emails automatiques</a></li>
+    <li><a href="/ecritures/assistant-decisionnel-v7">Assistant IA décisionnel</a></li>
+    <li><a href="/ecritures/analyse-financiere-ia-v7">Analyse financière IA</a></li>
+    <li><a href="/ecritures/previsions-ia-v7">Prévisions IA</a></li>
+    <li><a href="/ecritures/score-risque-client-v7">Score risque client</a></li>
+    <li><a href="/ecritures/score-fraude-v7">Score fraude</a></li>
+    <li><a href="/ecritures/cashflow-ia-v7">Pilotage cashflow IA</a></li>
+    <li><a href="/ecritures/robots-comptables-v7">Robots comptables</a></li>
+    <li><a href="/ecritures/scheduler-automatique-v7">Scheduler automatique</a></li>
+    <li><a href="/ecritures/journal-orchestration-v7">Journal orchestration</a></li>
+    <li><a href="/ecritures/verificateur-v7">Vérificateur modules V7</a></li>
+<p>
+    <a href="/ecritures/supervision-robots-v7">Supervision robots métiers V7</a>
+    <a href="/ecritures/supervision-scheduler-v7">Supervision scheduler V7</a>
+</p>
+</ul>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>
+<h1>Tâches automatiques V7</h1>
+
+<form method="POST">
+    <p>Nom :</p>
+    <input type="text" name="nom" required>
+
+    <p>Type tâche :</p>
+    <select name="type_tache">
+        <option value="OCR">OCR</option>
+        <option value="PRECOMPTA">Pré-comptabilisation</option>
+        <option value="RELANCE">Relance client</option>
+        <option value="CONTROLE">Contrôle comptable</option>
+        <option value="ARCHIVAGE">Archivage</option>
+    </select>
+
+    <p>Fréquence :</p>
+    <select name="frequence">
+        <option value="QUOTIDIEN">Quotidien</option>
+        <option value="HEBDOMADAIRE">Hebdomadaire</option>
+        <option value="MENSUEL">Mensuel</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Ajouter tâche</button>
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Nom</th><th>Type</th><th>Fréquence</th><th>Statut</th><th>Dernière exécution</th><th>Date création</th><th>Action</th></tr>
+{% for t in taches %}
+<tr>
+<td>{{ t[0] }}</td><td>{{ t[1] }}</td><td>{{ t[2] }}</td><td>{{ t[3] }}</td><td>{{ t[4] }}</td><td>{{ t[5] }}</td><td>{{ t[6] }}</td>
+<td><a href="/ecritures/executer-tache-v7/{{ t[0] }}">Exécuter</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

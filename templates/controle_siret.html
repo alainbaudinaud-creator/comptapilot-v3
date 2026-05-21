@@ -1,0 +1,13 @@
+﻿<h1>Contrôle SIRET / TVA</h1>
+
+<p>Client : {{ nom }}</p>
+<p>SIRET : {{ siret }}</p>
+<p>TVA intracom : {{ tva_intracom }}</p>
+
+<ul>
+{% for c in controles %}
+    <li>{{ c }}</li>
+{% endfor %}
+</ul>
+
+<a href="/ecritures/annuaire-pdp">Retour annuaire</a>

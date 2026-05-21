@@ -1,0 +1,10 @@
+﻿<h1>Robots comptables V7</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>Robot</th><th>Mission</th><th>Statut</th></tr>
+{% for r in robots %}
+<tr><td>{{ r[0] }}</td><td>{{ r[1] }}</td><td>{{ r[2] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

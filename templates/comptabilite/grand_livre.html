@@ -1,0 +1,37 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Grand livre{% endblock %}
+
+{% block content %}
+<div class="actions">
+    <a class="btn secondary" href="/">Retour dashboard</a>
+</div>
+
+<div class="table-card">
+<table>
+<tr>
+<th>Date</th>
+<th>Journal</th>
+<th>Pi?ce</th>
+<th>Libell?</th>
+<th>Compte</th>
+<th>Nom</th>
+<th class="amount">D?bit</th>
+<th class="amount">Cr?dit</th>
+</tr>
+{% for r in rows %}
+<tr>
+<td>{{ r[0] }}</td>
+<td>{{ r[1] }}</td>
+<td>{{ r[2] }}</td>
+<td>{{ r[3] }}</td>
+<td>{{ r[4] }}</td>
+<td>{{ r[5] }}</td>
+<td class="amount">{{ r[6] }}</td>
+<td class="amount">{{ r[7] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

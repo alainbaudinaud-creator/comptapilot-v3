@@ -1,0 +1,37 @@
+﻿<h1>Ajouter une règle comptable IA</h1>
+
+<form method="POST">
+    <p>Mot-clé à détecter :</p>
+    <input type="text" name="mot_cle" required>
+
+    <p>Compte suggéré :</p>
+    <input type="text" name="compte_suggere" required>
+
+    <p>Journal suggéré :</p>
+    <select name="journal_suggere">
+        <option value="ACH">ACH - Achats</option>
+        <option value="VEN">VEN - Ventes</option>
+        <option value="BQ">BQ - Banque</option>
+        <option value="OD">OD - Opérations diverses</option>
+    </select>
+
+    <p>Type document :</p>
+    <select name="type_document">
+        <option value="FACTURE_FOURNISSEUR">Facture fournisseur</option>
+        <option value="FACTURE_CLIENT">Facture client</option>
+        <option value="RELEVE_BANCAIRE">Relevé bancaire</option>
+        <option value="JUSTIFICATIF">Justificatif</option>
+        <option value="AUTRE">Autre</option>
+    </select>
+
+    <p>Commentaire :</p>
+    <textarea name="commentaire"></textarea>
+
+    <br><br>
+
+    <button type="submit">Ajouter la règle</button>
+</form>
+
+<a href="/ecritures/assistant-comptable-intelligent">Retour assistant IA</a>
+Retour assistant IA
+</a>

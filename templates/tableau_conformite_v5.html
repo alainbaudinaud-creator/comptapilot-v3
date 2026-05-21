@@ -1,0 +1,17 @@
+﻿<h1>Tableau conformité V5</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Indicateur</th>
+    <th>Nombre</th>
+</tr>
+
+{% for i in indicateurs %}
+<tr>
+    <td>{{ i[0] }}</td>
+    <td>{{ i[1] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

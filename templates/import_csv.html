@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Import CSV</title>
+</head>
+<body>
+    <h1>Importer un fichier CSV</h1>
+
+    <form action="/ecritures/import-csv" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".csv" required>
+        <button type="submit">Importer</button>
+    </form>
+</body>
+</html>
+

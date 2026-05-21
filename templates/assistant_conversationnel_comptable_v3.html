@@ -1,0 +1,16 @@
+﻿<h1>Assistant conversationnel comptable</h1>
+
+<form method="POST">
+    <p>Pose une question :</p>
+    <input type="text" name="question" style="width:400px;" required>
+    <button type="submit">Demander</button>
+</form>
+
+{% if reponse %}
+<h2>Réponse</h2>
+<p>{{ reponse }}</p>
+{% endif %}
+
+<p>Exemples : TVA, résultat, balance</p>
+
+<a href="/ecritures/production-comptable-v3">Retour production</a>

@@ -1,0 +1,115 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Veille réglementaire{% endblock %}
+
+{% block content %}
+
+<div class="actions">
+    <a class="btn" href="/reglementaire/actualiser">Actualiser la veille DGFiP</a>
+    <a class="btn secondary" href="/reglementaire/remplir-liasse">Remplir la liasse depuis la comptabilité</a>
+    <a class="btn secondary" href="/fiscal/documents">Documents officiels</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Veille DGFiP</h3>
+        <div class="value">{{ veille|length }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Obligations</h3>
+        <div class="value">{{ obligations|length }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Cases liasse remplies</h3>
+        <div class="value">{{ liasse|length }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Mode</h3>
+        <div class="value">RSI 2033</div>
+    </div>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Obligations fiscales suivies</h3>
+</div>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>Code</th>
+    <th>Libellé</th>
+    <th>Régime</th>
+    <th>Périodicité</th>
+    <th>Source</th>
+</tr>
+{% for o in obligations %}
+<tr>
+    <td>{{ o[0] }}</td>
+    <td>{{ o[1] }}</td>
+    <td>{{ o[2] }}</td>
+    <td>{{ o[3] }}</td>
+    <td>{{ o[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Dernières vérifications réglementaires</h3>
+</div>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>Code</th>
+    <th>Type</th>
+    <th>Millésime</th>
+    <th>Description</th>
+    <th>Statut</th>
+    <th>Date</th>
+</tr>
+{% for v in veille %}
+<tr>
+    <td>{{ v[0] }}</td>
+    <td>{{ v[1] }}</td>
+    <td>{{ v[2] }}</td>
+    <td>{{ v[3] }}</td>
+    <td>{{ v[4] }}</td>
+    <td>{{ v[5] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Liasse pré-remplie depuis la comptabilité</h3>
+</div>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>Formulaire</th>
+    <th>Case fiscale</th>
+    <th>Valeur</th>
+</tr>
+{% for l in liasse %}
+<tr>
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+    <td>{{ l[2] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

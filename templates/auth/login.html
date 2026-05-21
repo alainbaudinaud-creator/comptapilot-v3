@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Connexion Comptapilot</title>
+
+<style>
+
+body{
+    background:#f3f4f6;
+    font-family:Arial;
+}
+
+.box{
+    width:420px;
+    margin:120px auto;
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+h1{
+    color:#0f172a;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-top:12px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:20px;
+    border:none;
+    border-radius:10px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+}
+
+.error{
+    color:red;
+    margin-top:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h1>ComptaPilot ERP</h1>
+
+<form method="POST">
+
+<input
+type="email"
+name="email"
+placeholder="Email"
+required
+>
+
+<input
+type="password"
+name="password"
+placeholder="Mot de passe"
+required
+>
+
+<button type="submit">
+Connexion
+</button>
+
+</form>
+
+{% if erreur %}
+<div class="error">
+{{ erreur }}
+</div>
+{% endif %}
+
+</div>
+
+</body>
+</html>

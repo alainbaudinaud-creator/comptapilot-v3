@@ -1,0 +1,68 @@
+JournalCode|EcritureDate|PieceRef|EcritureLib|CompteNum|CompteLib|Debit|Credit
+OD|15 avr. 2026|FACTURE 2026-71763|Correction ?quilibre automatique - Lokki - FACTURE 2026-71763|401000|Fournisseurs|25.8|0.0
+AN|2026-01-01|AN2026|A Nouveaux automatiques|||0.0|0.0
+OD|2026-04-15|OCR-1|Pré-comptabilisation OCR - facture-abonnement-15_04_2026.pdf|628|Charge OCR|8.33|0.0
+OD|2026-04-15|OCR-1|TVA déductible OCR|44566|TVA déductible|1.67|0.0
+OD|2026-04-15|OCR-1|Fournisseur OCR|401|Fournisseurs|0.0|10.0
+OD|2026-04-15|OCR-1|Pré-comptabilisation OCR - facture-abonnement-15_04_2026.pdf|628|Charge OCR|8.33|0.0
+OD|2026-04-15|OCR-1|TVA déductible OCR|44566|TVA déductible|1.67|0.0
+OD|2026-04-15|OCR-1|Fournisseur OCR|401|Fournisseurs|0.0|10.0
+OD|2026-05-03|FA002|Conseil |512|Banque|0.0|800.0
+OD|2026-05-03|FA002|Correction ?quilibre automatique - Conseil |401000|Fournisseurs|800.0|0.0
+OD|2026-05-05|fac2|fournitures|512|Banque|0.0|100.0
+OD|2026-05-05|AUTO1|Achat fournitures|606|Fournitures|120.0|0.0
+OD|2026-05-05|AUTO1|Achat fournitures|512|Banque|0.0|120.0
+OD|2026-05-05|AUTO-TVA|Achat fournitures|606|Fournitures|100.0|0.0
+OD|2026-05-05|AUTO-TVA|TVA déductible - Achat fournitures|44566|TVA déductible|20.0|0.0
+OD|2026-05-05|AUTO-TVA|Achat fournitures|512|Banque|0.0|120.0
+OD|2026-05-05|F001|Facture client - Dupont|512|Banque|120.0|0.0
+OD|2026-05-05|F001|Facture client - Dupont|706|Prestations|0.0|100.0
+OD|2026-05-05|F001|TVA collectée - Facture client - Dupont|44571|TVA collectée|0.0|20.0
+OD|2026-05-05|F001|Facture client - durand|512|Banque|100.0|0.0
+OD|2026-05-05|F001|Facture client - durand|706|Prestations|0.0|83.33
+OD|2026-05-05|F001|TVA collectée - Facture client - durand|44571|TVA collectée|0.0|16.67
+OD|2026-05-05|F001|Facture client - durand|512|Banque|100.0|0.0
+OD|2026-05-05|F001|Facture client - durand|706|Prestations|0.0|83.33
+OD|2026-05-05|F001|TVA collectée - Facture client - durand|44571|TVA collectée|0.0|16.67
+OD|2026-05-05|F001|Facture F001 - durand - Prestation de services|512|Banque|250.0|0.0
+OD|2026-05-05|F001|Facture F001 - durand - Prestation de services|706|Prestations|0.0|208.33
+OD|2026-05-05|F001|TVA collectée - Facture F001 - durand - Prestation de services|44571|TVA collectée|0.0|41.67
+OD|2026-05-05|F001|Facture F001 - Dupont|512|Banque|624.0|0.0
+OD|2026-05-05|F001|Facture F001 - Dupont|706|Prestations|0.0|520.0
+OD|2026-05-05|F001|TVA collectée - Facture F001 - Dupont|44571|TVA collectée|0.0|104.0
+OD|2026-05-05|F001|Facture F001 - durand|512|Banque|705.6|0.0
+OD|2026-05-05|F001|Facture F001 - durand|706|Prestations|0.0|588.0
+OD|2026-05-05|F001|TVA collectée - Facture F001 - durand|44571|TVA collectée|0.0|117.6
+OD|2026-05-05|F001|Facture F001 - durand|512|Banque|1086.0|0.0
+OD|2026-05-05|F001|Facture F001 - durand|706|Prestations|0.0|905.0
+OD|2026-05-05|F001|TVA collectée - Facture F001 - durand|44571|TVA collectée|0.0|181.0
+OD|2026-05-05|F2026-0001|Facture F2026-0001 - durand|512|Banque|616.8|0.0
+OD|2026-05-05|F2026-0001|Facture F2026-0001 - durand|706|Prestations|0.0|512.0
+OD|2026-05-05|F2026-0001|TVA collectée - Facture F2026-0001 - durand|44571|TVA collectée|0.0|102.8
+OD|2026-05-05|F2026-0002|Facture F2026-0002 - durand|512|Banque|1058.4|0.0
+OD|2026-05-05|F2026-0004|Facture F2026-0004 - durand|512|Banque|950.4|0.0
+OD|2026-05-05|F2026-0004|TVA collectée - Facture F2026-0004 - durand|44571|TVA collectée|0.0|158.4
+OD|2026-05-05|F2026-0001|Correction ?quilibre automatique - Facture F2026-0001 - durand|401000|Fournisseurs|0.0|2.0
+OD|2026-05-05|F2026-0002|Correction ?quilibre automatique - Facture F2026-0002 - durand|401000|Fournisseurs|0.0|1058.4
+OD|2026-05-05|F2026-0004|Correction ?quilibre automatique - Facture F2026-0004 - durand|401000|Fournisseurs|0.0|792.0
+OD|2026-05-05|fac2|Correction ?quilibre automatique - fournitures|401000|Fournisseurs|100.0|0.0
+OD|2026-05-06|FAC20260506124025|Fournisseurs|512|Banque|158.0|0.0
+OD|2026-05-06|FAC20260506124025|Fournisseurs|411|Clients|0.0|126.4
+OD|2026-05-06|FAC20260506124025|TVA collectée|601|Achats|0.0|31.6
+OD|2026-05-06|FAC20260506132838|Test facture automatique|512|Banque|120.0|0.0
+OD|2026-05-06|FAC20260506132838|Test facture automatique|411|Clients|0.0|96.0
+OD|2026-05-06|FAC20260506132838|TVA collectée|601|Achats|0.0|24.0
+OD|2026-05-06|FAC20260506145815|ventes|512|Banque|99.0|0.0
+OD|2026-05-06|FAC20260506145815|ventes|411|Clients|0.0|79.2
+OD|2026-05-06|FAC20260506145815|TVA collectée|601|Achats|0.0|19.8
+OD|2026-05-17|TEST 1|TEST|101|Capital|10.0|0.0
+OD|2026-05-17|TEST 1|TEST|101|Capital|15.0|0.0
+OD|2026-05-17|TEST 1|TEST|101|Capital|12.0|0.0
+OD|2026-05-17|TEST 1|Correction ?quilibre automatique - TEST|401000|Fournisseurs|0.0|37.0
+OD|2026-05-18|CORR-58|Correction ?quilibre suppression ?criture incoh?rente 58|401000|Fournisseurs|0.0|25.8
+OD|2027-01-01|TEST-003|Test saisie rapide|601|achat|10.0|0.0
+OD|2027-01-01|TEST-003|Correction ?quilibre automatique - Test saisie rapide|401000|Fournisseurs|0.0|10.0
+OD|2027-01-04|TEST004|TEST|606|Fournitures|800.0|0.0
+OD|2027-01-04|TEST004|Correction ?quilibre automatique - TEST|401000|Fournisseurs|0.0|800.0
+|2027-01-18|TEST-005|TEST|606|Fournitures|485.0|0.0
+OD|2027-01-18|TEST-005|Correction ?quilibre automatique - TEST|401000|Fournisseurs|0.0|485.0

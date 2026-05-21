@@ -1,0 +1,30 @@
+﻿<h1>Droits avancés par module V6</h1>
+
+<form method="POST">
+    <p>Utilisateur :</p>
+    <input type="text" name="utilisateur" required>
+
+    <p>Module :</p>
+    <input type="text" name="module" required>
+
+    <p>Droit :</p>
+    <select name="droit">
+        <option value="LECTURE">LECTURE</option>
+        <option value="ECRITURE">ECRITURE</option>
+        <option value="ADMIN">ADMIN</option>
+        <option value="INTERDIT">INTERDIT</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Ajouter droit</button>
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Utilisateur</th><th>Module</th><th>Droit</th><th>Date</th></tr>
+{% for d in droits %}
+<tr><td>{{ d[0] }}</td><td>{{ d[1] }}</td><td>{{ d[2] }}</td><td>{{ d[3] }}</td><td>{{ d[4] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/saas-securite-v6">Retour V6</a>

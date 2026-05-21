@@ -1,0 +1,50 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}OCR Mobile{% endblock %}
+
+{% block content %}
+
+<h2>Scanner facture vers dossier comptable</h2>
+
+<form method="post" enctype="multipart/form-data">
+
+    <label>Dossier client</label><br>
+    <select name="client_id" required>
+        {% for client in clients %}
+        <option value="{{ client.id }}">{{ client.name }}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+
+    <input type="file" name="file" accept="image/*" capture="environment" required>
+
+    <br><br>
+
+    <button type="submit">Scanner, OCR et cr?er brouillon comptable</button>
+
+</form>
+
+{% if result %}
+
+<hr>
+
+<h3>Document enregistr?</h3>
+<p>ID document : {{ result.document_id }}</p>
+<p>Fichier : {{ result.filename }}</p>
+
+<h3>Texte OCR</h3>
+<pre style="white-space:pre-wrap">{{ result.text }}</pre>
+
+<h3>?criture comptable brouillon</h3>
+<ul>
+    <li>Journal : {{ result.accounting.journal }}</li>
+    <li>Compte : {{ result.accounting.account }}</li>
+    <li>Libell? : {{ result.accounting.label }}</li>
+    <li>TVA : {{ result.accounting.vat }}</li>
+    <li>Statut : brouillon ? valider</li>
+</ul>
+
+{% endif %}
+
+{% endblock %}

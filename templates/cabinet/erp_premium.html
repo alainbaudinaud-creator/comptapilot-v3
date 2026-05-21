@@ -1,0 +1,57 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}ERP Premium{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+
+<div class="card">
+<h3>Score fiscal IA</h3>
+<div class="value">{{ ia.score_fiscal }}/100</div>
+</div>
+
+<div class="card">
+<h3>Notifications</h3>
+<div class="value">{{ stats.notifications_centre }}</div>
+</div>
+
+<div class="card">
+<h3>Timeline dossiers</h3>
+<div class="value">{{ stats.timeline_dossiers }}</div>
+</div>
+
+<div class="card">
+<h3>Rapprochements</h3>
+<div class="value">{{ stats.rapprochements_bancaires }}</div>
+</div>
+
+<div class="card">
+<h3>Imports</h3>
+<div class="value">{{ stats.imports_documents }}</div>
+</div>
+
+<div class="card">
+<h3>Emails</h3>
+<div class="value">{{ stats.mail_queue }}</div>
+</div>
+
+</div>
+
+<div class="card">
+<h3>Analyse IA fiscale</h3>
+
+{% if ia.risques %}
+<ul>
+{% for r in ia.risques %}
+<li>{{ r }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Aucun risque détecté</p>
+{% endif %}
+
+</div>
+
+{% endblock %}

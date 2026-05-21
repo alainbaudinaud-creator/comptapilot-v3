@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord API - ComptaPilot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 30px;
+        }
+
+        h1 {
+            color: #1f2937;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            background: #1f2937;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .badge-oui {
+            color: white;
+            background: #dc2626;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .badge-non {
+            color: white;
+            background: #16a34a;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        code {
+            background: #eef2ff;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Tableau de bord API - ComptaPilot</h1>
+
+<div class="card">
+    <p>
+        Cette page liste les routes API internes disponibles.
+        Les routes sécurisées nécessitent l'en-tête HTTP :
+    </p>
+
+    <p>
+        <code>X-API-KEY: CLE_API_COMPILOT_2026</code>
+    </p>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Méthode</th>
+            <th>URL</th>
+            <th>Sécurisée</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for route in routes_api %}
+        <tr>
+            <td>{{ route.nom }}</td>
+            <td>{{ route.methode }}</td>
+            <td><code>{{ route.url }}</code></td>
+            <td>
+                {% if route.securisee == "Oui" %}
+                    <span class="badge-oui">Oui</span>
+                {% else %}
+                    <span class="badge-non">Non</span>
+                {% endif %}
+            </td>
+            <td>{{ route.description }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

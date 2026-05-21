@@ -1,0 +1,29 @@
+﻿<h1>Historique apprentissage IA</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Fournisseur</th>
+    <th>Compte PCG</th>
+    <th>Compte TVA</th>
+    <th>Journal</th>
+    <th>Montant TTC</th>
+    <th>Source</th>
+    <th>Date</th>
+</tr>
+
+{% for h in historique %}
+<tr>
+    <td>{{ h[0] }}</td>
+    <td>{{ h[1] }}</td>
+    <td>{{ h[2] }}</td>
+    <td>{{ h[3] }}</td>
+    <td>{{ h[4] }}</td>
+    <td>{{ h[5] }}</td>
+    <td>{{ h[6] }}</td>
+    <td>{{ h[7] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/moteur-apprentissage-ia-v2">Retour moteur IA</a>

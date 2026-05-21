@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détection anomalies comptables</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background:#f5f7fa;
+            color:#1e293b;
+        }
+
+        h1,h2 {
+            color:#1e3a5f;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:18px;
+            margin-bottom:25px;
+        }
+
+        .card,.box {
+            background:white;
+            padding:20px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:20px;
+        }
+
+        .value {
+            font-size:30px;
+            font-weight:bold;
+            margin-top:8px;
+        }
+
+        .green { color:#16a34a; }
+        .orange { color:#ea580c; }
+        .red { color:#dc2626; }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+
+        th {
+            background:#1e3a5f;
+            color:white;
+            padding:12px;
+            text-align:left;
+        }
+
+        td {
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .badge {
+            padding:5px 10px;
+            border-radius:999px;
+            color:white;
+            font-weight:bold;
+        }
+
+        .critique { background:#991b1b; }
+        .eleve { background:#dc2626; }
+        .moyen { background:#ea580c; }
+        .faible { background:#16a34a; }
+
+    </style>
+</head>
+
+<body>
+
+<h1>IA — Détection anomalies comptables</h1>
+
+<div class="grid">
+
+    <div class="card">
+        <div>Nombre anomalies</div>
+
+        <div class="value red">
+            {{ nb_anomalies }}
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Score risque comptable</div>
+
+        <div class="value {% if score_risque < 50 %}red{% elif score_risque < 80 %}orange{% else %}green{% endif %}">
+            {{ score_risque }}/100
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Niveau global</div>
+
+        <div class="value {% if niveau_global == 'Critique' %}red{% elif niveau_global == 'Élevé' %}orange{% else %}green{% endif %}">
+            {{ niveau_global }}
+        </div>
+    </div>
+
+</div>
+
+<div class="box">
+
+    <h2>Liste anomalies détectées</h2>
+
+    <table>
+
+        <tr>
+            <th>Niveau</th>
+            <th>Type</th>
+            <th>Message</th>
+            <th>Pièce</th>
+            <th>Compte</th>
+            <th>Montant</th>
+        </tr>
+
+        {% for a in anomalies %}
+
+        <tr>
+
+            <td>
+                <span class="badge
+                    {% if a.niveau == 'Critique' %}critique
+                    {% elif a.niveau == 'Élevé' %}eleve
+                    {% elif a.niveau == 'Moyen' %}moyen
+                    {% else %}faible
+                    {% endif %}
+                ">
+                    {{ a.niveau }}
+                </span>
+            </td>
+
+            <td>{{ a.type }}</td>
+            <td>{{ a.message }}</td>
+            <td>{{ a.piece }}</td>
+            <td>{{ a.compte }}</td>
+            <td>{{ a.montant }} €</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>

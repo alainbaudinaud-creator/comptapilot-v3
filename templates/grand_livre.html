@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Grand livre comptable</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background:#f5f7fa;
+            color:#1e293b;
+        }
+
+        h1 {
+            color:#1e3a5f;
+        }
+
+        .actions {
+            margin-bottom:20px;
+        }
+
+        .actions a {
+            display:inline-block;
+            background:#1e3a5f;
+            color:white;
+            padding:10px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-right:8px;
+            margin-bottom:8px;
+        }
+
+        .filters {
+            margin-bottom:20px;
+        }
+
+        .filters form {
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
+        }
+
+        .filters input {
+            padding:10px;
+            border-radius:8px;
+            border:1px solid #cbd5e1;
+            min-width:220px;
+        }
+
+        .filters button {
+            padding:10px 14px;
+            border:none;
+            border-radius:8px;
+            background:#1e3a5f;
+            color:white;
+            cursor:pointer;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:18px;
+            margin-bottom:25px;
+        }
+
+        .card {
+            background:white;
+            padding:20px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+
+        .value {
+            font-size:28px;
+            font-weight:bold;
+            color:#1e3a5f;
+        }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+        }
+
+        th {
+            background:#1e3a5f;
+            color:white;
+            padding:12px;
+            text-align:left;
+        }
+
+        td {
+            padding:10px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .right {
+            text-align:right;
+        }
+
+        @media print {
+            .actions,
+            .filters {
+                display:none;
+            }
+
+            body {
+                background:white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Grand livre comptable</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/balance-generale">Balance</a>
+    <a href="/ecritures/journaux">Journaux</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="filters">
+    <form method="get">
+        <input
+            type="text"
+            name="compte"
+            placeholder="Filtrer par compte (ex: 411)"
+            value="{{ compte_filtre }}"
+        >
+
+        <button type="submit">Filtrer</button>
+    </form>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Total débit</div>
+        <div class="value">{{ total_debit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Total crédit</div>
+        <div class="value">{{ total_credit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Solde final</div>
+        <div class="value">{{ solde_final }} €</div>
+    </div>
+</div>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Pièce</th>
+        <th>Compte</th>
+        <th>Nom compte</th>
+        <th>Libellé</th>
+        <th class="right">Débit</th>
+        <th class="right">Crédit</th>
+        <th class="right">Solde</th>
+    </tr>
+
+    {% for ligne in lignes %}
+    <tr>
+        <td>{{ ligne.date }}</td>
+        <td>{{ ligne.piece }}</td>
+        <td>{{ ligne.compte }}</td>
+        <td>{{ ligne.compte_libelle }}</td>
+        <td>{{ ligne.libelle }}</td>
+        <td class="right">{{ ligne.debit }}</td>
+        <td class="right">{{ ligne.credit }}</td>
+        <td class="right">{{ ligne.solde }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

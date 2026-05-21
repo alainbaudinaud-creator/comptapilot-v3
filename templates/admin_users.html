@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration utilisateurs</title>
+</head>
+<body>
+
+<h1>Administration utilisateurs</h1>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Utilisateur</th>
+        <th>Rôle</th>
+    </tr>
+
+    {% for user in users %}
+    <tr>
+        <td>{{ user[0] }}</td>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>
+    <a href="/ecritures/dashboard">Retour dashboard</a>
+</p>
+
+</body>
+</html>

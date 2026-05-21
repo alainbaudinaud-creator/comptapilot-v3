@@ -1,0 +1,21 @@
+services:
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: comptapilot
+      POSTGRES_PASSWORD: comptapilot
+      POSTGRES_DB: comptapilot
+    ports:
+      - "5432:5432"
+
+  comptapilot:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_USER: comptapilot
+      POSTGRES_PASSWORD: comptapilot
+      POSTGRES_DB: comptapilot

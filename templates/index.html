@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ComptaMultiSociétés</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gestion des sociétés</h1>
+        <form id="add-société-form">
+            <input type="text" name="name" placeholder="Nom de la société" required>
+            <input type="text" name="address" placeholder="Adresse" required>
+            <button type="submit">Ajouter</button>
+        </form>
+        <table id="sociétés-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les données seront affichées ici par JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Assistant IA comptable</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin:30px;
+            background:#f5f7fa;
+            color:#1e293b;
+        }
+
+        h1 {
+            color:#1e3a5f;
+        }
+
+        .box {
+            background:white;
+            padding:25px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:25px;
+        }
+
+        textarea {
+            width:100%;
+            height:120px;
+            padding:15px;
+            border-radius:10px;
+            border:1px solid #cbd5e1;
+            font-size:16px;
+        }
+
+        button {
+            background:#1e3a5f;
+            color:white;
+            border:0;
+            padding:12px 18px;
+            border-radius:10px;
+            cursor:pointer;
+            margin-top:15px;
+            font-size:16px;
+        }
+
+        .response {
+            background:#eef2ff;
+            padding:20px;
+            border-radius:10px;
+            margin-top:20px;
+            line-height:1.7;
+        }
+
+        .examples {
+            color:#64748b;
+            margin-top:12px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>Assistant conversationnel IA comptable</h1>
+
+<div class="box">
+
+    <form method="post">
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <textarea
+            name="question"
+            placeholder="Posez une question comptable..."
+        >{{ question }}</textarea>
+
+        <button type="submit">
+            Interroger l'IA comptable
+        </button>
+
+    </form>
+
+    <div class="examples">
+        Exemples :
+        <br>
+        - Quelle est ma trésorerie ?
+        <br>
+        - Quel est mon résultat ?
+        <br>
+        - Analyse mes charges
+        <br>
+        - Prévision trésorerie
+        <br>
+        - Dernières écritures banque
+    </div>
+
+</div>
+
+{% if reponse %}
+
+<div class="box">
+
+    <h2>Réponse IA</h2>
+
+    <div class="response">
+        {{ reponse|safe }}
+    </div>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>

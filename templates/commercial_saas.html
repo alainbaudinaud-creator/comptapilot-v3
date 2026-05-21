@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ComptaPilot Commercial SaaS</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .actions a {
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1e3a5f;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .roadmap {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        @media (max-width: 700px) {
+            body {
+                margin: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ComptaPilot — Niveau logiciel commercial</h1>
+
+    <p class="subtitle">
+        Socle SaaS avancé : PostgreSQL, API, JWT, monitoring, workflow, abonnement, IA, cloud et déploiement.
+    </p>
+
+    <div class="actions">
+        <a href="/ecritures/dashboard-financier">Cockpit financier</a>
+        <a href="/ecritures/production-saas">Production SaaS</a>
+        <a href="/ecritures/centre-saas">Centre SaaS</a>
+        <a href="/ecritures/api/monitoring">Monitoring API</a>
+        <a href="/ecritures/api/workflow-validation">Workflow API</a>
+        <a href="/ecritures/api/abonnement-saas">Abonnement API</a>
+        <a href="/ecritures/api/notifications">Notifications API</a>
+        <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+    </div>
+
+    <div class="grid">
+
+        {% for module in modules %}
+            <div class="card">
+                <h3>{{ module.nom }}</h3>
+                <p><strong>Statut :</strong> {{ module.statut }}</p>
+                <span class="badge">{{ module.categorie }}</span>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="roadmap">
+        <h2>Roadmap commercialisable</h2>
+
+        <ul>
+            <li>Brancher PostgreSQL en production via DATABASE_URL.</li>
+            <li>Connecter Stripe pour abonnements réels.</li>
+            <li>Ajouter WebSocket pour notifications temps réel.</li>
+            <li>Connecter OCR IA pour lecture automatique des factures.</li>
+            <li>Ajouter workflow de validation par rôle.</li>
+            <li>Déployer via Docker, Nginx et cloud.</li>
+        </ul>
+    </div>
+
+</body>
+</html>

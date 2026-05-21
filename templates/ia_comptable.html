@@ -1,0 +1,13 @@
+﻿<h1>Assistant IA Comptable</h1>
+
+<p>Total débit : {{ total_debit }}</p>
+<p>Total crédit : {{ total_credit }}</p>
+<p>Écart : {{ ecart }}</p>
+
+<h2>Alertes IA</h2>
+
+<ul>
+{% for a in alertes %}
+<li>{{ a }}</li>
+{% endfor %}
+</ul>

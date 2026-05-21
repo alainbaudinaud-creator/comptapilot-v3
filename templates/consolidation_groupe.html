@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Consolidation groupe</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 30px;
+    background: #f5f7fa;
+    color: #1e293b;
+}
+
+h1, h2 {
+    color: #1e3a5f;
+}
+
+.actions {
+    margin-bottom: 20px;
+}
+
+.actions a {
+    display: inline-block;
+    background: #1e3a5f;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.card, .box {
+    background: white;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    margin-bottom: 22px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1e3a5f;
+    margin-top: 8px;
+}
+
+.green {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+.orange {
+    color: #ea580c;
+    font-weight: bold;
+}
+
+.red {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+
+th {
+    background: #1e3a5f;
+    color: white;
+    padding: 12px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.right {
+    text-align: right;
+}
+
+@media print {
+    .actions {
+        display: none;
+    }
+
+    body {
+        background: white;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Consolidation multi-sociétés</h1>
+
+<div class="actions">
+    <a href="/ecritures/cockpit-ia-dirigeant">Cockpit IA</a>
+    <a href="/ecritures/analyse-automatique-ia">Analyse IA</a>
+    <a href="/ecritures/bilan-resultat">Bilan</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Produits groupe</div>
+        <div class="value">{{ total_produits }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Charges groupe</div>
+        <div class="value">{{ total_charges }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Résultat groupe</div>
+        <div class="value {% if resultat_groupe < 0 %}red{% else %}green{% endif %}">
+            {{ resultat_groupe }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Trésorerie groupe</div>
+        <div class="value {% if total_tresorerie < 0 %}red{% else %}green{% endif %}">
+            {{ total_tresorerie }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Score groupe</div>
+        <div class="value {% if score_groupe < 50 %}red{% elif score_groupe < 80 %}orange{% else %}green{% endif %}">
+            {{ score_groupe }}/100
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Détail par société</h2>
+
+    <table>
+        <tr>
+            <th>Société</th>
+            <th class="right">Produits</th>
+            <th class="right">Charges</th>
+            <th class="right">Résultat</th>
+            <th class="right">Trésorerie</th>
+            <th class="right">Score</th>
+        </tr>
+
+        {% for l in lignes %}
+        <tr>
+            <td>{{ l.societe }}</td>
+            <td class="right">{{ l.produits }} €</td>
+            <td class="right">{{ l.charges }} €</td>
+            <td class="right {% if l.resultat < 0 %}red{% else %}green{% endif %}">
+                {{ l.resultat }} €
+            </td>
+            <td class="right {% if l.tresorerie < 0 %}red{% else %}green{% endif %}">
+                {{ l.tresorerie }} €
+            </td>
+            <td class="right {% if l.score < 50 %}red{% elif l.score < 80 %}orange{% else %}green{% endif %}">
+                {{ l.score }}/100
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

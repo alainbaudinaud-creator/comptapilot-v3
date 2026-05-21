@@ -1,0 +1,181 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Plan comptable</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark px-4">
+    <span class="navbar-brand">ComptaPilot</span>
+    <div>
+        <a href="/societes/ui" class="text-white me-3">Sociétés</a>
+        <a href="/plan-comptable/ui" class="text-white me-3">Plan comptable</a>
+        <a href="/ecritures/ui" class="text-white me-3">Écritures</a>
+        <a href="/ecritures/journal" class="text-white me-3">Journal</a>
+        <a href="/export/" class="text-white">Export</a>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <h2 class="mb-4">Plan comptable par société</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">Choisir une société</div>
+        <div class="card-body">
+            <select id="societe_id" class="form-control">
+                <option value="">Tous les plans comptables</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Ajouter un compte</div>
+        <div class="card-body">
+            <form id="formCompte" class="row g-3">
+                <div class="col-md-3">
+                    <input type="text" id="numero" class="form-control" placeholder="Numéro" required>
+                </div>
+                <div class="col-md-4">
+                    <input type="text" id="libelle" class="form-control" placeholder="Libellé" required>
+                </div>
+                <div class="col-md-3">
+                    <select id="type" class="form-control" required>
+                        <option value="">Type</option>
+                        <option value="Actif">Actif</option>
+                        <option value="Passif">Passif</option>
+                        <option value="Charge">Charge</option>
+                        <option value="Produit">Produit</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-success w-100">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">Importer un plan comptable</div>
+        <div class="card-body">
+            <form action="/plan-comptable/import" method="post" enctype="multipart/form-data">
+                <select name="societe_id" id="societe_import" class="form-control mb-2" required>
+                    <option value="">Choisir une société</option>
+                </select>
+
+                <input type="file" name="file" class="form-control mb-2" accept=".csv" required>
+                <button class="btn btn-primary">Importer le CSV</button>
+            </form>
+
+            <a href="/plan-comptable/modele.csv" class="btn btn-success mt-2">
+                Télécharger un modèle de plan comptable
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Liste des comptes</div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Numéro</th>
+                        <th>Libellé</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody id="liste"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    const selectFiltre = document.getElementById('societe_id');
+    const selectImport = document.getElementById('societe_import');
+
+    selectFiltre.innerHTML = '<option value="">Tous les plans comptables</option>';
+    selectImport.innerHTML = '<option value="">Choisir une société</option>';
+
+    data.forEach(s => {
+        const nom = s.name || s.nom;
+
+        const opt1 = document.createElement('option');
+        opt1.value = s.id;
+        opt1.textContent = nom;
+        selectFiltre.appendChild(opt1);
+
+        const opt2 = document.createElement('option');
+        opt2.value = s.id;
+        opt2.textContent = nom;
+        selectImport.appendChild(opt2);
+    });
+}
+
+async function chargerComptes() {
+    const societeId = document.getElementById('societe_id').value;
+    let url = '/plan-comptable/';
+
+    if (societeId) {
+        url += '?societe_id=' + societeId;
+    }
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const liste = document.getElementById('liste');
+    liste.innerHTML = "";
+
+    data.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${c.id}</td>
+            <td>${c.numero}</td>
+            <td>${c.libelle}</td>
+            <td>${c.type}</td>
+        `;
+        liste.appendChild(tr);
+    });
+}
+
+document.getElementById('societe_id').addEventListener('change', chargerComptes);
+
+document.getElementById('formCompte').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const societeId = document.getElementById('societe_id').value;
+
+    if (!societeId) {
+        alert("Choisis une société avant d'ajouter un compte.");
+        return;
+    }
+
+    await fetch('/plan-comptable/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            numero: document.getElementById('numero').value,
+            libelle: document.getElementById('libelle').value,
+            type: document.getElementById('type').value,
+            societe_id: societeId
+        })
+    });
+
+    document.getElementById('formCompte').reset();
+    chargerComptes();
+});
+
+chargerSocietes();
+chargerComptes();
+</script>
+
+</body>
+</html>

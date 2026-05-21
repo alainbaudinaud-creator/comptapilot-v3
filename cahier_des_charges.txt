@@ -1,0 +1,16 @@
+ComptaMultiSociétés/
+│
+├── main.py
+├── models/
+│   ├── societe.py
+│   ├── plan_comptable.py
+│   └── écriture.py
+├── views/
+│   ├── interface_graphique.py
+│   └── exports.py
+├── controllers/
+│   ├── gestion_sociétés.py
+│   ├── gestion_plan_comptable.py
+│   ├── gestion_écritures.py
+│   └── exportation.py
+└── db.sqlite

@@ -1,0 +1,29 @@
+﻿<h1>Ajouter rôle utilisateur V4</h1>
+
+<form method="POST">
+    <p>Utilisateur :</p>
+    <input type="text" name="utilisateur" required>
+
+    <p>Rôle :</p>
+    <select name="role">
+        <option value="ADMIN">ADMIN</option>
+        <option value="COMPTABLE">COMPTABLE</option>
+        <option value="EXPERT">EXPERT</option>
+        <option value="LECTURE">LECTURE</option>
+    </select>
+
+    <p>Permission :</p>
+    <input type="text" name="permission" value="ACCES_MODULE">
+
+    <p>Statut :</p>
+    <select name="statut">
+        <option value="ACTIF">ACTIF</option>
+        <option value="SUSPENDU">SUSPENDU</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Ajouter rôle</button>
+</form>
+
+<a href="/ecritures/utilisateurs-roles-v4">Retour rôles</a>

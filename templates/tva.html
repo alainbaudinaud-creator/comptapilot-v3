@@ -1,0 +1,86 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Déclaration TVA simplifiée</h2>
+
+<div class="card mb-4">
+    <div class="card-header">Choisir une société</div>
+    <div class="card-body">
+        <select id="societe_id" class="form-select"></select>
+    </div>
+</div>
+
+<div id="resultat"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    await chargerSocietes();
+    document.getElementById('societe_id').addEventListener('change', chargerTVA);
+});
+
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    const select = document.getElementById('societe_id');
+    select.innerHTML = '<option value="">Choisir une société</option>';
+
+    data.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name || s.nom || 'Société';
+        select.appendChild(opt);
+    });
+}
+
+async function chargerTVA() {
+    const societeId = document.getElementById('societe_id').value;
+    const bloc = document.getElementById('resultat');
+
+    if (!societeId) {
+        bloc.innerHTML = "";
+        return;
+    }
+
+    const res = await fetch('/ecritures/tva?societe_id=' + societeId);
+    const data = await res.json();
+
+    bloc.innerHTML = `
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h5>TVA collectée</h5>
+                    <h3>${Number(data.tva_collectee).toFixed(2)} €</h3>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h5>TVA déductible</h5>
+                    <h3>${Number(data.tva_deductible).toFixed(2)} €</h3>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-3 mb-3">
+                    <h5>${data.tva_a_payer >= 0 ? 'TVA à payer' : 'Crédit de TVA'}</h5>
+                    <h3>${Math.abs(Number(data.tva_a_payer)).toFixed(2)} €</h3>
+                </div>
+            </div>
+        </div>
+
+        <a class="btn btn-primary mt-3"
+           href="/ecritures/tva/pdf?societe_id=${societeId}"
+           target="_blank">
+           Export PDF TVA
+        </a>
+
+        <div class="alert alert-warning mt-3">
+            CA3 simplifiée indicative. Ne remplace pas une déclaration fiscale officielle.
+        </div>
+    `;
+}
+</script>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>OCR IA comptable</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background:#f5f7fa;
+            color:#1e293b;
+        }
+
+        h1,h2 {
+            color:#1e3a5f;
+        }
+
+        .box {
+            background:white;
+            padding:20px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:22px;
+        }
+
+        .value {
+            font-size:24px;
+            font-weight:bold;
+            color:#1e3a5f;
+        }
+
+        pre {
+            white-space:pre-wrap;
+            background:#f8fafc;
+            padding:15px;
+            border-radius:8px;
+            overflow:auto;
+        }
+
+        a {
+            display:inline-block;
+            background:#1e3a5f;
+            color:white;
+            padding:10px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-bottom:20px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<a href="/ecritures/ged-comptable">Retour GED</a>
+
+<h1>OCR + pré-comptabilisation IA</h1>
+
+<div class="box">
+
+    <h2>Document</h2>
+
+    <p><strong>Fichier :</strong> {{ nom_fichier }}</p>
+    <p><strong>Type :</strong> {{ type_document }}</p>
+
+</div>
+
+<div class="box">
+
+    <h2>Données détectées</h2>
+
+    <p><strong>Fournisseur :</strong> {{ fournisseur }}</p>
+
+    <p><strong>Date :</strong> {{ date_facture }}</p>
+
+    <p><strong>Montant TTC :</strong> {{ montant_ttc }}</p>
+
+    <p><strong>Compte suggéré :</strong> {{ suggestion_compte }}</p>
+    <a href="/ecritures/ged-comptable/generer-ecriture/1">Générer écriture comptable</a>
+
+</div>
+
+<div class="box">
+
+    <h2>Texte OCR brut</h2>
+
+    <pre>{{ texte }}</pre>
+
+</div>
+
+</body>
+</html>

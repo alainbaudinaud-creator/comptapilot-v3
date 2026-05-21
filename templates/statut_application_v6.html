@@ -1,0 +1,10 @@
+﻿<h1>Statut application V6</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Mode</th><th>Date activation</th></tr>
+{% for m in modes %}
+<tr><td>{{ m[0] }}</td><td>{{ m[1] }}</td><td>{{ m[2] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/saas-securite-v6">Retour V6</a>

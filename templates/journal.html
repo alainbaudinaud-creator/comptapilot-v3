@@ -1,0 +1,131 @@
+﻿
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Journal comptable</h2>
+
+<div class="card mb-4">
+    <div class="card-header">Filtres</div>
+    <div class="card-body">
+        <select id="filtreSociete" class="form-select">
+            <option value="">Toutes les sociétés</option>
+        </select>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Journal des écritures</div>
+
+    <div class="card-body">
+        <table class="table table-striped table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Date</th>
+                    <th>Pièce</th>
+                    <th>Société</th>
+                    <th>Compte</th>
+                    <th>Libellé</th>
+                    <th>Débit</th>
+                    <th>Crédit</th>
+                </tr>
+            </thead>
+
+            <tbody id="journal"></tbody>
+
+            <tfoot>
+                <tr class="table-secondary">
+                    <th colspan="5">Totaux</th>
+                    <th id="totalDebit">0 €</th>
+                    <th id="totalCredit">0 €</th>
+                </tr>
+            </tfoot>
+        </table>
+
+        <div id="equilibre" class="alert mt-4"></div>
+    </div>
+</div>
+
+<script>
+let toutesLesEcritures = [];
+
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    const select = document.getElementById('filtreSociete');
+    select.innerHTML = '<option value="">Toutes les sociétés</option>';
+
+    data.forEach(s => {
+        const option = document.createElement('option');
+        option.value = s.name;
+        option.textContent = s.name;
+        select.appendChild(option);
+    });
+}
+
+async function chargerJournal() {
+    const res = await fetch('/ecritures/');
+    toutesLesEcritures = await res.json();
+    afficherJournal();
+}
+
+function afficherJournal() {
+    const societeChoisie = document.getElementById('filtreSociete').value;
+
+    const data = toutesLesEcritures.filter(e => {
+        if (!societeChoisie) return true;
+        return e.societe === societeChoisie;
+    });
+
+    const tbody = document.getElementById('journal');
+    tbody.innerHTML = "";
+
+    let totalDebit = 0;
+    let totalCredit = 0;
+
+    data.forEach(e => {
+        const debit = parseFloat(e.debit || 0);
+        const credit = parseFloat(e.credit || 0);
+
+        totalDebit += debit;
+        totalCredit += credit;
+
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td>${e.date_ecriture || ""}</td>
+            <td>${e.piece || ""}</td>
+            <td>${e.societe || ""}</td>
+            <td>${e.compte_numero || ""} ${e.compte_libelle || ""}</td>
+            <td>${e.libelle || ""}</td>
+            <td>${debit.toFixed(2)} €</td>
+            <td>${credit.toFixed(2)} €</td>
+        `;
+
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('totalDebit').textContent = totalDebit.toFixed(2) + " €";
+    document.getElementById('totalCredit').textContent = totalCredit.toFixed(2) + " €";
+
+    const equilibre = document.getElementById('equilibre');
+
+    if (totalDebit === totalCredit) {
+        equilibre.className = "alert alert-success mt-4";
+        equilibre.textContent = "Journal équilibré ✅";
+    } else {
+        equilibre.className = "alert alert-danger mt-4";
+        equilibre.textContent =
+            "Journal non équilibré ❌ Écart : " +
+            Math.abs(totalDebit - totalCredit).toFixed(2) + " €";
+    }
+}
+
+document.getElementById('filtreSociete').addEventListener('change', afficherJournal);
+
+chargerSocietes();
+chargerJournal();
+</script>
+
+{% endblock %}

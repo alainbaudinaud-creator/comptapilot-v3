@@ -1,0 +1,17 @@
+﻿<h1>Liste des sauvegardes</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Fichier</th>
+    <th>Taille KB</th>
+</tr>
+
+{% for fichier in fichiers %}
+<tr>
+    <td>{{ fichier.nom }}</td>
+    <td>{{ fichier.taille }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

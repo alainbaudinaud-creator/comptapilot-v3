@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter traitement RGPD</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1F3A5F;
+        }
+
+        form {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 500px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: #1F3A5F;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <h1>Ajouter un traitement RGPD</h1>
+
+    <form method="POST">
+
+        <label>Nom du traitement</label>
+        <input type="text" name="nom_traitement">
+
+        <label>Finalité</label>
+        <input type="text" name="finalite">
+
+        <label>Base légale</label>
+        <input type="text" name="base_legale">
+
+        <label>Durée de conservation</label>
+        <input type="text" name="duree_conservation">
+
+        <label>Responsable</label>
+        <input type="text" name="responsable">
+
+        <button type="submit">
+            Ajouter
+        </button>
+
+    </form>
+
+</body>
+</html>

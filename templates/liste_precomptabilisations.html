@@ -1,0 +1,47 @@
+﻿<h1>Pré-comptabilisations automatiques</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Document</th>
+    <th>Journal</th>
+    <th>Compte tiers</th>
+    <th>Compte charge/produit</th>
+    <th>Compte TVA</th>
+    <th>Libellé</th>
+    <th>Date</th>
+    <th>HT</th>
+    <th>TVA</th>
+    <th>TTC</th>
+    <th>Statut</th>
+    <th>Action</th>
+</tr>
+
+{% for l in lignes %}
+<tr>
+    <td>{{ l[0] }}</td>
+    <td>{{ l[1] }}</td>
+    <td>{{ l[2] }}</td>
+    <td>{{ l[3] }}</td>
+    <td>{{ l[4] }}</td>
+    <td>{{ l[5] }}</td>
+    <td>{{ l[6] }}</td>
+    <td>{{ l[7] }}</td>
+    <td>{{ l[8] }}</td>
+    <td>{{ l[9] }}</td>
+    <td>{{ l[10] }}</td>
+    <td>{{ l[11] }}</td>
+    <td>
+        <a href="/ecritures/valider-precomptabilisation/{{ l[0] }}">
+            Valider
+        <br>
+        <a href="/ecritures/apprentissage-depuis-precompta-v2/{{ l[0] }}">
+            Apprendre IA
+</a>
+        </a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

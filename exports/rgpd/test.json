@@ -1,0 +1,14 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "Alain BAUDINAUD",
+            "password": "scrypt:32768:8:1$EPd06r6mL3smNGJA$d9261287e8f202009efb951852661a73d57820a74d7b422b37cb509c4568395d46f669a988b71a9586572fe096207863db165f0b038e5c8138d624be5442b61a"
+        },
+        {
+            "id": 2,
+            "username": "test",
+            "password": "scrypt:32768:8:1$UUxAxRllk6bAKpQs$2197fd5015b299ac463931bb0709c1f65b24f58cebdfe2c3656688fb03e6899c66f757cc8a51ec0729c971fbc6a8a419b0cf5e3bda7669c9b540a29a9d61fb23"
+        }
+    ]
+}

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>GED comptable intelligente</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a, button {
+            display:inline-block;
+            background:#1e3a5f;
+            color:white;
+            padding:10px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            border:0;
+            cursor:pointer;
+            margin-right:8px;
+            margin-bottom:8px;
+        }
+        .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:22px; }
+        input, select { padding:10px; border:1px solid #cbd5e1; border-radius:8px; margin-right:8px; margin-bottom:8px; }
+        table { width:100%; border-collapse:collapse; background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        th { background:#1e3a5f; color:white; padding:12px; text-align:left; }
+        td { padding:12px; border-bottom:1px solid #ddd; }
+        .badge { padding:5px 10px; border-radius:999px; background:#dcfce7; color:#166534; font-weight:bold; }
+    </style>
+</head>
+
+<body>
+
+<h1>GED comptable intelligente</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/anomalies-comptables">Anomalies</a>
+    <a href="/ecritures/journaux">Journaux</a>
+</div>
+
+<div class="box">
+    <h2>Importer un document comptable</h2>
+
+    <form method="post" action="/ecritures/ged-comptable/upload" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <input type="file" name="fichier" required>
+
+        <select name="type_document">
+            <option value="Facture fournisseur">Facture fournisseur</option>
+            <option value="Facture client">Facture client</option>
+            <option value="Relevé bancaire">Relevé bancaire</option>
+            <option value="Justificatif">Justificatif</option>
+            <option value="Autre">Autre</option>
+        </select>
+
+        <button type="submit">Importer</button>
+    </form>
+</div>
+
+<div class="box">
+    <h2>Documents GED</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Fichier</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Date import</th>
+            <th>OCR IA</th>
+        </tr>
+
+        {% for d in documents %}
+        <tr>
+            <td>{{ d[0] }}</td>
+            <td>{{ d[1] }}</td>
+            <td>{{ d[2] }}</td>
+            <td><span class="badge">{{ d[3] }}</span></td>
+            <td>{{ d[4] }}</td>
+
+<td>
+    <a href="/ecritures/ged-comptable/ocr/{{ d[0] }}">
+        Analyse OCR IA
+    </a>
+</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

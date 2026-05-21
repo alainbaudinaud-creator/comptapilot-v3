@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Registre RGPD</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1F3A5F;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #1F3A5F;
+            color: white;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <h1>Registre des traitements RGPD</h1>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Traitement</th>
+            <th>Finalité</th>
+            <th>Base légale</th>
+            <th>Durée conservation</th>
+            <th>Responsable</th>
+        </tr>
+
+        {% for t in traitements %}
+
+        <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.nom_traitement }}</td>
+            <td>{{ t.finalite }}</td>
+            <td>{{ t.base_legale }}</td>
+            <td>{{ t.duree_conservation }}</td>
+            <td>{{ t.responsable }}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</body>
+</html>

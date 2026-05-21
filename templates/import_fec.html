@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Import FEC</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #1F3A5F;
+        }
+
+        button {
+            background: #1F3A5F;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        input {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+    <h1>Import FEC officiel</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="file" required>
+
+        <br>
+
+        <button type="submit">
+            Importer le FEC
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

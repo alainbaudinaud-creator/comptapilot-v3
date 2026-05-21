@@ -1,0 +1,10 @@
+﻿<h1>Score risque client V7</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>Client</th><th>Factures impayées</th><th>Montant impayé</th><th>Score risque</th></tr>
+{% for s in scores %}
+<tr><td>{{ s[0] }}</td><td>{{ s[1] }}</td><td>{{ s[2] }}</td><td>{{ s[3] }} / 100</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

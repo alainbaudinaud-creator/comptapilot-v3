@@ -1,0 +1,23 @@
+﻿<h1>Sauvegardes avant clôture V5</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Fichier</th>
+    <th>Chemin</th>
+    <th>Empreinte SHA-256</th>
+    <th>Date sauvegarde</th>
+</tr>
+
+{% for s in sauvegardes %}
+<tr>
+    <td>{{ s[0] }}</td>
+    <td>{{ s[1] }}</td>
+    <td>{{ s[2] }}</td>
+    <td><small>{{ s[3] }}</small></td>
+    <td>{{ s[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

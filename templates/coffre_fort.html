@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Coffre-fort documentaire</title>
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; }
+        .box, table { background:white; padding:20px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:20px; }
+        input, button { padding:10px; margin:5px; }
+        table { width:100%; border-collapse:collapse; }
+        th, td { padding:10px; border-bottom:1px solid #ddd; }
+        a, button { background:#1e3a5f; color:white; border:0; border-radius:8px; text-decoration:none; padding:10px; }
+    </style>
+</head>
+<body>
+
+<h1>Coffre-fort documentaire</h1>
+
+<p><a href="/ecritures/collaboration-saas">Retour collaboration</a></p>
+
+<div class="box">
+    <form method="POST" action="/ecritures/coffre-fort/ajouter">
+        <input type="text" name="nom_document" placeholder="Nom document" required>
+        <input type="text" name="type_document" placeholder="Type document" required>
+        <button type="submit">Archiver</button>
+    </form>
+</div>
+
+<table>
+    <tr><th>ID</th><th>Nom</th><th>Type</th><th>Statut</th><th>Date</th></tr>
+    {% for row in rows %}
+        <tr>
+            <td>{{ row[0] }}</td><td>{{ row[1] }}</td><td>{{ row[2] }}</td><td>{{ row[3] }}</td><td>{{ row[4] }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

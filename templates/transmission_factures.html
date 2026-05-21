@@ -1,0 +1,56 @@
+﻿<h1>Transmission dématérialisée des factures</h1>
+
+<p>
+    <a href="/ecritures/nouvelle-facture-dematerialisee">
+        Créer une facture dématérialisée
+    </a>
+</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Numéro</th>
+    <th>Client</th>
+    <th>HT</th>
+    <th>TVA</th>
+    <th>TTC</th>
+    <th>Statut</th>
+    <th>Canal</th>
+    <th>Date création</th>
+    <th>Date transmission</th>
+    <th>Preuve</th>
+    <th>Actions</th>
+</tr>
+
+{% for f in factures %}
+<tr>
+    <td>{{ f[0] }}</td>
+    <td>{{ f[1] }}</td>
+    <td>{{ f[2] }}</td>
+    <td>{{ f[3] }}</td>
+    <td>{{ f[4] }}</td>
+    <td>{{ f[5] }}</td>
+    <td>{{ f[6] }}</td>
+    <td>{{ f[7] }}</td>
+    <td>{{ f[8] }}</td>
+    <td>{{ f[9] }}</td>
+    <td>
+        {% if f[10] %}
+            <small>{{ f[10] }}</small>
+        {% else %}
+            -
+        {% endif %}
+    </td>
+    <td>
+        <a href="/ecritures/transmettre-facture/{{ f[0] }}">Transmettre</a><br>
+        <a href="/ecritures/changer-statut-facture/{{ f[0] }}/ACCEPTEE">Acceptée</a><br>
+        <a href="/ecritures/changer-statut-facture/{{ f[0] }}/REJETEE">Rejetée</a><br>
+        <a href="/ecritures/changer-statut-facture/{{ f[0] }}/PAYEE">Payée</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<br>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

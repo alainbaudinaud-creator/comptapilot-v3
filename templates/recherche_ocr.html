@@ -1,0 +1,56 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Recherche OCR</h1>
+
+<form method="get">
+
+    <input
+        type="text"
+        name="q"
+        placeholder="Recherche facture, fournisseur..."
+        value="{{ recherche }}"
+        style="width:400px;"
+    >
+
+    <button type="submit">
+        Rechercher
+    </button>
+
+</form>
+
+<hr>
+
+<table border="1" cellpadding="8">
+
+    <tr>
+        <th>Fichier</th>
+        <th>Fournisseur</th>
+        <th>Facture</th>
+        <th>TTC</th>
+        <th>OCR</th>
+    </tr>
+
+    {% for r in resultats %}
+
+    <tr>
+
+        <td>{{ r[1] }}</td>
+        <td>{{ r[2] }}</td>
+        <td>{{ r[3] }}</td>
+        <td>{{ r[4] }}</td>
+
+        <td>
+            <pre style="max-width:500px; white-space:pre-wrap;">
+{{ r[5] }}
+            </pre>
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapprochement bancaire</title>
+</head>
+<body>
+
+<h1>Rapprochement bancaire</h1>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Date</th>
+        <th>Pièce</th>
+        <th>Libellé</th>
+        <th>Débit</th>
+        <th>Crédit</th>
+        <th>Rapproché</th>
+        <th>Action</th>
+    </tr>
+
+    {% for e in ecritures %}
+    <tr>
+        <td>{{ e[1] }}</td>
+        <td>{{ e[2] }}</td>
+        <td>{{ e[3] }}</td>
+        <td>{{ "%.2f"|format(e[4]) }}</td>
+        <td>{{ "%.2f"|format(e[5]) }}</td>
+        <td>
+            {% if e[6] == 1 %}
+                Oui
+            {% else %}
+                Non
+            {% endif %}
+        </td>
+        <td>
+            <a href="/ecritures/rapprochement-bancaire/{{ e[0] }}">
+                Changer
+            </a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/">Retour accueil</a>
+
+</body>
+</html>
+<h1>Rapprochement bancaire</h1>
+
+<table border="1" cellpadding="6">
+<tr>
+<th>Date</th>
+<th>Pièce</th>
+<th>Libellé</th>
+<th>Débit</th>
+<th>Crédit</th>
+<th>État</th>
+</tr>
+
+{% for e in ecritures %}
+<tr>
+<td>{{ e[1] }}</td>
+<td>{{ e[2] }}</td>
+<td>{{ e[3] }}</td>
+<td>{{ e[4] }}</td>
+<td>{{ e[5] }}</td>
+<td>
+<a href="/ecritures/rapprochement-bancaire/{{ e[0] }}">
+{% if e[6] == 1 %}
+Rapproché
+{% else %}
+Non rapproché
+{% endif %}
+</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+

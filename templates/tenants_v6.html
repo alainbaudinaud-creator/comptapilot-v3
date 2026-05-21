@@ -1,0 +1,22 @@
+﻿<h1>Espaces sociétés / tenants V6</h1>
+
+<form method="POST">
+    <p>Nom espace :</p>
+    <input type="text" name="nom" required>
+
+    <p>Code :</p>
+    <input type="text" name="code" required>
+
+    <br><br>
+
+    <button type="submit">Créer espace</button>
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Nom</th><th>Code</th><th>Statut</th><th>Date</th></tr>
+{% for t in tenants %}
+<tr><td>{{ t[0] }}</td><td>{{ t[1] }}</td><td>{{ t[2] }}</td><td>{{ t[3] }}</td><td>{{ t[4] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/saas-securite-v6">Retour V6</a>

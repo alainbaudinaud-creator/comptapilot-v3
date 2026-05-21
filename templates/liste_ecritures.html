@@ -1,0 +1,93 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Liste des écritures</h1>
+<form method="GET" class="row mt-4 mb-4">
+
+    <div class="col-md-3">
+        <label>Date début</label>
+        <input type="date"
+               name="date_debut"
+               class="form-control">
+    </div>
+
+    <div class="col-md-3">
+        <label>Date fin</label>
+        <input type="date"
+               name="date_fin"
+               class="form-control">
+    </div>
+
+    <div class="col-md-3">
+        <label>Rapprochement</label>
+
+        <select name="rapproche" class="form-control">
+            <option value="">Tous</option>
+            <option value="1">Rapprochés</option>
+            <option value="0">Non rapprochés</option>
+        </select>
+    </div>
+
+    <div class="col-md-3 d-flex align-items-end">
+        <button class="btn btn-primary w-100">
+            Filtrer
+        </button>
+    </div>
+
+</form>
+
+<table class="table table-striped table-bordered mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Pièce</th>
+            <th>Libellé</th>
+            <th>Compte</th>
+            <th>Débit</th>
+            <th>Crédit</th>
+            <th>Rapproché</th>  
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for e in ecritures %}
+        <tr>
+            <td>{{ e[0] }}</td>
+            <td>{{ e[1] }}</td>
+            <td>{{ e[2] }}</td>
+            <td>{{ e[3] }}</td>
+            <td>{{ e[6] }} - {{ e[7] }}</td>
+            <td>{{ "%.2f"|format(e[4]) }} €</td>
+            <td>{{ "%.2f"|format(e[5]) }} €</td>
+<td>
+    {% if e[8] == 1 %}
+        <span class="badge bg-success">Oui</span>
+    {% else %}
+        <span class="badge bg-secondary">Non</span>
+    {% endif %}
+<td>
+
+    <a href="/ecritures/rapprocher/{{ e[0] }}"
+       class="btn btn-info btn-sm">
+        Rapprocher
+    </a>
+
+    <a href="/ecritures/edit/{{ e[0] }}"
+       class="btn btn-warning btn-sm">
+        Modifier
+    </a>
+
+    <a href="/ecritures/delete/{{ e[0] }}"
+       class="btn btn-danger btn-sm"
+       onclick="return confirm('Supprimer cette écriture ?');">
+        Supprimer
+    </a>
+
+</td>        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

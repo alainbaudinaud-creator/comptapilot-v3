@@ -1,0 +1,71 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Connecteurs externes{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h3>Ajouter un connecteur</h3>
+
+    <form method="post" style="margin-top:20px;">
+        <label>Type</label><br>
+        <select name="type_connecteur" style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+            <option value="TELEDEC">Télédec / EDI-TDFC</option>
+            <option value="SMTP">Email SMTP client</option>
+            <option value="SFTP">SFTP partenaire EDI</option>
+            <option value="API">API partenaire</option>
+        </select>
+
+        <label>Nom</label><br>
+        <input name="nom" placeholder="Ex : Partenaire EDI / Orange SMTP"
+               style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <label>Mode</label><br>
+        <input name="mode" placeholder="API, SFTP, SMTP"
+               style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <label>URL / Serveur</label><br>
+        <input name="url" placeholder="https://api... ou sftp..."
+               style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <label>Identifiant</label><br>
+        <input name="identifiant"
+               style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <label>Secret / mot de passe / token</label><br>
+        <input name="secret" type="password"
+               style="width:100%;padding:12px;margin:8px 0 16px;border-radius:12px;">
+
+        <button class="btn" type="submit">Enregistrer</button>
+    </form>
+</div>
+
+<br>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Nom</th>
+    <th>Mode</th>
+    <th>URL</th>
+    <th>Identifiant</th>
+    <th>Actif</th>
+</tr>
+{% for r in rows %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+    <td>{{ r[3] }}</td>
+    <td>{{ r[4] }}</td>
+    <td>{{ r[5] }}</td>
+    <td>{{ r[6] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

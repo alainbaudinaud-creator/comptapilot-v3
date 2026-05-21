@@ -1,0 +1,62 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Liste des factures</h2>
+
+<div class="card">
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>N°</th>
+                    <th>Client</th>
+                    <th>Date facture</th>
+                    <th>Échéance</th>
+                    <th>TTC</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for facture in factures %}
+                <tr>
+                    <td>{{ facture[1] }}</td>
+                    <td>{{ facture[2] }}</td>
+                    <td>{{ facture[3] }}</td>
+                    <td>{{ facture[4] }}</td>
+                    <td>{{ "%.2f"|format(facture[5]) }} €</td>
+
+                    <td>
+                        {% if facture[6] == "payee" %}
+                            <span class="badge bg-success">Payée</span>
+                        {% elif facture[6] == "retard" %}
+                            <span class="badge bg-danger">Retard</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">En attente</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if facture[6] != "payee" %}
+                            <a href="/ecritures/factures/payer/{{ facture[0] }}"
+                               class="btn btn-sm btn-success">
+                                Marquer payée
+                            </a>
+                        {% else %}
+                            <span class="text-success">OK</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

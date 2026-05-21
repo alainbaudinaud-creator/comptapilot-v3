@@ -1,0 +1,53 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Validation Expert-Comptable</h1>
+
+<p>
+    Centre de validation finale des tâches en attente.
+</p>
+
+{% if taches %}
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Dossier</th>
+            <th>Tâche</th>
+            <th>Collaborateur</th>
+            <th>Priorité</th>
+            <th>Date création</th>
+            <th>Commentaire</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for t in taches %}
+        <tr>
+            <td>{{ t[1] }}</td>
+            <td>{{ t[2] }}</td>
+            <td>{{ t[3] }}</td>
+            <td>{{ t[5] }}</td>
+            <td>{{ t[6] }}</td>
+            <td>{{ t[7] }}</td>
+            <td>
+                <a href="/ecritures/valider-ec/{{ t[0] }}" class="btn btn-success">
+                    Valider EC
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+
+<div class="alert alert-success">
+    Aucune tâche en attente de validation EC.
+</div>
+
+{% endif %}
+
+{% endblock %}

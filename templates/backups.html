@@ -1,0 +1,32 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Sauvegardes ComptaPilot</h1>
+
+<p>
+    Historique des sauvegardes de la base.
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>Fichier</th>
+        <th>Taille (Ko)</th>
+    </tr>
+
+    {% for f in fichiers %}
+
+    <tr>
+
+        <td>{{ f.nom }}</td>
+
+        <td>{{ f.taille }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

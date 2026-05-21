@@ -1,0 +1,28 @@
+
+version: "3"
+
+services:
+
+  comptapilot:
+    build: ..
+    restart: always
+    ports:
+      - "80:5000"
+
+    environment:
+      - ENV=production
+
+    volumes:
+      - ../:/app
+
+  postgres:
+    image: postgres:16
+    restart: always
+
+    environment:
+      POSTGRES_USER: comptapilot
+      POSTGRES_PASSWORD: comptapilot_secure
+      POSTGRES_DB: comptapilot
+
+    ports:
+      - "5432:5432"

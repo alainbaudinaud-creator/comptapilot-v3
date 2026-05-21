@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>OCR facture IA</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        button {
+            background: #1e3a5f;
+            color: white;
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        input[type=file] {
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow: auto;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<h1>OCR facture IA</h1>
+
+<div class="box">
+
+    <form method="POST"
+          enctype="multipart/form-data">
+
+        <input type="file"
+               name="facture"
+               required>
+
+        <br>
+
+        <button type="submit">
+            Analyser la facture
+        </button>
+
+    </form>
+
+</div>
+
+{% if resultat %}
+
+<div class="box">
+
+    <h2>Données extraites IA</h2>
+
+    <pre>{{ resultat }}</pre>
+
+</div>
+
+{% endif %}
+
+{% if ecriture %}
+
+<div class="box">
+
+    <h2>Écriture comptable générée</h2>
+
+    <pre>{{ ecriture }}</pre>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>

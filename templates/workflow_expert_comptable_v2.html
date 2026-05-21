@@ -1,0 +1,25 @@
+﻿<h1>Workflow expert-comptable</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Document ID</th>
+    <th>Statut</th>
+    <th>Validateur</th>
+    <th>Commentaire</th>
+    <th>Date</th>
+</tr>
+
+{% for v in validations %}
+<tr>
+    <td>{{ v[0] }}</td>
+    <td>{{ v[1] }}</td>
+    <td>{{ v[2] }}</td>
+    <td>{{ v[3] }}</td>
+    <td>{{ v[4] }}</td>
+    <td>{{ v[5] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/moteur-apprentissage-ia-v2">Retour moteur IA</a>

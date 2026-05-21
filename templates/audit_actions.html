@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Journal d'audit</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .actions {
+            margin-bottom: 20px;
+        }
+
+        .actions a {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                margin: 15px;
+            }
+
+            table {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Journal d'audit</h1>
+
+    <div class="actions">
+        <a href="/ecritures/workflow-validation">Workflow validation</a>
+        <a href="/ecritures/dashboard-financier">Dashboard</a>
+        <a href="/ecritures/api/audit-actions">API Audit</a>
+        <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Utilisateur</th>
+                <th>Action</th>
+                <th>Module</th>
+                <th>Détail</th>
+                <th>Écriture</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for row in rows %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td><span class="badge">{{ row[3] }}</span></td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

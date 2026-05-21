@@ -1,0 +1,12 @@
+﻿<h1>Monitoring erreurs V6</h1>
+
+<p><a href="/ecritures/simuler-erreur-v6">Simuler une erreur</a></p>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Type</th><th>Message</th><th>Date</th></tr>
+{% for e in erreurs %}
+<tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td><td>{{ e[2] }}</td><td>{{ e[3] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/saas-securite-v6">Retour V6</a>

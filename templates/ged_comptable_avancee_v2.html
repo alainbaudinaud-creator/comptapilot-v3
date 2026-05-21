@@ -1,0 +1,40 @@
+﻿<h1>GED comptable avancée</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Fichier</th>
+    <th>Type</th>
+    <th>Extension</th>
+    <th>Chemin</th>
+    <th>Taille Ko</th>
+    <th>Statut</th>
+    <th>Date</th>
+    <th>Commentaire</th>
+    <th>Actions IA</th>
+</tr>
+
+{% for d in documents %}
+<tr>
+    <td>{{ d[0] }}</td>
+    <td>{{ d[1] }}</td>
+    <td>{{ d[2] }}</td>
+    <td>{{ d[3] }}</td>
+    <td>{{ d[4] }}</td>
+    <td>{{ d[5] }}</td>
+    <td>{{ d[6] }}</td>
+    <td>{{ d[7] }}</td>
+    <td>{{ d[8] }}</td>
+    <td>
+        <a href="/ecritures/suggestion-pcg-ia-v2/{{ d[0] }}">Suggestion PCG</a><br>
+        <a href="/ecritures/detection-anomalies-ia-v2/{{ d[0] }}">Anomalies</a><br>
+        <a href="/ecritures/matching-facture-banque-ia-v2/{{ d[0] }}">Matching banque</a><br>
+        <a href="/ecritures/validation-expert-v2/{{ d[0] }}/APPROUVE">Approuver expert</a><br>
+        <a href="/ecritures/validation-expert-v2/{{ d[0] }}/REJETE">Rejeter expert</a><br>
+        <a href="/ecritures/validation-expert-v2/{{ d[0] }}/A_CORRIGER">À corriger</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/moteur-apprentissage-ia-v2">Retour moteur IA</a>

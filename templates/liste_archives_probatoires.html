@@ -1,0 +1,23 @@
+﻿<h1>Archives probatoires</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Archive</th>
+    <th>Empreinte SHA-256</th>
+    <th>Date</th>
+    <th>Détail</th>
+</tr>
+
+{% for a in archives %}
+<tr>
+    <td>{{ a[0] }}</td>
+    <td>{{ a[1] }}</td>
+    <td><small>{{ a[2] }}</small></td>
+    <td>{{ a[3] }}</td>
+    <td>{{ a[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pdp-ready">Retour PDP</a>

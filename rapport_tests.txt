@@ -1,0 +1,19 @@
+RAPPORT DE TESTS FONCTIONNELS
+2026-05-04 23:15:54
+
+[OK] main.py présent
+[OK] syntaxe Python
+[OK] lancement runtime
+    Le logiciel se lance sans erreur immédiate.
+[OK] interface tkinter
+    tkinter/ttk détecté dans le code
+[OK] base SQLite si données
+    sqlite3 détecté si présent
+[OK] export CSV
+    csv détecté si présent
+[OK] tableaux Treeview
+    ttk.Treeview détecté si présent
+[OK] gestion erreurs utilisateur
+    messagebox/try détectés
+[ERREUR] architecture modules
+    dossier modules détecté si présent

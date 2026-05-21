@@ -1,0 +1,15 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Supervision robots métiers V7</h1>
+
+<pre>
+{% for ligne in logs %}
+{{ ligne }}
+{% endfor %}
+</pre>
+
+<p>
+    <a href="/ecritures/orchestration-ia-v7">Retour orchestration V7</a>
+</p>
+{% endblock %}

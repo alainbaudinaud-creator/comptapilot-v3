@@ -1,0 +1,152 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container-fluid mt-4">
+
+    <h1>Kanban Workflow Cabinet</h1>
+
+    <p class="text-muted">
+        Vue visuelle de la production comptable par statut.
+    </p>
+
+    {% set statuts = ["À faire", "En cours", "Révision", "Validation EC", "Terminé"] %}
+
+    <div class="row">
+
+        {% for statut in statuts %}
+
+        <div class="col-md-2">
+            <div class="card shadow-sm mb-4">
+
+                <div class="card-header text-center">
+                    <strong>{{ statut }}</strong>
+                </div>
+
+                <div
+                    class="card-body kanban-column"
+                    data-statut="{{ statut }}"
+                    style="min-height: 500px;"
+                >
+
+                    {% for w in workflows %}
+                        {% if w[4] == statut %}
+
+                        <div
+                            class="card mb-3 border kanban-task"
+                            draggable="true"
+                            data-task-id="{{ w[0] }}"
+                        >
+
+                            <div class="card-body">
+
+                                <h6 class="card-title">
+                                    {{ w[2] }}
+                                </h6>
+
+                                <p class="mb-1">
+                                    <strong>Dossier :</strong> {{ w[1] }}
+                                </p>
+
+                                <p class="mb-1">
+                                    <strong>Collaborateur :</strong> {{ w[3] }}
+                                </p>
+
+                                <p class="mb-1">
+                                    <strong>Priorité :</strong> {{ w[5] }}
+                                </p>
+
+                                <p class="mb-1">
+                                    <strong>Date :</strong> {{ w[6] }}
+                                </p>
+
+                                <p class="small text-muted">
+                                    {{ w[7] }}
+                                </p>
+
+                                {% if w|length > 8 and w[8] == 1 %}
+
+                                <div style="
+                                    background:#16a34a;
+                                    color:white;
+                                    padding:5px;
+                                    border-radius:6px;
+                                    margin-top:10px;
+                                ">
+                                    ✔ Dossier verrouillé EC
+                                </div>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const tasks = document.querySelectorAll(".kanban-task");
+    const columns = document.querySelectorAll(".kanban-column");
+
+    let draggedTask = null;
+
+    tasks.forEach(task => {
+
+        task.addEventListener("dragstart", () => {
+            draggedTask = task;
+        });
+
+    });
+
+    columns.forEach(column => {
+
+        column.addEventListener("dragover", (e) => {
+            e.preventDefault();
+        });
+
+        column.addEventListener("drop", async () => {
+
+            if (!draggedTask) return;
+
+            column.appendChild(draggedTask);
+
+            const taskId = draggedTask.dataset.taskId;
+            const nouveauStatut = column.dataset.statut;
+
+            await fetch("/ecritures/workflow-update-statut", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token() }}"
+                },
+                body: JSON.stringify({
+                    task_id: taskId,
+                    statut: nouveauStatut
+                })
+            });
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,8 @@
+﻿<h1>Amortissements automatiques</h1>
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Nom</th><th>Valeur</th><th>Durée</th><th>Dotation annuelle</th></tr>
+{% for a in amortissements %}
+<tr><td>{{ a[0] }}</td><td>{{ a[1] }}</td><td>{{ a[2] }}</td><td>{{ a[3] }}</td><td>{{ a[4] }}</td></tr>
+{% endfor %}
+</table>
+<a href="/ecritures/gestion-entreprise-v4">Retour V4</a>

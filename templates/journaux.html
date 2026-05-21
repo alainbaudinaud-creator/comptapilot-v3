@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Journaux comptables</title>
+</head>
+<body>
+
+<h1>Journaux comptables</h1>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Journal</th>
+        <th>Date</th>
+        <th>Pièce</th>
+        <th>Libellé</th>
+        <th>Débit</th>
+        <th>Crédit</th>
+    </tr>
+
+    {% for e in ecritures %}
+    <tr>
+        <td>{{ e[0] }}</td>
+        <td>{{ e[1] }}</td>
+        <td>{{ e[2] }}</td>
+        <td>{{ e[3] }}</td>
+        <td>{{ "%.2f"|format(e[4]) }}</td>
+        <td>{{ "%.2f"|format(e[5]) }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<br>
+<a href="/">Retour accueil</a>
+
+</body>
+</html>
+<h1>Journaux Comptables</h1>
+
+<table border="1" cellpadding="6">
+<tr>
+<th>Journal</th>
+<th>Date</th>
+<th>Pièce</th>
+<th>Libellé</th>
+<th>Débit</th>
+<th>Crédit</th>
+</tr>
+
+{% for e in ecritures %}
+<tr>
+<td>{{ e[0] }}</td>
+<td>{{ e[1] }}</td>
+<td>{{ e[2] }}</td>
+<td>{{ e[3] }}</td>
+<td>{{ e[4] }}</td>
+<td>{{ e[5] }}</td>
+</tr>
+{% endfor %}
+</table>

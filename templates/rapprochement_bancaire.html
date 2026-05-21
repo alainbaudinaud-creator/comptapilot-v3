@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Rapprochement bancaire</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; margin-right:8px; margin-bottom:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-bottom:25px; }
+        .card, .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:22px; }
+        .value { font-size:28px; font-weight:bold; color:#1e3a5f; }
+        .red { color:#dc2626; font-weight:bold; }
+        .green { color:#16a34a; font-weight:bold; }
+        table { width:100%; border-collapse:collapse; background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        th { background:#1e3a5f; color:white; padding:12px; text-align:left; }
+        td { padding:10px; border-bottom:1px solid #ddd; }
+        .right { text-align:right; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Rapprochement bancaire automatique</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/grand-livre?compte=512">Grand Livre banque</a>
+    <a href="/ecritures/journaux?journal=BQ">Journal banque</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Total débit banque</div>
+        <div class="value">{{ total_debit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Total crédit banque</div>
+        <div class="value">{{ total_credit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Solde banque comptable</div>
+        <div class="value {% if solde_banque < 0 %}red{% else %}green{% endif %}">
+            {{ solde_banque }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Écritures banque</div>
+        <div class="value">{{ lignes|length }}</div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Alertes bancaires</h2>
+
+    {% if alertes %}
+        <ul>
+            {% for a in alertes %}
+                <li>{{ a }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="green">Aucune alerte bancaire détectée.</p>
+    {% endif %}
+</div>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Pièce</th>
+        <th>Compte</th>
+        <th>Libellé compte</th>
+        <th>Écriture</th>
+        <th class="right">Débit</th>
+        <th class="right">Crédit</th>
+        <th class="right">Solde ligne</th>
+    </tr>
+
+    {% for ligne in lignes %}
+    <tr>
+        <td>{{ ligne.date }}</td>
+        <td>{{ ligne.piece }}</td>
+        <td>{{ ligne.compte }}</td>
+        <td>{{ ligne.compte_libelle }}</td>
+        <td>{{ ligne.libelle }}</td>
+        <td class="right">{{ ligne.debit }}</td>
+        <td class="right">{{ ligne.credit }}</td>
+        <td class="right">{{ ligne.solde }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
+

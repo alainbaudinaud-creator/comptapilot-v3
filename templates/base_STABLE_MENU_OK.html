@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ComptaPilot</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6fa;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #1e3a5f;
+            padding: 15px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .navbar a:hover {
+            color: #dbeafe;
+        }
+
+        .container {
+            padding: 30px;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            margin-top: 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .badge {
+            background: #dc2626;
+            color: white;
+            border-radius: 999px;
+            padding: 2px 7px;
+            font-size: 12px;
+            margin-left: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="/ecritures/dashboard-financier">Dashboard</a>
+        <a href="/ecritures/">Ecritures</a>
+        <a href="/ecritures/saisie-rapide">Saisie rapide</a>
+        <a href="/ecritures/journal">Journal</a>
+        <a href="/grand-livre/">Grand livre</a>
+        <a href="/balance/">Balance</a>
+        <a href="/bilan/">Bilan</a>
+        <a href="/resultat/">Resultat</a>
+        <a href="/tva/">TVA</a>
+        <a href="/tva/ca3">TVA CA3</a>
+        <a href="/import_csv/">Import CSV</a>
+        <a href="/import_fec/">Import FEC</a>
+        <a href="/import_balance/">Import Balance</a>
+        <a href="/exportations/">Export</a>
+        <a href="/ecritures/export-fec">Export FEC</a>
+        <a href="/cloture/">Cloture</a>
+        <a href="/rgpd/registre">RGPD</a>
+        <a href="/admin/users">Administration</a>
+
+        <a href="/ecritures/workflow-cabinet">Workflow cabinet</a>
+        <a href="/ecritures/workflow-kanban">Kanban cabinet</a>
+        <a href="/ecritures/dashboard-cabinet">Dashboard Cabinet</a>
+        <a href="/ecritures/ia-anomalies-workflow">IA Workflow</a>
+
+        <a href="/ecritures/notifications">
+            Notifications
+            <span id="notif-badge" class="badge" style="display:none;">0</span>
+        <a href="/ecritures/ia-assignation">
+        <a href="/ecritures/ia-priorites">
+        <a href="/ecritures/validation-ec">
+        <a href="/ecritures/workflow-audit">Audit Workflow</a>
+        <a href="/ecritures/backups">
+        <a href="/ecritures/periodes-cloturees">Periodes cloturees</a>
+            Historique backups
+        <a href="/ecritures/pieces-jointes">Pieces justificatives</a>
+        <a href="/ecritures/upload-piece">Upload facture</a>
+</a>
+            Validation EC
+</a>
+        IA PrioritÃ©s
+</a>
+        IA Assignation
+</a>
+        </a>
+    </div>
+
+    <div class="container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% set category, message = messages[-1] %}
+
+        <div style="
+            padding:12px;
+            margin-bottom:15px;
+            border-radius:8px;
+            background:{% if category == 'danger' %}#fee2e2{% elif category == 'success' %}#dcfce7{% else %}#dbeafe{% endif %};
+            color:{% if category == 'danger' %}#991b1b{% elif category == 'success' %}#166534{% else %}#1e3a8a{% endif %};
+            border:1px solid {% if category == 'danger' %}#fecaca{% elif category == 'success' %}#bbf7d0{% else %}#bfdbfe{% endif %};
+        ">
+            {{ message }}
+        </div>
+    {% endif %}
+{% endwith %}
+
+    {% block content %}{% endblock %}
+</div>
+    </div>
+
+    <script>
+        async function chargerNotifications() {
+            try {
+                const response = await fetch("/ecritures/api-notifications");
+                const data = await response.json();
+
+                const badge = document.getElementById("notif-badge");
+
+                if (!badge) return;
+
+                if (data.nb > 0) {
+                    badge.style.display = "inline-block";
+                    badge.innerText = data.nb;
+                } else {
+                    badge.style.display = "none";
+                }
+
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        chargerNotifications();
+        setInterval(chargerNotifications, 10000);
+    </script>
+<script>
+
+async function chargerNotifications() {
+
+    try {
+
+        const response = await fetch("/ecritures/api-notifications");
+
+        const data = await response.json();
+
+        const badge = document.getElementById("notif-badge");
+
+        if (!badge) return;
+
+        if (data.nb > 0) {
+
+            badge.style.display = "inline-block";
+            badge.innerText = data.nb;
+
+        } else {
+
+            badge.style.display = "none";
+
+        }
+
+    } catch (e) {
+
+        console.log(e);
+
+    }
+
+}
+
+chargerNotifications();
+
+setInterval(chargerNotifications, 10000);
+
+</script>
+</body>
+
+</html>
+
+

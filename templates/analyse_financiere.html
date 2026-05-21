@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Analyse financière</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; margin-right:8px; margin-bottom:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:18px; margin-bottom:25px; }
+        .card, .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:22px; }
+        .value { font-size:28px; font-weight:bold; color:#1e3a5f; margin-top:8px; }
+        .red { color:#dc2626; font-weight:bold; }
+        .green { color:#16a34a; font-weight:bold; }
+        .orange { color:#ea580c; font-weight:bold; }
+        table { width:100%; border-collapse:collapse; background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:25px; }
+        th { background:#1e3a5f; color:white; padding:12px; text-align:left; }
+        td { padding:12px; border-bottom:1px solid #ddd; }
+        .right { text-align:right; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Analyse financière automatique</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/balance-generale">Balance</a>
+    <a href="/ecritures/grand-livre">Grand Livre</a>
+    <a href="/ecritures/ca3-auto">CA3</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Score santé entreprise</div>
+        <div class="value {% if score < 50 %}red{% elif score < 75 %}orange{% else %}green{% endif %}">
+            {{ score }}/100
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Chiffre d'affaires</div>
+        <div class="value">{{ produits }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Charges</div>
+        <div class="value">{{ charges }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Résultat net estimé</div>
+        <div class="value {% if resultat_net < 0 %}red{% else %}green{% endif %}">
+            {{ resultat_net }} €
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Soldes intermédiaires de gestion</h2>
+
+    <table>
+        <tr>
+            <th>Indicateur</th>
+            <th class="right">Montant</th>
+        </tr>
+        <tr><td>Chiffre d'affaires</td><td class="right">{{ produits }} €</td></tr>
+        <tr><td>Achats consommés</td><td class="right">{{ achats }} €</td></tr>
+        <tr><td>Marge</td><td class="right">{{ marge }} €</td></tr>
+        <tr><td>Charges externes</td><td class="right">{{ charges_externes }} €</td></tr>
+        <tr><td>Valeur ajoutée</td><td class="right">{{ valeur_ajoutee }} €</td></tr>
+        <tr><td>Impôts et taxes</td><td class="right">{{ impots_taxes }} €</td></tr>
+        <tr><td>Salaires et charges sociales</td><td class="right">{{ salaires }} €</td></tr>
+        <tr><td>EBE estimé</td><td class="right">{{ ebe }} €</td></tr>
+        <tr><td>Dotations</td><td class="right">{{ dotations }} €</td></tr>
+        <tr><td>Résultat d'exploitation estimé</td><td class="right">{{ resultat_exploitation }} €</td></tr>
+        <tr><td>CAF estimée</td><td class="right">{{ caf_estimee }} €</td></tr>
+    </table>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Taux de marge</div>
+        <div class="value">{{ taux_marge }} %</div>
+    </div>
+
+    <div class="card">
+        <div>Taux EBE</div>
+        <div class="value">{{ taux_ebe }} %</div>
+    </div>
+
+    <div class="card">
+        <div>Taux résultat</div>
+        <div class="value">{{ taux_resultat }} %</div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Alertes dirigeant</h2>
+
+    {% if alertes %}
+        <ul>
+            {% for a in alertes %}
+                <li>{{ a }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="green">Aucune alerte financière détectée.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

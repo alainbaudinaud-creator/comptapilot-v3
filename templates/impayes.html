@@ -1,0 +1,51 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Factures impayées</h2>
+
+<div class="card">
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Facture</th>
+                    <th>Client</th>
+                    <th>Date</th>
+                    <th>Échéance</th>
+                    <th>Montant TTC</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for facture in factures %}
+                <tr>
+                    <td>{{ facture[1] }}</td>
+                    <td>{{ facture[2] }}</td>
+                    <td>{{ facture[3] }}</td>
+                    <td>{{ facture[4] }}</td>
+                    <td>{{ "%.2f"|format(facture[5]) }} €</td>
+                    <td>
+                        <a href="/ecritures/factures/payer/{{ facture[0] }}"
+                           class="btn btn-success btn-sm">
+                            Marquer payée
+                        </a>
+
+                        <a href="/ecritures/relance/{{ facture[0] }}"
+                           class="btn btn-warning btn-sm">
+                            Relancer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

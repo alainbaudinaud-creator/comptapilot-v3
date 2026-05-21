@@ -1,0 +1,32 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Supervision{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+
+<div class="card">
+<h3>Emails</h3>
+<div class="value">{{ mails }}</div>
+</div>
+
+<div class="card">
+<h3>Événements</h3>
+<div class="value">{{ events }}</div>
+</div>
+
+<div class="card">
+<h3>Notifications</h3>
+<div class="value">{{ notifications }}</div>
+</div>
+
+<div class="card">
+<h3>Mode</h3>
+<div class="value">Production</div>
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard comptable</title>
+</head>
+<body>
+
+<h1>Dashboard comptable</h1>
+
+<h2>Total débit : {{ total_debit }}</h2>
+
+<h2>Total crédit : {{ total_credit }}</h2>
+
+<h2>Écart : {{ ecart }}</h2>
+
+<hr>
+
+<ul>
+
+<li>
+<a href="/ecritures/balance-generale">
+Balance générale
+</a>
+</li>
+
+<li>
+<a href="/ecritures/export-bilan-pdf">
+Télécharger bilan PDF
+</a>
+</li>
+
+<li>
+<a href="/ecritures/export-grand-livre">
+Télécharger grand livre Excel
+</a>
+</li>
+
+<li>
+<a href="/ecritures/import-balance">
+Importer balance
+</a>
+</li>
+
+<li>
+<a href="/ecritures/controle-equilibre">
+Contrôle équilibre
+</a>
+</li>
+
+<li>
+<a href="/ecritures/sauvegarde">
+Sauvegarde base SQLite
+</a>
+</li>
+
+</ul>
+
+</body>
+</html>

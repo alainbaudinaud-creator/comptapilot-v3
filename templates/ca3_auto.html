@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>CA3 automatique</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; margin-right:8px; margin-bottom:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; margin-bottom:25px; }
+        .card, .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:22px; }
+        .value { font-size:30px; font-weight:bold; color:#1e3a5f; margin-top:8px; }
+        .red { color:#dc2626; }
+        .green { color:#16a34a; }
+        .orange { color:#ea580c; }
+        table { width:100%; border-collapse:collapse; background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        th { background:#1e3a5f; color:white; padding:12px; text-align:left; }
+        td { padding:12px; border-bottom:1px solid #ddd; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>CA3 automatique</h1>
+
+<div class="actions">
+    <a href="/ecritures/centre-fiscal">Centre fiscal</a>
+    <a href="/ecritures/tva-dashboard">Dashboard TVA</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Chiffre d'affaires HT</div>
+        <div class="value">{{ ca_ht }} €</div>
+    </div>
+
+    <div class="card">
+        <div>TVA collectée</div>
+        <div class="value orange">{{ tva_collectee }} €</div>
+    </div>
+
+    <div class="card">
+        <div>TVA déductible</div>
+        <div class="value green">{{ tva_deductible }} €</div>
+    </div>
+
+    <div class="card">
+        <div>TVA nette</div>
+        <div class="value {% if tva_nette > 0 %}red{% else %}green{% endif %}">
+            {{ tva_nette }} €
+        </div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Préparation déclaration CA3</h2>
+
+    <table>
+        <tr>
+            <th>Ligne CA3</th>
+            <th>Libellé</th>
+            <th>Montant</th>
+        </tr>
+
+        {% for ligne in lignes_ca3 %}
+        <tr>
+            <td>{{ ligne[0] }}</td>
+            <td>{{ ligne[1] }}</td>
+            <td>{{ ligne[2] }} €</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="box">
+    <h2>Alertes TVA</h2>
+
+    {% if alertes %}
+        <ul>
+            {% for alerte in alertes %}
+                <li>{{ alerte }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="green">Aucune alerte TVA détectée.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>
+

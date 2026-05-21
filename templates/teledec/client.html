@@ -1,0 +1,35 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Envoyer au client{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <h3>Envoi au client</h3>
+
+    <form method="post" style="margin-top:20px;">
+        <label>Email client</label><br>
+        <input name="email" type="email" required placeholder="client@example.com"
+               style="width:100%;padding:12px;margin:8px 0 16px;border:1px solid #e5e7eb;border-radius:12px;">
+
+        <label>Message</label><br>
+        <textarea name="message" rows="7"
+                  style="width:100%;padding:12px;margin:8px 0 16px;border:1px solid #e5e7eb;border-radius:12px;">Bonjour,
+
+Votre dossier fiscal est prêt.
+
+Vous trouverez les documents préparés par ComptaPilot :
+- liasse fiscale
+- bilan
+- compte de résultat
+- FEC
+
+Cordialement,</textarea>
+
+        <button class="btn" type="submit">Préparer l’envoi client</button>
+        <a class="btn secondary" href="/teledec">Annuler</a>
+    </form>
+</div>
+
+{% endblock %}

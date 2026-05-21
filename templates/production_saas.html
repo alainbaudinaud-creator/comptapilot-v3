@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Production SaaS ComptaPilot</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            margin-bottom: 25px;
+        }
+
+        .actions a {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1e3a5f;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                margin: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Production SaaS ComptaPilot</h1>
+
+    <p class="subtitle">
+        Socle quasi production : API, audit, export, cloud, Docker, PostgreSQL, Nginx et modules IA.
+    </p>
+
+    <div class="actions">
+        <a href="/ecritures/dashboard-financier">Cockpit financier</a>
+        <a href="/ecritures/centre-saas">Centre SaaS</a>
+        <a href="/ecritures/api/health">API Health</a>
+        <a href="/ecritures/api/audit-comptable">Audit API</a>
+        <a href="/ecritures/export-dashboard-csv">Export CSV</a>
+        <a href="#" onclick="window.print(); return false;">Export PDF</a>
+    </div>
+
+    <div class="grid">
+
+        {% for brique in briques %}
+            <div class="card">
+                <h3>{{ brique.nom }}</h3>
+                <p><strong>Statut :</strong> {{ brique.statut }}</p>
+                <span class="badge">{{ brique.etat }}</span>
+            </div>
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

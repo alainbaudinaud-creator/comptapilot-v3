@@ -1,0 +1,5 @@
+versions/
+backups/
+*.sqlite
+__pycache__/
+*.pyc

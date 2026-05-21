@@ -1,0 +1,41 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Contrôle des modules PRO</h1>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <thead>
+        <tr>
+            <th>Module</th>
+            <th>URL</th>
+            <th>Test</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        {% for nom, url in modules %}
+
+        <tr>
+            <td>{{ nom }}</td>
+            <td>{{ url }}</td>
+            <td>
+                <a href="{{ url }}">Ouvrir</a>
+            </td>
+        </tr>
+
+        {% endfor %}
+
+    </tbody>
+
+</table>
+
+<br>
+
+<a href="/ecritures/pro-suite">
+    Retour Suite PRO
+</a>
+
+{% endblock %}

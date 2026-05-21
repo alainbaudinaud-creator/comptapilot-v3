@@ -1,0 +1,27 @@
+﻿<h1>Annuaire clients PDP</h1>
+
+<p><a href="/ecritures/ajouter-client-pdp">Ajouter un client PDP</a></p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Nom</th>
+    <th>SIRET</th>
+    <th>TVA intracom</th>
+    <th>Email</th>
+    <th>Contrôle</th>
+</tr>
+
+{% for c in clients %}
+<tr>
+    <td>{{ c[0] }}</td>
+    <td>{{ c[1] }}</td>
+    <td>{{ c[2] }}</td>
+    <td>{{ c[3] }}</td>
+    <td>{{ c[4] }}</td>
+    <td><a href="/ecritures/controle-siret-pdp/{{ c[0] }}">Contrôler</a></td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pdp-ready">Retour PDP</a>

@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liasse fiscale automatique</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .actions a {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+        }
+
+        th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        @media print {
+            .actions {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Préparation liasse fiscale</h1>
+
+<div class="actions">
+    <a href="/ecritures/centre-fiscal">Centre fiscal</a>
+    <a href="/ecritures/export-fiscal-csv">Export CSV</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<table>
+    <tr>
+        <th>Compte</th>
+        <th>Total débit</th>
+        <th>Total crédit</th>
+        <th>Solde</th>
+        <th>Zone fiscale estimée</th>
+    </tr>
+
+    {% for row in comptes %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[2] - row[1] }}</td>
+
+            <td>
+                {% if row[0]|string|first == '7' %}
+                    Produits / chiffre d'affaires
+
+                {% elif row[0]|string|first == '6' %}
+                    Charges
+
+                {% elif row[0]|string|first == '4' %}
+                    Tiers / TVA / clients / fournisseurs
+
+                {% elif row[0]|string|first == '5' %}}
+                    Trésorerie
+
+                {% else %}
+                    Autre zone fiscale
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

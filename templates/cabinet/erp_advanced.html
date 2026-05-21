@@ -1,0 +1,57 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}ERP Advanced{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+
+<div class="card">
+<h3>CA</h3>
+<div class="value">{{ kpi.ca }} €</div>
+</div>
+
+<div class="card">
+<h3>Trésorerie</h3>
+<div class="value">{{ kpi.tresorerie }} €</div>
+</div>
+
+<div class="card">
+<h3>Résultat</h3>
+<div class="value">{{ kpi.resultat }} €</div>
+</div>
+
+<div class="card">
+<h3>Marge</h3>
+<div class="value">{{ kpi.marge }}%</div>
+</div>
+
+<div class="card">
+<h3>Dossiers</h3>
+<div class="value">{{ stats.dossiers_cabinets }}</div>
+</div>
+
+<div class="card">
+<h3>Collaborateurs</h3>
+<div class="value">{{ stats.collaborateurs }}</div>
+</div>
+
+<div class="card">
+<h3>Imports FEC</h3>
+<div class="value">{{ stats.imports_fec_excel }}</div>
+</div>
+
+<div class="card">
+<h3>OCR Factures</h3>
+<div class="value">{{ stats.ocr_factures }}</div>
+</div>
+
+<div class="card">
+<h3>Anomalies IA</h3>
+<div class="value">{{ stats.ia_anomalies }}</div>
+</div>
+
+</div>
+
+{% endblock %}

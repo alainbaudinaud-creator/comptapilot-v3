@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Haut niveau produit</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .actions a {
+            background: #1e3a5f;
+            color: white;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #1e3a5f;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: #e2e8f0;
+            font-size: 13px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                margin: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>ComptaPilot — Haut niveau produit</h1>
+
+    <p class="subtitle">
+        Socle avancé : validation, audit, signatures, BI, portail client, Stripe, cloud, fiscalité et supervision.
+    </p>
+
+    <div class="actions">
+        <a href="/ecritures/dashboard-financier">Cockpit financier</a>
+        <a href="/ecritures/workflow-validation">Workflow validation</a>
+        <a href="/ecritures/portail-client">Portail client</a>
+        <a href="/ecritures/api/audit-trail">Audit API</a>
+        <a href="/ecritures/api/signature-electronique">Signature API</a>
+        <a href="/ecritures/api/bi-analytics">BI API</a>
+        <a href="/ecritures/api/backup-cloud">Backup API</a>
+        <a href="/ecritures/api/stripe-checkout">Stripe API</a>
+        <a href="/ecritures/api/liasse-fiscale">Liasse API</a>
+        <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+    </div>
+
+    <div class="grid">
+        {% for module in modules %}
+            <div class="card">
+                <h3>{{ module.nom }}</h3>
+                <p><strong>Statut :</strong> {{ module.statut }}</p>
+                <span class="badge">{{ module.categorie }}</span>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>

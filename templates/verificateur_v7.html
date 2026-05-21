@@ -1,0 +1,19 @@
+﻿<h1>Vérificateur modules V7</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>Template</th>
+    <th>Statut</th>
+    <th>Chemin complet</th>
+</tr>
+
+{% for r in resultats %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour orchestration V7</a>

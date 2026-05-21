@@ -1,0 +1,34 @@
+﻿<h1>Paramètres société V5</h1>
+
+<form method="POST">
+    <p>Raison sociale :</p>
+    <input type="text" name="raison_sociale" required>
+
+    <p>SIRET :</p>
+    <input type="text" name="siret">
+
+    <p>TVA intracommunautaire :</p>
+    <input type="text" name="tva_intracom">
+
+    <p>Adresse :</p>
+    <textarea name="adresse"></textarea>
+
+    <p>Email :</p>
+    <input type="email" name="email">
+
+    <br><br>
+
+    <button type="submit">Enregistrer</button>
+</form>
+
+{% if societe %}
+<h2>Derniers paramètres enregistrés</h2>
+<p>Raison sociale : {{ societe[1] }}</p>
+<p>SIRET : {{ societe[2] }}</p>
+<p>TVA intracom : {{ societe[3] }}</p>
+<p>Adresse : {{ societe[4] }}</p>
+<p>Email : {{ societe[5] }}</p>
+<p>Date modification : {{ societe[6] }}</p>
+{% endif %}
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

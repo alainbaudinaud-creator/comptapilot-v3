@@ -1,0 +1,3 @@
+Ceci est un document de test.
+Il parle d’intelligence artificielle.
+Un agent IA peut lire, résumer et traiter des fichiers.

@@ -1,0 +1,38 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Uploads{% endblock %}
+
+{% block content %}
+
+<h1>OCR Upload ERP</h1>
+
+<div class="grid">
+
+<div class="card">
+<h3>Pièces comptables</h3>
+<div class="value">
+{{ stats.pieces_comptables }}
+</div>
+</div>
+
+<div class="card">
+<h3>Ecritures auto</h3>
+<div class="value">
+{{ stats.ecritures_auto }}
+</div>
+</div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+
+<h3>Workflow OCR</h3>
+
+<p>
+PDF → OCR → TVA → Ecriture → Fiscal
+</p>
+
+</div>
+
+{% endblock %}

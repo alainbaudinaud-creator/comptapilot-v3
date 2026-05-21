@@ -1,0 +1,20 @@
+﻿<h1>Contrôle facture électronique</h1>
+
+<p>Numéro : {{ facture[0] }}</p>
+<p>Client : {{ facture[1] }}</p>
+<p>HT : {{ facture[2] }}</p>
+<p>TVA : {{ facture[3] }}</p>
+<p>TTC : {{ facture[4] }}</p>
+<p>Statut : {{ facture[5] }}</p>
+<p>Date : {{ facture[6] }}</p>
+
+<h2>Résultat des contrôles</h2>
+
+<ul>
+{% for c in controles %}
+    <li>{{ c }}</li>
+{% endfor %}
+</ul>
+
+<a href="/ecritures/factur-x">Retour Factur-X</a>
+

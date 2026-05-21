@@ -1,0 +1,30 @@
+﻿<h1>Assistant comptable intelligent</h1>
+
+<p><a href="/ecritures/ajouter-regle-comptable-ia">Ajouter une règle comptable IA</a></p>
+<p><a href="/ecritures/liste-analyses-ia">Voir les analyses IA</a></p>
+
+<h2>Règles comptables IA</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Mot-clé</th>
+    <th>Compte suggéré</th>
+    <th>Journal suggéré</th>
+    <th>Type document</th>
+    <th>Commentaire</th>
+</tr>
+
+{% for r in regles %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+    <td>{{ r[3] }}</td>
+    <td>{{ r[4] }}</td>
+    <td>{{ r[5] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pro-suite">Retour PRO</a>

@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Assistant IA conversationnel</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background: #f5f7fa;
+            color: #1e293b;
+        }
+
+        h1 {
+            color: #1e3a5f;
+        }
+
+        .actions {
+            margin-bottom: 20px;
+        }
+
+        .actions a {
+            display: inline-block;
+            background: #1e3a5f;
+            color: white;
+            text-decoration: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .box {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        button {
+            background: #1e3a5f;
+            color: white;
+            border: 0;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .message {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+
+        .question {
+            color: #1e3a5f;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .reponse {
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .meta {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .flash {
+            background: #dbeafe;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <h1>Assistant IA conversationnel</h1>
+
+    <div class="actions">
+        <a href="/ecritures/dashboard-financier">Dashboard</a>
+        <a href="/ecritures/collaboration-saas">Collaboration SaaS</a>
+        <a href="/ecritures/api/assistant-ia">API Assistant IA</a>
+    </div>
+
+    {% with messages_flash = get_flashed_messages(with_categories=true) %}
+        {% if messages_flash %}
+            {% for category, message in messages_flash %}
+                <div class="flash">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="box">
+
+        <form method="POST"
+              action="/ecritures/assistant-ia-conversationnel/envoyer">
+
+            <textarea
+                name="question"
+                placeholder="Posez une question comptable à l'assistant IA..."
+                required></textarea>
+
+            <button type="submit">
+                Envoyer à l'assistant IA
+            </button>
+
+        </form>
+
+    </div>
+
+    {% for row in messages %}
+
+        <div class="message">
+
+            <div class="question">
+                Question :
+                {{ row[1] }}
+            </div>
+
+            <div class="reponse">
+                Réponse IA :
+                {{ row[2] }}
+            </div>
+
+            <div class="meta">
+                {{ row[0] }} —
+                {{ row[3] }}
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+</body>
+</html>

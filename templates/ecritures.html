@@ -1,0 +1,37 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Écritures comptables</h1>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+<tr>
+    <th>ID</th>
+    <th>Journal</th>
+    <th>Date</th>
+    <th>Pièce</th>
+    <th>Libellé</th>
+    <th>Débit</th>
+    <th>Crédit</th>
+    <th>Compte</th>
+</tr>
+
+{% for e in ecritures %}
+
+<tr>
+    <td>{{ e[0] }}</td>
+    <td>{{ e[1] }}</td>
+    <td>{{ e[2] }}</td>
+    <td>{{ e[3] }}</td>
+    <td>{{ e[4] }}</td>
+    <td>{{ e[5] }}</td>
+    <td>{{ e[6] }}</td>
+    <td>{{ e[7] }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

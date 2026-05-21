@@ -1,0 +1,65 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Passerelle Télédec{% endblock %}
+
+{% block content %}
+
+<div class="actions">
+    <a class="btn" href="/teledec/preparer">Préparer le dossier Télédec</a>
+    <a class="btn secondary" href="/teledec/envoyer">Envoyer à Télédec</a>
+    <a class="btn secondary" href="/teledec/client">Envoyer au client</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <h3>Statut</h3>
+        <div class="value">Passerelle prête</div>
+    </div>
+
+    <div class="card">
+        <h3>Mode</h3>
+        <div class="value">EDI-TDFC</div>
+    </div>
+
+    <div class="card">
+        <h3>Client</h3>
+        <div class="value">Email</div>
+    </div>
+
+    <div class="card">
+        <h3>Sécurité</h3>
+        <div class="value">Journalisée</div>
+    </div>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Historique des transmissions</h3>
+</div>
+
+<div class="table-card">
+<table>
+<tr>
+    <th>Date</th>
+    <th>Destinataire</th>
+    <th>Type</th>
+    <th>Fichier / dossier</th>
+    <th>Statut</th>
+    <th>Message</th>
+</tr>
+{% for r in rows %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+    <td>{{ r[3] }}</td>
+    <td>{{ r[4] }}</td>
+    <td>{{ r[5] }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+{% endblock %}

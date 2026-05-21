@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Import balance d'ouverture</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        h1 {
+            color: #1F3A5F;
+        }
+
+        button {
+            background: #1F3A5F;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        input {
+            margin-top: 15px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+    <h1>Import balance d'ouverture</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input type="file" name="file" required>
+
+        <br>
+
+        <button type="submit">
+            Importer la balance
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Import balance</title>
+</head>
+<body>
+
+<h1>Import balance d'ouverture</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+    <input type="file" name="file" required>
+
+    <br><br>
+
+    <button type="submit">
+        Importer
+    </button>
+
+</form>
+
+<br>
+
+<p>Format CSV attendu :</p>
+
+<pre>
+compte;libelle;debit;credit
+101;Capital;0;1000
+512;Banque;5000;0
+411;Clients;2000;0
+</pre>
+
+</body>
+</html>

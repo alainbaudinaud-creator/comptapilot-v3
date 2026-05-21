@@ -1,0 +1,114 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Compte de résultat</h1>
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header bg-danger text-white">
+                Charges
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Compte</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for c in charges %}
+
+                        <tr>
+                            <td>{{ c.numero }}</td>
+                            <td>{{ c.libelle }}</td>
+                            <td>{{ "%.2f"|format(c.montant) }} €</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total charges</th>
+                            <th>{{ "%.2f"|format(total_charges) }} €</th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm mb-4">
+
+            <div class="card-header bg-success text-white">
+                Produits
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Compte</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for p in produits %}
+
+                        <tr>
+                            <td>{{ p.numero }}</td>
+                            <td>{{ p.libelle }}</td>
+                            <td>{{ "%.2f"|format(p.montant) }} €</td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total produits</th>
+                            <th>{{ "%.2f"|format(total_produits) }} €</th>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="alert alert-primary fs-4">
+    Résultat net :
+    <strong>{{ "%.2f"|format(resultat) }} €</strong>
+</div>
+
+{% endblock %}

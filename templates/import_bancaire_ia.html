@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<title>Import bancaire IA</title>
+
+<style>
+
+body{
+    font-family:Arial;
+    margin:30px;
+    background:#f5f7fa;
+    color:#1e293b;
+}
+
+h1{
+    color:#1e3a5f;
+}
+
+.box{
+    background:white;
+    padding:20px;
+    border-radius:14px;
+    margin-bottom:20px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+button{
+    background:#1e3a5f;
+    color:white;
+    border:0;
+    padding:12px 18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:12px;
+    border-bottom:1px solid #ddd;
+    text-align:left;
+}
+
+.risque-fort{
+    color:#dc3545;
+    font-weight:bold;
+}
+
+.risque-faible{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Centre bancaire intelligent IA</h1>
+
+<div class="box">
+
+<form method="POST" enctype="multipart/form-data">
+
+<input type="file"
+       name="fichier"
+       required>
+
+<br><br>
+
+<button type="submit">
+Importer fichier bancaire
+</button>
+
+</form>
+
+</div>
+
+<div class="box">
+
+<h2>Résumé bancaire</h2>
+
+<p><strong>Total crédits :</strong> {{ total_credit }} €</p>
+<p><strong>Total débits :</strong> {{ total_debit }} €</p>
+<p><strong>Opérations :</strong> {{ operations|length }}</p>
+
+</div>
+
+{% if anomalies %}
+
+<div class="box">
+
+<h2>Anomalies détectées</h2>
+
+<ul>
+{% for anomalie in anomalies %}
+
+<li>
+Doublon détecté :
+{{ anomalie.operation.description }}
+({{ anomalie.operation.montant }} €)
+</li>
+
+{% endfor %}
+</ul>
+
+</div>
+
+{% endif %}
+
+{% if operations %}
+
+<div class="box">
+
+<h2>Analyse IA des opérations</h2>
+
+<table>
+
+<tr>
+<th>Date</th>
+<th>Description</th>
+<th>Montant</th>
+<th>Compte</th>
+<th>Confiance IA</th>
+<th>Risque</th>
+</tr>
+
+{% for op in operations %}
+
+<tr>
+
+<td>{{ op.date }}</td>
+<td>{{ op.description }}</td>
+<td>{{ op.montant }} €</td>
+<td>{{ op.compte }}</td>
+<td>{{ op.confiance }} %</td>
+
+<td>
+
+{% if op.risque > 50 %}
+
+<span class="risque-fort">
+{{ op.risque }} %
+</span>
+
+{% else %}
+
+<span class="risque-faible">
+{{ op.risque }} %
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endif %}
+
+</body>
+</html>

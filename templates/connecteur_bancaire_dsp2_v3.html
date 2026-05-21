@@ -1,0 +1,14 @@
+﻿<h1>Connecteur bancaire DSP2</h1>
+
+<p><a href="/ecritures/simulation-synchro-dsp2-v3">Simuler une synchronisation DSP2</a></p>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Banque</th><th>Statut</th><th>Dernière synchro</th><th>Commentaire</th></tr>
+{% for c in connecteurs %}
+<tr>
+<td>{{ c[0] }}</td><td>{{ c[1] }}</td><td>{{ c[2] }}</td><td>{{ c[3] }}</td><td>{{ c[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/production-comptable-v3">Retour production</a>

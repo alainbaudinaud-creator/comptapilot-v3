@@ -1,0 +1,10 @@
+﻿<h1>Emails automatiques V7</h1>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Destinataire</th><th>Sujet</th><th>Message</th><th>Statut</th><th>Date</th></tr>
+{% for e in emails %}
+<tr><td>{{ e[0] }}</td><td>{{ e[1] }}</td><td>{{ e[2] }}</td><td>{{ e[3] }}</td><td>{{ e[4] }}</td><td>{{ e[5] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

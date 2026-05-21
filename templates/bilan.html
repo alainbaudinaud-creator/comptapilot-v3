@@ -1,0 +1,86 @@
+﻿
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Bilan comptable</h1>
+
+<div class="row mt-4">
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                Actif
+            </div>
+
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Compte</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for a in actif %}
+                        <tr>
+                            <td>{{ a.numero }}</td>
+                            <td>{{ a.libelle }}</td>
+                            <td>{{ "%.2f"|format(a.montant) }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total actif</th>
+                            <th>{{ "%.2f"|format(total_actif) }} €</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                Passif
+            </div>
+
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Compte</th>
+                            <th>Libellé</th>
+                            <th>Montant</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for p in passif %}
+                        <tr>
+                            <td>{{ p.numero }}</td>
+                            <td>{{ p.libelle }}</td>
+                            <td>{{ "%.2f"|format(p.montant) }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                    <tfoot>
+                        <tr>
+                            <th colspan="2">Total passif</th>
+                            <th>{{ "%.2f"|format(total_passif) }} €</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

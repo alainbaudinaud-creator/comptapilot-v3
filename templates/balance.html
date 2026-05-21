@@ -1,0 +1,30 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Balance comptable</h1>
+
+<table class="table table-bordered table-striped mt-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Compte</th>
+            <th>Libellé</th>
+            <th>Débit</th>
+            <th>Crédit</th>
+            <th>Solde</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in comptes %}
+        <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ "%.2f"|format(c[2]) }} €</td>
+            <td>{{ "%.2f"|format(c[3]) }} €</td>
+            <td>{{ "%.2f"|format(c[2] - c[3]) }} €</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

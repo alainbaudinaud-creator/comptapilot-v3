@@ -1,0 +1,22 @@
+﻿<h1>Notifications internes V7</h1>
+
+<form method="POST">
+    <p>Destinataire :</p>
+    <input type="text" name="destinataire" required>
+
+    <p>Message :</p>
+    <textarea name="message" required></textarea>
+
+    <br><br>
+
+    <button type="submit">Créer notification</button>
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Destinataire</th><th>Message</th><th>Statut</th><th>Date</th></tr>
+{% for n in notifications %}
+<tr><td>{{ n[0] }}</td><td>{{ n[1] }}</td><td>{{ n[2] }}</td><td>{{ n[3] }}</td><td>{{ n[4] }}</td></tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/orchestration-ia-v7">Retour V7</a>

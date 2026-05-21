@@ -1,0 +1,78 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Balance générale</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; margin-right:8px; margin-bottom:8px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:18px; margin-bottom:25px; }
+        .card { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        .value { font-size:28px; font-weight:bold; color:#1e3a5f; }
+        table { width:100%; border-collapse:collapse; background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.08); }
+        th { background:#1e3a5f; color:white; padding:12px; text-align:left; }
+        td { padding:10px; border-bottom:1px solid #ddd; }
+        .right { text-align:right; }
+        .red { color:#dc2626; font-weight:bold; }
+        .green { color:#16a34a; font-weight:bold; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Balance générale automatique</h1>
+
+<div class="actions">
+    <a href="/ecritures/grand-livre">Grand Livre</a>
+    <a href="/ecritures/fec-controle">Contrôle FEC</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div>Total débit</div>
+        <div class="value">{{ total_debit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Total crédit</div>
+        <div class="value">{{ total_credit }} €</div>
+    </div>
+
+    <div class="card">
+        <div>Écart débit/crédit</div>
+        <div class="value {% if ecart != 0 %}red{% else %}green{% endif %}">
+            {{ ecart }} €
+        </div>
+    </div>
+</div>
+
+<table>
+    <tr>
+        <th>Compte</th>
+        <th>Libellé</th>
+        <th class="right">Débit</th>
+        <th class="right">Crédit</th>
+        <th class="right">Solde débiteur</th>
+        <th class="right">Solde créditeur</th>
+    </tr>
+
+    {% for c in comptes %}
+    <tr>
+        <td>{{ c.numero }}</td>
+        <td>{{ c.libelle }}</td>
+        <td class="right">{{ c.debit }}</td>
+        <td class="right">{{ c.credit }}</td>
+        <td class="right">{{ c.solde_debiteur }}</td>
+        <td class="right">{{ c.solde_crediteur }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

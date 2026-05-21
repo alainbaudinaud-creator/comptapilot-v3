@@ -1,0 +1,331 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Facture client multi-lignes</h2>
+
+<div class="card mb-4">
+    <div class="card-header">Informations facture</div>
+    <div class="card-body">
+        <form id="formFacture" class="row g-3">
+
+            <div class="col-md-3">
+                <select id="societe_id" class="form-select" required></select>
+            </div>
+
+            <div class="col-md-2">
+                <input type="date" id="date_facture" class="form-control" required>
+            </div>
+
+            <div class="col-md-2">
+                <input type="text" id="numero_facture" class="form-control" placeholder="N° facture" required>
+            </div>
+
+            <div class="col-md-3">
+                <input type="text" id="client" class="form-control" placeholder="Client" required>
+            </div>
+
+            <div class="col-md-2">
+                <input type="number" step="0.01" id="taux_tva" class="form-control" value="20">
+            </div>
+
+            <div class="col-md-6">
+                <input type="text" id="adresse_client" class="form-control" placeholder="Adresse client">
+            </div>
+
+            <div class="col-md-6">
+                <input type="text" id="conditions" class="form-control" value="Paiement comptant">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">Lignes de facture</div>
+    <div class="card-body">
+
+        <div class="row g-3 mb-3">
+            <div class="col-md-5">
+                <input type="text" id="ligne_designation" class="form-control" placeholder="Désignation">
+            </div>
+
+            <div class="col-md-2">
+                <input type="number" step="0.01" id="ligne_quantite" class="form-control" value="1">
+            </div>
+
+            <div class="col-md-2">
+                <input type="number" step="0.01" id="ligne_prix" class="form-control" placeholder="Prix HT">
+            </div>
+
+            <div class="col-md-3">
+                <button type="button" class="btn btn-outline-primary w-100" onclick="ajouterLigneFacture()">
+                    Ajouter ligne
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Désignation</th>
+                    <th>Quantité</th>
+                    <th>Prix HT</th>
+                    <th>Total HT</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="lignes"></tbody>
+        </table>
+
+        <div class="text-end">
+            <p>Total HT : <strong id="total_ht">0.00 €</strong></p>
+            <p>TVA : <strong id="total_tva">0.00 €</strong></p>
+            <p>Total TTC : <strong id="total_ttc">0.00 €</strong></p>
+        </div>
+
+        <button type="button" class="btn btn-success" onclick="genererFactureMulti()">
+            Générer facture + écritures
+        </button>
+
+        <a id="btnPDF" class="btn btn-dark d-none ms-2" target="_blank">
+            Télécharger PDF PRO
+        </a>
+    </div>
+</div>
+
+<div id="resultat" class="alert d-none"></div>
+
+<script>
+let comptesSociete = [];
+let lignesFacture = [];
+
+document.addEventListener('DOMContentLoaded', async function () {
+    document.getElementById('date_facture').valueAsDate = new Date();
+
+    await chargerSocietes();
+
+    document.getElementById('societe_id').addEventListener('change', async function () {
+        await chargerComptes();
+        await chargerNumeroFacture();
+});
+    document.getElementById('date_facture').addEventListener('change', chargerNumeroFacture);
+});
+
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    console.log("SOCIETES FACTURE:", data);
+
+    const select = document.getElementById('societe_id');
+    select.innerHTML = '<option value="">Choisir une société</option>';
+
+    data.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name || s.nom || JSON.stringify(s);
+        select.appendChild(opt);
+    });
+}
+async function chargerComptes() {
+    const societeId = document.getElementById('societe_id').value;
+    comptesSociete = [];
+
+    if (!societeId) return;
+
+    const res = await fetch('/plan-comptable/?societe_id=' + societeId);
+    comptesSociete = await res.json();
+}
+
+function ajouterLigneFacture() {
+    const designation = document.getElementById('ligne_designation').value;
+    const quantite = parseFloat(document.getElementById('ligne_quantite').value || 0);
+    const prix = parseFloat(document.getElementById('ligne_prix').value || 0);
+
+    if (!designation || quantite <= 0 || prix <= 0) {
+        alert("Complète la ligne : désignation, quantité, prix HT.");
+        return;
+    }
+
+    lignesFacture.push({
+        designation: designation,
+        quantite: quantite,
+        prix: prix,
+        total: +(quantite * prix).toFixed(2)
+    });
+
+    document.getElementById('ligne_designation').value = "";
+    document.getElementById('ligne_quantite').value = "1";
+    document.getElementById('ligne_prix').value = "";
+
+    afficherLignes();
+}
+
+function supprimerLigne(index) {
+    lignesFacture.splice(index, 1);
+    afficherLignes();
+}
+
+function afficherLignes() {
+    const tbody = document.getElementById('lignes');
+    tbody.innerHTML = "";
+
+    lignesFacture.forEach((l, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${l.designation}</td>
+            <td>${l.quantite}</td>
+            <td>${l.prix.toFixed(2)} €</td>
+            <td>${l.total.toFixed(2)} €</td>
+            <td>
+                <button class="btn btn-sm btn-danger" onclick="supprimerLigne(${index})">
+                    Supprimer
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    calculerTotaux();
+}
+
+function calculerTotaux() {
+    const taux = parseFloat(document.getElementById('taux_tva').value || 20);
+    const ht = lignesFacture.reduce((s, l) => s + l.total, 0);
+    const tva = +(ht * taux / 100).toFixed(2);
+    const ttc = +(ht + tva).toFixed(2);
+
+    document.getElementById('total_ht').textContent = ht.toFixed(2) + " €";
+    document.getElementById('total_tva').textContent = tva.toFixed(2) + " €";
+    document.getElementById('total_ttc').textContent = ttc.toFixed(2) + " €";
+
+    return { ht, tva, ttc };
+}
+
+function trouverCompte(prefixe, type) {
+    return comptesSociete.find(c =>
+        String(c.numero).startsWith(prefixe) && c.type === type
+    );
+}
+
+async function ajouterLigneEcriture(payload) {
+    const res = await fetch('/ecritures/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Erreur écriture");
+    }
+}
+
+async function genererFactureMulti() {
+    const societeSelect = document.getElementById('societe_id');
+    const societeId = societeSelect.value;
+    const societeNom = societeSelect.options[societeSelect.selectedIndex].text;
+    const date = document.getElementById('date_facture').value;
+    const numero = document.getElementById('numero_facture').value;
+    const client = document.getElementById('client').value;
+    const adresse = document.getElementById('adresse_client').value;
+    const conditions = document.getElementById('conditions').value;
+
+    if (!societeId || !numero || !client) {
+        alert("Choisis une société, un numéro de facture et un client.");
+        return;
+    }
+
+    if (lignesFacture.length === 0) {
+        alert("Ajoute au moins une ligne de facture.");
+        return;
+    }
+
+    await chargerComptes();
+
+    const banque = trouverCompte("512", "Actif");
+    const produit = trouverCompte("706", "Produit") || trouverCompte("701", "Produit");
+    const tvaCollectee = trouverCompte("44571", "Passif");
+
+    if (!banque || !produit || !tvaCollectee) {
+        alert("Comptes manquants : 512 Banque, 706/701 Produit, 44571 TVA collectée.");
+        return;
+    }
+
+    const totaux = calculerTotaux();
+    const libelle = "Facture " + numero + " - " + client;
+
+    await ajouterLigneEcriture({
+        date_ecriture: date,
+        piece: numero,
+        libelle: libelle,
+        debit: totaux.ttc,
+        credit: 0,
+        societe_id: societeId,
+        compte_id: banque.id
+    });
+
+    await ajouterLigneEcriture({
+        date_ecriture: date,
+        piece: numero,
+        libelle: libelle,
+        debit: 0,
+        credit: totaux.ht,
+        societe_id: societeId,
+        compte_id: produit.id
+    });
+
+    await ajouterLigneEcriture({
+        date_ecriture: date,
+        piece: numero,
+        libelle: "TVA collectée - " + libelle,
+        debit: 0,
+        credit: totaux.tva,
+        societe_id: societeId,
+        compte_id: tvaCollectee.id
+    });
+
+    const lignesPDF = encodeURIComponent(JSON.stringify(lignesFacture));
+
+    const pdfUrl =
+        '/ecritures/facture/pdf?' +
+        'numero=' + encodeURIComponent(numero) +
+        '&societe=' + encodeURIComponent(societeNom) +
+        '&client=' + encodeURIComponent(client) +
+        '&adresse=' + encodeURIComponent(adresse) +
+        '&designation=' + lignesPDF +
+        '&conditions=' + encodeURIComponent(conditions) +
+        '&date=' + encodeURIComponent(date) +
+        '&ht=' + totaux.ht +
+        '&tva=' + totaux.tva +
+        '&ttc=' + totaux.ttc;
+
+    document.getElementById('btnPDF').href = pdfUrl;
+    document.getElementById('btnPDF').classList.remove('d-none');
+
+    const bloc = document.getElementById('resultat');
+    bloc.className = 'alert alert-success';
+    bloc.innerHTML = "Facture multi-lignes générée ✅";
+}
+async function chargerNumeroFacture() {
+    const societeId = document.getElementById('societe_id').value;
+    const date = document.getElementById('date_facture').value;
+
+    if (!societeId || !date) return;
+
+    const annee = date.substring(0, 4);
+
+    const res = await fetch('/ecritures/facture/next-numero?societe_id=' + societeId + '&annee=' + annee);
+    const data = await res.json();
+
+    document.getElementById('numero_facture').value = data.numero;
+}
+document.getElementById('date_facture').addEventListener('change', chargerNumeroFacture);
+document.addEventListener('DOMContentLoaded', async function () {
+    document.getElementById('date_facture').valueAsDate = new Date();
+    await chargerSocietes();
+    await chargerNumeroFacture(); // 🔥 AJOUT
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+﻿<h1>Matching facture ↔ banque IA</h1>
+
+<p>Document ID : {{ document_id }}</p>
+<p>Fournisseur : {{ fournisseur }}</p>
+<p>Montant TTC : {{ montant_ttc }}</p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID écriture</th>
+    <th>Date</th>
+    <th>Libellé</th>
+    <th>Débit</th>
+    <th>Crédit</th>
+    <th>Journal</th>
+</tr>
+
+{% for r in rapprochements %}
+<tr>
+    <td>{{ r[0] }}</td>
+    <td>{{ r[1] }}</td>
+    <td>{{ r[2] }}</td>
+    <td>{{ r[3] }}</td>
+    <td>{{ r[4] }}</td>
+    <td>{{ r[5] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/ged-comptable-avancee-v2">Retour GED</a>

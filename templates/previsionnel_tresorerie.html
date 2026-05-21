@@ -1,0 +1,181 @@
+﻿
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Prévisionnel trésorerie</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .actions { margin-bottom:20px; }
+        .actions a {
+            display:inline-block;
+            background:#1e3a5f;
+            color:white;
+            padding:10px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            margin-right:8px;
+            margin-bottom:8px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+            gap:18px;
+            margin-bottom:25px;
+        }
+
+        .card, .box {
+            background:white;
+            padding:20px;
+            border-radius:14px;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:22px;
+        }
+
+        .value {
+            font-size:28px;
+            font-weight:bold;
+            color:#1e3a5f;
+            margin-top:8px;
+        }
+
+        .red { color:#dc2626; font-weight:bold; }
+        .green { color:#16a34a; font-weight:bold; }
+        .orange { color:#ea580c; font-weight:bold; }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:14px;
+            overflow:hidden;
+            box-shadow:0 2px 8px rgba(0,0,0,.08);
+            margin-bottom:20px;
+        }
+
+        th {
+            background:#1e3a5f;
+            color:white;
+            padding:12px;
+            text-align:left;
+        }
+
+        td {
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .right {
+            text-align:right;
+        }
+
+        @media print {
+            .actions { display:none; }
+            body { background:white; }
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Prévisionnel + trésorerie intelligente</h1>
+
+<div class="actions">
+    <a href="/ecritures/analyse-financiere">Analyse financière</a>
+    <a href="/ecritures/bilan-resultat">Bilan</a>
+    <a href="/ecritures/rapprochement-bancaire">Banque</a>
+    <a href="#" onclick="window.print(); return false;">Export PDF</a>
+</div>
+
+<div class="grid">
+
+    <div class="card">
+        <div>Trésorerie actuelle</div>
+
+        <div class="value {% if tresorerie < 0 %}red{% else %}green{% endif %}">
+            {{ tresorerie }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Tendance moyenne</div>
+
+        <div class="value {% if moyenne_variation < 0 %}red{% else %}green{% endif %}">
+            {{ moyenne_variation }} €
+        </div>
+    </div>
+
+    <div class="card">
+        <div>Score trésorerie</div>
+
+        <div class="value {% if score_tresorerie < 50 %}red{% elif score_tresorerie < 75 %}orange{% else %}green{% endif %}">
+            {{ score_tresorerie }}/100
+        </div>
+    </div>
+
+</div>
+
+<div class="box">
+    <h2>Historique trésorerie</h2>
+
+    <table>
+        <tr>
+            <th>Mois</th>
+            <th class="right">Débit</th>
+            <th class="right">Crédit</th>
+            <th class="right">Variation</th>
+            <th class="right">Trésorerie cumulée</th>
+        </tr>
+
+        {% for h in historique %}
+        <tr>
+            <td>{{ h.mois }}</td>
+            <td class="right">{{ h.debit }} €</td>
+            <td class="right">{{ h.credit }} €</td>
+            <td class="right">{{ h.variation }} €</td>
+            <td class="right">{{ h.tresorerie }} €</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="box">
+    <h2>Prévisions de trésorerie</h2>
+
+    <table>
+        <tr>
+            <th>Période</th>
+            <th class="right">Prévision</th>
+        </tr>
+
+        {% for p in previsions %}
+        <tr>
+            <td>{{ p.mois }}</td>
+
+            <td class="right {% if p.tresorerie < 0 %}red{% else %}green{% endif %}">
+                {{ p.tresorerie }} €
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="box">
+    <h2>Alertes prévisionnelles</h2>
+
+    {% if alertes %}
+        <ul>
+            {% for a in alertes %}
+                <li>{{ a }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="green">Aucune alerte de trésorerie détectée.</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

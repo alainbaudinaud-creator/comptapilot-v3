@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Validation IA</title>
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f4f6f9;
+            padding:40px;
+        }
+
+        .box{
+            background:white;
+            padding:30px;
+            border-radius:8px;
+            max-width:700px;
+            margin:auto;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        label{
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin-top:5px;
+        }
+
+        .btn{
+            margin-top:20px;
+            padding:12px 20px;
+            background:#27ae60;
+            color:white;
+            border:0;
+            border-radius:5px;
+            cursor:pointer;
+            font-size:16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <h1>Validation IA</h1>
+
+    <p>
+        Score IA :
+        <strong>{{ piece[6] }}%</strong>
+    </p>
+
+    <form method="POST" action="/ecritures/validation-ia/{{ piece[0] }}">
+
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label>Fournisseur</label>
+        <input name="fournisseur" type="text" value="{{ piece[1] or '' }}">
+
+        <label>Facture</label>
+        <input name="facture" type="text" value="{{ piece[2] or '' }}">
+
+        <label>Date</label>
+        <input name="date_piece" type="text" value="{{ piece[3] or '' }}">
+
+        <label>TTC</label>
+        <input name="ttc" type="text" value="{{ piece[4] or '' }}">
+
+        <label>TVA</label>
+        <input name="tva" type="text" value="{{ piece[5] or '' }}">
+
+        <label>Compte de charge</label>
+        <input name="compte_charge" type="text" value="606300">
+
+        <button type="submit" class="btn">
+            Valider et cr?er l??criture
+        </button>
+
+    </form>
+
+</div>
+
+</body>
+</html>

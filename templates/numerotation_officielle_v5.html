@@ -1,0 +1,45 @@
+﻿<h1>Numérotation officielle V5</h1>
+
+<form method="POST">
+    <p>Type document :</p>
+    <select name="type_document">
+        <option value="FACTURE">FACTURE</option>
+        <option value="AVOIR">AVOIR</option>
+        <option value="DEVIS">DEVIS</option>
+        <option value="PIECE_COMPTABLE">PIECE_COMPTABLE</option>
+    </select>
+
+    <p>Préfixe :</p>
+    <input type="text" name="prefixe" value="FAC-2026-">
+
+    <p>Prochain numéro :</p>
+    <input type="text" name="prochain_numero" value="1">
+
+    <br><br>
+
+    <button type="submit">Enregistrer numérotation</button>
+</form>
+
+<h2>Numérotations</h2>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Type</th>
+    <th>Préfixe</th>
+    <th>Prochain numéro</th>
+    <th>Date modification</th>
+</tr>
+
+{% for n in numerotations %}
+<tr>
+    <td>{{ n[0] }}</td>
+    <td>{{ n[1] }}</td>
+    <td>{{ n[2] }}</td>
+    <td>{{ n[3] }}</td>
+    <td>{{ n[4] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

@@ -1,0 +1,41 @@
+﻿<h1>Workflow émission / réception PDP</h1>
+
+<p><a href="/ecritures/reception-pdp-v2">Simuler une réception fournisseur</a></p>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Facture ID</th>
+    <th>Numéro</th>
+    <th>Sens</th>
+    <th>Statut</th>
+    <th>Canal</th>
+    <th>Accusé réception</th>
+    <th>Date</th>
+    <th>Détail</th>
+    <th>Actions</th>
+</tr>
+
+{% for w in workflows %}
+<tr>
+    <td>{{ w[0] }}</td>
+    <td>{{ w[1] }}</td>
+    <td>{{ w[2] }}</td>
+    <td>{{ w[3] }}</td>
+    <td>{{ w[4] }}</td>
+    <td>{{ w[5] }}</td>
+    <td><small>{{ w[6] }}</small></td>
+    <td>{{ w[7] }}</td>
+    <td>{{ w[8] }}</td>
+    <td>
+        <a href="/ecritures/statut-pdp-v2/{{ w[0] }}/ACCEPTEE">Acceptée</a><br>
+        <a href="/ecritures/statut-pdp-v2/{{ w[0] }}/REJETEE">Rejetée</a><br>
+        <a href="/ecritures/statut-pdp-v2/{{ w[0] }}/EN_LITIGE">Litige</a><br>
+        <a href="/ecritures/statut-pdp-v2/{{ w[0] }}/PAYEE">Payée</a><br>
+        <a href="/ecritures/statut-pdp-v2/{{ w[0] }}/ARCHIVEE">Archivée</a>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/pdp-ready">Retour PDP</a>

@@ -1,0 +1,3876 @@
+{
+    "generated_at": "2026-05-10T22:58:49.497349",
+    "user_id": 1,
+    "user": [
+        {
+            "id": 1,
+            "username": "Alain BAUDINAUD"
+        }
+    ],
+    "audit_log": [
+        {
+            "id": 1,
+            "action": "TRANSMISSION_FACTURE",
+            "detail": "Facture FD-2026-00001 transmise au client murielle",
+            "date_action": "2026-05-07 16:21:25"
+        },
+        {
+            "id": 2,
+            "action": "SIGNATURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-08 23:30:15"
+        },
+        {
+            "id": 3,
+            "action": "SIGNATURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-08 23:33:53"
+        },
+        {
+            "id": 4,
+            "action": "SIGNATURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-08 23:36:28"
+        },
+        {
+            "id": 5,
+            "action": "SIGNATURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-08 23:53:50"
+        },
+        {
+            "id": 6,
+            "action": "TRANSMISSION_FACTURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-09 00:47:36"
+        },
+        {
+            "id": 7,
+            "action": "TRANSMISSION_FACTURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-09 00:59:18"
+        },
+        {
+            "id": 8,
+            "action": "TRANSMISSION_FACTURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-09 01:36:01"
+        },
+        {
+            "id": 9,
+            "action": "TEST_SERVICE",
+            "detail": "Test audit service OK",
+            "date_action": "2026-05-09 01:41:57"
+        },
+        {
+            "id": 10,
+            "action": "SIGNATURE",
+            "detail": "Document signâ”œÂ® : TEST_DOC par ALAIN",
+            "date_action": "2026-05-09 01:45:31"
+        },
+        {
+            "id": 11,
+            "action": "TRANSMISSION_FACTURE",
+            "detail": "Accâ”œÂ¿s au module transmission factures",
+            "date_action": "2026-05-09 01:54:25"
+        },
+        {
+            "id": 12,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 02:11:45"
+        },
+        {
+            "id": 13,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 02:15:09"
+        },
+        {
+            "id": 14,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 02:20:23"
+        },
+        {
+            "id": 15,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 02:22:11"
+        },
+        {
+            "id": 16,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 02:23:52"
+        },
+        {
+            "id": 17,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 02:23:52"
+        },
+        {
+            "id": 18,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 13:58:20"
+        },
+        {
+            "id": 19,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 13:58:20"
+        },
+        {
+            "id": 20,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 13:58:20"
+        },
+        {
+            "id": 21,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 14:44:17"
+        },
+        {
+            "id": 22,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 14:44:17"
+        },
+        {
+            "id": 23,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 14:44:17"
+        },
+        {
+            "id": 24,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 14:44:17"
+        },
+        {
+            "id": 25,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 14:44:17"
+        },
+        {
+            "id": 26,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 14:50:41"
+        },
+        {
+            "id": 27,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 14:50:41"
+        },
+        {
+            "id": 28,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 14:50:41"
+        },
+        {
+            "id": 29,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 14:50:41"
+        },
+        {
+            "id": 30,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 14:50:41"
+        },
+        {
+            "id": 31,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 14:56:34"
+        },
+        {
+            "id": 32,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 14:56:34"
+        },
+        {
+            "id": 33,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 14:56:34"
+        },
+        {
+            "id": 34,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 14:56:34"
+        },
+        {
+            "id": 35,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 14:56:34"
+        },
+        {
+            "id": 36,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:01:34"
+        },
+        {
+            "id": 37,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:01:34"
+        },
+        {
+            "id": 38,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:01:34"
+        },
+        {
+            "id": 39,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:01:34"
+        },
+        {
+            "id": 40,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:01:34"
+        },
+        {
+            "id": 41,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:06:34"
+        },
+        {
+            "id": 42,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:06:34"
+        },
+        {
+            "id": 43,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:06:34"
+        },
+        {
+            "id": 44,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:06:34"
+        },
+        {
+            "id": 45,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:06:34"
+        },
+        {
+            "id": 46,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:11:34"
+        },
+        {
+            "id": 47,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:11:34"
+        },
+        {
+            "id": 48,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:11:34"
+        },
+        {
+            "id": 49,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:11:34"
+        },
+        {
+            "id": 50,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:11:34"
+        },
+        {
+            "id": 51,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:16:34"
+        },
+        {
+            "id": 52,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:16:34"
+        },
+        {
+            "id": 53,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:16:34"
+        },
+        {
+            "id": 54,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:16:34"
+        },
+        {
+            "id": 55,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:16:34"
+        },
+        {
+            "id": 56,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:21:34"
+        },
+        {
+            "id": 57,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:21:34"
+        },
+        {
+            "id": 58,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:21:34"
+        },
+        {
+            "id": 59,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:21:34"
+        },
+        {
+            "id": 60,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:21:34"
+        },
+        {
+            "id": 61,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:23:57"
+        },
+        {
+            "id": 62,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:23:57"
+        },
+        {
+            "id": 63,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:23:58"
+        },
+        {
+            "id": 64,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:23:58"
+        },
+        {
+            "id": 65,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:23:58"
+        },
+        {
+            "id": 66,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:28:58"
+        },
+        {
+            "id": 67,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:28:58"
+        },
+        {
+            "id": 68,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:28:58"
+        },
+        {
+            "id": 69,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:28:58"
+        },
+        {
+            "id": 70,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:28:58"
+        },
+        {
+            "id": 71,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:33:58"
+        },
+        {
+            "id": 72,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:33:58"
+        },
+        {
+            "id": 73,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:33:58"
+        },
+        {
+            "id": 74,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:33:58"
+        },
+        {
+            "id": 75,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:33:58"
+        },
+        {
+            "id": 76,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:38:58"
+        },
+        {
+            "id": 77,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:38:58"
+        },
+        {
+            "id": 78,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:38:58"
+        },
+        {
+            "id": 79,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:38:58"
+        },
+        {
+            "id": 80,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:38:58"
+        },
+        {
+            "id": 81,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:43:58"
+        },
+        {
+            "id": 82,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:43:58"
+        },
+        {
+            "id": 83,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:43:58"
+        },
+        {
+            "id": 84,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:43:58"
+        },
+        {
+            "id": 85,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:43:58"
+        },
+        {
+            "id": 86,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:48:58"
+        },
+        {
+            "id": 87,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:48:58"
+        },
+        {
+            "id": 88,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:48:58"
+        },
+        {
+            "id": 89,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:48:58"
+        },
+        {
+            "id": 90,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:48:58"
+        },
+        {
+            "id": 91,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:53:58"
+        },
+        {
+            "id": 92,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:53:58"
+        },
+        {
+            "id": 93,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:53:58"
+        },
+        {
+            "id": 94,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:53:58"
+        },
+        {
+            "id": 95,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:53:58"
+        },
+        {
+            "id": 96,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 15:58:58"
+        },
+        {
+            "id": 97,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 15:58:58"
+        },
+        {
+            "id": 98,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 15:58:58"
+        },
+        {
+            "id": 99,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 15:58:58"
+        },
+        {
+            "id": 100,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 15:58:58"
+        },
+        {
+            "id": 101,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:03:58"
+        },
+        {
+            "id": 102,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:03:58"
+        },
+        {
+            "id": 103,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:03:58"
+        },
+        {
+            "id": 104,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:03:58"
+        },
+        {
+            "id": 105,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:03:58"
+        },
+        {
+            "id": 106,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:08:58"
+        },
+        {
+            "id": 107,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:08:58"
+        },
+        {
+            "id": 108,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:08:58"
+        },
+        {
+            "id": 109,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:08:58"
+        },
+        {
+            "id": 110,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:08:58"
+        },
+        {
+            "id": 111,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:13:58"
+        },
+        {
+            "id": 112,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:13:58"
+        },
+        {
+            "id": 113,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:13:58"
+        },
+        {
+            "id": 114,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:13:58"
+        },
+        {
+            "id": 115,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:13:58"
+        },
+        {
+            "id": 116,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:18:58"
+        },
+        {
+            "id": 117,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:18:58"
+        },
+        {
+            "id": 118,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:18:58"
+        },
+        {
+            "id": 119,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:18:58"
+        },
+        {
+            "id": 120,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:18:58"
+        },
+        {
+            "id": 121,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:23:58"
+        },
+        {
+            "id": 122,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:23:58"
+        },
+        {
+            "id": 123,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:23:58"
+        },
+        {
+            "id": 124,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:23:58"
+        },
+        {
+            "id": 125,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:23:58"
+        },
+        {
+            "id": 126,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:28:58"
+        },
+        {
+            "id": 127,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:28:58"
+        },
+        {
+            "id": 128,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:28:58"
+        },
+        {
+            "id": 129,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:28:58"
+        },
+        {
+            "id": 130,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:28:58"
+        },
+        {
+            "id": 131,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:33:58"
+        },
+        {
+            "id": 132,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:33:58"
+        },
+        {
+            "id": 133,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:33:58"
+        },
+        {
+            "id": 134,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:33:58"
+        },
+        {
+            "id": 135,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:33:58"
+        },
+        {
+            "id": 136,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:38:58"
+        },
+        {
+            "id": 137,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:38:58"
+        },
+        {
+            "id": 138,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:38:58"
+        },
+        {
+            "id": 139,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:38:58"
+        },
+        {
+            "id": 140,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:38:58"
+        },
+        {
+            "id": 141,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:43:58"
+        },
+        {
+            "id": 142,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:43:58"
+        },
+        {
+            "id": 143,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:43:58"
+        },
+        {
+            "id": 144,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:43:58"
+        },
+        {
+            "id": 145,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:43:58"
+        },
+        {
+            "id": 146,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:48:58"
+        },
+        {
+            "id": 147,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:48:58"
+        },
+        {
+            "id": 148,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:48:58"
+        },
+        {
+            "id": 149,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:48:58"
+        },
+        {
+            "id": 150,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:48:58"
+        },
+        {
+            "id": 151,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:53:58"
+        },
+        {
+            "id": 152,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:53:58"
+        },
+        {
+            "id": 153,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:53:58"
+        },
+        {
+            "id": 154,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:53:58"
+        },
+        {
+            "id": 155,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:53:58"
+        },
+        {
+            "id": 156,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 16:58:58"
+        },
+        {
+            "id": 157,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 16:58:58"
+        },
+        {
+            "id": 158,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 16:58:58"
+        },
+        {
+            "id": 159,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 16:58:58"
+        },
+        {
+            "id": 160,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 16:58:58"
+        },
+        {
+            "id": 161,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:03:58"
+        },
+        {
+            "id": 162,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:03:58"
+        },
+        {
+            "id": 163,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:03:58"
+        },
+        {
+            "id": 164,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:03:58"
+        },
+        {
+            "id": 165,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:03:58"
+        },
+        {
+            "id": 166,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:08:58"
+        },
+        {
+            "id": 167,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:08:58"
+        },
+        {
+            "id": 168,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:08:58"
+        },
+        {
+            "id": 169,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:08:58"
+        },
+        {
+            "id": 170,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:08:58"
+        },
+        {
+            "id": 171,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:13:58"
+        },
+        {
+            "id": 172,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:13:58"
+        },
+        {
+            "id": 173,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:13:58"
+        },
+        {
+            "id": 174,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:13:58"
+        },
+        {
+            "id": 175,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:13:58"
+        },
+        {
+            "id": 176,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:18:58"
+        },
+        {
+            "id": 177,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:18:58"
+        },
+        {
+            "id": 178,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:18:58"
+        },
+        {
+            "id": 179,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:18:58"
+        },
+        {
+            "id": 180,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:18:58"
+        },
+        {
+            "id": 181,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:23:58"
+        },
+        {
+            "id": 182,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:23:58"
+        },
+        {
+            "id": 183,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:23:58"
+        },
+        {
+            "id": 184,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:23:58"
+        },
+        {
+            "id": 185,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:23:58"
+        },
+        {
+            "id": 186,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:28:58"
+        },
+        {
+            "id": 849,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-10 03:12:40"
+        },
+        {
+            "id": 187,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:28:58"
+        },
+        {
+            "id": 188,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:28:58"
+        },
+        {
+            "id": 189,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:28:58"
+        },
+        {
+            "id": 190,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:28:58"
+        },
+        {
+            "id": 191,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:33:58"
+        },
+        {
+            "id": 192,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:33:58"
+        },
+        {
+            "id": 193,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:33:58"
+        },
+        {
+            "id": 194,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:33:58"
+        },
+        {
+            "id": 195,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:33:58"
+        },
+        {
+            "id": 196,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:38:58"
+        },
+        {
+            "id": 197,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:38:58"
+        },
+        {
+            "id": 198,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:38:58"
+        },
+        {
+            "id": 199,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:38:58"
+        },
+        {
+            "id": 200,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:38:58"
+        },
+        {
+            "id": 201,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:43:58"
+        },
+        {
+            "id": 202,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:43:58"
+        },
+        {
+            "id": 203,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:43:58"
+        },
+        {
+            "id": 204,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:43:58"
+        },
+        {
+            "id": 205,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:43:58"
+        },
+        {
+            "id": 206,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:48:58"
+        },
+        {
+            "id": 207,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:48:58"
+        },
+        {
+            "id": 208,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:48:58"
+        },
+        {
+            "id": 209,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:48:58"
+        },
+        {
+            "id": 210,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:48:59"
+        },
+        {
+            "id": 211,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:53:59"
+        },
+        {
+            "id": 212,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:53:59"
+        },
+        {
+            "id": 213,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:53:59"
+        },
+        {
+            "id": 214,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:53:59"
+        },
+        {
+            "id": 215,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:53:59"
+        },
+        {
+            "id": 216,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 17:58:59"
+        },
+        {
+            "id": 217,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 17:58:59"
+        },
+        {
+            "id": 218,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 17:58:59"
+        },
+        {
+            "id": 219,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 17:58:59"
+        },
+        {
+            "id": 220,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 17:58:59"
+        },
+        {
+            "id": 221,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:03:59"
+        },
+        {
+            "id": 222,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:03:59"
+        },
+        {
+            "id": 223,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:03:59"
+        },
+        {
+            "id": 224,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:03:59"
+        },
+        {
+            "id": 225,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:03:59"
+        },
+        {
+            "id": 226,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:08:59"
+        },
+        {
+            "id": 227,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:08:59"
+        },
+        {
+            "id": 228,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:08:59"
+        },
+        {
+            "id": 229,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:08:59"
+        },
+        {
+            "id": 230,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:08:59"
+        },
+        {
+            "id": 231,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:13:59"
+        },
+        {
+            "id": 232,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:13:59"
+        },
+        {
+            "id": 233,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:13:59"
+        },
+        {
+            "id": 234,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:13:59"
+        },
+        {
+            "id": 235,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:13:59"
+        },
+        {
+            "id": 236,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:18:59"
+        },
+        {
+            "id": 237,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:18:59"
+        },
+        {
+            "id": 238,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:18:59"
+        },
+        {
+            "id": 239,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:18:59"
+        },
+        {
+            "id": 240,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:18:59"
+        },
+        {
+            "id": 241,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:23:59"
+        },
+        {
+            "id": 242,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:23:59"
+        },
+        {
+            "id": 243,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:23:59"
+        },
+        {
+            "id": 244,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:23:59"
+        },
+        {
+            "id": 245,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:23:59"
+        },
+        {
+            "id": 246,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:28:59"
+        },
+        {
+            "id": 247,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:28:59"
+        },
+        {
+            "id": 248,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:28:59"
+        },
+        {
+            "id": 249,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:28:59"
+        },
+        {
+            "id": 250,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:28:59"
+        },
+        {
+            "id": 251,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:33:59"
+        },
+        {
+            "id": 252,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:33:59"
+        },
+        {
+            "id": 253,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:33:59"
+        },
+        {
+            "id": 254,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:33:59"
+        },
+        {
+            "id": 255,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:33:59"
+        },
+        {
+            "id": 256,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:38:59"
+        },
+        {
+            "id": 257,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:38:59"
+        },
+        {
+            "id": 258,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:38:59"
+        },
+        {
+            "id": 259,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:38:59"
+        },
+        {
+            "id": 260,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:38:59"
+        },
+        {
+            "id": 261,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:43:59"
+        },
+        {
+            "id": 262,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:43:59"
+        },
+        {
+            "id": 263,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:43:59"
+        },
+        {
+            "id": 264,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:43:59"
+        },
+        {
+            "id": 265,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:43:59"
+        },
+        {
+            "id": 266,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:48:59"
+        },
+        {
+            "id": 267,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:48:59"
+        },
+        {
+            "id": 268,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:48:59"
+        },
+        {
+            "id": 269,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:48:59"
+        },
+        {
+            "id": 270,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:48:59"
+        },
+        {
+            "id": 271,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:53:59"
+        },
+        {
+            "id": 272,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:53:59"
+        },
+        {
+            "id": 273,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:53:59"
+        },
+        {
+            "id": 274,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:53:59"
+        },
+        {
+            "id": 275,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:53:59"
+        },
+        {
+            "id": 276,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 18:58:59"
+        },
+        {
+            "id": 277,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 18:58:59"
+        },
+        {
+            "id": 278,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 18:58:59"
+        },
+        {
+            "id": 279,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 18:58:59"
+        },
+        {
+            "id": 280,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 18:58:59"
+        },
+        {
+            "id": 281,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:03:59"
+        },
+        {
+            "id": 282,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:03:59"
+        },
+        {
+            "id": 283,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:03:59"
+        },
+        {
+            "id": 284,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:03:59"
+        },
+        {
+            "id": 285,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:03:59"
+        },
+        {
+            "id": 286,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:08:59"
+        },
+        {
+            "id": 287,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:08:59"
+        },
+        {
+            "id": 288,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:08:59"
+        },
+        {
+            "id": 289,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:08:59"
+        },
+        {
+            "id": 290,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:08:59"
+        },
+        {
+            "id": 291,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:13:59"
+        },
+        {
+            "id": 292,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:13:59"
+        },
+        {
+            "id": 293,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:13:59"
+        },
+        {
+            "id": 294,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:13:59"
+        },
+        {
+            "id": 295,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:13:59"
+        },
+        {
+            "id": 296,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:18:59"
+        },
+        {
+            "id": 297,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:18:59"
+        },
+        {
+            "id": 298,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:18:59"
+        },
+        {
+            "id": 299,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:18:59"
+        },
+        {
+            "id": 300,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:18:59"
+        },
+        {
+            "id": 301,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:23:59"
+        },
+        {
+            "id": 302,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:23:59"
+        },
+        {
+            "id": 303,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:23:59"
+        },
+        {
+            "id": 304,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:23:59"
+        },
+        {
+            "id": 305,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:23:59"
+        },
+        {
+            "id": 306,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:28:59"
+        },
+        {
+            "id": 307,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:28:59"
+        },
+        {
+            "id": 308,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:28:59"
+        },
+        {
+            "id": 909,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-10 04:02:41"
+        },
+        {
+            "id": 309,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:28:59"
+        },
+        {
+            "id": 310,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:28:59"
+        },
+        {
+            "id": 311,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:33:59"
+        },
+        {
+            "id": 312,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:33:59"
+        },
+        {
+            "id": 313,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:33:59"
+        },
+        {
+            "id": 314,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:33:59"
+        },
+        {
+            "id": 315,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:33:59"
+        },
+        {
+            "id": 316,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:38:59"
+        },
+        {
+            "id": 317,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:38:59"
+        },
+        {
+            "id": 318,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:38:59"
+        },
+        {
+            "id": 319,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:38:59"
+        },
+        {
+            "id": 320,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:38:59"
+        },
+        {
+            "id": 321,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:43:59"
+        },
+        {
+            "id": 322,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:43:59"
+        },
+        {
+            "id": 323,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:43:59"
+        },
+        {
+            "id": 324,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:43:59"
+        },
+        {
+            "id": 325,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:43:59"
+        },
+        {
+            "id": 326,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:48:59"
+        },
+        {
+            "id": 327,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:48:59"
+        },
+        {
+            "id": 328,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:48:59"
+        },
+        {
+            "id": 329,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:48:59"
+        },
+        {
+            "id": 330,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:48:59"
+        },
+        {
+            "id": 331,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:53:59"
+        },
+        {
+            "id": 332,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:53:59"
+        },
+        {
+            "id": 333,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:53:59"
+        },
+        {
+            "id": 334,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:53:59"
+        },
+        {
+            "id": 335,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:53:59"
+        },
+        {
+            "id": 336,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 19:58:59"
+        },
+        {
+            "id": 337,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 19:58:59"
+        },
+        {
+            "id": 338,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 19:58:59"
+        },
+        {
+            "id": 339,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 19:58:59"
+        },
+        {
+            "id": 340,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 19:58:59"
+        },
+        {
+            "id": 341,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:03:59"
+        },
+        {
+            "id": 342,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:03:59"
+        },
+        {
+            "id": 343,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:03:59"
+        },
+        {
+            "id": 344,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:03:59"
+        },
+        {
+            "id": 345,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:03:59"
+        },
+        {
+            "id": 346,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:08:59"
+        },
+        {
+            "id": 347,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:08:59"
+        },
+        {
+            "id": 348,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:08:59"
+        },
+        {
+            "id": 349,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:08:59"
+        },
+        {
+            "id": 350,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:08:59"
+        },
+        {
+            "id": 351,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:13:59"
+        },
+        {
+            "id": 352,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:13:59"
+        },
+        {
+            "id": 353,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:13:59"
+        },
+        {
+            "id": 354,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:13:59"
+        },
+        {
+            "id": 355,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:13:59"
+        },
+        {
+            "id": 356,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:18:59"
+        },
+        {
+            "id": 357,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:19:00"
+        },
+        {
+            "id": 358,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:19:00"
+        },
+        {
+            "id": 359,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:19:00"
+        },
+        {
+            "id": 360,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:19:00"
+        },
+        {
+            "id": 361,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:24:00"
+        },
+        {
+            "id": 362,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:24:00"
+        },
+        {
+            "id": 363,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:24:00"
+        },
+        {
+            "id": 364,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:24:00"
+        },
+        {
+            "id": 365,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:24:00"
+        },
+        {
+            "id": 366,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:29:00"
+        },
+        {
+            "id": 367,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:29:00"
+        },
+        {
+            "id": 368,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:29:00"
+        },
+        {
+            "id": 369,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:29:00"
+        },
+        {
+            "id": 370,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:29:00"
+        },
+        {
+            "id": 371,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:34:00"
+        },
+        {
+            "id": 372,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:34:00"
+        },
+        {
+            "id": 373,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:34:00"
+        },
+        {
+            "id": 374,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:34:00"
+        },
+        {
+            "id": 375,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:34:00"
+        },
+        {
+            "id": 376,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:39:00"
+        },
+        {
+            "id": 377,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:39:00"
+        },
+        {
+            "id": 378,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:39:00"
+        },
+        {
+            "id": 379,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:39:00"
+        },
+        {
+            "id": 380,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:39:00"
+        },
+        {
+            "id": 381,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:44:00"
+        },
+        {
+            "id": 382,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:44:00"
+        },
+        {
+            "id": 383,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:44:00"
+        },
+        {
+            "id": 384,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:44:00"
+        },
+        {
+            "id": 385,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:44:00"
+        },
+        {
+            "id": 386,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:49:00"
+        },
+        {
+            "id": 387,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:49:00"
+        },
+        {
+            "id": 388,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:49:00"
+        },
+        {
+            "id": 389,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:49:00"
+        },
+        {
+            "id": 390,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:49:00"
+        },
+        {
+            "id": 391,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:54:00"
+        },
+        {
+            "id": 392,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:54:00"
+        },
+        {
+            "id": 393,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:54:00"
+        },
+        {
+            "id": 394,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:54:00"
+        },
+        {
+            "id": 395,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:54:00"
+        },
+        {
+            "id": 396,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 20:59:09"
+        },
+        {
+            "id": 397,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 20:59:09"
+        },
+        {
+            "id": 398,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 20:59:09"
+        },
+        {
+            "id": 399,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 20:59:09"
+        },
+        {
+            "id": 400,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 20:59:09"
+        },
+        {
+            "id": 401,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:01:55"
+        },
+        {
+            "id": 402,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:01:55"
+        },
+        {
+            "id": 403,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:01:55"
+        },
+        {
+            "id": 404,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:01:55"
+        },
+        {
+            "id": 405,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:01:55"
+        },
+        {
+            "id": 406,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:06:55"
+        },
+        {
+            "id": 407,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:06:55"
+        },
+        {
+            "id": 408,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:06:55"
+        },
+        {
+            "id": 409,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:06:55"
+        },
+        {
+            "id": 410,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:06:55"
+        },
+        {
+            "id": 411,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:11:55"
+        },
+        {
+            "id": 412,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:11:55"
+        },
+        {
+            "id": 413,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:11:55"
+        },
+        {
+            "id": 414,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:11:55"
+        },
+        {
+            "id": 415,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:11:55"
+        },
+        {
+            "id": 416,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:16:55"
+        },
+        {
+            "id": 417,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:16:55"
+        },
+        {
+            "id": 418,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:16:55"
+        },
+        {
+            "id": 419,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:16:55"
+        },
+        {
+            "id": 420,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:16:55"
+        },
+        {
+            "id": 421,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:21:55"
+        },
+        {
+            "id": 422,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:21:55"
+        },
+        {
+            "id": 423,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:21:55"
+        },
+        {
+            "id": 424,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:21:55"
+        },
+        {
+            "id": 425,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:21:55"
+        },
+        {
+            "id": 426,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:26:55"
+        },
+        {
+            "id": 427,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:26:55"
+        },
+        {
+            "id": 428,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:26:55"
+        },
+        {
+            "id": 429,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:26:55"
+        },
+        {
+            "id": 430,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:26:55"
+        },
+        {
+            "id": 431,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:31:55"
+        },
+        {
+            "id": 969,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-10 04:52:41"
+        },
+        {
+            "id": 432,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:31:55"
+        },
+        {
+            "id": 433,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:31:55"
+        },
+        {
+            "id": 434,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:31:55"
+        },
+        {
+            "id": 435,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:31:55"
+        },
+        {
+            "id": 436,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:36:55"
+        },
+        {
+            "id": 437,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:36:55"
+        },
+        {
+            "id": 438,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:36:55"
+        },
+        {
+            "id": 439,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:36:55"
+        },
+        {
+            "id": 440,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:36:55"
+        },
+        {
+            "id": 441,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:41:55"
+        },
+        {
+            "id": 442,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:41:55"
+        },
+        {
+            "id": 443,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:41:55"
+        },
+        {
+            "id": 444,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:41:55"
+        },
+        {
+            "id": 445,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:41:55"
+        },
+        {
+            "id": 446,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:46:55"
+        },
+        {
+            "id": 447,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:46:55"
+        },
+        {
+            "id": 448,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:46:55"
+        },
+        {
+            "id": 449,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:46:55"
+        },
+        {
+            "id": 450,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:46:55"
+        },
+        {
+            "id": 451,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:51:55"
+        },
+        {
+            "id": 452,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:51:55"
+        },
+        {
+            "id": 453,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:51:55"
+        },
+        {
+            "id": 454,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:51:55"
+        },
+        {
+            "id": 455,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:51:55"
+        },
+        {
+            "id": 456,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 21:56:55"
+        },
+        {
+            "id": 457,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 21:56:55"
+        },
+        {
+            "id": 458,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 21:56:55"
+        },
+        {
+            "id": 459,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 21:56:55"
+        },
+        {
+            "id": 460,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 21:56:55"
+        },
+        {
+            "id": 461,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:01:55"
+        },
+        {
+            "id": 462,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:01:55"
+        },
+        {
+            "id": 463,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:01:55"
+        },
+        {
+            "id": 464,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:01:55"
+        },
+        {
+            "id": 465,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:01:55"
+        },
+        {
+            "id": 466,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:06:55"
+        },
+        {
+            "id": 467,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:06:55"
+        },
+        {
+            "id": 468,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:06:55"
+        },
+        {
+            "id": 469,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:06:55"
+        },
+        {
+            "id": 470,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:06:55"
+        },
+        {
+            "id": 471,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:11:55"
+        },
+        {
+            "id": 472,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:11:55"
+        },
+        {
+            "id": 473,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:11:55"
+        },
+        {
+            "id": 474,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:11:55"
+        },
+        {
+            "id": 475,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:11:55"
+        },
+        {
+            "id": 476,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:16:55"
+        },
+        {
+            "id": 477,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:16:55"
+        },
+        {
+            "id": 478,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:16:55"
+        },
+        {
+            "id": 479,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:16:55"
+        },
+        {
+            "id": 480,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:16:55"
+        },
+        {
+            "id": 481,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:21:55"
+        },
+        {
+            "id": 482,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:21:55"
+        },
+        {
+            "id": 483,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:21:55"
+        },
+        {
+            "id": 484,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:21:55"
+        },
+        {
+            "id": 485,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:21:55"
+        },
+        {
+            "id": 486,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:26:55"
+        },
+        {
+            "id": 487,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:26:55"
+        },
+        {
+            "id": 488,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:26:55"
+        },
+        {
+            "id": 489,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:26:55"
+        },
+        {
+            "id": 490,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:26:55"
+        },
+        {
+            "id": 491,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:31:55"
+        },
+        {
+            "id": 492,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:31:55"
+        },
+        {
+            "id": 493,
+            "action": "ROBOT_RELANCES_CLIENTS",
+            "detail": "Robot relances clients exâ”œÂ®cutâ”œÂ®",
+            "date_action": "2026-05-09 22:31:55"
+        },
+        {
+            "id": 494,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #1 - Test scheduler (Test)",
+            "date_action": "2026-05-09 22:31:55"
+        },
+        {
+            "id": 495,
+            "action": "ROBOT_INCONNU",
+            "detail": "Type de robot inconnu : Test",
+            "date_action": "2026-05-09 22:31:55"
+        },
+        {
+            "id": 496,
+            "action": "SCHEDULER",
+            "detail": "Exâ”œÂ®cution pâ”œÂ®riodique du scheduler interne",
+            "date_action": "2026-05-09 22:36:55"
+        },
+        {
+            "id": 497,
+            "action": "EXECUTION_TACHE_V7",
+            "detail": "Exâ”œÂ®cution tâ”œÃ³che V7 #2 - Robot relances clients (RELANCES_CLIENTS)",
+            "date_action": "2026-05-09 22:36:55"
+        }
+    ],
+    "journal_acces": [
+        {
+            "id": 1,
+            "utilisateur": "utilisateur_local",
+            "ip": "127.0.0.1",
+            "page": "/ecritures/journal-acces-v6",
+            "date_acces": "2026-05-08 15:17:48"
+        }
+    ],
+    "factures": [
+        {
+            "id": 1,
+            "numero": "FAC20260506132838",
+            "client": "Client",
+            "date_facture": "2026-05-06",
+            "montant_ht": 96.0,
+            "tva": 24.0,
+            "montant_ttc": 120.0,
+            "client_id": null,
+            "statut": "payee",
+            "date_echeance": "2026-06-05",
+            "nombre_relances": 0,
+            "date_derniere_relance": null
+        },
+        {
+            "id": 2,
+            "numero": "FAC20260506145815",
+            "client": "Client",
+            "date_facture": "2026-05-06",
+            "montant_ht": 79.2,
+            "tva": 19.8,
+            "montant_ttc": 99.0,
+            "client_id": 1,
+            "statut": "en_attente",
+            "date_echeance": "2026-06-05",
+            "nombre_relances": 0,
+            "date_derniere_relance": null
+        }
+    ],
+    "clients": [
+        {
+            "id": 1,
+            "nom": "Alain BAUDINAUD",
+            "email": "alain.baudinaud@orange.fr",
+            "telephone": "0678567831",
+            "adresse": "124 Chemin du Bouchaud",
+            "siret": "",
+            "tva_intra": ""
+        }
+    ],
+    "ecritures": [
+        {
+            "id": 2,
+            "date_ecriture": "2026-05-05",
+            "piece": "fac2",
+            "libelle": "fournitures",
+            "debit": 0.0,
+            "credit": 100.0,
+            "societe_id": 1,
+            "compte_id": 2,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 3,
+            "date_ecriture": "2026-05-05",
+            "piece": "AUTO1",
+            "libelle": "Achat fournitures",
+            "debit": 120.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 9,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 4,
+            "date_ecriture": "2026-05-05",
+            "piece": "AUTO1",
+            "libelle": "Achat fournitures",
+            "debit": 0.0,
+            "credit": 120.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 5,
+            "date_ecriture": "2026-05-05",
+            "piece": "AUTO-TVA",
+            "libelle": "Achat fournitures",
+            "debit": 100.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 9,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 6,
+            "date_ecriture": "2026-05-05",
+            "piece": "AUTO-TVA",
+            "libelle": "TVA déductible - Achat fournitures",
+            "debit": 20.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 11,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 7,
+            "date_ecriture": "2026-05-05",
+            "piece": "AUTO-TVA",
+            "libelle": "Achat fournitures",
+            "debit": 0.0,
+            "credit": 120.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 8,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - Dupont",
+            "debit": 120.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 9,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - Dupont",
+            "debit": 0.0,
+            "credit": 100.0,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 10,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture client - Dupont",
+            "debit": 0.0,
+            "credit": 20.0,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 11,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - durand",
+            "debit": 100.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 12,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - durand",
+            "debit": 0.0,
+            "credit": 83.33,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 13,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture client - durand",
+            "debit": 0.0,
+            "credit": 16.67,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 14,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - durand",
+            "debit": 100.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 15,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture client - durand",
+            "debit": 0.0,
+            "credit": 83.33,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 16,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture client - durand",
+            "debit": 0.0,
+            "credit": 16.67,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 17,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand - Prestation de services",
+            "debit": 250.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 18,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand - Prestation de services",
+            "debit": 0.0,
+            "credit": 208.33,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 19,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture F001 - durand - Prestation de services",
+            "debit": 0.0,
+            "credit": 41.67,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 20,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - Dupont",
+            "debit": 624.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 21,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - Dupont",
+            "debit": 0.0,
+            "credit": 520.0,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 22,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture F001 - Dupont",
+            "debit": 0.0,
+            "credit": 104.0,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 23,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand",
+            "debit": 705.6,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 24,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand",
+            "debit": 0.0,
+            "credit": 588.0,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 25,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture F001 - durand",
+            "debit": 0.0,
+            "credit": 117.6,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 26,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand",
+            "debit": 1086.0,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 27,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "Facture F001 - durand",
+            "debit": 0.0,
+            "credit": 905.0,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 28,
+            "date_ecriture": "2026-05-05",
+            "piece": "F001",
+            "libelle": "TVA collectée - Facture F001 - durand",
+            "debit": 0.0,
+            "credit": 181.0,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 29,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0001",
+            "libelle": "Facture F2026-0001 - durand",
+            "debit": 616.8,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 30,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0001",
+            "libelle": "Facture F2026-0001 - durand",
+            "debit": 0.0,
+            "credit": 512.0,
+            "societe_id": 2,
+            "compte_id": 10,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 31,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0001",
+            "libelle": "TVA collectée - Facture F2026-0001 - durand",
+            "debit": 0.0,
+            "credit": 102.8,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 32,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0002",
+            "libelle": "Facture F2026-0002 - durand",
+            "debit": 1058.4,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 34,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0004",
+            "libelle": "Facture F2026-0004 - durand",
+            "debit": 950.4,
+            "credit": 0.0,
+            "societe_id": 2,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 36,
+            "date_ecriture": "2026-05-05",
+            "piece": "F2026-0004",
+            "libelle": "TVA collectée - Facture F2026-0004 - durand",
+            "debit": 0.0,
+            "credit": 158.4,
+            "societe_id": 2,
+            "compte_id": 12,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 39,
+            "date_ecriture": "2026-05-03",
+            "piece": "FA002",
+            "libelle": "Conseil ",
+            "debit": 0.0,
+            "credit": 800.0,
+            "societe_id": 1,
+            "compte_id": 7,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 40,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506124025",
+            "libelle": "Fournisseurs",
+            "debit": 158.0,
+            "credit": 0.0,
+            "societe_id": 1,
+            "compte_id": 2,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 41,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506124025",
+            "libelle": "Fournisseurs",
+            "debit": 0.0,
+            "credit": 126.4,
+            "societe_id": 1,
+            "compte_id": 6,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 42,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506124025",
+            "libelle": "TVA collectée",
+            "debit": 0.0,
+            "credit": 31.6,
+            "societe_id": 1,
+            "compte_id": 8,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 43,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506132838",
+            "libelle": "Test facture automatique",
+            "debit": 120.0,
+            "credit": 0.0,
+            "societe_id": 1,
+            "compte_id": 2,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 44,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506132838",
+            "libelle": "Test facture automatique",
+            "debit": 0.0,
+            "credit": 96.0,
+            "societe_id": 1,
+            "compte_id": 6,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 45,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506132838",
+            "libelle": "TVA collectée",
+            "debit": 0.0,
+            "credit": 24.0,
+            "societe_id": 1,
+            "compte_id": 8,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 46,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506145815",
+            "libelle": "ventes",
+            "debit": 99.0,
+            "credit": 0.0,
+            "societe_id": 1,
+            "compte_id": 2,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 47,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506145815",
+            "libelle": "ventes",
+            "debit": 0.0,
+            "credit": 79.2,
+            "societe_id": 1,
+            "compte_id": 6,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        },
+        {
+            "id": 48,
+            "date_ecriture": "2026-05-06",
+            "piece": "FAC20260506145815",
+            "libelle": "TVA collectée",
+            "debit": 0.0,
+            "credit": 19.8,
+            "societe_id": 1,
+            "compte_id": 8,
+            "rapproche": 0,
+            "date_rapprochement": null,
+            "reference_banque": null,
+            "journal": null,
+            "lettrage": "ZHOD",
+            "date_lettrage": "2026-05-07",
+            "rapproche_bancaire": 0,
+            "exercice": null
+        }
+    ],
+    "documents_comptables_importes": [
+        {
+            "id": 1,
+            "nom_fichier": "Facture de prestation de dâ”œÂ®pot de capital.pdf",
+            "type_document": "FACTURE_CLIENT",
+            "extension": "pdf",
+            "chemin": "imports_documents_comptables\\20260508_083644_Facture de prestation de dâ”œÂ®pot de capital.pdf",
+            "taille_ko": 25.23,
+            "empreinte_sha256": "c41b72743b1e6f1768460d16a593636cf123dd687956e8bd8013d191a5dedd78",
+            "statut": "A_TRAITER",
+            "date_import": "2026-05-08 08:36:44",
+            "commentaire": ""
+        },
+        {
+            "id": 2,
+            "nom_fichier": "facture_Immatriculation_dossier_5785887.pdf",
+            "type_document": "FACTURE_CLIENT",
+            "extension": "pdf",
+            "chemin": "imports_documents_comptables\\20260508_084252_facture_Immatriculation_dossier_5785887.pdf",
+            "taille_ko": 24.92,
+            "empreinte_sha256": "55b4598fa079f32e4d5a04a98f5defa15f5acc06400fb93efd4a27f82c200603",
+            "statut": "IMPORTE",
+            "date_import": "2026-05-08 08:42:52",
+            "commentaire": ""
+        },
+        {
+            "id": 3,
+            "nom_fichier": "facture-abonnement-15_04_2026.pdf",
+            "type_document": "FACTURE_CLIENT",
+            "extension": "pdf",
+            "chemin": "imports_documents_comptables\\20260508_093453_facture-abonnement-15_04_2026.pdf",
+            "taille_ko": 54.51,
+            "empreinte_sha256": "43b77058001b2237d469c6f636b292f48f222025f24ebe23974c0bf26fd35272",
+            "statut": "REJETE",
+            "date_import": "2026-05-08 09:34:53",
+            "commentaire": ""
+        }
+    ]
+}

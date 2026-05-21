@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Copilote IA comptable</title>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background: #f5f7fa; color: #1e293b; }
+        h1 { color: #1e3a5f; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px; }
+        .actions a { background: #1e3a5f; color: white; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 25px; }
+        .card, .box { background: white; padding: 20px; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+        .value { font-size: 28px; font-weight: bold; }
+        .red { color: #dc3545; }
+        .green { color: #16a34a; }
+        .orange { color: #f59e0b; }
+        .box { margin-bottom: 20px; }
+        .risk-bar { height: 22px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
+        .risk-fill { height: 100%; background: #dc3545; width: {{ analyse.risque }}%; }
+        @media print { .actions { display:none; } body { background:white; } }
+    </style>
+</head>
+
+<body>
+
+<h1>Copilote IA comptable</h1>
+
+<div class="actions">
+    <a href="/ecritures/dashboard-financier">Dashboard</a>
+    <a href="/ecritures/assistant-ia-conversationnel">Assistant IA</a>
+    <a href="/ecritures/api/copilote-ia">API Copilote</a>
+    <a href="/ecritures/rapport-ia-pdf">Rapport IA PDF</a>
+    <a href="#" onclick="window.print(); return false;">Exporter PDF</a>
+</div>
+
+<div class="grid">
+    <div class="card"><div>Chiffre d'affaires</div><div class="value">{{ analyse.ca }} €</div></div>
+    <div class="card"><div>Charges</div><div class="value">{{ analyse.charges }} €</div></div>
+    <div class="card"><div>Résultat</div><div class="value {% if analyse.resultat < 0 %}red{% else %}green{% endif %}">{{ analyse.resultat }} €</div></div>
+    <div class="card"><div>Marge</div><div class="value {% if analyse.marge < 0 %}red{% else %}green{% endif %}">{{ analyse.marge }} %</div></div>
+    <div class="card"><div>TVA estimée</div><div class="value orange">{{ analyse.tva }} €</div></div>
+    <div class="card"><div>Écritures</div><div class="value">{{ analyse.nb_ecritures }}</div></div>
+</div>
+
+<div class="box">
+    <h2>Scoring de risque IA</h2>
+    <p>Score actuel : <strong>{{ analyse.risque }} / 100</strong></p>
+    <div class="risk-bar">
+        <div class="risk-fill"></div>
+    </div>
+</div>
+
+<div class="box">
+    <h2>Anomalies détectées</h2>
+    <ul>
+        {% for anomalie in analyse.anomalies %}
+            <li>{{ anomalie }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="box">
+    <h2>Recommandations IA</h2>
+    <ul>
+        {% for recommandation in analyse.recommandations %}
+            <li>{{ recommandation }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="box">
+    <h2>Connecteur OpenAI</h2>
+    <p>
+        Préparation prête : ajoute une clé <strong>OPENAI_API_KEY</strong> dans le fichier
+        <strong>C:\Users\alain\mon-projet-agent\.env</strong>.
+    </p>
+</div>
+
+</body>
+</html>

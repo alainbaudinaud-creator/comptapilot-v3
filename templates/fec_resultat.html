@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Résultat import FEC</title>
+</head>
+<body>
+
+<h1>Résultat import FEC PRO</h1>
+
+<p>Lignes importées : {{ lignes_importees }}</p>
+<p>Comptes créés : {{ comptes_crees }}</p>
+<p>Total débit : {{ total_debit }}</p>
+<p>Total crédit : {{ total_credit }}</p>
+<p>Écart : {{ ecart }}</p>
+
+{% if ecart == 0 %}
+    <h2 style="color: green;">FEC équilibré</h2>
+{% else %}
+    <h2 style="color: red;">FEC non équilibré</h2>
+{% endif %}
+
+{% if erreurs %}
+    <h2>Erreurs</h2>
+    <ul>
+    {% for erreur in erreurs %}
+        <li>{{ erreur }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<br>
+
+<a href="/ecritures/balance-generale">Voir balance générale</a>
+<br>
+<a href="/">Retour accueil</a>
+
+</body>
+</html>

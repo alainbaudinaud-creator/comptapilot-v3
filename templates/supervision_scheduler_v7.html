@@ -1,0 +1,17 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Supervision Scheduler V7</h1>
+
+<p>Dernières lignes du journal système :</p>
+
+<pre>
+{% for ligne in logs %}
+{{ ligne }}
+{% endfor %}
+</pre>
+
+<p>
+    <a href="/ecritures/orchestration-ia-v7">Retour orchestration V7</a>
+</p>
+{% endblock %}

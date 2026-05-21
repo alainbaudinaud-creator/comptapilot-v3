@@ -1,0 +1,24 @@
+
+{% extends "layouts/erp.html" %}
+
+{% block title %}Documents PDF{% endblock %}
+
+{% block content %}
+
+<div class="grid">
+{% for key, doc in pdfs.items() %}
+    <div class="card">
+        <h3>{{ doc.title }}</h3>
+        <div class="value">PDF</div>
+
+        <div class="actions" style="margin-top:18px;">
+            <a class="btn" href="/documents/view/{{ key }}" target="_blank">Afficher</a>
+            <a class="btn secondary" href="/documents/download/{{ key }}">Télécharger</a>
+            <a class="btn secondary" href="/documents/print/{{ key }}" target="_blank">Imprimer</a>
+            <a class="btn secondary" href="/documents/email/{{ key }}">Envoyer au client</a>
+        </div>
+    </div>
+{% endfor %}
+</div>
+
+{% endblock %}

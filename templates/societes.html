@@ -1,0 +1,81 @@
+﻿
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Gestion des sociétés</h2>
+
+<div class="card mb-4">
+    <div class="card-header">Ajouter une société</div>
+    <div class="card-body">
+        <form id="formSociete" class="row g-3">
+            <div class="col-md-5">
+                <input type="text" id="name" class="form-control" placeholder="Nom" required>
+            </div>
+            <div class="col-md-5">
+                <input type="text" id="address" class="form-control" placeholder="Adresse" required>
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">Ajouter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">Liste des sociétés</div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody id="liste"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+async function chargerSocietes() {
+    const res = await fetch('/societes/');
+    const data = await res.json();
+
+    const liste = document.getElementById('liste');
+    liste.innerHTML = "";
+
+    data.forEach(s => {
+        const tr = document.createElement('tr');
+
+        tr.innerHTML = `
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.address}</td>
+        `;
+
+        liste.appendChild(tr);
+    });
+}
+
+document.getElementById('formSociete').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    await fetch('/societes/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name: document.getElementById('name').value,
+            address: document.getElementById('address').value
+        })
+    });
+
+    document.getElementById('formSociete').reset();
+    chargerSocietes();
+});
+
+chargerSocietes();
+</script>
+
+{% endblock %}

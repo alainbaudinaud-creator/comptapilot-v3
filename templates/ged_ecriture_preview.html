@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Pré-comptabilisation OCR</title>
+
+    <style>
+        body { font-family: Arial; margin: 30px; background:#f5f7fa; color:#1e293b; }
+        h1, h2 { color:#1e3a5f; }
+        .box { background:white; padding:20px; border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,.08); margin-bottom:22px; }
+        input { padding:10px; border:1px solid #cbd5e1; border-radius:8px; width:260px; margin-bottom:10px; }
+        label { display:block; font-weight:bold; margin-top:10px; }
+        button, a { display:inline-block; background:#1e3a5f; color:white; padding:10px 14px; border-radius:8px; text-decoration:none; border:0; cursor:pointer; margin-right:8px; }
+        table { width:100%; border-collapse:collapse; background:white; margin-top:15px; }
+        th { background:#1e3a5f; color:white; padding:10px; text-align:left; }
+        td { padding:10px; border-bottom:1px solid #ddd; }
+    </style>
+</head>
+
+<body>
+
+<a href="/ecritures/ged-comptable">Retour GED</a>
+
+<h1>Pré-comptabilisation depuis OCR</h1>
+
+<div class="box">
+    <h2>Document</h2>
+    <p><strong>Fichier :</strong> {{ nom_fichier }}</p>
+    <p><strong>Type :</strong> {{ type_document }}</p>
+</div>
+
+<div class="box">
+    <h2>Écriture proposée</h2>
+
+    <form method="post" action="/ecritures/ged-comptable/valider-ecriture/{{ doc_id }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <label>Date écriture</label>
+        <input type="date" name="date_ecriture" required>
+
+        <label>Pièce</label>
+        <input type="text" name="piece" value="OCR-{{ doc_id }}" required>
+
+        <label>Libellé</label>
+        <input type="text" name="libelle" value="{{ libelle }}" required>
+
+        <h2>Comptes</h2>
+
+        <label>Compte charge</label>
+        <input type="text" name="compte_charge" value="{{ compte_charge }}" required>
+
+        <label>Compte TVA</label>
+        <input type="text" name="compte_tva" value="{{ compte_tva }}" required>
+
+        <label>Compte fournisseur</label>
+        <input type="text" name="compte_tiers" value="{{ compte_tiers }}" required>
+
+        <h2>Montants</h2>
+
+        <label>Montant HT</label>
+        <input type="number" step="0.01" name="montant_ht" value="{{ montant_ht }}" required>
+
+        <label>TVA</label>
+        <input type="number" step="0.01" name="montant_tva" value="{{ montant_tva }}" required>
+
+        <label>TTC</label>
+        <input type="number" step="0.01" name="montant_ttc" value="{{ montant_ttc }}" required>
+
+        <br><br>
+        <button type="submit">Valider et générer l’écriture</button>
+    </form>
+</div>
+
+<div class="box">
+    <h2>Schéma comptable proposé</h2>
+
+    <table>
+        <tr>
+            <th>Compte</th>
+            <th>Libellé</th>
+            <th>Débit</th>
+            <th>Crédit</th>
+        </tr>
+        <tr>
+            <td>{{ compte_charge }}</td>
+            <td>Charge</td>
+            <td>{{ montant_ht }}</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>{{ compte_tva }}</td>
+            <td>TVA déductible</td>
+            <td>{{ montant_tva }}</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>{{ compte_tiers }}</td>
+            <td>Fournisseur</td>
+            <td>0</td>
+            <td>{{ montant_ttc }}</td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

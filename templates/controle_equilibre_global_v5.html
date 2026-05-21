@@ -1,0 +1,13 @@
+﻿<h1>Contrôle équilibre global V5</h1>
+
+<p>Total débit : {{ debit }}</p>
+<p>Total crédit : {{ credit }}</p>
+<p>Écart : {{ ecart }}</p>
+
+<ul>
+{% for c in controles %}
+    <li>{{ c }}</li>
+{% endfor %}
+</ul>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

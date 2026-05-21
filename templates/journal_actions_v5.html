@@ -1,0 +1,21 @@
+﻿<h1>Journal des actions utilisateur V5</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Action</th>
+    <th>Détail</th>
+    <th>Date</th>
+</tr>
+
+{% for a in actions %}
+<tr>
+    <td>{{ a[0] }}</td>
+    <td>{{ a[1] }}</td>
+    <td>{{ a[2] }}</td>
+    <td>{{ a[3] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/qualite-production-v5">Retour V5</a>

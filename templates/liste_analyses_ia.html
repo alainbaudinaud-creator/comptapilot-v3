@@ -1,0 +1,28 @@
+﻿<h1>Analyses IA documents comptables</h1>
+
+<table border="1" cellpadding="8">
+<tr>
+    <th>ID</th>
+    <th>Document ID</th>
+    <th>Compte suggéré</th>
+    <th>Journal suggéré</th>
+    <th>Règle trouvée</th>
+    <th>Score</th>
+    <th>Doublon</th>
+</tr>
+
+{% for a in analyses %}
+<tr>
+    <td>{{ a[0] }}</td>
+    <td>{{ a[1] }}</td>
+    <td>{{ a[2] }}</td>
+    <td>{{ a[3] }}</td>
+    <td>{{ a[4] }}</td>
+    <td>{{ a[5] }} %</td>
+    <td>{{ a[6] }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<a href="/ecritures/assistant-comptable-intelligent">Retour assistant IA</a>
+

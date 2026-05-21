@@ -1,0 +1,23 @@
+
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Impression - {{ title }}</title>
+    <style>
+        body { margin: 0; }
+        iframe { width: 100vw; height: 100vh; border: 0; }
+    </style>
+</head>
+<body>
+    <iframe src="/documents/view/{{ name }}"></iframe>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.print();
+            }, 800);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+date,piece,libelle,debit,credit,societe_id,compte_id
+2026-05-01,FA001,Vente prestation,0,1200,1,7
+2026-05-02,AC001,Achat fournitures,150,0,1,3
+2026-05-03,FA002,Conseil client,0,800,1,7

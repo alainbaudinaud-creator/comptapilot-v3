@@ -1,0 +1,61 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h1>Tâches automatiques V7</h1>
+
+<form method="POST">
+    <p>
+        <label>Nom</label><br>
+        <input type="text" name="nom" required>
+    </p>
+
+    <p>
+        <label>Type de tâche</label><br>
+        <select name="type_tache" required>
+            <option value="RELANCES_CLIENTS">Relances clients</option>
+            <option value="DETECTION_ANOMALIES">Détection anomalies</option>
+            <option value="SURVEILLANCE_TRESORERIE">Surveillance trésorerie</option>
+            <option value="GENERATION_ECRITURES">Génération écritures</option>
+            <option value="NOTIFICATIONS">Notifications automatiques</option>
+            <option value="IA_COMPTABLE">IA comptable planifiée</option>
+</select>
+    </p>
+
+    <p>
+        <label>Fréquence</label><br>
+        <input type="text" name="frequence" placeholder="quotidienne, hebdomadaire, mensuelle" required>
+    </p>
+
+    <button type="submit">Créer la tâche</button>
+</form>
+
+<hr>
+
+<h2>Liste des tâches</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Type</th>
+        <th>Fréquence</th>
+        <th>Statut</th>
+        <th>Date création</th>
+    </tr>
+
+    {% for tache in taches %}
+    <tr>
+        <td>{{ tache[0] }}</td>
+        <td>{{ tache[1] }}</td>
+        <td>{{ tache[2] }}</td>
+        <td>{{ tache[3] }}</td>
+        <td>{{ tache[4] }}</td>
+        <td>{{ tache[5] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>
+    <a href="/ecritures/orchestration-ia-v7">Retour orchestration V7</a>
+</p>
+{% endblock %}
