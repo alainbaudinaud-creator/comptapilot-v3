@@ -1,5 +1,7 @@
-versions/
-backups/
-*.sqlite
+﻿archive/versions_historiques/backup_*/
 __pycache__/
 *.pyc
+*.sqlite
+*.db
+.env
+.env.*
