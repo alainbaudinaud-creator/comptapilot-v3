@@ -1,20 +1,59 @@
-
-{% extends "layouts/erp.html" %}
+﻿{% extends "layouts/erp.html" %}
 
 {% block title %}Production SaaS{% endblock %}
 
 {% block content %}
+
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Exploitation</div>
+        <h2>Production SaaS</h2>
+        <p>Suivez les flux opérationnels : emails, dépôts fiscaux, signatures, portail client et supervision.</p>
+    </div>
+    <span class="status-pill">Socle opérationnel</span>
+</section>
+
 <div class="grid">
-    <div class="card"><h3>Emails envoyés</h3><div class="value">{{ data.mail_queue }}</div></div>
-    <div class="card"><h3>Dépôts fiscaux</h3><div class="value">{{ data.depot_fiscal_auto }}</div></div>
-    <div class="card"><h3>Signatures</h3><div class="value">{{ data.signatures_electroniques }}</div></div>
-    <div class="card"><h3>Clients portail</h3><div class="value">{{ data.portail_clients }}</div></div>
+    <div class="card kpi-card">
+        <span class="kpi-label">Emails</span>
+        <div class="value">{{ data.mail_queue }}</div>
+        <p>Messages générés ou en file.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Dépôts fiscaux</span>
+        <div class="value">{{ data.depot_fiscal_auto }}</div>
+        <p>Flux fiscaux préparés ou transmis.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Signatures</span>
+        <div class="value">{{ data.signatures_electroniques }}</div>
+        <p>Documents signés ou en attente.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Portail clients</span>
+        <div class="value">{{ data.portail_clients }}</div>
+        <p>Espaces clients actifs.</p>
+    </div>
 </div>
 
-<div class="actions">
-    <a class="btn" href="/client">Portail client</a>
-    <a class="btn secondary" href="/teledec">Télédec</a>
-    <a class="btn secondary" href="/supervision">Supervision</a>
-    <a class="btn secondary" href="/documents">Documents PDF</a>
+<div class="section-grid">
+    <div class="card">
+        <h3>Actions production</h3>
+        <div class="actions vertical">
+            <a class="btn" href="/client">Portail client</a>
+            <a class="btn secondary" href="/teledec">Télé-déclaration</a>
+            <a class="btn secondary" href="/supervision">Supervision</a>
+            <a class="btn secondary" href="/documents">Documents PDF</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Objectif produit</h3>
+        <p>Cette page devient le centre d’exploitation de ComptaPilot V3 : production cabinet, flux SaaS, conformité et supervision.</p>
+    </div>
 </div>
+
 {% endblock %}
