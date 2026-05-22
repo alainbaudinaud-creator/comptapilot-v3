@@ -1,27 +1,37 @@
-
-{% extends "layouts/erp.html" %}
+﻿{% extends "layouts/erp.html" %}
 
 {% block title %}Bilan comptable{% endblock %}
 
 {% block content %}
-<div class="actions">
+
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Comptabilité</div>
+        <h2>Bilan comptable</h2>
+        <p>Vue synthétique des comptes de bilan et de leur solde.</p>
+    </div>
     <a class="btn secondary" href="/">Retour dashboard</a>
+</section>
+
+<div class="card table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Compte</th>
+                <th>Libellé</th>
+                <th class="amount">Solde</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in rows %}
+            <tr>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td class="amount">{{ r[2] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
-<div class="table-card">
-<table>
-<tr>
-<th>Compte</th>
-<th>Libell?</th>
-<th class="amount">Solde</th>
-</tr>
-{% for r in rows %}
-<tr>
-<td>{{ r[0] }}</td>
-<td>{{ r[1] }}</td>
-<td class="amount">{{ r[2] }}</td>
-</tr>
-{% endfor %}
-</table>
-</div>
 {% endblock %}
