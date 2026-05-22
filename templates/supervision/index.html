@@ -1,32 +1,52 @@
-
-{% extends "layouts/erp.html" %}
+﻿{% extends "layouts/erp.html" %}
 
 {% block title %}Supervision{% endblock %}
 
 {% block content %}
 
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Pilotage système</div>
+        <h2>Supervision plateforme</h2>
+        <p>Suivi des files, événements, notifications et état opérationnel de ComptaPilot V3.</p>
+    </div>
+    <span class="status-pill">Production</span>
+</section>
+
 <div class="grid">
+    <div class="card kpi-card">
+        <span class="kpi-label">Emails en file</span>
+        <div class="value">{{ mails }}</div>
+        <p>Messages en attente de traitement.</p>
+    </div>
 
-<div class="card">
-<h3>Emails</h3>
-<div class="value">{{ mails }}</div>
+    <div class="card kpi-card">
+        <span class="kpi-label">Événements</span>
+        <div class="value">{{ events }}</div>
+        <p>Événements système enregistrés.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Notifications</span>
+        <div class="value">{{ notifications }}</div>
+        <p>Alertes et informations temps réel.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Mode</span>
+        <div class="value">V3</div>
+        <p>Socle premium opérationnel.</p>
+    </div>
 </div>
 
 <div class="card">
-<h3>Événements</h3>
-<div class="value">{{ events }}</div>
-</div>
-
-<div class="card">
-<h3>Notifications</h3>
-<div class="value">{{ notifications }}</div>
-</div>
-
-<div class="card">
-<h3>Mode</h3>
-<div class="value">Production</div>
-</div>
-
+    <h3>État général</h3>
+    <ul class="status-list">
+        <li><span>Application</span><strong>En ligne</strong></li>
+        <li><span>Docker</span><strong>Actif</strong></li>
+        <li><span>PostgreSQL</span><strong>Actif</strong></li>
+        <li><span>Design system</span><strong>Premium</strong></li>
+    </ul>
 </div>
 
 {% endblock %}

@@ -1,39 +1,46 @@
-
-import sqlite3
+﻿import sqlite3
 from pathlib import Path
 from flask import Blueprint, render_template
 
 bp_supervision = Blueprint("supervision", __name__)
 
-ROOT = Path(r"C:\Users\alain\mon-projet-agent")
+ROOT = Path("/app")
 DB = ROOT / "db.sqlite"
 
 @bp_supervision.route("/supervision")
 def supervision():
+    stats = {
+        "mails": 0,
+        "events": 0,
+        "notifications": 0
+    }
 
-    con = sqlite3.connect(DB)
-    cur = con.cursor()
+    try:
+        con = sqlite3.connect(DB)
+        cur = con.cursor()
 
-    mails = cur.execute("""
-        SELECT COUNT(*)
-        FROM mail_queue
-    """).fetchone()[0]
+        tables = {
+            "mails": "mail_queue",
+            "events": "supervision_events",
+            "notifications": "notifications_realtime"
+        }
 
-    events = cur.execute("""
-        SELECT COUNT(*)
-        FROM supervision_events
-    """).fetchone()[0]
+        for key, table in tables.items():
+            try:
+                stats[key] = cur.execute(
+                    f"SELECT COUNT(*) FROM {table}"
+                ).fetchone()[0]
+            except Exception:
+                stats[key] = 0
 
-    notifications = cur.execute("""
-        SELECT COUNT(*)
-        FROM notifications_realtime
-    """).fetchone()[0]
+        con.close()
 
-    con.close()
+    except Exception as e:
+        print("SUPERVISION WARNING:", e)
 
     return render_template(
         "supervision/index.html",
-        mails=mails,
-        events=events,
-        notifications=notifications
+        mails=stats["mails"],
+        events=stats["events"],
+        notifications=stats["notifications"]
     )
