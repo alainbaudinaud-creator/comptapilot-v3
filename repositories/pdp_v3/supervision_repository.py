@@ -1,4 +1,4 @@
-﻿from database.connection import get_sqlite_connection
+﻿from db_core.connection import get_sqlite_connection
 
 def fetch_supervision_stats():
 
