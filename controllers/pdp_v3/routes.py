@@ -1,10 +1,8 @@
 ﻿from flask import Blueprint, render_template, jsonify
 
-import sqlite3
-from pathlib import Path
-
 from services.pdp_v3.workflow_service import get_workflows
 from services.pdp_v3.supervision_service import get_supervision_stats
+from services.pdp_v3.supervision_live_service import charger_supervision_temps_reel
 from services.pdp_v3.depot_service import simuler_depot_facture
 
 bp_pdp_v3 = Blueprint("pdp_v3", __name__)
@@ -41,7 +39,6 @@ def api_pdp_v3_workflows():
     return jsonify({
         "application": "ComptaPilot V3",
         "module": "PDP V3",
-        "mode": "lecture_seule",
         "count": len(workflows),
         "workflows": workflows
     })
@@ -58,37 +55,13 @@ def api_pdp_v3_simuler_depot(facture_id):
         "workflow": workflow
     })
 
-@bp_pdp_v3.route("/api/pdp-v3/journal-technique")
-def api_pdp_v3_journal_technique():
+@bp_pdp_v3.route("/api/pdp-v3/live")
+def api_pdp_v3_live():
 
-    db = Path("/app/db.sqlite")
-
-    events = []
-
-    try:
-
-        con = sqlite3.connect(db)
-        con.row_factory = sqlite3.Row
-
-        cur = con.cursor()
-
-        rows = cur.execute("""
-            SELECT *
-            FROM journal_technique_pdp_v3
-            ORDER BY id DESC
-            LIMIT 50
-        """).fetchall()
-
-        events = [dict(row) for row in rows]
-
-        con.close()
-
-    except Exception as e:
-        print("PDP V3 JOURNAL API WARNING:", e)
+    data = charger_supervision_temps_reel()
 
     return jsonify({
         "application": "ComptaPilot V3",
         "module": "PDP V3",
-        "journal": events,
-        "count": len(events)
+        "live": data
     })
