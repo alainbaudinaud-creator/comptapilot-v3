@@ -1,0 +1,52 @@
+﻿{% extends "layouts/erp.html" %}
+
+{% block title %}Workflow PDP V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Facturation électronique</div>
+        <h2>Workflow PDP V3</h2>
+        <p>Vue de lecture des flux de factures électroniques issus du socle PDP historique.</p>
+    </div>
+    <a class="btn secondary" href="/pdp-v3">Retour PDP V3</a>
+</section>
+
+<div class="card table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Facture</th>
+                <th>Numéro</th>
+                <th>Sens</th>
+                <th>Statut</th>
+                <th>Canal</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for w in workflows %}
+            <tr>
+                <td>{{ w[0] }}</td>
+                <td>{{ w[1] }}</td>
+                <td>{{ w[2] }}</td>
+                <td>{{ w[3] }}</td>
+                <td>{{ w[4] }}</td>
+                <td>{{ w[5] }}</td>
+                <td>{{ w[7] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% if workflows|length == 0 %}
+<div class="card">
+    <h3>Aucun flux PDP</h3>
+    <p>Aucun workflow PDP historique n'est encore disponible. La page V3 est prête pour la migration progressive.</p>
+</div>
+{% endif %}
+
+{% endblock %}
