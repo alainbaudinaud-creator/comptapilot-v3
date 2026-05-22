@@ -1,0 +1,73 @@
+﻿{% extends "layouts/erp.html" %}
+
+{% block title %}Supervision PDP V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">PDP / e-invoicing</div>
+        <h2>Supervision PDP V3</h2>
+        <p>Surveillance des workflows, archives probatoires et journal technique du moteur PDP.</p>
+    </div>
+
+    <a class="btn secondary" href="/pdp-v3">
+        Retour PDP V3
+    </a>
+</section>
+
+<div class="grid">
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Workflows</span>
+        <div class="value">{{ stats.workflows }}</div>
+        <p>Flux de factures électroniques.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Archives</span>
+        <div class="value">{{ stats.archives }}</div>
+        <p>Archives probatoires enregistrées.</p>
+    </div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Journal technique</span>
+        <div class="value">{{ stats.journal }}</div>
+        <p>Événements et opérations PDP.</p>
+    </div>
+
+</div>
+
+<div class="section-grid">
+
+    <div class="card">
+        <h3>Actions PDP V3</h3>
+
+        <div class="actions vertical">
+            <a class="btn" href="/pdp-v3/workflow">
+                Workflow PDP
+            </a>
+
+            <a class="btn secondary" href="/ecritures/workflow-pdp">
+                Legacy workflow
+            </a>
+
+            <a class="btn secondary" href="/ecritures/supervision-pdp-v2">
+                Legacy supervision
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>État architecture</h3>
+
+        <ul class="status-list">
+            <li><span>Socle PDP V3</span><strong>Actif</strong></li>
+            <li><span>Compatibilité legacy</span><strong>Maintenue</strong></li>
+            <li><span>Migration progressive</span><strong>En cours</strong></li>
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}
