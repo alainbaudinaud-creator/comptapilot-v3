@@ -1,20 +1,29 @@
-
-from flask import Blueprint, render_template
+﻿from flask import Blueprint, render_template
 import sqlite3
 
-bp_balance = Blueprint("balance_generale", __name__)
+bp_balance = Blueprint("bp_balance", __name__)
 
 @bp_balance.route("/balance")
 def balance():
-    con = sqlite3.connect("db.sqlite")
-    cur = con.cursor()
 
-    rows = cur.execute("""
-        SELECT *
-        FROM vue_balance
-        ORDER BY numero
-    """).fetchall()
+    rows = []
 
-    con.close()
+    try:
+        conn = sqlite3.connect("db.sqlite")
+        cur = conn.cursor()
 
-    return render_template("comptabilite/balance.html", rows=rows)
+        rows = cur.execute("""
+            SELECT compte, libelle, debit, credit, solde
+            FROM vue_balance
+        """).fetchall()
+
+        conn.close()
+
+    except Exception as e:
+        print("BALANCE WARNING:", e)
+        rows = []
+
+    return render_template(
+        "comptabilite/balance.html",
+        rows=rows
+    )
