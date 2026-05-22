@@ -19,7 +19,7 @@ from controllers.audit import audit_routes
 from controllers.signatures import signatures_routes
 from controllers.sauvegardes import sauvegardes_routes
 from controllers.transmission import transmission_routes
-from controllers.bancaire import bancaire_routes
+from controllers.bancaire_legacy import bancaire_routes
 from controllers.dashboard import dashboard_routes
 from controllers.ia_v7 import ia_v7_routes
 from controllers.api_v1 import api_v1_routes
@@ -41,6 +41,7 @@ from controllers.bancaire.routes import bancaire_routes_v2
 from controllers.supervision.routes import supervision_routes_v2
 from controllers.production.routes import production_routes
 from controllers.pdp.routes import pdp_routes
+from controllers.pdp_v3.routes import bp_pdp_v3
 from services.permission_service import has_permission
 
 load_dotenv()
@@ -158,6 +159,7 @@ app.register_blueprint(bancaire_routes_v2, url_prefix='/bancaire-v3')
 app.register_blueprint(supervision_routes_v2, url_prefix='/supervision-v3')
 app.register_blueprint(production_routes, url_prefix='/production-v3')
 app.register_blueprint(pdp_routes, url_prefix='/pdp-v3')
+app.register_blueprint(bp_pdp_v3)
 
 @app.route("/favicon.ico")
 def favicon():

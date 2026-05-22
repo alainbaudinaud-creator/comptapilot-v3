@@ -1,4 +1,4 @@
-
+﻿
 from flask import Flask
 
 from controllers.dashboard_auto import bp_dashboard_auto
@@ -12,6 +12,7 @@ from controllers.veille_reglementaire import bp_veille_reglementaire
 from controllers.teledec_controller import bp_teledec
 from controllers.supervision_controller import bp_supervision
 from controllers.production_controller import bp_production
+from controllers.pdp_v3.routes import bp_pdp_v3
 from controllers.ia_controller import bp_ia_controller
 from controllers.erp_premium_controller import bp_erp_premium
 from controllers.erp_advanced_controller import bp_erp_advanced
@@ -42,6 +43,7 @@ app.register_blueprint(bp_veille_reglementaire)
 app.register_blueprint(bp_teledec)
 app.register_blueprint(bp_supervision)
 app.register_blueprint(bp_production)
+app.register_blueprint(bp_pdp_v3)
 app.register_blueprint(bp_ia_controller)
 app.register_blueprint(bp_erp_premium)
 app.register_blueprint(bp_erp_advanced)
