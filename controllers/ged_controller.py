@@ -1,57 +1,48 @@
-
-import sqlite3
+﻿import sqlite3
 from pathlib import Path
 
 from flask import Blueprint
 from flask import render_template
 
-from services.ged_service import (
-    ajouter_document,
-    importer_fec,
-    analyse_ocr
-)
-
 bp_ged = Blueprint("ged", __name__)
 
-ROOT = Path(r"C:\Users\alain\mon-projet-agent")
+ROOT = Path("/app")
 DB = ROOT / "db.sqlite"
 
 @bp_ged.route("/ged")
 def ged():
 
-    ajouter_document(
-        "IFG SOLUTIONS",
-        "PDF",
-        "bilan.pdf"
-    )
+    stats = {
+        "documents_clients": 0,
+        "imports_fec_reels": 0,
+        "ocr_analyse": 0
+    }
 
-    importer_fec(
-        "IFG SOLUTIONS",
-        "fec_2025.txt"
-    )
+    try:
 
-    analyse_ocr(
-        "facture_edf.pdf"
-    )
+        con = sqlite3.connect(DB)
+        cur = con.cursor()
 
-    con = sqlite3.connect(DB)
-    cur = con.cursor()
+        tables = [
+            "documents_clients",
+            "imports_fec_reels",
+            "ocr_analyse"
+        ]
 
-    stats = {}
+        for t in tables:
 
-    tables = [
-        "documents_clients",
-        "imports_fec_reels",
-        "ocr_analyse"
-    ]
+            try:
+                stats[t] = cur.execute(
+                    f"SELECT COUNT(*) FROM {t}"
+                ).fetchone()[0]
 
-    for t in tables:
+            except Exception:
+                stats[t] = 0
 
-        stats[t] = cur.execute(
-            f"SELECT COUNT(*) FROM {t}"
-        ).fetchone()[0]
+        con.close()
 
-    con.close()
+    except Exception as e:
+        print("GED WARNING:", e)
 
     return render_template(
         "cabinet/ged.html",
