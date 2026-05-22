@@ -1,49 +1,130 @@
-{% extends "layouts/erp.html" %}
+﻿{% extends "layouts/erp.html" %}
 
-{% block title %}OCR Mobile{% endblock %}
+{% block title %}OCR Comptable{% endblock %}
 
 {% block content %}
 
-<h2>Scanner facture vers dossier comptable</h2>
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Automatisation IA</div>
+        <h2>OCR comptable intelligent</h2>
+        <p>Scannez une facture et générez automatiquement une pré-écriture comptable.</p>
+    </div>
+</section>
 
-<form method="post" enctype="multipart/form-data">
+<div class="section-grid">
 
-    <label>Dossier client</label><br>
-    <select name="client_id" required>
-        {% for client in clients %}
-        <option value="{{ client.id }}">{{ client.name }}</option>
-        {% endfor %}
-    </select>
+    <div class="card">
 
-    <br><br>
+        <h3>Importer un document</h3>
 
-    <input type="file" name="file" accept="image/*" capture="environment" required>
+        <form method="post" enctype="multipart/form-data">
 
-    <br><br>
+            <label>Dossier client</label>
 
-    <button type="submit">Scanner, OCR et cr?er brouillon comptable</button>
+            <select name="client_id" required>
+                {% for client in clients %}
+                <option value="{{ client.id }}">
+                    {{ client.name }}
+                </option>
+                {% endfor %}
+            </select>
 
-</form>
+            <br><br>
+
+            <label>Document</label>
+
+            <input
+                type="file"
+                name="file"
+                accept="image/*,.pdf"
+                capture="environment"
+                required
+            >
+
+            <br><br>
+
+            <button class="btn" type="submit">
+                Scanner et analyser
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Fonctionnalités</h3>
+
+        <ul class="feature-list">
+            <li>OCR automatique</li>
+            <li>Extraction fournisseur</li>
+            <li>Pré-affectation comptable</li>
+            <li>Calcul TVA</li>
+            <li>Brouillon d’écriture</li>
+            <li>Compatible mobile</li>
+        </ul>
+
+    </div>
+
+</div>
 
 {% if result %}
 
-<hr>
+<div class="card result-card">
 
-<h3>Document enregistr?</h3>
-<p>ID document : {{ result.document_id }}</p>
-<p>Fichier : {{ result.filename }}</p>
+    <h3>Document analysé</h3>
 
-<h3>Texte OCR</h3>
-<pre style="white-space:pre-wrap">{{ result.text }}</pre>
+    <div class="grid">
 
-<h3>?criture comptable brouillon</h3>
-<ul>
-    <li>Journal : {{ result.accounting.journal }}</li>
-    <li>Compte : {{ result.accounting.account }}</li>
-    <li>Libell? : {{ result.accounting.label }}</li>
-    <li>TVA : {{ result.accounting.vat }}</li>
-    <li>Statut : brouillon ? valider</li>
-</ul>
+        <div>
+            <strong>ID document</strong>
+            <div>{{ result.document_id }}</div>
+        </div>
+
+        <div>
+            <strong>Fichier</strong>
+            <div>{{ result.filename }}</div>
+        </div>
+
+    </div>
+
+    <hr>
+
+    <h3>Texte OCR</h3>
+
+    <pre class="ocr-preview">{{ result.text }}</pre>
+
+    <hr>
+
+    <h3>Pré-écriture comptable IA</h3>
+
+    <div class="grid">
+
+        <div class="card mini">
+            <span class="kpi-label">Journal</span>
+            <div>{{ result.accounting.journal }}</div>
+        </div>
+
+        <div class="card mini">
+            <span class="kpi-label">Compte</span>
+            <div>{{ result.accounting.account }}</div>
+        </div>
+
+        <div class="card mini">
+            <span class="kpi-label">TVA</span>
+            <div>{{ result.accounting.vat }}</div>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="alert success">
+        Brouillon comptable généré avec succès.
+    </div>
+
+</div>
 
 {% endif %}
 
