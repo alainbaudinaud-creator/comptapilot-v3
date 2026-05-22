@@ -1,6 +1,6 @@
 ﻿# Rapport test socle premium V3
 
-Date : 2026-05-22 15:44:24
+Date : 2026-05-22 15:50:23
 
 ## Routes testées
 
@@ -10,6 +10,9 @@ Date : 2026-05-22 15:44:24
 - http://localhost:5001/supervision -> 200
 - http://localhost:5001/production -> 200
 - http://localhost:5001/pdp-v3 -> 200
+- http://localhost:5001/pdp-v3/workflow -> 200
+- http://localhost:5001/pdp-v3/supervision -> 200
+- http://localhost:5001/api/pdp-v3/workflows -> 200
 - http://localhost:5001/balance -> 200
 - http://localhost:5001/grand-livre -> 200
 - http://localhost:5001/bilan -> 200
