@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request, jsonify
+﻿from flask import Flask, redirect, render_template, request, jsonify
 from flask_mail import Mail
 from flasgger import Swagger
 from flask_jwt_extended import JWTManager
@@ -32,6 +32,15 @@ from services.scheduler_service import demarrer_scheduler
 from services.http_logger_service import log_http_request
 from controllers.registre_rgpd_controller import registre_rgpd_routes
 from controllers.admin_users import admin_users_routes
+from controllers.comptabilite.routes import comptabilite_routes
+from controllers.facturation.routes import facturation_routes
+from controllers.ged.routes import ged_routes
+from controllers.ia.routes import ia_routes
+from controllers.fiscal.routes import fiscal_routes
+from controllers.bancaire.routes import bancaire_routes_v2
+from controllers.supervision.routes import supervision_routes_v2
+from controllers.production.routes import production_routes
+from controllers.pdp.routes import pdp_routes
 from services.permission_service import has_permission
 
 load_dotenv()
@@ -140,6 +149,15 @@ app.register_blueprint(api_auth_routes, url_prefix="/api/v1")
 app.register_blueprint(rgpd_routes)
 app.register_blueprint(registre_rgpd_routes)
 app.register_blueprint(admin_users_routes)
+app.register_blueprint(comptabilite_routes, url_prefix='/comptabilite')
+app.register_blueprint(facturation_routes, url_prefix='/facturation')
+app.register_blueprint(ged_routes, url_prefix='/ged-v3')
+app.register_blueprint(ia_routes, url_prefix='/ia-v3')
+app.register_blueprint(fiscal_routes, url_prefix='/fiscal-v3')
+app.register_blueprint(bancaire_routes_v2, url_prefix='/bancaire-v3')
+app.register_blueprint(supervision_routes_v2, url_prefix='/supervision-v3')
+app.register_blueprint(production_routes, url_prefix='/production-v3')
+app.register_blueprint(pdp_routes, url_prefix='/pdp-v3')
 
 @app.route("/favicon.ico")
 def favicon():
@@ -174,7 +192,7 @@ def erreur_500(e):
     return render_template("errors/500.html"), 500
 
 if __name__ == "__main__":
-    log_info("Démarrage application ComptaPilot")
+    log_info("DÃ©marrage application ComptaPilot")
     demarrer_scheduler()
 
     app.run(

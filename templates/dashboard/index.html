@@ -1,39 +1,77 @@
+﻿{% extends "layouts/erp.html" %}
 
-{% extends "layouts/erp.html" %}
-
-{% block title %}Dashboard comptable{% endblock %}
+{% block title %}Cockpit intelligent{% endblock %}
 
 {% block content %}
 
+<section class="hero-panel">
+    <div>
+        <div class="eyebrow">Pilotage temps réel</div>
+        <h2>Bienvenue dans ComptaPilot V3</h2>
+        <p>Votre cockpit comptable intelligent : production, conformité, documents, IA et supervision.</p>
+    </div>
+    <div class="hero-status">
+        <span class="status-dot"></span>
+        Système opérationnel
+    </div>
+</section>
+
 <div class="grid">
-    <div class="card">
-        <h3>Balance</h3>
+    <div class="card kpi-card">
+        <span class="kpi-label">Comptabilité</span>
         <div class="value">OK</div>
+        <p>Balance, grand livre, bilan et résultat disponibles.</p>
     </div>
-    <div class="card">
-        <h3>Grand livre</h3>
-        <div class="value">OK</div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Automatisation</span>
+        <div class="value">IA</div>
+        <p>OCR, assistant comptable et analyse intelligente prêts à être consolidés.</p>
     </div>
-    <div class="card">
-        <h3>Bilan</h3>
-        <div class="value">OK</div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Conformité</span>
+        <div class="value">FEC</div>
+        <p>Exports, fiscalité et traçabilité au cœur du socle V3.</p>
     </div>
-    <div class="card">
-        <h3>Résultat</h3>
-        <div class="value">OK</div>
+
+    <div class="card kpi-card">
+        <span class="kpi-label">Production</span>
+        <div class="value">ERP</div>
+        <p>Docker, PostgreSQL et Gunicorn opérationnels.</p>
     </div>
 </div>
 
-<div class="actions">
-    <a class="btn" href="/balance">Voir la balance</a>
-    <a class="btn secondary" href="/grand-livre">Grand livre</a>
-    <a class="btn secondary" href="/bilan">Bilan</a>
-    <a class="btn secondary" href="/compte-resultat">Compte de résultat</a>
-</div>
+<div class="section-grid">
+    <div class="card">
+        <h3>Actions rapides</h3>
+        <div class="actions vertical">
+            <a class="btn" href="/balance">Balance générale</a>
+            <a class="btn secondary" href="/grand-livre">Grand livre</a>
+            <a class="btn secondary" href="/bilan">Bilan</a>
+            <a class="btn secondary" href="/ecritures/saisie-rapide">Saisie rapide</a>
+        </div>
+    </div>
 
-<div class="card">
-    <h3>État Comptapilot</h3>
-    <div class="value">ERP comptable moderne opérationnel</div>
+    <div class="card">
+        <h3>Centre intelligent</h3>
+        <p>Accès aux fonctions à haute valeur : OCR, GED, IA comptable, rapprochement bancaire et supervision.</p>
+        <div class="actions vertical">
+            <a class="btn secondary" href="/ged">GED & OCR</a>
+            <a class="btn secondary" href="/ecritures/assistant-ia-comptable">Assistant IA</a>
+            <a class="btn secondary" href="/ecritures/rapprochement-bancaire">Banque intelligente</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>État plateforme</h3>
+        <ul class="status-list">
+            <li><span>Application</span><strong>En ligne</strong></li>
+            <li><span>Base PostgreSQL</span><strong>Active</strong></li>
+            <li><span>Architecture V3</span><strong>Structurée</strong></li>
+            <li><span>Objectif produit</span><strong>Premium</strong></li>
+        </ul>
+    </div>
 </div>
 
 {% endblock %}
