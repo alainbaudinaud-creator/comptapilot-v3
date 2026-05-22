@@ -1,68 +1,79 @@
-
-<!doctype html>
+﻿<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>ComptaPilot ERP</title>
+    <title>{% block page_title %}ComptaPilot V3{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1320">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/comptapilot.css') }}">
-<link rel="stylesheet" href="/static/css/erp_premium.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/erp_premium.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+</head>
 
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">CP</div>
+            <div>
+                <div class="brand-name">ComptaPilot</div>
+                <div class="brand-subtitle">ERP comptable intelligent</div>
+            </div>
+        </div>
 
-<link rel="manifest" href="/static/manifest.json">
+        <nav class="nav-section">
+            <div class="nav-label">Pilotage</div>
+            <a href="/">Dashboard</a>
+            <a href="/ecritures/dashboard-financier">Cockpit financier</a>
+            <a href="/supervision">Supervision</a>
+        </nav>
 
-<meta name="theme-color" content="#0b1320">
+        <nav class="nav-section">
+            <div class="nav-label">Comptabilité</div>
+            <a href="/balance">Balance générale</a>
+            <a href="/grand-livre">Grand livre</a>
+            <a href="/bilan">Bilan</a>
+            <a href="/ecritures/saisie-rapide">Saisie rapide</a>
+        </nav>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1">
+        <nav class="nav-section">
+            <div class="nav-label">Automatisation</div>
+            <a href="/ged">GED & OCR</a>
+            <a href="/ecritures/assistant-ia-comptable">Assistant IA</a>
+            <a href="/ecritures/rapprochement-bancaire">Banque</a>
+        </nav>
 
+        <nav class="nav-section">
+            <div class="nav-label">Fiscal & conformité</div>
+            <a href="/fiscal">Fiscal IA</a>
+            <a href="/ecritures/export-fec-dgfip">Export FEC</a>
+            <a href="/teledec">Télé-déclaration</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <div class="eyebrow">ComptaPilot V3</div>
+                <h1>{% block title %}Tableau de bord{% endblock %}</h1>
+            </div>
+            <div class="topbar-actions">
+                <span class="status-pill">Production ready</span>
+            </div>
+        </header>
+
+        <section class="content">
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/erp_performance.js') }}"></script>
 <script>
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/static/service-worker.js');
 }
 </script>
-
-
-</head>
-<body>
-<div class="app">
-    <aside class="sidebar">
-        <div class="logo">ComptaPilot</div>
-        <div class="subtitle">ERP comptable pour cabinet</div>
-
-        <nav class="nav">
-            <a href="/">Dashboard</a>
-            <a href="/balance">Balance générale</a>
-            <a href="/grand-livre">Grand livre</a>
-            <a href="/bilan">Bilan</a>
-            <a href="/compte-resultat">Compte de résultat</a>
-            <a href="/documents">Documents PDF</a>
-            <a href="/fiscal/documents">DGFiP / Télédec</a>
-            <a href="/reglementaire">Veille réglementaire</a>
-            <a href="/teledec">Passerelle Télédec</a>
-            <a href="/supervision">Supervision</a>
-            <a href="/production">Production SaaS</a>
-            <a href="/cabinet">Cabinet</a>
-            <a href="/erp-premium">ERP Premium</a>
-            <a href="/erp-advanced">ERP Advanced</a>
-            <a href="/enterprise">Enterprise</a>
-            <a href="/fiscal">Fiscal IA</a>
-            <a href="/ged">GED OCR FEC</a>
-            <a href="/uploads">OCR Uploads</a>
-            <a href="/client">Portail client</a>
-            <a href="/connecteurs">Connecteurs</a>
-            <a href="/api/status">API statut</a>
-        </nav>
-    </aside>
-
-    <main class="main">
-        <div class="topbar">
-            <div class="page-title">{% block title %}{% endblock %}</div>
-            <div class="badge">Production prête</div>
-        </div>
-
-        {% block content %}{% endblock %}
-    </main>
-</div>
-<script src="/static/js/erp_performance.js"></script>
 </body>
 </html>
