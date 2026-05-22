@@ -1,12 +1,8 @@
-﻿import sqlite3
-from pathlib import Path
-
-ROOT = Path("/app")
-DB = ROOT / "db.sqlite"
+﻿from database.connection import get_sqlite_connection
 
 def fetch_workflows(limit=200):
 
-    con = sqlite3.connect(DB)
+    con = get_sqlite_connection()
     cur = con.cursor()
 
     rows = cur.execute("""
