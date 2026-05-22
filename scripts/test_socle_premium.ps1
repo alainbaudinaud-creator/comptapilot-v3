@@ -11,13 +11,33 @@
 "http://localhost:5001/compte-resultat"
 )
 
+$date = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+$rapport = @()
+$rapport += "# Rapport test socle premium V3"
+$rapport += ""
+$rapport += "Date : $date"
+$rapport += ""
+$rapport += "## Routes testées"
+$rapport += ""
+
 foreach ($route in $routes) {
     try {
         $r = Invoke-WebRequest $route -UseBasicParsing
-        Write-Host "$route -> $($r.StatusCode)"
+        $line = "- $route -> $($r.StatusCode)"
+        Write-Host $line
+        $rapport += $line
     }
     catch {
-        Write-Host "$route -> ERREUR"
+        $line = "- $route -> ERREUR"
+        Write-Host $line
+        $rapport += $line
+        $rapport | Set-Content -Encoding UTF8 "C:\Users\alain\comptapilot-v3\docs\RAPPORT_TEST_SOCLE_PREMIUM_V3.md"
         exit 1
     }
 }
+
+$rapport += ""
+$rapport += "## Résultat"
+$rapport += "Socle premium V3 opérationnel."
+
+$rapport | Set-Content -Encoding UTF8 "C:\Users\alain\comptapilot-v3\docs\RAPPORT_TEST_SOCLE_PREMIUM_V3.md"
