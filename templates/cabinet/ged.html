@@ -1,35 +1,52 @@
+﻿{% extends "layouts/erp.html" %}
 
-{% extends "layouts/erp.html" %}
-
-{% block title %}GED{% endblock %}
+{% block title %}GED & OCR{% endblock %}
 
 {% block content %}
 
-<h1>GED / OCR / FEC</h1>
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Automatisation documentaire</div>
+        <h2>GED, OCR & FEC</h2>
+        <p>Centralisez les documents clients, les imports FEC et les analyses OCR dans un espace métier unique.</p>
+    </div>
+    <a class="btn secondary" href="/ocr">Lancer un OCR</a>
+</section>
 
 <div class="grid">
+    <div class="card kpi-card">
+        <span class="kpi-label">Documents clients</span>
+        <div class="value">{{ stats.documents_clients }}</div>
+        <p>Pièces et justificatifs centralisés.</p>
+    </div>
 
-<div class="card">
-<h3>Documents clients</h3>
-<div class="value">
-{{ stats.documents_clients }}
-</div>
-</div>
+    <div class="card kpi-card">
+        <span class="kpi-label">Imports FEC</span>
+        <div class="value">{{ stats.imports_fec_reels }}</div>
+        <p>Fichiers comptables importés et prêts à contrôler.</p>
+    </div>
 
-<div class="card">
-<h3>Imports FEC</h3>
-<div class="value">
-{{ stats.imports_fec_reels }}
-</div>
-</div>
-
-<div class="card">
-<h3>OCR Factures</h3>
-<div class="value">
-{{ stats.ocr_analyse }}
-</div>
+    <div class="card kpi-card">
+        <span class="kpi-label">OCR factures</span>
+        <div class="value">{{ stats.ocr_analyse }}</div>
+        <p>Documents analysés automatiquement.</p>
+    </div>
 </div>
 
+<div class="section-grid">
+    <div class="card">
+        <h3>Flux documentaire intelligent</h3>
+        <p>Le module GED devient le hub documentaire de ComptaPilot : pièces, factures, FEC, OCR et pré-comptabilisation.</p>
+    </div>
+
+    <div class="card">
+        <h3>Actions rapides</h3>
+        <div class="actions vertical">
+            <a class="btn" href="/ocr">Scanner une facture</a>
+            <a class="btn secondary" href="/documents">Documents PDF</a>
+            <a class="btn secondary" href="/ecritures/import-documents-comptables">Importer des pièces</a>
+        </div>
+    </div>
 </div>
 
 {% endblock %}
