@@ -1,25 +1,13 @@
-﻿import sqlite3
-from pathlib import Path
-from dataclasses import asdict
+﻿from dataclasses import asdict
 
 from models.pdp_v3.workflow import WorkflowPDP
-
-ROOT = Path("/app")
-DB = ROOT / "db.sqlite"
+from repositories.pdp_v3.workflow_repository import fetch_workflows
 
 def get_workflows(limit=200):
     workflows = []
 
     try:
-        con = sqlite3.connect(DB)
-        cur = con.cursor()
-
-        rows = cur.execute("""
-            SELECT id, facture_id, numero, sens, statut, canal, accuse_reception, date_action, detail
-            FROM workflow_factures_pdp
-            ORDER BY id DESC
-            LIMIT ?
-        """, (limit,)).fetchall()
+        rows = fetch_workflows(limit=limit)
 
         for r in rows:
             workflow = WorkflowPDP(
@@ -35,8 +23,6 @@ def get_workflows(limit=200):
             )
 
             workflows.append(asdict(workflow))
-
-        con.close()
 
     except Exception as e:
         print("PDP V3 SERVICE WORKFLOW WARNING:", e)
