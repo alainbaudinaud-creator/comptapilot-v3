@@ -24,3 +24,6 @@ def lancer_scheduler():
 
 def scheduler_status():
     return {'scheduler':'OK'}
+
+def demarrer_scheduler():
+    return lancer_scheduler()

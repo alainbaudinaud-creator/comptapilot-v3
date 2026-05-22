@@ -1,22 +1,15 @@
-
-import sqlite3
-from pathlib import Path
-
-ROOT = Path(r"C:\Users\alain\mon-projet-agent")
-DB = ROOT / "db.sqlite"
+﻿from datetime import datetime
 
 def notifier(message, type_notif="INFO"):
-
-    con = sqlite3.connect(DB)
-    cur = con.cursor()
-
-    cur.execute("""
-    INSERT INTO notifications_centre
-    (type_notif, message)
-    VALUES (?, ?)
-    """, (type_notif, message))
-
-    con.commit()
-    con.close()
-
+    print(f"[{type_notif}] {message}")
     return "NOTIFICATION_OK"
+
+
+def creer_notification(message, type_notif="INFO", utilisateur_id=None):
+    print(f"[{datetime.now().isoformat()}] [{type_notif}] {message}")
+    return {
+        "status": "NOTIFICATION_OK",
+        "message": message,
+        "type_notif": type_notif,
+        "utilisateur_id": utilisateur_id
+    }
