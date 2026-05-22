@@ -1,27 +1,37 @@
-
-{% extends "layouts/erp.html" %}
+﻿{% extends "layouts/erp.html" %}
 
 {% block title %}Compte de résultat{% endblock %}
 
 {% block content %}
-<div class="actions">
+
+<section class="hero-panel compact">
+    <div>
+        <div class="eyebrow">Comptabilité</div>
+        <h2>Compte de résultat</h2>
+        <p>Lecture synthétique des produits, charges et résultat de l’exercice.</p>
+    </div>
     <a class="btn secondary" href="/">Retour dashboard</a>
+</section>
+
+<div class="card table-card">
+    <table>
+        <thead>
+            <tr>
+                <th>Compte</th>
+                <th>Libellé</th>
+                <th class="amount">Résultat</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in rows %}
+            <tr>
+                <td>{{ r[0] }}</td>
+                <td>{{ r[1] }}</td>
+                <td class="amount">{{ r[2] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 
-<div class="table-card">
-<table>
-<tr>
-<th>Compte</th>
-<th>Libell?</th>
-<th class="amount">Résultat</th>
-</tr>
-{% for r in rows %}
-<tr>
-<td>{{ r[0] }}</td>
-<td>{{ r[1] }}</td>
-<td class="amount">{{ r[2] }}</td>
-</tr>
-{% endfor %}
-</table>
-</div>
 {% endblock %}
