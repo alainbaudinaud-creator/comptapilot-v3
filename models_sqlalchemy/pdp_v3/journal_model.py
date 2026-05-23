@@ -1,4 +1,4 @@
-﻿from sqlalchemy import Integer
+from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -9,7 +9,7 @@ class JournalTechniquePDPModel(Base):
 
     __tablename__ = "pdp_v3_journal_technique"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
     type_evenement: Mapped[str] = mapped_column(String(255))
 
