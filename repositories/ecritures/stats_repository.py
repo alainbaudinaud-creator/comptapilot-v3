@@ -39,3 +39,14 @@ def fetch_dashboard_financier_par_type():
         """))
 
         return result.fetchall()
+
+def fetch_nombre_ecritures():
+
+    with engine.begin() as con:
+
+        result = con.execute(text("""
+            SELECT COUNT(*)
+            FROM ecritures
+        """))
+
+        return int(result.scalar() or 0)
