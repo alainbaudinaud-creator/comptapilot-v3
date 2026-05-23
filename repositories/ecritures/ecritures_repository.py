@@ -79,3 +79,20 @@ def ecriture_verrouillee_repository(ecriture_id):
             return False
 
         return int(row[0] or 0) == 1
+
+def fetch_ecritures_export_dashboard():
+
+    with engine.begin() as con:
+
+        result = con.execute(text("""
+            SELECT
+                date_ecriture,
+                piece,
+                libelle,
+                debit,
+                credit
+            FROM ecritures
+            ORDER BY date_ecriture DESC
+        """))
+
+        return result.fetchall()
