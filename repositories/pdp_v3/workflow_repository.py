@@ -1,26 +1,26 @@
-﻿from db_core.connection import get_sqlite_connection
+from sqlalchemy import text
+from database import engine
 
 def fetch_workflows(limit=200):
 
-    con = get_sqlite_connection()
-    cur = con.cursor()
+    with engine.begin() as con:
 
-    rows = cur.execute("""
-        SELECT
-            id,
-            facture_id,
-            numero,
-            sens,
-            statut,
-            canal,
-            accuse_reception,
-            date_action,
-            detail
-        FROM workflow_factures_pdp
-        ORDER BY id DESC
-        LIMIT ?
-    """, (limit,)).fetchall()
+        result = con.execute(text("""
+            SELECT
+                id,
+                facture_id,
+                numero,
+                sens,
+                statut,
+                canal,
+                accuse_reception,
+                date_action,
+                detail
+            FROM pdp_v3_workflows
+            ORDER BY id DESC
+            LIMIT :limit
+        """), {
+            "limit": limit
+        })
 
-    con.close()
-
-    return rows
+        return result.fetchall()

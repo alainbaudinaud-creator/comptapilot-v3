@@ -1,4 +1,5 @@
-﻿from db_core.connection import get_sqlite_connection
+from sqlalchemy import text
+from database import engine
 
 def fetch_supervision_stats():
 
@@ -8,23 +9,24 @@ def fetch_supervision_stats():
         "journal": 0
     }
 
-    con = get_sqlite_connection()
-    cur = con.cursor()
-
     tables = {
-        "workflows": "workflow_factures_pdp",
-        "archives": "archives_probatoires",
-        "journal": "journal_technique_pdp_v2"
+        "workflows": "pdp_v3_workflows",
+        "archives": "pdp_v3_archives",
+        "journal": "pdp_v3_journal_technique"
     }
 
-    for key, table in tables.items():
-        try:
-            stats[key] = cur.execute(
-                f"SELECT COUNT(*) FROM {table}"
-            ).fetchone()[0]
-        except Exception:
-            stats[key] = 0
+    with engine.begin() as con:
 
-    con.close()
+        for key, table in tables.items():
+
+            try:
+                result = con.execute(
+                    text(f"SELECT COUNT(*) FROM {table}")
+                )
+
+                stats[key] = result.scalar()
+
+            except Exception:
+                stats[key] = 0
 
     return stats
