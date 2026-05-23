@@ -1,10 +1,11 @@
 ﻿from flask import Blueprint, render_template, request, redirect, session
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
-import sqlite3
+from sqlalchemy import text
 
 from extensions import limiter
 from services.security_log_service import log_security_event
+from services.db_postgres import get_engine
 
 
 auth_routes = Blueprint('auth', __name__)
@@ -36,24 +37,14 @@ def register():
 
     password_hash = generate_password_hash(password)
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT UNIQUE,
-            password TEXT
-        )
-    """)
-
-    c.execute("""
-        INSERT INTO users (username, password)
-        VALUES (?, ?)
-    """, (username, password_hash))
-
-    conn.commit()
-    conn.close()
+    with get_engine().begin() as conn:
+        conn.execute(text("""
+            INSERT INTO users (username, password)
+            VALUES (:username, :password)
+        """), {
+            "username": username,
+            "password": password_hash
+        })
 
     return redirect("/auth/login")
 
@@ -73,21 +64,14 @@ def login():
     username = request.form.get("username")
     password = request.form.get("password")
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-
-    c.execute("""
-        SELECT id, password
-        FROM users
-        WHERE username = ?
-    """, (username,))
-
-    user = c.fetchone()
-    conn.close()
-
-    print("USERNAME =", repr(username))
-    print("PASSWORD =", repr(password))
-    print("USER SQL =", user)
+    with get_engine().begin() as conn:
+        user = conn.execute(text("""
+            SELECT id, password
+            FROM users
+            WHERE username = :username
+        """), {
+            "username": username
+        }).fetchone()
 
     if not user:
 
@@ -103,9 +87,6 @@ def login():
     user_id, password_hash = user
 
     check = check_password_hash(password_hash, password)
-
-    print("HASH SQL =", password_hash)
-    print("CHECK =", check)
 
     if not check:
 
@@ -136,3 +117,4 @@ def logout():
     session.clear()
 
     return redirect("/auth/login")
+

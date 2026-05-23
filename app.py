@@ -66,7 +66,7 @@ app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
 
 app.config["SESSION_COOKIE_SECURE"] = False
 
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://comptapilot:comptapilot@postgres:5432/comptapilot_v3")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
