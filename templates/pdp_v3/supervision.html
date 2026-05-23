@@ -8,16 +8,12 @@
     <div>
         <div class="eyebrow">PDP / e-invoicing</div>
         <h2>Supervision PDP V3</h2>
-        <p>Surveillance des workflows, archives probatoires et journal technique du moteur PDP.</p>
+        <p>Surveillance des workflows, journaux techniques, archives probatoires et supervision temps réel.</p>
     </div>
-
-    <a class="btn secondary" href="/pdp-v3">
-        Retour PDP V3
-    </a>
+    <a class="btn secondary" href="/pdp-v3">Retour PDP V3</a>
 </section>
 
 <div class="grid">
-
     <div class="card kpi-card">
         <span class="kpi-label">Workflows</span>
         <div class="value">{{ stats.workflows }}</div>
@@ -31,43 +27,38 @@
     </div>
 
     <div class="card kpi-card">
-        <span class="kpi-label">Journal technique</span>
+        <span class="kpi-label">Journal</span>
         <div class="value">{{ stats.journal }}</div>
-        <p>Événements et opérations PDP.</p>
+        <p>Événements techniques PDP.</p>
     </div>
-
 </div>
 
 <div class="section-grid">
-
     <div class="card">
-        <h3>Actions PDP V3</h3>
-
+        <h3>APIs de supervision</h3>
         <div class="actions vertical">
-            <a class="btn" href="/pdp-v3/workflow">
-                Workflow PDP
-            </a>
-
-            <a class="btn secondary" href="/ecritures/workflow-pdp">
-                Legacy workflow
-            </a>
-
-            <a class="btn secondary" href="/ecritures/supervision-pdp-v2">
-                Legacy supervision
-            </a>
+            <a class="btn" href="/api/pdp-v3/live">Supervision live JSON</a>
+            <a class="btn secondary" href="/api/pdp-v3/workflows">Workflows JSON</a>
+            <a class="btn secondary" href="/api/pdp-v3/journal-technique">Journal JSON</a>
+            <a class="btn secondary" href="/api/pdp-v3/archives">Archives JSON</a>
+            <a class="btn secondary" href="/api/pdp-v3/simuler-depot/6001">Simuler un dépôt</a>
         </div>
     </div>
 
     <div class="card">
-        <h3>État architecture</h3>
-
+        <h3>État métier</h3>
         <ul class="status-list">
-            <li><span>Socle PDP V3</span><strong>Actif</strong></li>
-            <li><span>Compatibilité legacy</span><strong>Maintenue</strong></li>
-            <li><span>Migration progressive</span><strong>En cours</strong></li>
+            <li><span>Moteur PDP V3</span><strong>Actif</strong></li>
+            <li><span>Journalisation</span><strong>Automatique</strong></li>
+            <li><span>Archivage probatoire</span><strong>Automatique</strong></li>
+            <li><span>APIs métier</span><strong>Disponibles</strong></li>
         </ul>
     </div>
+</div>
 
+<div class="card">
+    <h3>Supervision temps réel</h3>
+    <p>Les données détaillées sont exposées via l’API live. Cette page devient le point de contrôle fonctionnel PDP V3.</p>
 </div>
 
 {% endblock %}
