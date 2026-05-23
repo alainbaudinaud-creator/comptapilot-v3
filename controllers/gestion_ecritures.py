@@ -98,6 +98,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 
 from PIL import Image
 from services.permission_service import permission_required
+from repositories.ecritures.ecritures_repository import fetch_ecritures
 
 
 
@@ -16879,4 +16880,5 @@ def operationnel_pret_tableau(pret_id):
 
     html += "</table><p><a href='/ecritures/operationnel/prets'>Retour</a></p>"
     return html
+
 
