@@ -31,7 +31,27 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host ""
-Write-Host "4. Validation Alembic V3"
+Write-Host "4. Validation facture métier PDP V3"
+
+docker compose exec comptapilot sh -c "cd /app && PYTHONPATH=/app python /app/scripts/test_facture_metier_pdp_v3.py"
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERREUR : facture métier PDP V3 échouée"
+    exit 1
+}
+
+Write-Host ""
+Write-Host "5. Validation facture stockée PDP V3"
+
+docker compose exec comptapilot sh -c "cd /app && PYTHONPATH=/app python /app/scripts/test_facture_base_pdp_v3.py"
+
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "ERREUR : facture stockée PDP V3 échouée"
+    exit 1
+}
+
+Write-Host ""
+Write-Host "6. Validation Alembic V3"
 
 docker compose exec comptapilot sh -c "cd /app && PYTHONPATH=/app python /app/scripts/validate_alembic_v3.py"
 
