@@ -50,3 +50,21 @@ def fetch_nombre_ecritures():
         """))
 
         return int(result.scalar() or 0)
+
+def fetch_totaux_debit_credit():
+
+    with engine.begin() as con:
+
+        result = con.execute(text("""
+            SELECT
+                COALESCE(SUM(debit), 0),
+                COALESCE(SUM(credit), 0)
+            FROM ecritures
+        """))
+
+        row = result.fetchone()
+
+        return {
+            "total_debit": float(row[0] or 0),
+            "total_credit": float(row[1] or 0)
+        }
