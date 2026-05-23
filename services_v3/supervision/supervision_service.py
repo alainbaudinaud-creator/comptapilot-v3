@@ -23,3 +23,20 @@ def get_supervision_comptable():
         },
         "statut": "ok"
     }
+
+from repositories.ecritures.supervision_repository import (
+    fetch_supervision_counts,
+    fetch_supervision_events
+)
+
+
+def get_supervision_page_data():
+
+    counts = fetch_supervision_counts()
+
+    return {
+        "nb_ecritures": counts["nb_ecritures"],
+        "nb_precompta": counts["nb_precompta"],
+        "nb_audit": counts["nb_audit"],
+        "events": fetch_supervision_events()
+    }
