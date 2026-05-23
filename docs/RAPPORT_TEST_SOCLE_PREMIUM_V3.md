@@ -1,6 +1,6 @@
 ﻿# Rapport test socle premium V3
 
-Date : 2026-05-23 10:01:44
+Date : 2026-05-23 10:12:19
 
 ## Routes testées
 
