@@ -6,47 +6,76 @@
 
 <section class="hero-panel compact">
     <div>
-        <div class="eyebrow">Facturation électronique</div>
+        <div class="eyebrow">Flux e-invoicing</div>
         <h2>Workflow PDP V3</h2>
-        <p>Vue de lecture des flux de factures électroniques issus du socle PDP historique.</p>
+        <p>Suivi métier des dépôts de factures, statuts PDP, canaux et accusés de réception.</p>
     </div>
-    <a class="btn secondary" href="/pdp-v3">Retour PDP V3</a>
+    <div class="actions">
+        <a class="btn" href="/api/pdp-v3/simuler-depot/7001">Simuler dépôt</a>
+        <a class="btn secondary" href="/pdp-v3">Retour PDP V3</a>
+    </div>
 </section>
 
-<div class="card table-card">
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Facture</th>
-                <th>Numéro</th>
-                <th>Sens</th>
-                <th>Statut</th>
-                <th>Canal</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for w in workflows %}
-            <tr>
-                <td>{{ w[0] }}</td>
-                <td>{{ w[1] }}</td>
-                <td>{{ w[2] }}</td>
-                <td>{{ w[3] }}</td>
-                <td>{{ w[4] }}</td>
-                <td>{{ w[5] }}</td>
-                <td>{{ w[7] }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="card">
+    <h3>Liste des workflows</h3>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Facture</th>
+                    <th>Numéro</th>
+                    <th>Sens</th>
+                    <th>Statut</th>
+                    <th>Canal</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for w in workflows %}
+                <tr>
+                    <td>{{ w.id }}</td>
+                    <td>{{ w.facture_id }}</td>
+                    <td>{{ w.numero }}</td>
+                    <td>{{ w.sens }}</td>
+                    <td><span class="status-pill">{{ w.statut }}</span></td>
+                    <td>{{ w.canal }}</td>
+                    <td>{{ w.date_action }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {% if workflows|length == 0 %}
 <div class="card">
-    <h3>Aucun flux PDP</h3>
-    <p>Aucun workflow PDP historique n'est encore disponible. La page V3 est prête pour la migration progressive.</p>
+    <h3>Aucun workflow PDP</h3>
+    <p>Aucun flux PDP V3 n'est encore disponible. Lancez une simulation de dépôt pour créer un premier workflow.</p>
 </div>
 {% endif %}
+
+<div class="section-grid">
+    <div class="card">
+        <h3>APIs liées</h3>
+        <div class="actions vertical">
+            <a class="btn secondary" href="/api/pdp-v3/workflows">Workflows JSON</a>
+            <a class="btn secondary" href="/api/pdp-v3/live">Supervision live</a>
+            <a class="btn secondary" href="/api/pdp-v3/journal-technique">Journal technique</a>
+            <a class="btn secondary" href="/api/pdp-v3/archives">Archives probatoires</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Lecture métier</h3>
+        <ul class="status-list">
+            <li><span>Création workflow</span><strong>Automatique</strong></li>
+            <li><span>Statut PDP</span><strong>Normalisé</strong></li>
+            <li><span>Canal</span><strong>Traçable</strong></li>
+            <li><span>Archivage</span><strong>Probatoire</strong></li>
+        </ul>
+    </div>
+</div>
 
 {% endblock %}
