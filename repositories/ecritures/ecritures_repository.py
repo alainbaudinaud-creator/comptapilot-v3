@@ -60,3 +60,22 @@ def societe_est_cloturee_repository(societe_id):
         })
 
         return result.scalar() > 0
+
+def ecriture_verrouillee_repository(ecriture_id):
+
+    with engine.begin() as con:
+
+        result = con.execute(text("""
+            SELECT verrouillee
+            FROM ecritures
+            WHERE id = :ecriture_id
+        """), {
+            "ecriture_id": ecriture_id
+        })
+
+        row = result.fetchone()
+
+        if not row:
+            return False
+
+        return int(row[0] or 0) == 1
