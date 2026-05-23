@@ -1,36 +1,18 @@
-﻿from sqlalchemy import text
-
-from database import engine
+﻿from repositories.sql_stats_repository import fetch_count
+from repositories.sql_stats_repository import fetch_sum_debit_credit
 
 
 def fetch_stats_ecritures_auto():
 
-    with engine.begin() as con:
+    stats = fetch_sum_debit_credit("ecritures_auto")
 
-        result = con.execute(text("""
-            SELECT
-                COALESCE(SUM(debit), 0),
-                COALESCE(SUM(credit), 0),
-                COUNT(*)
-            FROM ecritures_auto
-        """))
-
-        row = result.fetchone()
-
-        return {
-            "total_debit": float(row[0] or 0),
-            "total_credit": float(row[1] or 0),
-            "nb_ecritures_auto": int(row[2] or 0)
-        }
+    return {
+        "total_debit": stats["total_debit"],
+        "total_credit": stats["total_credit"],
+        "nb_ecritures_auto": stats["count"]
+    }
 
 
 def fetch_nombre_ecritures_auto():
 
-    with engine.begin() as con:
-
-        result = con.execute(text("""
-            SELECT COUNT(*)
-            FROM ecritures_auto
-        """))
-
-        return int(result.scalar() or 0)
+    return fetch_count("ecritures_auto")
