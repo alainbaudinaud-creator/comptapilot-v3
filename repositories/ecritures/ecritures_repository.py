@@ -45,3 +45,18 @@ def fetch_stats_ecritures():
             "total_credit": float(row[1] or 0),
             "nb_ecritures": int(row[2] or 0)
         }
+
+
+def societe_est_cloturee_repository(societe_id):
+
+    with engine.begin() as con:
+
+        result = con.execute(text("""
+            SELECT COUNT(*)
+            FROM clotures
+            WHERE societe_id = :societe_id
+        """), {
+            "societe_id": societe_id
+        })
+
+        return result.scalar() > 0
