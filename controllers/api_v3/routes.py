@@ -1,4 +1,4 @@
-﻿from flask import Blueprint, jsonify
+﻿from flask import Blueprint, jsonify`r`nfrom schemas_v3.api_response import success_response`r`nfrom schemas_v3.api_response import success_response
 
 from controllers.auth import login_required
 from services.permission_service import permission_required
@@ -17,7 +17,7 @@ api_v3_routes = Blueprint("api_v3_routes", __name__)
 @permission_required("ACCESS_ECRITURES")
 def api_v3_kpi():
 
-    return jsonify(get_kpi_financiers())
+    return jsonify(success_response(get_kpi_financiers()))
 
 
 @api_v3_routes.route("/api/v3/tva")
@@ -25,7 +25,7 @@ def api_v3_kpi():
 @permission_required("ACCESS_ECRITURES")
 def api_v3_tva():
 
-    return jsonify(get_tva_estimee())
+    return jsonify(success_response(get_tva_estimee()))
 
 
 @api_v3_routes.route("/api/v3/audit")
@@ -33,7 +33,7 @@ def api_v3_tva():
 @permission_required("ACCESS_ECRITURES")
 def api_v3_audit():
 
-    return jsonify(get_audit_comptable())
+    return jsonify(success_response(get_audit_comptable()))
 
 
 @api_v3_routes.route("/api/v3/supervision")
@@ -41,4 +41,6 @@ def api_v3_audit():
 @permission_required("ACCESS_ECRITURES")
 def api_v3_supervision():
 
-    return jsonify(get_supervision_comptable())
+    return jsonify(success_response(get_supervision_comptable()))
+
+
