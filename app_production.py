@@ -28,6 +28,7 @@ from controllers.portail_client_secure import bp_portail_client_secure
 from controllers.connecteurs_controller import bp_connecteurs
 from controllers.api_saas import bp_api_saas
 from controllers.cabinet_controller import bp_cabinet
+from controllers.admin_users import admin_users_routes
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "COMPTAPILOT_SECRET_2026"
@@ -58,6 +59,7 @@ app.register_blueprint(bp_portail_client_secure)
 app.register_blueprint(bp_connecteurs)
 app.register_blueprint(bp_api_saas)
 app.register_blueprint(bp_cabinet)
+app.register_blueprint(admin_users_routes)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
