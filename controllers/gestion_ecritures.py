@@ -98,7 +98,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 
 from PIL import Image
 from services.permission_service import permission_required
-from repositories.ecritures.ecritures_repository import fetch_ecritures, societe_est_cloturee_repository, ecriture_verrouillee_repository, fetch_ecritures_export_dashboard`r`nfrom repositories.ecritures.stats_repository import fetch_global_stats, fetch_dashboard_financier_par_type`r`nfrom services_v3.dashboard.dashboard_service import get_dashboard_financier`r`nfrom repositories.ecritures.stats_repository import fetch_global_stats, fetch_dashboard_financier_par_type`r`nfrom services_v3.dashboard.dashboard_service import get_dashboard_financier
+from repositories.ecritures.ecritures_repository import fetch_ecritures, societe_est_cloturee_repository, ecriture_verrouillee_repository, fetch_ecritures_export_dashboard`r`nfrom repositories.ecritures.stats_repository import fetch_global_stats, fetch_dashboard_financier_par_type`r`nfrom services_v3.dashboard.dashboard_service import get_dashboard_financier`r`nfrom repositories.sql_stats_repository import fetch_count_safe`r`nfrom repositories.ecritures.stats_repository import fetch_global_stats, fetch_dashboard_financier_par_type`r`nfrom services_v3.dashboard.dashboard_service import get_dashboard_financier`r`nfrom repositories.sql_stats_repository import fetch_count_safe
 
 
 
@@ -16880,6 +16880,7 @@ def operationnel_pret_tableau(pret_id):
 
     html += "</table><p><a href='/ecritures/operationnel/prets'>Retour</a></p>"
     return html
+
 
 
 

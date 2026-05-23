@@ -32,3 +32,10 @@ def fetch_sum_debit_credit(table_name: str) -> dict:
             "total_credit": float(row[1] or 0),
             "count": int(row[2] or 0)
         }
+
+def fetch_count_safe(table_name: str):
+
+    try:
+        return fetch_count(table_name)
+    except Exception:
+        return "table_absente"
