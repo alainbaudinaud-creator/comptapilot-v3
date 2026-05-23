@@ -1,6 +1,7 @@
 ﻿from functools import wraps
 from flask import jsonify
 
+from logs_v3.logger import log_error
 from schemas_v3.api_response import error_response
 
 
@@ -13,6 +14,17 @@ def api_safe(handler):
             return handler(*args, **kwargs)
 
         except Exception as exc:
+
+            log_error(
+                "api_v3",
+                "Erreur API V3",
+                {
+                    "handler": handler.__name__,
+                    "type": type(exc).__name__,
+                    "message": str(exc)
+                }
+            )
+
             return jsonify(
                 error_response(
                     message="Erreur API V3",
