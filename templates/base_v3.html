@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}ComptaPilot V3{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='v3/css/v3-theme.css') }}">
+</head>
+
+<body>
+
+<div class="v3-layout">
+
+    <aside class="v3-sidebar">
+
+        <div class="v3-logo">
+            Compta<span>Pilot</span>
+        </div>
+
+        <nav class="v3-nav">
+            <a href="/login">Accueil</a>
+            <a href="/api/v3/kpi">KPI V3</a>
+            <a href="/api/v3/supervision">Supervision</a>
+            <a href="/api/v3/tva">TVA</a>
+            <a href="/api/v3/audit">Audit</a>
+            <a href="/pdp-v3">PDP V3</a>
+            <a href="/admin/users">Administration</a>
+        </nav>
+
+    </aside>
+
+    <main class="v3-content">
+
+        <header class="v3-topbar">
+            <div>
+                <div class="v3-title">{% block page_title %}Cockpit Cabinet{% endblock %}</div>
+                <div class="v3-subtitle">{% block page_subtitle %}Pilotage intelligent du cabinet comptable{% endblock %}</div>
+            </div>
+        </header>
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+</div>
+
+</body>
+</html>
