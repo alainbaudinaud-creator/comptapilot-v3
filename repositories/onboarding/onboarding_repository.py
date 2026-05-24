@@ -1,4 +1,5 @@
-﻿from db.postgres import get_connection
+﻿from services.db_postgres import get_session
+from sqlalchemy import text
 
 
 def create_client_onboarding(
@@ -8,33 +9,37 @@ def create_client_onboarding(
     telephone
 ):
 
-    conn = get_connection()
-    cur = conn.cursor()
+    session = get_session()
 
-    cur.execute(
-        """
-        INSERT INTO societes (
-            nom,
-            siren,
-            email,
-            telephone
-        )
-        VALUES (%s, %s, %s, %s)
-        RETURNING id
-        """,
-        (
-            nom,
-            siren,
-            email,
-            telephone
-        )
+    result = session.execute(
+        text(
+            """
+            INSERT INTO societes (
+                nom,
+                siren,
+                email,
+                telephone
+            )
+            VALUES (
+                :nom,
+                :siren,
+                :email,
+                :telephone
+            )
+            RETURNING id
+            """
+        ),
+        {
+            "nom": nom,
+            "siren": siren,
+            "email": email,
+            "telephone": telephone
+        }
     )
 
-    societe_id = cur.fetchone()[0]
+    societe_id = result.fetchone()[0]
 
-    conn.commit()
-
-    cur.close()
-    conn.close()
+    session.commit()
+    session.close()
 
     return societe_id
