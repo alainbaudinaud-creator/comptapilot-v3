@@ -1,0 +1,142 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Production Comptable V3</title>
+
+    <style>
+
+        body {
+            margin:0;
+            background:#020617;
+            color:#e5e7eb;
+            font-family:Arial,sans-serif;
+        }
+
+        .page {
+            padding:32px;
+        }
+
+        .hero {
+            background:linear-gradient(135deg,#111827,#2563eb);
+            padding:30px;
+            border-radius:24px;
+            margin-bottom:24px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:16px;
+        }
+
+        .card {
+            background:#0f172a;
+            border:1px solid #334155;
+            border-radius:18px;
+            padding:20px;
+        }
+
+        .num {
+            font-size:32px;
+            color:#93c5fd;
+            font-weight:bold;
+        }
+
+        form {
+            margin-top:24px;
+            background:#111827;
+            padding:24px;
+            border-radius:20px;
+        }
+
+        input[type=file] {
+            margin:18px 0;
+        }
+
+        button {
+            background:#2563eb;
+            color:white;
+            border:none;
+            padding:14px 18px;
+            border-radius:12px;
+            cursor:pointer;
+            font-weight:bold;
+        }
+
+        .resultat {
+            margin-top:24px;
+            background:#0f172a;
+            padding:24px;
+            border-radius:20px;
+            border:1px solid #334155;
+        }
+
+        pre {
+            white-space:pre-wrap;
+            line-height:1.6;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+    <section class="hero">
+        <h1>Production Comptable Réelle V3</h1>
+
+        <p>
+            Upload pièce → OCR IA → analyse comptable →
+            génération pré-écriture → insertion SQL →
+            workflow cabinet.
+        </p>
+    </section>
+
+    <section class="grid">
+
+        {% for label, value in stats.items() %}
+
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <h2>Importer une pièce comptable</h2>
+
+        <input type="file" name="piece" required>
+
+        <br>
+
+        <button type="submit">
+            Lancer analyse IA comptable
+        </button>
+
+    </form>
+
+    {% if resultat %}
+
+    <section class="resultat">
+
+        <h2>Résultat analyse IA</h2>
+
+<pre>
+{{ resultat }}
+</pre>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>
