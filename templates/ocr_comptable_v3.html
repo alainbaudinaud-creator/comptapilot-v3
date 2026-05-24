@@ -1,0 +1,121 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>OCR Comptable V3 - ComptaPilot</title>
+    <style>
+        body { margin:0; font-family:Arial, sans-serif; background:#020617; color:#e5e7eb; }
+        .page { padding:32px; }
+        .hero { background:linear-gradient(135deg,#111827,#0f766e); padding:30px; border-radius:24px; margin-bottom:24px; }
+        .hero h1 { margin:0 0 10px; font-size:34px; }
+        .hero p { max-width:920px; line-height:1.7; color:#ccfbf1; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:18px; }
+        .card { background:#0f172a; border:1px solid #115e59; border-radius:20px; padding:22px; box-shadow:0 20px 45px rgba(0,0,0,.32); }
+        .card h2 { margin-top:0; color:#5eead4; font-size:19px; }
+        .tag { display:inline-block; background:#0f766e; color:white; padding:6px 11px; border-radius:999px; font-size:12px; margin-bottom:12px; }
+        ul { padding-left:20px; line-height:1.85; }
+        .pipeline { margin-top:24px; background:#0f172a; border:1px solid #334155; border-radius:20px; padding:22px; }
+        .step { display:inline-block; margin:6px; padding:10px 13px; border-radius:999px; background:#134e4a; color:#ccfbf1; font-weight:bold; }
+        .actions { margin-top:26px; display:flex; gap:12px; flex-wrap:wrap; }
+        .btn { background:#0f766e; color:white; padding:12px 16px; border-radius:12px; text-decoration:none; font-weight:bold; }
+        .btn.secondary { background:#334155; }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <span class="tag">OCR + IA Comptable V3</span>
+            <h1>Lecture intelligente des factures et pièces comptables</h1>
+            <p>
+                Analyse automatique des PDF, factures, justificatifs et pièces cabinet :
+                extraction fournisseur, date, numéro, HT, TVA, TTC, suggestion de compte comptable
+                et préparation de pré-écritures validables.
+            </p>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h2>1. Upload pièces</h2>
+                <ul>
+                    <li>Factures PDF</li>
+                    <li>Images justificatives</li>
+                    <li>Lots multi-fichiers</li>
+                    <li>Classement par client</li>
+                    <li>Historique dépôt</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>2. Extraction OCR</h2>
+                <ul>
+                    <li>Texte brut</li>
+                    <li>Fournisseur</li>
+                    <li>Numéro facture</li>
+                    <li>Date document</li>
+                    <li>Montants détectés</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>3. Analyse comptable IA</h2>
+                <ul>
+                    <li>Compte fournisseur</li>
+                    <li>Compte charge</li>
+                    <li>TVA déductible</li>
+                    <li>Règles cabinet</li>
+                    <li>Score de confiance</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>4. Pré-écriture</h2>
+                <ul>
+                    <li>Journal achat / vente</li>
+                    <li>Lignes débit/crédit</li>
+                    <li>Libellé automatique</li>
+                    <li>Pièce attachée</li>
+                    <li>Validation collaborateur</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>5. Contrôles</h2>
+                <ul>
+                    <li>Doublons facture</li>
+                    <li>TVA incohérente</li>
+                    <li>Montants déséquilibrés</li>
+                    <li>Fournisseur inconnu</li>
+                    <li>Alerte anomalie</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>6. Workflow cabinet</h2>
+                <ul>
+                    <li>À traiter</li>
+                    <li>À contrôler</li>
+                    <li>À valider</li>
+                    <li>Comptabilisé</li>
+                    <li>Archivé probatoire</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="pipeline">
+            <h2>Pipeline cible</h2>
+            <span class="step">Upload</span>
+            <span class="step">OCR</span>
+            <span class="step">Extraction</span>
+            <span class="step">Analyse IA</span>
+            <span class="step">Pré-écriture</span>
+            <span class="step">Validation</span>
+            <span class="step">Comptabilisation</span>
+        </section>
+
+        <div class="actions">
+            <a class="btn" href="/import-client">Import client</a>
+            <a class="btn secondary" href="/">Retour accueil</a>
+        </div>
+    </main>
+</body>
+</html>
