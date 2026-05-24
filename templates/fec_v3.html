@@ -1,0 +1,76 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+FEC V3
+{% endblock %}
+
+{% block page_title %}
+Export FEC DGFIP
+{% endblock %}
+
+{% block page_subtitle %}
+Production Fichier des Écritures Comptables
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Export fiscal légal
+    </div>
+
+    <div style="margin-top: 18px;">
+
+        <button
+            class="login-button"
+            onclick="generateFec()"
+        >
+            Générer FEC DGFIP
+        </button>
+
+    </div>
+
+    <div
+        id="fec_result"
+        style="margin-top: 24px;"
+    ></div>
+
+</div>
+
+<script>
+
+async function generateFec() {
+
+    const response = await fetch(
+        "/api/v3/fec/export",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                societe_id: 1
+            })
+        }
+    );
+
+    const result = await response.json();
+
+    const data = result.data;
+
+    document.getElementById(
+        "fec_result"
+    ).innerHTML = `
+        <div style="margin-top:16px;">
+            <strong>Export généré</strong>
+            <div>Fichier : ${data.filename}</div>
+            <div>Écritures : ${data.count}</div>
+            <div>Chemin : ${data.filepath}</div>
+        </div>
+    `;
+}
+
+</script>
+
+{% endblock %}
