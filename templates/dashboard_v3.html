@@ -1,0 +1,130 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}ComptaPilot V3 — Cockpit Cabinet{% endblock %}
+
+{% block page_title %}Cockpit Cabinet augmenté{% endblock %}
+
+{% block page_subtitle %}
+Vue temps réel de la performance, de la supervision et des automatisations comptables
+{% endblock %}
+
+{% block content %}
+
+<section class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Chiffre d'affaires estimé</div>
+        <div class="v3-kpi-value" id="kpi-ca">0 €</div>
+        <div class="v3-kpi-trend">Analyse financière V3</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Charges</div>
+        <div class="v3-kpi-value" id="kpi-charges">0 €</div>
+        <div class="v3-kpi-trend">Contrôle automatique</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Résultat</div>
+        <div class="v3-kpi-value" id="kpi-resultat">0 €</div>
+        <div class="v3-kpi-trend">Pilotage instantané</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">TVA à payer</div>
+        <div class="v3-kpi-value" id="kpi-tva">0 €</div>
+        <div class="v3-kpi-trend">Estimation automatisée</div>
+    </div>
+
+</section>
+
+<div style="height: 26px;"></div>
+
+<section class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Écritures comptables</div>
+        <div class="v3-kpi-value" id="kpi-ecritures">0</div>
+        <div class="v3-kpi-trend">Synchronisation PostgreSQL</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Équilibre comptable</div>
+        <div class="v3-kpi-value" id="kpi-equilibre">0 €</div>
+        <div class="v3-kpi-trend">Débit / Crédit</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Marge</div>
+        <div class="v3-kpi-value" id="kpi-marge">0 €</div>
+        <div class="v3-kpi-trend" id="kpi-ratio">Ratio marge 0%</div>
+    </div>
+
+</section>
+
+<div style="height: 26px;"></div>
+
+<section class="v3-grid">
+
+    <div class="v3-card" style="grid-column: span 2;">
+        <div class="v3-kpi-label">Assistant Cabinet IA</div>
+        <div style="font-size: 22px; font-weight: 600; margin-bottom: 14px;">
+            Votre cabinet est piloté par ComptaPilot V3
+        </div>
+        <div style="color: var(--text-secondary); line-height: 1.7;">
+            Supervision comptable, contrôle TVA, audit automatique, KPI financiers,
+            alertes et orchestration métier sont centralisés dans une architecture V3.
+        </div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Statut Plateforme</div>
+        <div class="v3-kpi-value" id="kpi-statut">OK</div>
+        <div class="v3-kpi-trend">API V3 sécurisée</div>
+    </div>
+
+</section>
+
+<script>
+async function loadKpiV3() {
+    try {
+        const response = await fetch("/api/v3/kpi");
+        const payload = await response.json();
+
+        const data = payload.data || payload;
+
+        document.getElementById("kpi-ca").innerText =
+            Number(data.ca || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-charges").innerText =
+            Number(data.charges || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-resultat").innerText =
+            Number(data.resultat || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-tva").innerText =
+            Number(data.tva_a_payer || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-ecritures").innerText =
+            Number(data.nb_ecritures || 0).toLocaleString("fr-FR");
+
+        document.getElementById("kpi-equilibre").innerText =
+            Number(data.equilibre_comptable || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-marge").innerText =
+            Number(data.marge || 0).toLocaleString("fr-FR") + " €";
+
+        document.getElementById("kpi-ratio").innerText =
+            "Ratio marge " + Number(data.ratio_marge || 0).toLocaleString("fr-FR") + "%";
+
+        document.getElementById("kpi-statut").innerText =
+            data.statut || "OK";
+    } catch (error) {
+        document.getElementById("kpi-statut").innerText = "API";
+    }
+}
+
+loadKpiV3();
+</script>
+
+{% endblock %}
