@@ -1,0 +1,116 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Plateforme Cabinet Industrielle V3</title>
+
+    <style>
+
+        body {
+            margin:0;
+            background:#020617;
+            color:#e5e7eb;
+            font-family:Arial,sans-serif;
+        }
+
+        .page {
+            padding:32px;
+        }
+
+        .hero {
+            background:linear-gradient(135deg,#111827,#7c3aed);
+            padding:30px;
+            border-radius:24px;
+            margin-bottom:24px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:16px;
+        }
+
+        .card {
+            background:#0f172a;
+            border:1px solid #334155;
+            border-radius:18px;
+            padding:20px;
+        }
+
+        .num {
+            font-size:32px;
+            color:#c4b5fd;
+            font-weight:bold;
+        }
+
+        ul {
+            line-height:1.9;
+        }
+
+        a {
+            color:#ddd6fe;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+    <section class="hero">
+
+        <h1>Plateforme Cabinet Industrielle V3</h1>
+
+        <p>
+            Multi-sociétés, collaborateurs, supervision,
+            workflow cabinet, coffre-fort, API SaaS,
+            connecteurs réglementaires et industrialisation
+            complète de la production comptable.
+        </p>
+
+    </section>
+
+    <section class="grid">
+
+        {% for label, value in stats.items() %}
+
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+
+        <h2>Fonctions industrielles V3</h2>
+
+        <ul>
+
+            <li>✔ Multi sociétés cabinet</li>
+            <li>✔ Gestion collaborateurs</li>
+            <li>✔ Permissions & rôles</li>
+            <li>✔ Journalisation légale</li>
+            <li>✔ Coffre-fort documentaire</li>
+            <li>✔ API SaaS cabinet</li>
+            <li>✔ Supervision dossiers</li>
+            <li>✔ Connecteurs PEPPOL / PDP / Chorus Pro</li>
+            <li>✔ Exports réglementaires</li>
+            <li>✔ Dashboard temps réel</li>
+
+        </ul>
+
+    </section>
+
+    <p style="margin-top:28px;">
+        <a href="/">← Retour accueil</a>
+    </p>
+
+</main>
+
+</body>
+</html>

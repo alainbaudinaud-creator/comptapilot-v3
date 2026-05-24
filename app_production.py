@@ -54,6 +54,7 @@ from controllers.ocr_comptable.ocr_comptable_controller import bp_ocr_comptable
 from controllers.socle_donnees.socle_donnees_controller import bp_socle_donnees
 from controllers.production_comptable.production_comptable_controller import bp_production_comptable
 from controllers.moteurs_comptables.moteurs_comptables_controller import bp_moteurs_comptables
+from controllers.plateforme_cabinet.plateforme_cabinet_controller import bp_plateforme_cabinet
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -103,6 +104,7 @@ app.register_blueprint(bp_ocr_comptable)
 app.register_blueprint(bp_socle_donnees)
 app.register_blueprint(bp_production_comptable)
 app.register_blueprint(bp_moteurs_comptables)
+app.register_blueprint(bp_plateforme_cabinet)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -133,6 +135,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
