@@ -10,6 +10,10 @@ from services_v3.client_portal.client_portal_service import (
     get_client_portal_dashboard
 )
 
+from services_v3.documents.document_upload_service import (
+    upload_client_document
+)
+
 from schemas_v3.api_response import success_response
 
 
@@ -37,6 +41,27 @@ def api_client_portal():
     societe_id = request.args.get("societe_id", 1)
 
     result = get_client_portal_dashboard(societe_id)
+
+    return jsonify(
+        success_response(result)
+    )
+
+
+@bp_client_portal.route(
+    "/api/v3/client-portal/upload",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_upload_client_document():
+
+    societe_id = request.form.get("societe_id", 1)
+    file = request.files.get("file")
+
+    result = upload_client_document(
+        file=file,
+        societe_id=societe_id
+    )
 
     return jsonify(
         success_response(result)

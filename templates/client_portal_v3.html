@@ -9,7 +9,7 @@ Portail Client Intelligent
 {% endblock %}
 
 {% block page_subtitle %}
-Suivi du dossier, dépôt de pièces et automatisation cabinet
+Dépôt de pièces, OCR et suivi automatisé du dossier
 {% endblock %}
 
 {% block content %}
@@ -17,69 +17,30 @@ Suivi du dossier, dépôt de pièces et automatisation cabinet
 <div class="v3-grid">
 
     <div class="v3-card">
-        <div class="v3-kpi-label">
-            Statut onboarding
-        </div>
-
-        <div
-            id="onboarding_status"
-            class="v3-kpi-value"
-        >
-            Chargement...
-        </div>
-
-        <div
-            id="onboarding_step"
-            style="color: var(--text-secondary); margin-top: 8px;"
-        ></div>
+        <div class="v3-kpi-label">Statut onboarding</div>
+        <div id="onboarding_status" class="v3-kpi-value">Chargement...</div>
+        <div id="onboarding_step" style="color: var(--text-secondary); margin-top: 8px;"></div>
     </div>
 
     <div class="v3-card">
-        <div class="v3-kpi-label">
-            Pièces déposées
-        </div>
-
-        <div
-            id="documents_count"
-            class="v3-kpi-value"
-        >
-            -
-        </div>
-
+        <div class="v3-kpi-label">Pièces déposées</div>
+        <div id="documents_count" class="v3-kpi-value">-</div>
         <div style="color: var(--text-secondary); margin-top: 8px;">
             Documents transmis au cabinet
         </div>
     </div>
 
     <div class="v3-card">
-        <div class="v3-kpi-label">
-            OCR
-        </div>
-
-        <div
-            id="ocr_status"
-            class="v3-kpi-value"
-        >
-            -
-        </div>
-
+        <div class="v3-kpi-label">OCR</div>
+        <div id="ocr_status" class="v3-kpi-value">-</div>
         <div style="color: var(--text-secondary); margin-top: 8px;">
             Lecture automatique des pièces
         </div>
     </div>
 
     <div class="v3-card">
-        <div class="v3-kpi-label">
-            Précompta IA
-        </div>
-
-        <div
-            id="precompta_status"
-            class="v3-kpi-value"
-        >
-            -
-        </div>
-
+        <div class="v3-kpi-label">Précompta IA</div>
+        <div id="precompta_status" class="v3-kpi-value">-</div>
         <div style="color: var(--text-secondary); margin-top: 8px;">
             Préparation intelligente des écritures
         </div>
@@ -89,26 +50,33 @@ Suivi du dossier, dépôt de pièces et automatisation cabinet
 
 <div style="height: 24px;"></div>
 
-<div class="v3-card">
+<div class="v3-card" style="max-width: 820px;">
 
     <div class="v3-kpi-label">
-        Espace client
+        Dépôt sécurisé
     </div>
 
     <h2 style="margin-top: 12px;">
-        Dépôt de pièces
+        Ajouter une pièce comptable
     </h2>
 
     <p style="color: var(--text-secondary);">
-        Le client pourra bientôt déposer ses factures, relevés et justificatifs directement depuis cet espace sécurisé.
+        Formats acceptés : PDF, PNG, JPG, JPEG, WEBP.
     </p>
+
+    <input
+        id="document_file"
+        type="file"
+        class="login-input"
+        accept=".pdf,.png,.jpg,.jpeg,.webp"
+    >
 
     <button
         class="login-button"
-        onclick="simulateUpload()"
+        onclick="uploadDocument()"
         style="max-width: 280px;"
     >
-        Simuler dépôt de pièce
+        Envoyer la pièce
     </button>
 
     <div
@@ -131,11 +99,11 @@ async function loadClientPortal() {
     );
 
     const result = await response.json();
-
     const data = result.data;
 
     if (!data.found) {
-        document.getElementById("onboarding_status").innerText = "Client introuvable";
+        document.getElementById("onboarding_status").innerText =
+            "Client introuvable";
         return;
     }
 
@@ -156,10 +124,40 @@ async function loadClientPortal() {
 }
 
 
-function simulateUpload() {
+async function uploadDocument() {
+
+    const fileInput = document.getElementById("document_file");
+
+    if (!fileInput.files.length) {
+        document.getElementById("upload_result").innerText =
+            "Veuillez sélectionner un fichier.";
+        return;
+    }
+
+    const formData = new FormData();
+
+    formData.append("societe_id", "1");
+    formData.append("file", fileInput.files[0]);
+
+    const response = await fetch(
+        "/api/v3/client-portal/upload",
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    if (!data.success) {
+        document.getElementById("upload_result").innerText =
+            data.message;
+        return;
+    }
 
     document.getElementById("upload_result").innerText =
-        "Pièce reçue — traitement OCR prêt à démarrer.";
+        "Pièce reçue — OCR en attente — document #" + data.document_id;
 }
 
 
