@@ -1,0 +1,140 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+GED V3
+{% endblock %}
+
+{% block page_title %}
+GED avancée V3
+{% endblock %}
+
+{% block page_subtitle %}
+Classement, archivage et suivi des documents comptables
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Documents</div>
+        <div id="count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Actifs</div>
+        <div id="active_count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Archivés</div>
+        <div id="archived_count" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div id="ged_list" class="v3-grid"></div>
+
+<script>
+
+async function loadGed() {
+
+    const response = await fetch(
+        "/api/v3/ged"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    document.getElementById("count").innerText =
+        data.count;
+
+    document.getElementById("active_count").innerText =
+        data.active_count;
+
+    document.getElementById("archived_count").innerText =
+        data.archived_count;
+
+    const container = document.getElementById("ged_list");
+    container.innerHTML = "";
+
+    data.items.forEach(function(item) {
+
+        const card = document.createElement("div");
+        card.className = "v3-card";
+
+        card.innerHTML = `
+            <div class="v3-kpi-label">
+                Document #${item.id}
+            </div>
+
+            <h3 style="margin-top: 12px;">
+                ${item.filename || "-"}
+            </h3>
+
+            <div style="color: var(--text-secondary); margin-top: 8px;">
+                Société : ${item.societe_id || "-"}
+            </div>
+
+            <div>Catégorie : ${item.ged_category || "non_classe"}</div>
+            <div>Statut GED : ${item.ged_status || "-"}</div>
+            <div>OCR : ${item.statut_ocr || "-"}</div>
+            <div>Précompta : ${item.statut_precompta || "-"}</div>
+            <div>Tags : ${item.ged_tags || "-"}</div>
+
+            <div style="margin-top: 16px; display: flex; gap: 8px;">
+                <button class="login-button" onclick="classifyDocument(${item.id})">
+                    Classer facture
+                </button>
+
+                <button class="login-button" onclick="archiveDocument(${item.id})" style="background:#991B1B;">
+                    Archiver
+                </button>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+async function classifyDocument(id) {
+
+    await fetch(
+        "/api/v3/ged/document/" + id + "/classify",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                category: "facture",
+                tags: "client,comptabilite"
+            })
+        }
+    );
+
+    loadGed();
+}
+
+
+async function archiveDocument(id) {
+
+    await fetch(
+        "/api/v3/ged/document/" + id + "/archive",
+        {
+            method: "POST"
+        }
+    );
+
+    loadGed();
+}
+
+
+loadGed();
+
+</script>
+
+{% endblock %}
