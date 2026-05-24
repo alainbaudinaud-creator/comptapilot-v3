@@ -18,6 +18,10 @@ from services_v3.ocr.ocr_service import (
     run_ocr_on_document
 )
 
+from services_v3.precompta_ai.precompta_ai_service import (
+    generate_precompta_from_document
+)
+
 from schemas_v3.api_response import success_response
 
 
@@ -81,6 +85,21 @@ def api_upload_client_document():
 def api_run_document_ocr(document_id):
 
     result = run_ocr_on_document(document_id)
+
+    return jsonify(
+        success_response(result)
+    )
+
+
+@bp_client_portal.route(
+    "/api/v3/client-portal/document/<int:document_id>/precompta",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_generate_document_precompta(document_id):
+
+    result = generate_precompta_from_document(document_id)
 
     return jsonify(
         success_response(result)
