@@ -15,6 +15,10 @@ from services_v3.email.email_service import (
     send_email_smtp
 )
 
+from services_v3.history.history_service import (
+    log_action
+)
+
 
 def get_relances_center():
 
@@ -54,6 +58,20 @@ def generate_relances_from_alerts():
             }
         )
 
+        log_action(
+            module="relances",
+            action="creation_relance_depuis_alerte",
+            statut="ok",
+            societe_id=alert.get("societe_id"),
+            reference_type="relance",
+            reference_id=relance_id,
+            message="Relance client créée depuis une alerte",
+            metadata={
+                "alerte_type": alert.get("type"),
+                "alerte_reference_id": alert.get("reference_id")
+            }
+        )
+
         created.append(relance_id)
 
     return {
@@ -82,7 +100,6 @@ def prepare_email_for_relance(relance_id):
         email_to = "client@example.com"
 
     email_subject = relance.get("titre") or "Relance cabinet"
-
     email_body = relance.get("message") or ""
 
     prepare_relance_email(
@@ -90,6 +107,20 @@ def prepare_email_for_relance(relance_id):
         email_to=email_to,
         email_subject=email_subject,
         email_body=email_body
+    )
+
+    log_action(
+        module="relances",
+        action="preparation_email_relance",
+        statut="ok",
+        societe_id=relance.get("societe_id"),
+        reference_type="relance",
+        reference_id=relance_id,
+        message="Email de relance préparé",
+        metadata={
+            "email_to": email_to,
+            "email_subject": email_subject
+        }
     )
 
     return {
@@ -113,6 +144,16 @@ def send_relance(relance_id):
         }
 
     if relance.get("email_status") != "pret":
+        log_action(
+            module="relances",
+            action="envoi_relance",
+            statut="erreur",
+            societe_id=relance.get("societe_id"),
+            reference_type="relance",
+            reference_id=relance_id,
+            message="Tentative d'envoi sans email préparé"
+        )
+
         return {
             "success": False,
             "message": "Email non préparé"
@@ -125,6 +166,20 @@ def send_relance(relance_id):
     )
 
     if not email_result.get("success"):
+
+        log_action(
+            module="relances",
+            action="envoi_relance",
+            statut="erreur",
+            societe_id=relance.get("societe_id"),
+            reference_type="relance",
+            reference_id=relance_id,
+            message=email_result.get("message"),
+            metadata={
+                "email_status": email_result.get("status")
+            }
+        )
+
         return {
             "success": False,
             "relance_id": relance_id,
@@ -133,6 +188,16 @@ def send_relance(relance_id):
         }
 
     mark_relance_sent(relance_id)
+
+    log_action(
+        module="relances",
+        action="envoi_relance",
+        statut="ok",
+        societe_id=relance.get("societe_id"),
+        reference_type="relance",
+        reference_id=relance_id,
+        message="Email de relance envoyé"
+    )
 
     return {
         "success": True,
@@ -168,4 +233,3 @@ def build_relance_message(alert):
         "Cordialement,\n"
         "Votre cabinet"
     )
-
