@@ -1,0 +1,91 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Backups V3
+{% endblock %}
+
+{% block page_title %}
+Sauvegardes automatiques
+{% endblock %}
+
+{% block page_subtitle %}
+Supervision des sauvegardes PostgreSQL et exports
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Sauvegardes disponibles
+    </div>
+
+    <div
+        id="backup_count"
+        class="v3-kpi-value"
+        style="margin-top: 12px;"
+    >
+        -
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div id="backup_list" class="v3-grid"></div>
+
+<script>
+
+async function loadBackups() {
+
+    const response = await fetch(
+        "/api/v3/backups"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    document.getElementById(
+        "backup_count"
+    ).innerText = data.count;
+
+    const container = document.getElementById(
+        "backup_list"
+    );
+
+    container.innerHTML = "";
+
+    data.items.forEach(function(item) {
+
+        const card = document.createElement("div");
+
+        card.className = "v3-card";
+
+        card.innerHTML = `
+            <div class="v3-kpi-label">
+                Backup
+            </div>
+
+            <h3 style="margin-top: 12px;">
+                ${item.filename}
+            </h3>
+
+            <div style="margin-top: 8px;">
+                Taille : ${item.size} octets
+            </div>
+
+            <div>
+                Chemin : ${item.path}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+loadBackups();
+
+</script>
+
+{% endblock %}

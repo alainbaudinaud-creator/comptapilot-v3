@@ -45,6 +45,7 @@ from controllers.security.security_controller import bp_security
 from controllers.isolation.isolation_controller import bp_isolation
 from controllers.client_space.client_space_controller import bp_client_space
 from controllers.ged.ged_controller import bp_ged
+from controllers.backup.backup_controller import bp_backup
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -78,6 +79,7 @@ app.register_blueprint(bp_enterprise)
 app.register_blueprint(bp_login)
 app.register_blueprint(bp_fiscal)
 app.register_blueprint(bp_ged)
+app.register_blueprint(bp_backup)
 app.register_blueprint(bp_upload)
 app.register_blueprint(bp_rest_api)
 app.register_blueprint(bp_cabinet_dashboard)
@@ -101,6 +103,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
