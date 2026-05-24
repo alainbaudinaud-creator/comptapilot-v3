@@ -11,6 +11,10 @@ from services_v3.alerts.alerts_service import (
     get_alerts_center
 )
 
+from services_v3.email.email_service import (
+    send_email_smtp
+)
+
 
 def get_relances_center():
 
@@ -114,12 +118,27 @@ def send_relance(relance_id):
             "message": "Email non préparé"
         }
 
+    email_result = send_email_smtp(
+        to_email=relance.get("email_to"),
+        subject=relance.get("email_subject"),
+        body=relance.get("email_body")
+    )
+
+    if not email_result.get("success"):
+        return {
+            "success": False,
+            "relance_id": relance_id,
+            "email_status": email_result.get("status"),
+            "message": email_result.get("message")
+        }
+
     mark_relance_sent(relance_id)
 
     return {
         "success": True,
         "relance_id": relance_id,
-        "message": "Relance marquée comme envoyée"
+        "email_status": "envoye",
+        "message": "Email de relance envoyé"
     }
 
 
@@ -149,3 +168,4 @@ def build_relance_message(alert):
         "Cordialement,\n"
         "Votre cabinet"
     )
+
