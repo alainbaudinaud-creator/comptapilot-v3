@@ -35,6 +35,7 @@ from controllers.client_portal.client_portal_controller import bp_client_portal
 from controllers.validation.validation_controller import bp_validation
 from controllers.journal_v3.journal_controller import bp_journal_v3
 from controllers.exports_v3.export_controller import bp_exports_v3
+from controllers.production.production_controller import bp_production
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -83,6 +84,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 

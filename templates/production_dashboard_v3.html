@@ -1,0 +1,177 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Production Cabinet V3
+{% endblock %}
+
+{% block page_title %}
+Dashboard Production Cabinet
+{% endblock %}
+
+{% block page_subtitle %}
+Pilotage OCR, précompta, validation et écritures générées
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Santé production
+    </div>
+
+    <div id="health_status" class="v3-kpi-value">
+        Chargement...
+    </div>
+
+    <div
+        id="health_message"
+        style="color: var(--text-secondary); margin-top: 8px;"
+    ></div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Clients</div>
+        <div id="clients_total" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Documents reçus</div>
+        <div id="documents_total" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">OCR terminés</div>
+        <div id="ocr_termine" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Taux OCR</div>
+        <div id="ocr_success_rate" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Précomptas</div>
+        <div id="precompta_total" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">À valider</div>
+        <div id="precompta_a_valider" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Écritures</div>
+        <div id="ecritures_total" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Erreurs OCR</div>
+        <div id="ocr_erreur" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Derniers documents reçus
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>ID</th>
+                    <th>Société</th>
+                    <th>Fichier</th>
+                    <th>OCR</th>
+                    <th>Précompta</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="recent_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+async function loadProductionDashboard() {
+
+    const response = await fetch(
+        "/api/v3/production"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+    const metrics = data.metrics;
+
+    document.getElementById("health_status").innerText =
+        data.health.status;
+
+    document.getElementById("health_message").innerText =
+        data.health.message;
+
+    document.getElementById("clients_total").innerText =
+        metrics.clients_total;
+
+    document.getElementById("documents_total").innerText =
+        metrics.documents_total;
+
+    document.getElementById("ocr_termine").innerText =
+        metrics.ocr_termine;
+
+    document.getElementById("ocr_success_rate").innerText =
+        data.ocr_success_rate + "%";
+
+    document.getElementById("precompta_total").innerText =
+        metrics.precompta_total;
+
+    document.getElementById("precompta_a_valider").innerText =
+        metrics.precompta_a_valider;
+
+    document.getElementById("ecritures_total").innerText =
+        metrics.ecritures_total;
+
+    document.getElementById("ocr_erreur").innerText =
+        metrics.ocr_erreur;
+
+    const tbody = document.getElementById("recent_rows");
+    tbody.innerHTML = "";
+
+    data.recent_items.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.document_id}</td>
+            <td>${item.societe_id || "-"}</td>
+            <td>${item.filename || "-"}</td>
+            <td>${item.statut_ocr || "-"}</td>
+            <td>${item.statut_precompta || "-"}</td>
+            <td>${item.created_at || "-"}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+loadProductionDashboard();
+
+</script>
+
+{% endblock %}
