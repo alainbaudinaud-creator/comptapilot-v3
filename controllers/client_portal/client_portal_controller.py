@@ -14,6 +14,10 @@ from services_v3.documents.document_upload_service import (
     upload_client_document
 )
 
+from services_v3.ocr.ocr_service import (
+    run_ocr_on_document
+)
+
 from schemas_v3.api_response import success_response
 
 
@@ -62,6 +66,21 @@ def api_upload_client_document():
         file=file,
         societe_id=societe_id
     )
+
+    return jsonify(
+        success_response(result)
+    )
+
+
+@bp_client_portal.route(
+    "/api/v3/client-portal/document/<int:document_id>/ocr",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_run_document_ocr(document_id):
+
+    result = run_ocr_on_document(document_id)
 
     return jsonify(
         success_response(result)
