@@ -1,4 +1,4 @@
-from flask import Blueprint
+﻿from flask import Blueprint
 from flask import request
 from flask import session
 from flask import redirect
@@ -17,7 +17,7 @@ def login():
         session["user"] = email
         session["role"] = "admin"
 
-        return redirect("/enterprise")
+        return redirect("/dashboard-v3")
 
     return """
     <html>
@@ -40,3 +40,4 @@ def logout():
     session.clear()
 
     return redirect("/login")
+
