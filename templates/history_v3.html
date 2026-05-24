@@ -1,0 +1,93 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Historique V3
+{% endblock %}
+
+{% block page_title %}
+Historique des actions cabinet
+{% endblock %}
+
+{% block page_subtitle %}
+Traçabilité des actions métier ComptaPilot V3
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+    <div class="v3-kpi-label">Actions historisées</div>
+    <div id="history_count" class="v3-kpi-value">-</div>
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Dernières actions
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>Date</th>
+                    <th>Module</th>
+                    <th>Action</th>
+                    <th>Statut</th>
+                    <th>Société</th>
+                    <th>Référence</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody id="history_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+async function loadHistory() {
+
+    const response = await fetch(
+        "/api/v3/history"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    document.getElementById("history_count").innerText =
+        data.count;
+
+    const tbody = document.getElementById("history_rows");
+    tbody.innerHTML = "";
+
+    data.items.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.created_at || "-"}</td>
+            <td>${item.module || "-"}</td>
+            <td>${item.action || "-"}</td>
+            <td>${item.statut || "-"}</td>
+            <td>${item.societe_id || "-"}</td>
+            <td>${item.reference_type || "-"} #${item.reference_id || "-"}</td>
+            <td>${item.message || "-"}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+loadHistory();
+
+</script>
+
+{% endblock %}
