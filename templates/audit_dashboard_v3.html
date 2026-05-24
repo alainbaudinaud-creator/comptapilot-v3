@@ -1,0 +1,209 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Audit V3
+{% endblock %}
+
+{% block page_title %}
+Dashboard Audit & Traçabilité
+{% endblock %}
+
+{% block page_subtitle %}
+Supervision des actions historisées ComptaPilot V3
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Santé audit
+    </div>
+
+    <div id="audit_health" class="v3-kpi-value">
+        Chargement...
+    </div>
+
+    <div
+        id="audit_health_message"
+        style="color: var(--text-secondary); margin-top: 8px;"
+    ></div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Actions totales</div>
+        <div id="total_actions" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Actions OK</div>
+        <div id="ok_actions" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Actions erreur</div>
+        <div id="error_actions" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Taux erreur</div>
+        <div id="error_rate" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">
+            Répartition par module
+        </div>
+
+        <div id="modules_list" style="margin-top: 16px;"></div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">
+            Répartition par statut
+        </div>
+
+        <div id="statuses_list" style="margin-top: 16px;"></div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Dernières erreurs
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>Date</th>
+                    <th>Module</th>
+                    <th>Action</th>
+                    <th>Référence</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+
+            <tbody id="recent_errors_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+async function loadAuditDashboard() {
+
+    const response = await fetch(
+        "/api/v3/audit-dashboard"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+    const metrics = data.metrics;
+
+    document.getElementById("audit_health").innerText =
+        data.health.status;
+
+    document.getElementById("audit_health_message").innerText =
+        data.health.message;
+
+    document.getElementById("total_actions").innerText =
+        metrics.total_actions;
+
+    document.getElementById("ok_actions").innerText =
+        metrics.ok_actions;
+
+    document.getElementById("error_actions").innerText =
+        metrics.error_actions;
+
+    document.getElementById("error_rate").innerText =
+        data.error_rate + "%";
+
+    renderList(
+        "modules_list",
+        metrics.modules,
+        "module"
+    );
+
+    renderList(
+        "statuses_list",
+        metrics.statuses,
+        "statut"
+    );
+
+    renderRecentErrors(
+        metrics.recent_errors
+    );
+}
+
+
+function renderList(elementId, items, labelKey) {
+
+    const container = document.getElementById(elementId);
+    container.innerHTML = "";
+
+    items.forEach(function(item) {
+
+        const row = document.createElement("div");
+
+        row.style.display = "flex";
+        row.style.justifyContent = "space-between";
+        row.style.padding = "8px 0";
+        row.style.borderBottom = "1px solid rgba(148,163,184,0.2)";
+
+        row.innerHTML = `
+            <span>${item[labelKey]}</span>
+            <strong>${item.count}</strong>
+        `;
+
+        container.appendChild(row);
+    });
+}
+
+
+function renderRecentErrors(items) {
+
+    const tbody = document.getElementById("recent_errors_rows");
+    tbody.innerHTML = "";
+
+    items.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.created_at || "-"}</td>
+            <td>${item.module || "-"}</td>
+            <td>${item.action || "-"}</td>
+            <td>${item.reference_type || "-"} #${item.reference_id || "-"}</td>
+            <td>${item.message || "-"}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+loadAuditDashboard();
+
+</script>
+
+{% endblock %}
