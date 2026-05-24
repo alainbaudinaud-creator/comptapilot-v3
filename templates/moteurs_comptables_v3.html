@@ -1,0 +1,100 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Moteurs Comptables V3</title>
+    <style>
+        body { margin:0; background:#020617; color:#e5e7eb; font-family:Arial,sans-serif; }
+        .page { padding:32px; }
+        .hero { background:linear-gradient(135deg,#111827,#16a34a); padding:30px; border-radius:24px; margin-bottom:24px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+        .card { background:#0f172a; border:1px solid #334155; border-radius:18px; padding:20px; overflow:auto; }
+        .num { font-size:32px; color:#86efac; font-weight:bold; }
+        table { width:100%; border-collapse:collapse; margin-top:12px; }
+        th,td { border-bottom:1px solid #334155; padding:8px; text-align:left; }
+        th { color:#93c5fd; }
+        a { color:#bfdbfe; }
+    </style>
+</head>
+<body>
+<main class="page">
+
+    <section class="hero">
+        <h1>Moteurs Comptables Réels V3</h1>
+        <p>Grand livre, balance, TVA CA3, export FEC et indicateurs de production comptable.</p>
+    </section>
+
+    <section class="grid">
+        {% for label, value in stats.items() %}
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="grid" style="margin-top:20px;">
+        <div class="card">
+            <h2>TVA CA3</h2>
+            <p>TVA collectée : {{ tva.tva_collectee }}</p>
+            <p>TVA déductible : {{ tva.tva_deductible }}</p>
+            <p>TVA due : {{ tva.tva_due }}</p>
+            <p>Statut : {{ tva.statut }}</p>
+        </div>
+
+        <div class="card">
+            <h2>Export FEC</h2>
+            <p>Fichier généré :</p>
+            <p>{{ fec_path }}</p>
+        </div>
+    </section>
+
+    <section class="card" style="margin-top:20px;">
+        <h2>Balance dynamique</h2>
+        <table>
+            <tr>
+                <th>Compte</th>
+                <th>Débit</th>
+                <th>Crédit</th>
+                <th>Solde</th>
+            </tr>
+            {% for row in balance %}
+            <tr>
+                <td>{{ row.compte }}</td>
+                <td>{{ row.debit }}</td>
+                <td>{{ row.credit }}</td>
+                <td>{{ row.solde }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+    <section class="card" style="margin-top:20px;">
+        <h2>Grand livre</h2>
+        <table>
+            <tr>
+                <th>Compte</th>
+                <th>Date</th>
+                <th>Pièce</th>
+                <th>Libellé</th>
+                <th>Débit</th>
+                <th>Crédit</th>
+            </tr>
+            {% for row in grand_livre %}
+            <tr>
+                <td>{{ row.compte }}</td>
+                <td>{{ row.date_ecriture }}</td>
+                <td>{{ row.piece }}</td>
+                <td>{{ row.libelle_ecriture }}</td>
+                <td>{{ row.debit }}</td>
+                <td>{{ row.credit }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+
+    <p style="margin-top:28px;"><a href="/">← Retour accueil</a></p>
+
+</main>
+</body>
+</html>
