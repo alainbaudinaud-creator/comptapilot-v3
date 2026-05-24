@@ -1,0 +1,154 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Isolation V3
+{% endblock %}
+
+{% block page_title %}
+Isolation multi-sociétés
+{% endblock %}
+
+{% block page_subtitle %}
+Contrôle des accès et des données par société
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Sociétés</div>
+        <div id="societes_count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Accès déclarés</div>
+        <div id="access_count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Diagnostic</div>
+        <div id="diagnostic_status" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Production par société
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>Société</th>
+                    <th>Documents</th>
+                    <th>Précompta</th>
+                    <th>Écritures</th>
+                    <th>Relances</th>
+                </tr>
+            </thead>
+
+            <tbody id="counts_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Diagnostics
+    </div>
+
+    <div id="warnings_list" style="margin-top: 16px;"></div>
+
+</div>
+
+<script>
+
+async function loadIsolation() {
+
+    const response = await fetch(
+        "/api/v3/isolation"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    document.getElementById("societes_count").innerText =
+        data.societes_count;
+
+    document.getElementById("access_count").innerText =
+        data.access_count;
+
+    document.getElementById("diagnostic_status").innerText =
+        data.diagnostics.status;
+
+    renderCounts(data.object_counts);
+    renderWarnings(data.diagnostics.warnings);
+}
+
+
+function renderCounts(items) {
+
+    const tbody = document.getElementById("counts_rows");
+    tbody.innerHTML = "";
+
+    items.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.nom || item.societe_id}</td>
+            <td>${item.documents_count}</td>
+            <td>${item.precompta_count}</td>
+            <td>${item.ecritures_count}</td>
+            <td>${item.relances_count}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+function renderWarnings(items) {
+
+    const container = document.getElementById("warnings_list");
+    container.innerHTML = "";
+
+    if (!items.length) {
+        container.innerHTML = "Aucune alerte d'isolation.";
+        return;
+    }
+
+    items.forEach(function(item) {
+
+        const div = document.createElement("div");
+
+        div.style.padding = "10px 0";
+        div.style.borderBottom = "1px solid rgba(148,163,184,0.2)";
+
+        div.innerHTML = `
+            <strong>${item.level}</strong> — ${item.message}
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+loadIsolation();
+
+</script>
+
+{% endblock %}
