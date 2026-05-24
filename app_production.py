@@ -51,6 +51,13 @@ from controllers.subscriptions.subscriptions_controller import bp_subscriptions
 from controllers.onboarding_client.onboarding_client_controller import bp_onboarding_client
 from controllers.import_client.import_client_controller import bp_import_client
 from controllers.ocr_comptable.ocr_comptable_controller import bp_ocr_comptable
+from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
+from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
+from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
+from controllers.tva_automatique.tva_automatique_controller import bp_tva_automatique
+from controllers.rapprochement_bancaire.rapprochement_bancaire_controller import bp_rapprochement_bancaire
+from controllers.lettrage_ia.lettrage_ia_controller import bp_lettrage_ia
+from controllers.pre_ecritures_ia.pre_ecritures_ia_controller import bp_pre_ecritures_ia
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -90,6 +97,13 @@ app.register_blueprint(bp_subscriptions)
 app.register_blueprint(bp_onboarding_client)
 app.register_blueprint(bp_import_client)
 app.register_blueprint(bp_ocr_comptable)
+app.register_blueprint(bp_documents_fin_exercice)
+app.register_blueprint(bp_cloture_exercice)
+app.register_blueprint(bp_revision_comptable)
+app.register_blueprint(bp_tva_automatique)
+app.register_blueprint(bp_rapprochement_bancaire)
+app.register_blueprint(bp_lettrage_ia)
+app.register_blueprint(bp_pre_ecritures_ia)
 app.register_blueprint(bp_upload)
 app.register_blueprint(bp_rest_api)
 app.register_blueprint(bp_cabinet_dashboard)
@@ -113,6 +127,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
