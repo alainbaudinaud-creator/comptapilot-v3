@@ -1,0 +1,115 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Onboarding Client V3
+{% endblock %}
+
+{% block page_title %}
+Onboarding Client Intelligent
+{% endblock %}
+
+{% block page_subtitle %}
+Création automatisée du dossier cabinet
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card" style="max-width: 760px;">
+
+    <div class="v3-kpi-label">
+        Nouveau client cabinet
+    </div>
+
+    <div style="height: 20px;"></div>
+
+    <input
+        id="nom"
+        class="login-input"
+        placeholder="Nom société"
+    >
+
+    <input
+        id="siren"
+        class="login-input"
+        placeholder="SIREN"
+    >
+
+    <input
+        id="email"
+        class="login-input"
+        placeholder="Email"
+    >
+
+    <input
+        id="telephone"
+        class="login-input"
+        placeholder="Téléphone"
+    >
+
+    <button
+        class="login-button"
+        onclick="createClient()"
+    >
+        Créer le dossier client
+    </button>
+
+    <div
+        id="result"
+        style="
+            margin-top: 24px;
+            color: var(--text-secondary);
+        "
+    ></div>
+
+</div>
+
+<script>
+
+async function createClient() {
+
+    const payload = {
+        nom: document.getElementById("nom").value,
+        siren: document.getElementById("siren").value,
+        email: document.getElementById("email").value,
+        telephone: document.getElementById("telephone").value
+    };
+
+    const response = await fetch(
+        "/api/v3/onboarding/client",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        }
+    );
+
+    const result = await response.json();
+
+    document.getElementById("result").innerHTML = `
+        <div style="color:#22C55E;font-size:18px;font-weight:600;">
+            Client créé avec succès
+        </div>
+
+        <div style="margin-top:12px;">
+            Workflow cabinet initialisé
+        </div>
+
+        <div>
+            OCR prêt
+        </div>
+
+        <div>
+            Précompta IA prête
+        </div>
+
+        <div>
+            Imports automatiques en attente
+        </div>
+    `;
+}
+
+</script>
+
+{% endblock %}
