@@ -1,0 +1,110 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>IA Industrielle V3</title>
+
+    <style>
+
+        body {
+            margin:0;
+            background:#020617;
+            color:#e5e7eb;
+            font-family:Arial,sans-serif;
+        }
+
+        .page {
+            padding:32px;
+        }
+
+        .hero {
+            background:linear-gradient(135deg,#111827,#0f766e);
+            padding:30px;
+            border-radius:24px;
+            margin-bottom:24px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:16px;
+        }
+
+        .card {
+            background:#0f172a;
+            border:1px solid #334155;
+            border-radius:18px;
+            padding:20px;
+        }
+
+        .num {
+            font-size:32px;
+            color:#5eead4;
+            font-weight:bold;
+        }
+
+        ul {
+            line-height:1.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+    <section class="hero">
+
+        <h1>IA Industrielle & Automatisation Réelle V3</h1>
+
+        <p>
+            OCR réel, traitement IA, import FEC,
+            import bancaire, rapprochement intelligent,
+            audit légal, JWT SaaS, exports réglementaires
+            et industrialisation complète cabinet.
+        </p>
+
+    </section>
+
+    <section class="grid">
+
+        {% for label, value in stats.items() %}
+
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+
+        <h2>Industrialisation V3</h2>
+
+        <ul>
+
+            <li>✔ OCR Tesseract/OpenAI prêt</li>
+            <li>✔ Pipeline IA comptable</li>
+            <li>✔ Imports FEC</li>
+            <li>✔ Imports bancaires</li>
+            <li>✔ Lettrage automatique</li>
+            <li>✔ Rapprochement intelligent</li>
+            <li>✔ JWT SaaS</li>
+            <li>✔ Audit légal</li>
+            <li>✔ Dashboard temps réel</li>
+            <li>✔ Génération liasses</li>
+            <li>✔ Génération plaquettes</li>
+            <li>✔ Exports PDF</li>
+
+        </ul>
+
+    </section>
+
+</main>
+
+</body>
+</html>
