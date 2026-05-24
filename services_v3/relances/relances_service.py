@@ -1,6 +1,9 @@
 ﻿from repositories.relances.relances_repository import (
     create_relance,
     list_relances,
+    get_relance,
+    get_societe_email,
+    prepare_relance_email,
     mark_relance_sent
 )
 
@@ -16,6 +19,7 @@ def get_relances_center():
     return {
         "count": len(relances),
         "draft_count": len([item for item in relances if item.get("statut") == "brouillon"]),
+        "prepared_count": len([item for item in relances if item.get("email_status") == "pret"]),
         "sent_count": len([item for item in relances if item.get("statut") == "envoyee"]),
         "items": relances
     }
@@ -56,7 +60,59 @@ def generate_relances_from_alerts():
     }
 
 
+def prepare_email_for_relance(relance_id):
+
+    relance = get_relance(relance_id)
+
+    if not relance:
+        return {
+            "success": False,
+            "message": "Relance introuvable"
+        }
+
+    email_to = get_societe_email(
+        relance.get("societe_id")
+    )
+
+    if not email_to:
+        email_to = "client@example.com"
+
+    email_subject = relance.get("titre") or "Relance cabinet"
+
+    email_body = relance.get("message") or ""
+
+    prepare_relance_email(
+        relance_id=relance_id,
+        email_to=email_to,
+        email_subject=email_subject,
+        email_body=email_body
+    )
+
+    return {
+        "success": True,
+        "relance_id": relance_id,
+        "email_to": email_to,
+        "email_subject": email_subject,
+        "email_status": "pret",
+        "message": "Email de relance préparé"
+    }
+
+
 def send_relance(relance_id):
+
+    relance = get_relance(relance_id)
+
+    if not relance:
+        return {
+            "success": False,
+            "message": "Relance introuvable"
+        }
+
+    if relance.get("email_status") != "pret":
+        return {
+            "success": False,
+            "message": "Email non préparé"
+        }
 
     mark_relance_sent(relance_id)
 

@@ -9,6 +9,7 @@ from schemas_v3.api_response import success_response
 from services_v3.relances.relances_service import (
     get_relances_center,
     generate_relances_from_alerts,
+    prepare_email_for_relance,
     send_relance
 )
 
@@ -50,6 +51,21 @@ def api_relances_center():
 def api_generate_relances_from_alerts():
 
     result = generate_relances_from_alerts()
+
+    return jsonify(
+        success_response(result)
+    )
+
+
+@bp_relances.route(
+    "/api/v3/relances/<int:relance_id>/prepare-email",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_prepare_email_for_relance(relance_id):
+
+    result = prepare_email_for_relance(relance_id)
 
     return jsonify(
         success_response(result)
