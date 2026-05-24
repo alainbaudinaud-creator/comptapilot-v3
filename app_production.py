@@ -27,7 +27,8 @@ from controllers.cabinet_dashboard_controller import bp_cabinet_dashboard
 from controllers.portail_client_secure import bp_portail_client_secure
 from controllers.connecteurs_controller import bp_connecteurs
 from controllers.api_saas import bp_api_saas
-from controllers.cabinet_controller import bp_cabinet`r`nfrom controllers.api_v3.routes import api_v3_routes
+from controllers.cabinet_controller import bp_cabinet
+from controllers.api_v3.routes import api_v3_routes
 from controllers.admin_users import admin_users_routes
 
 app = Flask(__name__)
@@ -58,7 +59,8 @@ app.register_blueprint(bp_cabinet_dashboard)
 app.register_blueprint(bp_portail_client_secure)
 app.register_blueprint(bp_connecteurs)
 app.register_blueprint(bp_api_saas)
-app.register_blueprint(bp_cabinet)`r`napp.register_blueprint(api_v3_routes)
+app.register_blueprint(bp_cabinet)
+app.register_blueprint(api_v3_routes)
 app.register_blueprint(admin_users_routes)
 
 if __name__ == "__main__":

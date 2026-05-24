@@ -5,6 +5,7 @@ import uuid
 
 from logs_v3.logger import log_error, log_info
 from schemas_v3.api_response import error_response
+from schemas_v3.api_response import success_response
 
 
 def api_safe(handler):
@@ -17,6 +18,8 @@ def api_safe(handler):
         try:
             response = handler(*args, **kwargs)
 
+            payload = response.get_json()
+
             log_info(
                 "api_v3",
                 "Appel API V3 réussi",
@@ -28,7 +31,13 @@ def api_safe(handler):
                 }
             )
 
-            return response
+            return jsonify(
+                success_response(
+                    data=payload.get("data", {}),
+                    message=payload.get("message", "ok"),
+                    request_id=request_id
+                )
+            )
 
         except Exception as exc:
 
