@@ -42,6 +42,12 @@ Contrôle des écritures générées depuis la précompta IA
 
 <div class="v3-card">
 
+    <button class="login-button" onclick="exportJournal()" style="max-width: 260px; margin-bottom: 18px;">
+        Exporter le journal CSV
+    </button>
+
+    <div id="export_result" style="margin-bottom: 18px; color: #22C55E; font-weight: 600;"></div>
+
     <div class="v3-kpi-label">
         Lignes comptables
     </div>
@@ -116,6 +122,34 @@ async function loadJournal() {
 
 loadJournal();
 
+
+async function exportJournal() {
+
+    const response = await fetch(
+        "/api/v3/exports/journal",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({})
+        }
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    if (!data.success) {
+        document.getElementById("export_result").innerText =
+            data.message || "Erreur export";
+        return;
+    }
+
+    document.getElementById("export_result").innerText =
+        "Export généré : " + data.filename + " (" + data.count + " lignes)";
+}
+
 </script>
 
 {% endblock %}
+
