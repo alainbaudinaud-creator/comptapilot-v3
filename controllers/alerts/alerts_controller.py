@@ -7,33 +7,33 @@ from services.permission_service import permission_required
 
 from schemas_v3.api_response import success_response
 
-from services_v3.production.production_service import (
-    get_production_dashboard
+from services_v3.alerts.alerts_service import (
+    get_alerts_center
 )
 
 
-bp_production = Blueprint(
-    "bp_production",
+bp_alerts = Blueprint(
+    "bp_alerts",
     __name__
 )
 
 
-@bp_production.route("/production")
+@bp_alerts.route("/alerts")
 @login_required
 @permission_required("ACCESS_ECRITURES")
-def production_page():
+def alerts_page():
 
     return render_template(
-        "production_dashboard_v3.html"
+        "alerts_center_v3.html"
     )
 
 
-@bp_production.route("/api/v3/production")
+@bp_alerts.route("/api/v3/alerts")
 @login_required
 @permission_required("ACCESS_ECRITURES")
-def api_production_dashboard():
+def api_alerts_center():
 
-    result = get_production_dashboard()
+    result = get_alerts_center()
 
     return jsonify(
         success_response(result)

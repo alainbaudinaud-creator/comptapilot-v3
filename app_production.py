@@ -36,6 +36,7 @@ from controllers.validation.validation_controller import bp_validation
 from controllers.journal_v3.journal_controller import bp_journal_v3
 from controllers.exports_v3.export_controller import bp_exports_v3
 from controllers.production.production_controller import bp_production
+from controllers.alerts.alerts_controller import bp_alerts
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -53,6 +54,7 @@ app.register_blueprint(bp_veille_reglementaire)
 app.register_blueprint(bp_teledec)
 app.register_blueprint(bp_supervision)
 app.register_blueprint(bp_production)
+app.register_blueprint(bp_alerts)
 app.register_blueprint(bp_pdp_v3)
 app.register_blueprint(bp_ia_controller)
 app.register_blueprint(bp_erp_premium)
@@ -84,6 +86,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
