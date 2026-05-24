@@ -1,0 +1,121 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Journal V3
+{% endblock %}
+
+{% block page_title %}
+Journal des écritures V3
+{% endblock %}
+
+{% block page_subtitle %}
+Contrôle des écritures générées depuis la précompta IA
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Nombre de lignes</div>
+        <div id="count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Total débit</div>
+        <div id="total_debit" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Total crédit</div>
+        <div id="total_credit" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Équilibre</div>
+        <div id="equilibre" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Lignes comptables
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>Date</th>
+                    <th>Journal</th>
+                    <th>Compte</th>
+                    <th>Libellé</th>
+                    <th>Débit</th>
+                    <th>Crédit</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+
+            <tbody id="journal_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+async function loadJournal() {
+
+    const response = await fetch(
+        "/api/v3/journal"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    document.getElementById("count").innerText =
+        data.count;
+
+    document.getElementById("total_debit").innerText =
+        data.total_debit + " €";
+
+    document.getElementById("total_credit").innerText =
+        data.total_credit + " €";
+
+    document.getElementById("equilibre").innerText =
+        data.equilibre ? "OK" : "Écart " + data.ecart + " €";
+
+    const tbody = document.getElementById("journal_rows");
+    tbody.innerHTML = "";
+
+    data.items.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.date_ecriture || "-"}</td>
+            <td>${item.journal || "-"}</td>
+            <td>${item.compte || "-"}</td>
+            <td>${item.libelle || "-"}</td>
+            <td>${item.debit || 0} €</td>
+            <td>${item.credit || 0} €</td>
+            <td>${item.source || "-"}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+loadJournal();
+
+</script>
+
+{% endblock %}

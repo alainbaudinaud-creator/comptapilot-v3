@@ -33,6 +33,7 @@ from controllers.dashboard_v3 import bp_dashboard_v3
 from controllers.onboarding.onboarding_controller import bp_onboarding
 from controllers.client_portal.client_portal_controller import bp_client_portal
 from controllers.validation.validation_controller import bp_validation
+from controllers.journal_v3.journal_controller import bp_journal_v3
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -70,6 +71,7 @@ app.register_blueprint(bp_dashboard_v3)
 app.register_blueprint(bp_onboarding)
 app.register_blueprint(bp_client_portal)
 app.register_blueprint(bp_validation)
+app.register_blueprint(bp_journal_v3)
 app.register_blueprint(admin_users_routes)
 
 install_http_logging(app)
@@ -79,6 +81,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
