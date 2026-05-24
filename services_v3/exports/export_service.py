@@ -7,6 +7,10 @@ from repositories.exports.export_repository import (
     get_ecritures_for_export
 )
 
+from services_v3.history.history_service import (
+    log_action
+)
+
 
 EXPORT_ROOT = "/app/exports/journal_v3"
 
@@ -66,6 +70,21 @@ def export_journal_csv(societe_id=None):
                     item.get("precompta_id")
                 ]
             )
+
+    log_action(
+        module="exports",
+        action="export_journal_csv",
+        statut="ok",
+        societe_id=societe_id,
+        reference_type="export",
+        reference_id=None,
+        message="Export journal V3 généré",
+        metadata={
+            "filename": filename,
+            "filepath": filepath,
+            "count": len(ecritures)
+        }
+    )
 
     return {
         "success": True,

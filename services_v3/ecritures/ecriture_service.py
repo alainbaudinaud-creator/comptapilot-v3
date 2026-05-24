@@ -5,12 +5,26 @@ from repositories.ecritures.ecriture_repository import (
     create_ecriture_lines
 )
 
+from services_v3.history.history_service import (
+    log_action
+)
+
 
 def convert_precompta_to_ecriture(precompta_id):
 
     precompta = get_precompta_for_ecriture(precompta_id)
 
     if not precompta:
+
+        log_action(
+            module="ecritures",
+            action="conversion_precompta_ecriture",
+            statut="erreur",
+            reference_type="precompta",
+            reference_id=precompta_id,
+            message="Précompta introuvable"
+        )
+
         return {
             "success": False,
             "message": "Précompta introuvable"
@@ -20,12 +34,34 @@ def convert_precompta_to_ecriture(precompta_id):
         "validee",
         "transformee_ecriture"
     ]:
+
+        log_action(
+            module="ecritures",
+            action="conversion_precompta_ecriture",
+            statut="erreur",
+            societe_id=precompta.get("societe_id"),
+            reference_type="precompta",
+            reference_id=precompta_id,
+            message="Précompta non validée"
+        )
+
         return {
             "success": False,
             "message": "Précompta non validée"
         }
 
     if precompta.get("statut_validation") == "transformee_ecriture":
+
+        log_action(
+            module="ecritures",
+            action="conversion_precompta_ecriture",
+            statut="erreur",
+            societe_id=precompta.get("societe_id"),
+            reference_type="precompta",
+            reference_id=precompta_id,
+            message="Précompta déjà transformée en écriture"
+        )
+
         return {
             "success": False,
             "message": "Précompta déjà transformée en écriture"
@@ -36,6 +72,21 @@ def convert_precompta_to_ecriture(precompta_id):
     create_ecriture_lines(
         precompta,
         lines
+    )
+
+    log_action(
+        module="ecritures",
+        action="conversion_precompta_ecriture",
+        statut="ok",
+        societe_id=precompta.get("societe_id"),
+        reference_type="precompta",
+        reference_id=precompta_id,
+        message="Écriture comptable générée depuis précompta",
+        metadata={
+            "lines_count": len(lines),
+            "document_id": precompta.get("document_id"),
+            "montant_ttc": str(precompta.get("montant_ttc"))
+        }
     )
 
     return {
