@@ -51,6 +51,7 @@ from controllers.subscriptions.subscriptions_controller import bp_subscriptions
 from controllers.onboarding_client.onboarding_client_controller import bp_onboarding_client
 from controllers.import_client.import_client_controller import bp_import_client
 from controllers.ocr_comptable.ocr_comptable_controller import bp_ocr_comptable
+from controllers.socle_donnees.socle_donnees_controller import bp_socle_donnees
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -97,6 +98,7 @@ app.register_blueprint(bp_subscriptions)
 app.register_blueprint(bp_onboarding_client)
 app.register_blueprint(bp_import_client)
 app.register_blueprint(bp_ocr_comptable)
+app.register_blueprint(bp_socle_donnees)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -127,6 +129,9 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
+
+
 
 
 
