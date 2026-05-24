@@ -1,0 +1,138 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Abonnements V3
+{% endblock %}
+
+{% block page_title %}
+Abonnements SaaS Cabinet
+{% endblock %}
+
+{% block page_subtitle %}
+Plans, limites et usage de la plateforme
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Abonnement actuel
+    </div>
+
+    <div id="current_plan" class="v3-kpi-value">
+        Chargement...
+    </div>
+
+    <div
+        id="current_status"
+        style="color: var(--text-secondary); margin-top: 8px;"
+    ></div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Sociétés</div>
+        <div id="limit_societes" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Utilisateurs</div>
+        <div id="limit_users" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Documents</div>
+        <div id="limit_documents" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div id="plans_list" class="v3-grid"></div>
+
+<script>
+
+async function loadSubscriptions() {
+
+    const response = await fetch(
+        "/api/v3/subscriptions"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+    const current = data.current_subscription;
+
+    if (current) {
+        document.getElementById("current_plan").innerText =
+            current.plan_label || current.plan_code;
+
+        document.getElementById("current_status").innerText =
+            "Statut : " + current.status + " — " + current.monthly_price + " €/mois";
+    }
+
+    renderLimit("limit_societes", data.limits.societes);
+    renderLimit("limit_users", data.limits.users);
+    renderLimit("limit_documents", data.limits.documents);
+
+    renderPlans(data.plans);
+}
+
+
+function renderLimit(elementId, item) {
+
+    if (!item) {
+        document.getElementById(elementId).innerText = "-";
+        return;
+    }
+
+    document.getElementById(elementId).innerText =
+        item.current + " / " + item.maximum;
+}
+
+
+function renderPlans(items) {
+
+    const container = document.getElementById("plans_list");
+    container.innerHTML = "";
+
+    items.forEach(function(item) {
+
+        const card = document.createElement("div");
+        card.className = "v3-card";
+
+        card.innerHTML = `
+            <div class="v3-kpi-label">
+                ${item.code}
+            </div>
+
+            <h3 style="margin-top: 12px;">
+                ${item.label}
+            </h3>
+
+            <div style="font-size: 28px; font-weight: 800; margin-top: 12px;">
+                ${item.monthly_price} €/mois
+            </div>
+
+            <div style="color: var(--text-secondary); margin-top: 12px;">
+                Sociétés : ${item.max_societes}<br>
+                Utilisateurs : ${item.max_users}<br>
+                Documents : ${item.max_documents}
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+
+loadSubscriptions();
+
+</script>
+
+{% endblock %}
