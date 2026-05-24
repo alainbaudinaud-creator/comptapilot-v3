@@ -14,6 +14,10 @@ from services_v3.validation.validation_service import (
     reject_precompta
 )
 
+from services_v3.ecritures.ecriture_service import (
+    convert_precompta_to_ecriture
+)
+
 
 bp_validation = Blueprint(
     "bp_validation",
@@ -77,6 +81,21 @@ def api_reject_precompta(precompta_id):
         precompta_id,
         data
     )
+
+    return jsonify(
+        success_response(result)
+    )
+
+
+@bp_validation.route(
+    "/api/v3/validation/precompta/<int:precompta_id>/convert-ecriture",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_convert_precompta_to_ecriture(precompta_id):
+
+    result = convert_precompta_to_ecriture(precompta_id)
 
     return jsonify(
         success_response(result)
