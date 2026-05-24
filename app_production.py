@@ -29,6 +29,7 @@ from controllers.connecteurs_controller import bp_connecteurs
 from controllers.api_saas import bp_api_saas
 from controllers.cabinet_controller import bp_cabinet
 from controllers.api_v3.routes import api_v3_routes
+from controllers.dashboard_v3 import bp_dashboard_v3
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import log_http_response
 
@@ -62,6 +63,7 @@ app.register_blueprint(bp_connecteurs)
 app.register_blueprint(bp_api_saas)
 app.register_blueprint(bp_cabinet)
 app.register_blueprint(api_v3_routes)
+app.register_blueprint(bp_dashboard_v3)
 app.register_blueprint(admin_users_routes)
 
 app.after_request(log_http_response)
@@ -71,5 +73,6 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
