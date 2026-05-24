@@ -1,0 +1,140 @@
+﻿{% extends "base_v3.html" %}
+
+{% block title %}
+Espace Client V3
+{% endblock %}
+
+{% block page_title %}
+Espace Client Autonome
+{% endblock %}
+
+{% block page_subtitle %}
+Vue client filtrée par société
+{% endblock %}
+
+{% block content %}
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Société
+    </div>
+
+    <div id="societe_name" class="v3-kpi-value">
+        Chargement...
+    </div>
+
+    <div
+        id="societe_detail"
+        style="color: var(--text-secondary); margin-top: 8px;"
+    ></div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-grid">
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Documents</div>
+        <div id="documents_count" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">OCR en attente</div>
+        <div id="ocr_pending" class="v3-kpi-value">-</div>
+    </div>
+
+    <div class="v3-card">
+        <div class="v3-kpi-label">Relances</div>
+        <div id="relances_count" class="v3-kpi-value">-</div>
+    </div>
+
+</div>
+
+<div style="height: 24px;"></div>
+
+<div class="v3-card">
+
+    <div class="v3-kpi-label">
+        Derniers documents
+    </div>
+
+    <div style="overflow-x: auto; margin-top: 18px;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="color: var(--text-secondary); text-align: left;">
+                    <th>ID</th>
+                    <th>Fichier</th>
+                    <th>OCR</th>
+                    <th>Précompta</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody id="documents_rows"></tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+
+async function loadClientSpace() {
+
+    const response = await fetch(
+        "/api/v3/client-space?societe_id=1"
+    );
+
+    const result = await response.json();
+    const data = result.data;
+
+    if (!data.success) {
+        document.getElementById("societe_name").innerText =
+            data.message;
+        return;
+    }
+
+    document.getElementById("societe_name").innerText =
+        data.societe.nom;
+
+    document.getElementById("societe_detail").innerText =
+        "SIREN : " + (data.societe.siren || "-") + " — Email : " + (data.societe.email || "-");
+
+    document.getElementById("documents_count").innerText =
+        data.metrics.documents_count;
+
+    document.getElementById("ocr_pending").innerText =
+        data.metrics.ocr_pending;
+
+    document.getElementById("relances_count").innerText =
+        data.metrics.relances_count;
+
+    const tbody = document.getElementById("documents_rows");
+    tbody.innerHTML = "";
+
+    data.recent_documents.forEach(function(item) {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${item.id}</td>
+            <td>${item.filename || "-"}</td>
+            <td>${item.statut_ocr || "-"}</td>
+            <td>${item.statut_precompta || "-"}</td>
+            <td>${item.created_at || "-"}</td>
+        `;
+
+        row.style.borderTop = "1px solid rgba(148,163,184,0.2)";
+        row.style.height = "44px";
+
+        tbody.appendChild(row);
+    });
+}
+
+
+loadClientSpace();
+
+</script>
+
+{% endblock %}

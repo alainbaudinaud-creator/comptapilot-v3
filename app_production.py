@@ -43,6 +43,7 @@ from controllers.history.history_controller import bp_history
 from controllers.audit_v3.audit_controller import bp_audit_v3
 from controllers.security.security_controller import bp_security
 from controllers.isolation.isolation_controller import bp_isolation
+from controllers.client_space.client_space_controller import bp_client_space
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -67,6 +68,7 @@ app.register_blueprint(bp_history)
 app.register_blueprint(bp_audit_v3)
 app.register_blueprint(bp_security)
 app.register_blueprint(bp_isolation)
+app.register_blueprint(bp_client_space)
 app.register_blueprint(bp_pdp_v3)
 app.register_blueprint(bp_ia_controller)
 app.register_blueprint(bp_erp_premium)
@@ -98,6 +100,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
