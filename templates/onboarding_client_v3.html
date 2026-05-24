@@ -1,115 +1,100 @@
-﻿{% extends "base_v3.html" %}
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Onboarding Client V3 - ComptaPilot</title>
+    <style>
+        body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#e5e7eb; }
+        .page { padding:32px; }
+        .hero { background:linear-gradient(135deg,#1e293b,#334155); padding:28px; border-radius:22px; margin-bottom:24px; }
+        .hero h1 { margin:0 0 10px; font-size:32px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; }
+        .card { background:#111827; border:1px solid #334155; border-radius:18px; padding:20px; box-shadow:0 18px 40px rgba(0,0,0,.25); }
+        .card h2 { margin-top:0; color:#93c5fd; font-size:19px; }
+        .badge { display:inline-block; background:#2563eb; padding:6px 10px; border-radius:999px; font-size:12px; margin-bottom:10px; }
+        ul { padding-left:20px; line-height:1.8; }
+        a { color:#bfdbfe; }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <span class="badge">ComptaPilot V3 Premium</span>
+            <h1>Onboarding Client Automatisé</h1>
+            <p>Création complète du dossier client, imports réglementaires, données comptables, checklist cabinet et préparation du dossier permanent.</p>
+        </section>
 
-{% block title %}
-Onboarding Client V3
-{% endblock %}
+        <section class="grid">
+            <div class="card">
+                <h2>1. Identité client</h2>
+                <ul>
+                    <li>SIREN / SIRET</li>
+                    <li>Raison sociale</li>
+                    <li>Forme juridique</li>
+                    <li>Adresse siège</li>
+                    <li>Dirigeants</li>
+                </ul>
+            </div>
 
-{% block page_title %}
-Onboarding Client Intelligent
-{% endblock %}
+            <div class="card">
+                <h2>2. Paramètres fiscaux</h2>
+                <ul>
+                    <li>Régime fiscal</li>
+                    <li>TVA</li>
+                    <li>IS / IR</li>
+                    <li>Dates exercice</li>
+                    <li>Obligations déclaratives</li>
+                </ul>
+            </div>
 
-{% block page_subtitle %}
-Création automatisée du dossier cabinet
-{% endblock %}
+            <div class="card">
+                <h2>3. Imports automatisés</h2>
+                <ul>
+                    <li>Plan comptable</li>
+                    <li>FEC</li>
+                    <li>Balance</li>
+                    <li>Grand livre</li>
+                    <li>Journaux</li>
+                </ul>
+            </div>
 
-{% block content %}
+            <div class="card">
+                <h2>4. Dossier permanent</h2>
+                <ul>
+                    <li>Statuts</li>
+                    <li>Kbis</li>
+                    <li>RIB</li>
+                    <li>Mandats</li>
+                    <li>Documents réglementaires</li>
+                </ul>
+            </div>
 
-<div class="v3-card" style="max-width: 760px;">
+            <div class="card">
+                <h2>5. Workflow cabinet</h2>
+                <ul>
+                    <li>Checklist création</li>
+                    <li>Contrôles automatiques</li>
+                    <li>Alertes pièces manquantes</li>
+                    <li>Suivi collaborateur</li>
+                    <li>Validation expert-comptable</li>
+                </ul>
+            </div>
 
-    <div class="v3-kpi-label">
-        Nouveau client cabinet
-    </div>
+            <div class="card">
+                <h2>6. Production comptable</h2>
+                <ul>
+                    <li>OCR factures</li>
+                    <li>Pré-écritures IA</li>
+                    <li>TVA automatique</li>
+                    <li>Lettrage</li>
+                    <li>Préparation clôture</li>
+                </ul>
+            </div>
+        </section>
 
-    <div style="height: 20px;"></div>
-
-    <input
-        id="nom"
-        class="login-input"
-        placeholder="Nom société"
-    >
-
-    <input
-        id="siren"
-        class="login-input"
-        placeholder="SIREN"
-    >
-
-    <input
-        id="email"
-        class="login-input"
-        placeholder="Email"
-    >
-
-    <input
-        id="telephone"
-        class="login-input"
-        placeholder="Téléphone"
-    >
-
-    <button
-        class="login-button"
-        onclick="createClient()"
-    >
-        Créer le dossier client
-    </button>
-
-    <div
-        id="result"
-        style="
-            margin-top: 24px;
-            color: var(--text-secondary);
-        "
-    ></div>
-
-</div>
-
-<script>
-
-async function createClient() {
-
-    const payload = {
-        nom: document.getElementById("nom").value,
-        siren: document.getElementById("siren").value,
-        email: document.getElementById("email").value,
-        telephone: document.getElementById("telephone").value
-    };
-
-    const response = await fetch(
-        "/api/v3/onboarding/client",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        }
-    );
-
-    const result = await response.json();
-
-    document.getElementById("result").innerHTML = `
-        <div style="color:#22C55E;font-size:18px;font-weight:600;">
-            Client créé avec succès
-        </div>
-
-        <div style="margin-top:12px;">
-            Workflow cabinet initialisé
-        </div>
-
-        <div>
-            OCR prêt
-        </div>
-
-        <div>
-            Précompta IA prête
-        </div>
-
-        <div>
-            Imports automatiques en attente
-        </div>
-    `;
-}
-
-</script>
-
-{% endblock %}
+        <p style="margin-top:28px;">
+            <a href="/">← Retour accueil</a>
+        </p>
+    </main>
+</body>
+</html>

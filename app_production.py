@@ -48,6 +48,7 @@ from controllers.ged.ged_controller import bp_ged
 from controllers.backup.backup_controller import bp_backup
 from controllers.monitoring.monitoring_controller import bp_monitoring
 from controllers.subscriptions.subscriptions_controller import bp_subscriptions
+from controllers.onboarding_client.onboarding_client_controller import bp_onboarding_client
 from controllers.admin_users import admin_users_routes
 from logs_v3.http_logger import install_http_logging
 
@@ -84,6 +85,7 @@ app.register_blueprint(bp_ged)
 app.register_blueprint(bp_backup)
 app.register_blueprint(bp_monitoring)
 app.register_blueprint(bp_subscriptions)
+app.register_blueprint(bp_onboarding_client)
 app.register_blueprint(bp_upload)
 app.register_blueprint(bp_rest_api)
 app.register_blueprint(bp_cabinet_dashboard)
@@ -107,6 +109,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
