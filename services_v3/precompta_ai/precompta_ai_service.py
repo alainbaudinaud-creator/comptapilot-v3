@@ -5,12 +5,25 @@ from repositories.precompta_ai.precompta_ai_repository import (
     create_precompta_document
 )
 
+from services_v3.history.history_service import (
+    log_action
+)
+
 
 def generate_precompta_from_document(document_id):
 
     document = get_document_ocr_data(document_id)
 
     if not document:
+        log_action(
+            module="precompta",
+            action="generation_precompta",
+            statut="erreur",
+            reference_type="document",
+            reference_id=document_id,
+            message="Document introuvable"
+        )
+
         return {
             "success": False,
             "message": "Document introuvable"
@@ -19,6 +32,17 @@ def generate_precompta_from_document(document_id):
     ocr_text = document.get("ocr_text") or ""
 
     if not ocr_text.strip():
+
+        log_action(
+            module="precompta",
+            action="generation_precompta",
+            statut="erreur",
+            societe_id=document.get("societe_id"),
+            reference_type="document",
+            reference_id=document_id,
+            message="Aucun texte OCR disponible"
+        )
+
         return {
             "success": False,
             "message": "Aucun texte OCR disponible"
@@ -43,6 +67,21 @@ def generate_precompta_from_document(document_id):
 
     precompta_id = create_precompta_document(data)
 
+    log_action(
+        module="precompta",
+        action="generation_precompta",
+        statut="ok",
+        societe_id=document.get("societe_id"),
+        reference_type="precompta",
+        reference_id=precompta_id,
+        message="Précompta IA générée depuis OCR",
+        metadata={
+            "document_id": document_id,
+            "confiance": extracted.get("confiance"),
+            "montant_ttc": extracted.get("montant_ttc")
+        }
+    )
+
     return {
         "success": True,
         "precompta_id": precompta_id,
@@ -60,17 +99,22 @@ def extract_accounting_fields(ocr_text):
     amounts = extract_amounts(normalized)
 
     montant_ttc = amounts[-1] if amounts else None
+
     montant_tva = detect_amount_after_keywords(
         normalized,
         ["tva", "taxe"]
     )
+
     montant_ht = detect_amount_after_keywords(
         normalized,
         ["ht", "hors taxe", "hors taxes"]
     )
 
     if montant_ht is None and montant_ttc is not None and montant_tva is not None:
-        montant_ht = round(montant_ttc - montant_tva, 2)
+        montant_ht = round(
+            montant_ttc - montant_tva,
+            2
+        )
 
     fournisseur = detect_supplier(normalized)
     date_document = detect_date(normalized)
@@ -115,8 +159,11 @@ def extract_amounts(text):
 
     for match in matches:
         cleaned = match.replace(" ", "")
+
         try:
-            amounts.append(float(cleaned))
+            amounts.append(
+                float(cleaned)
+            )
         except ValueError:
             pass
 

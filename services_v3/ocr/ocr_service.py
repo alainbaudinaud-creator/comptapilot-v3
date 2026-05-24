@@ -6,12 +6,25 @@ from repositories.ocr.ocr_repository import (
     update_document_ocr_error
 )
 
+from services_v3.history.history_service import (
+    log_action
+)
+
 
 def run_ocr_on_document(document_id):
 
     document = get_document_for_ocr(document_id)
 
     if not document:
+        log_action(
+            module="ocr",
+            action="ocr_document",
+            statut="erreur",
+            reference_type="document",
+            reference_id=document_id,
+            message="Document introuvable"
+        )
+
         return {
             "success": False,
             "message": "Document introuvable"
@@ -20,9 +33,20 @@ def run_ocr_on_document(document_id):
     storage_path = document.get("storage_path")
 
     if not storage_path or not os.path.exists(storage_path):
+
         update_document_ocr_error(
             document_id,
             "Fichier physique introuvable"
+        )
+
+        log_action(
+            module="ocr",
+            action="ocr_document",
+            statut="erreur",
+            societe_id=document.get("societe_id"),
+            reference_type="document",
+            reference_id=document_id,
+            message="Fichier physique introuvable"
         )
 
         return {
@@ -38,6 +62,20 @@ def run_ocr_on_document(document_id):
             ocr_text
         )
 
+        log_action(
+            module="ocr",
+            action="ocr_document",
+            statut="ok",
+            societe_id=document.get("societe_id"),
+            reference_type="document",
+            reference_id=document_id,
+            message="OCR document terminé",
+            metadata={
+                "original_filename": document.get("original_filename"),
+                "file_size": document.get("file_size")
+            }
+        )
+
         return {
             "success": True,
             "document_id": document_id,
@@ -51,6 +89,16 @@ def run_ocr_on_document(document_id):
         update_document_ocr_error(
             document_id,
             str(exc)
+        )
+
+        log_action(
+            module="ocr",
+            action="ocr_document",
+            statut="erreur",
+            societe_id=document.get("societe_id"),
+            reference_type="document",
+            reference_id=document_id,
+            message=str(exc)
         )
 
         return {
