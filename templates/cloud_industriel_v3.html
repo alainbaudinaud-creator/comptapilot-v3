@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Cloud Industriel V3</title>
+
+    <style>
+
+        body {
+            margin:0;
+            background:#020617;
+            color:#e5e7eb;
+            font-family:Arial,sans-serif;
+        }
+
+        .page {
+            padding:32px;
+        }
+
+        .hero {
+            background:linear-gradient(135deg,#111827,#9333ea);
+            padding:30px;
+            border-radius:24px;
+            margin-bottom:24px;
+        }
+
+        .grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+            gap:16px;
+        }
+
+        .card {
+            background:#0f172a;
+            border:1px solid #334155;
+            border-radius:18px;
+            padding:20px;
+        }
+
+        .num {
+            font-size:32px;
+            color:#d8b4fe;
+            font-weight:bold;
+        }
+
+        ul {
+            line-height:1.9;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+    <section class="hero">
+
+        <h1>Cloud Industriel Temps Réel V3</h1>
+
+        <p>
+            Celery, Redis, websocket, frontend React,
+            portail mobile, cloud scaling,
+            supervision temps réel et architecture SaaS scalable.
+        </p>
+
+    </section>
+
+    <section class="grid">
+
+        {% for label, value in stats.items() %}
+
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+
+        {% endfor %}
+
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+
+        <h2>Infrastructure cloud industrielle</h2>
+
+        <ul>
+
+            <li>✔ Celery async</li>
+            <li>✔ Redis cache</li>
+            <li>✔ Frontend React prêt</li>
+            <li>✔ Websocket temps réel</li>
+            <li>✔ Cloud scaling</li>
+            <li>✔ Mobile Android/iOS</li>
+            <li>✔ SaaS scalable</li>
+            <li>✔ Supervision cloud</li>
+
+        </ul>
+
+    </section>
+
+</main>
+
+</body>
+</html>

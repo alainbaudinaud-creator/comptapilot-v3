@@ -1,0 +1,1 @@
+﻿# Package cloud industriel
