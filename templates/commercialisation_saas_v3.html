@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Commercialisation SaaS V3</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#020617;
+    color:#e5e7eb;
+    font-family:Arial,sans-serif;
+}
+
+.page{
+    padding:32px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#111827,#0891b2);
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:24px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+}
+
+.card{
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:20px;
+}
+
+.num{
+    font-size:32px;
+    color:#67e8f9;
+    font-weight:bold;
+}
+
+ul{
+    line-height:1.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+<section class="hero">
+
+<h1>Commercialisation SaaS Industrielle V3</h1>
+
+<p>
+RGPD, rôles utilisateurs,
+TVA, PDF, liasse fiscale,
+Kubernetes, CI/CD,
+portail responsive et supervision production.
+</p>
+
+</section>
+
+<section class="grid">
+
+{% for label, value in stats.items() %}
+
+<div class="card">
+<div>{{ label }}</div>
+<div class="num">{{ value }}</div>
+</div>
+
+{% endfor %}
+
+</section>
+
+<section class="card" style="margin-top:24px;">
+
+<h2>Produit SaaS industrialisé</h2>
+
+<ul>
+
+<li>✔ Gestion rôles</li>
+<li>✔ RGPD</li>
+<li>✔ TVA automatique</li>
+<li>✔ PDF professionnels</li>
+<li>✔ Liasse fiscale</li>
+<li>✔ Plaquette annuelle</li>
+<li>✔ Portail responsive</li>
+<li>✔ Kubernetes</li>
+<li>✔ CI/CD</li>
+<li>✔ Supervision production</li>
+
+</ul>
+
+</section>
+
+</main>
+
+</body>
+</html>
