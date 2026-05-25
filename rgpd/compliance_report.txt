@@ -1,0 +1,12 @@
+﻿RGPD READY
+
+- Consentement utilisateur
+- Droit oubli
+- Export données
+- Journalisation accès
+- Sécurisation mots de passe
+- MFA activable
+- Audit légal actif
+- Coffre-fort probatoire actif
+- Sauvegardes cloud prêtes
+- Chiffrement entreprise actif
