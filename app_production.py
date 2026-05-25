@@ -57,6 +57,7 @@ from controllers.moteurs_comptables.moteurs_comptables_controller import bp_mote
 from controllers.plateforme_cabinet.plateforme_cabinet_controller import bp_plateforme_cabinet
 from controllers.ia_industrielle.ia_industrielle_controller import bp_ia_industrielle
 from controllers.industrialisation_reelle.industrialisation_reelle_controller import bp_industrialisation_reelle
+from controllers.ocr_ia_reel.ocr_ia_reel_controller import bp_ocr_ia_reel
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -109,6 +110,7 @@ app.register_blueprint(bp_moteurs_comptables)
 app.register_blueprint(bp_plateforme_cabinet)
 app.register_blueprint(bp_ia_industrielle)
 app.register_blueprint(bp_industrialisation_reelle)
+app.register_blueprint(bp_ocr_ia_reel)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -139,6 +141,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
