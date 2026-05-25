@@ -70,6 +70,7 @@ from controllers.plateforme_reelle.plateforme_reelle_controller import bp_platef
 from controllers.auth_jwt_reel.auth_jwt_reel_controller import bp_auth_jwt_reel
 from controllers.temps_reel.temps_reel_controller import bp_temps_reel
 from controllers.websocket_live.websocket_live_controller import bp_websocket_live
+from controllers.integrations_reelles.integrations_reelles_controller import bp_integrations_reelles
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -135,6 +136,7 @@ app.register_blueprint(bp_plateforme_reelle)
 app.register_blueprint(bp_auth_jwt_reel)
 app.register_blueprint(bp_temps_reel)
 app.register_blueprint(bp_websocket_live)
+app.register_blueprint(bp_integrations_reelles)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -165,6 +167,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 

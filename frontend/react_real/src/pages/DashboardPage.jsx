@@ -2,6 +2,7 @@
 import StatCard from "../widgets/StatCard";
 import NotificationsPanel from "../widgets/NotificationsPanel";
 import LiveDashboardPanel from "../widgets/LiveDashboardPanel";
+import InfrastructurePanel from "../widgets/InfrastructurePanel";
 import { chargerDashboard } from "../api/dashboardApi";
 
 export default function DashboardPage() {
@@ -49,6 +50,8 @@ export default function DashboardPage() {
                 ))}
 
             </div>
+
+            <InfrastructurePanel />
 
             <LiveDashboardPanel />
 
