@@ -9,6 +9,7 @@ import ProductionPremiumPanel from "../premium/ProductionPremiumPanel";
 import IntegrationsProductionPanel from "../production/IntegrationsProductionPanel";
 import OpenAIRealPanel from "../ai/OpenAIRealPanel";
 import TesseractRealPanel from "../ocr/TesseractRealPanel";
+import WorkersPanel from "../workers/WorkersPanel";
 import { chargerDashboard } from "../api/dashboardApi";
 
 export default function DashboardPage() {
@@ -68,6 +69,8 @@ export default function DashboardPage() {
             <OpenAIRealPanel />
 
             <TesseractRealPanel />
+
+            <WorkersPanel />
 
             <SocketLivePanel />
 
