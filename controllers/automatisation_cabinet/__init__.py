@@ -1,0 +1,1 @@
+﻿# Package automatisation cabinet
