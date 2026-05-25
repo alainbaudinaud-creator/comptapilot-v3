@@ -60,6 +60,7 @@ from controllers.industrialisation_reelle.industrialisation_reelle_controller im
 from controllers.ocr_ia_reel.ocr_ia_reel_controller import bp_ocr_ia_reel
 from controllers.moteurs_metiers_reels.moteurs_metiers_reels_controller import bp_moteurs_metiers_reels
 from controllers.automatisation_cabinet.automatisation_cabinet_controller import bp_automatisation_cabinet
+from controllers.saas_realtime.saas_realtime_controller import bp_saas_realtime
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -115,6 +116,7 @@ app.register_blueprint(bp_industrialisation_reelle)
 app.register_blueprint(bp_ocr_ia_reel)
 app.register_blueprint(bp_moteurs_metiers_reels)
 app.register_blueprint(bp_automatisation_cabinet)
+app.register_blueprint(bp_saas_realtime)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -145,6 +147,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
