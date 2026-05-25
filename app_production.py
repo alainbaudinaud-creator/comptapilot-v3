@@ -83,6 +83,7 @@ from controllers.enterprise_grade.enterprise_grade_controller import bp_enterpri
 from controllers.reglementaire_reel.reglementaire_reel_controller import bp_reglementaire_reel
 from controllers.commercialisation_reelle.commercialisation_reelle_controller import bp_commercialisation_reelle
 from controllers.production_publique.production_publique_controller import bp_production_publique
+from controllers.go_live.go_live_controller import bp_go_live
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -161,6 +162,7 @@ app.register_blueprint(bp_enterprise_grade)
 app.register_blueprint(bp_reglementaire_reel)
 app.register_blueprint(bp_commercialisation_reelle)
 app.register_blueprint(bp_production_publique)
+app.register_blueprint(bp_go_live)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -191,6 +193,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
