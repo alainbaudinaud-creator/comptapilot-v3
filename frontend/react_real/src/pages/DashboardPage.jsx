@@ -1,6 +1,7 @@
 ﻿import React from "react";
 
 import WelcomeHero from "../onboarding/WelcomeHero";
+import QuickNavigation from "../cockpit/QuickNavigation";
 import OnboardingChecklist from "../onboarding/OnboardingChecklist";
 
 import { theme } from "../theme/theme";
@@ -60,6 +61,8 @@ export default function DashboardPage() {
         <div>
 
             <WelcomeHero />
+
+            <QuickNavigation />
 
             <section style={{
                 marginBottom: theme.spacing.xl
@@ -213,3 +216,4 @@ export default function DashboardPage() {
         </div>
     );
 }
+

@@ -7,32 +7,37 @@ import Header from "./layouts/Header";
 import DashboardPage from "./pages/DashboardPage";
 
 import { ToastProvider } from "./context/ToastContext";
+import { CockpitProvider } from "./cockpit/CockpitContext";
 
 function App() {
     return (
         <ToastProvider>
 
-            <AppShell>
+            <CockpitProvider>
 
-                <Sidebar />
+                <AppShell>
 
-                <main
-                    className="app-main"
-                    style={{
-                        flex: 1,
-                        padding: "32px",
-                        maxWidth: "1600px",
-                        margin: "0 auto",
-                        width: "100%"
-                    }}
-                >
-                    <Header />
+                    <Sidebar />
 
-                    <DashboardPage />
+                    <main
+                        className="app-main"
+                        style={{
+                            flex: 1,
+                            padding: "32px",
+                            maxWidth: "1600px",
+                            margin: "0 auto",
+                            width: "100%"
+                        }}
+                    >
+                        <Header />
 
-                </main>
+                        <DashboardPage />
 
-            </AppShell>
+                    </main>
+
+                </AppShell>
+
+            </CockpitProvider>
 
         </ToastProvider>
     );
