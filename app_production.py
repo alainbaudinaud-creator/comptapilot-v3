@@ -62,6 +62,7 @@ from controllers.moteurs_metiers_reels.moteurs_metiers_reels_controller import b
 from controllers.automatisation_cabinet.automatisation_cabinet_controller import bp_automatisation_cabinet
 from controllers.saas_realtime.saas_realtime_controller import bp_saas_realtime
 from controllers.cloud_industriel.cloud_industriel_controller import bp_cloud_industriel
+from controllers.produit_final.produit_final_controller import bp_produit_final
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -119,6 +120,7 @@ app.register_blueprint(bp_moteurs_metiers_reels)
 app.register_blueprint(bp_automatisation_cabinet)
 app.register_blueprint(bp_saas_realtime)
 app.register_blueprint(bp_cloud_industriel)
+app.register_blueprint(bp_produit_final)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -149,6 +151,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 

@@ -1,0 +1,47 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Produit Final V3</title>
+    <style>
+        body { margin:0; background:#020617; color:#e5e7eb; font-family:Arial,sans-serif; }
+        .page { padding:32px; }
+        .hero { background:linear-gradient(135deg,#111827,#0f766e); padding:30px; border-radius:24px; margin-bottom:24px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+        .card { background:#0f172a; border:1px solid #334155; border-radius:18px; padding:20px; }
+        .num { font-size:32px; color:#5eead4; font-weight:bold; }
+        ul { line-height:1.9; }
+    </style>
+</head>
+<body>
+<main class="page">
+    <section class="hero">
+        <h1>Produit Final Commercialisable V3</h1>
+        <p>Portail client, GED probatoire, signature électronique, PDP, notifications, emails et facturation SaaS.</p>
+    </section>
+
+    <section class="grid">
+        {% for label, value in stats.items() %}
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+        <h2>Briques produit final</h2>
+        <ul>
+            <li>✔ Portail client</li>
+            <li>✔ GED probatoire</li>
+            <li>✔ Signature électronique</li>
+            <li>✔ PDP facture électronique</li>
+            <li>✔ Notifications temps réel</li>
+            <li>✔ Emails automatiques</li>
+            <li>✔ Facturation SaaS</li>
+            <li>✔ API produit final</li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>
