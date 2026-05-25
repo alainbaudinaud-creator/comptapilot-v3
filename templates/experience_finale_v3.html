@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Expérience Finale V3</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#020617;
+    color:#e5e7eb;
+    font-family:Arial,sans-serif;
+}
+
+.page{
+    padding:32px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#111827,#ea580c);
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:24px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+}
+
+.card{
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:20px;
+}
+
+.num{
+    font-size:32px;
+    color:#fdba74;
+    font-weight:bold;
+}
+
+ul{
+    line-height:1.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+<section class="hero">
+
+<h1>Expérience Produit Finale V3</h1>
+
+<p>
+UI premium, websocket live,
+onboarding SaaS,
+billing Stripe,
+mobile Flutter,
+haute disponibilité
+et supervision live production.
+</p>
+
+</section>
+
+<section class="grid">
+
+{% for label, value in stats.items() %}
+
+<div class="card">
+<div>{{ label }}</div>
+<div class="num">{{ value }}</div>
+</div>
+
+{% endfor %}
+
+</section>
+
+<section class="card" style="margin-top:24px;">
+
+<h2>Produit commercial final</h2>
+
+<ul>
+
+<li>✔ UI/UX premium</li>
+<li>✔ Websocket live</li>
+<li>✔ Onboarding SaaS</li>
+<li>✔ Billing Stripe</li>
+<li>✔ Portail clients</li>
+<li>✔ Flutter mobile</li>
+<li>✔ Haute disponibilité</li>
+<li>✔ Supervision live</li>
+
+</ul>
+
+</section>
+
+</main>
+
+</body>
+</html>
