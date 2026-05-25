@@ -73,6 +73,7 @@ from controllers.websocket_live.websocket_live_controller import bp_websocket_li
 from controllers.integrations_reelles.integrations_reelles_controller import bp_integrations_reelles
 from controllers.dashboard_financier.dashboard_financier_controller import bp_dashboard_financier
 from controllers.socketio_reel.socketio_reel_controller import bp_socketio_reel
+from controllers.production_premium.production_premium_controller import bp_production_premium
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -141,6 +142,7 @@ app.register_blueprint(bp_websocket_live)
 app.register_blueprint(bp_integrations_reelles)
 app.register_blueprint(bp_dashboard_financier)
 app.register_blueprint(bp_socketio_reel)
+app.register_blueprint(bp_production_premium)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -171,6 +173,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
