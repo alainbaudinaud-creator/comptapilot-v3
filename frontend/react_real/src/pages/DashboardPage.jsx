@@ -1,4 +1,7 @@
-﻿import React, { useEffect } from "react";
+﻿import React from "react";
+
+import WelcomeHero from "../onboarding/WelcomeHero";
+import OnboardingChecklist from "../onboarding/OnboardingChecklist";
 
 import { theme } from "../theme/theme";
 
@@ -10,6 +13,8 @@ import LiveAlerts from "../widgets/live/LiveAlerts";
 import SkeletonCard from "../widgets/live/SkeletonCard";
 
 import { useToast } from "../context/ToastContext";
+
+import { useEffect } from "react";
 
 export default function DashboardPage() {
 
@@ -53,6 +58,14 @@ export default function DashboardPage() {
 
     return (
         <div>
+
+            <WelcomeHero />
+
+            <section style={{
+                marginBottom: theme.spacing.xl
+            }}>
+                <OnboardingChecklist />
+            </section>
 
             <section
                 className="cockpit-grid"
@@ -172,12 +185,14 @@ export default function DashboardPage() {
 
                 <button
                     onClick={() => {
+
                         refresh();
 
                         pushToast(
                             "Cockpit actualisé",
                             "info"
                         );
+
                     }}
                     style={{
                         background:
