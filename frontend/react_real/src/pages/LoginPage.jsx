@@ -1,18 +1,25 @@
 ﻿import React, { useState } from "react";
-import { loginDemo } from "../auth/authService";
+import { loginApi } from "../auth/authService";
 
 export default function LoginPage({ onLogin }) {
 
     const [email, setEmail] = useState("admin@comptapilot.local");
     const [password, setPassword] = useState("demo");
+    const [error, setError] = useState("");
 
-    function handleSubmit(event) {
+    async function handleSubmit(event) {
         event.preventDefault();
+        setError("");
 
-        const result = loginDemo(email, password);
+        try {
+            const result = await loginApi(email, password);
 
-        if (result.success) {
-            onLogin(result.user);
+            if (result.success) {
+                onLogin(result.user);
+            }
+
+        } catch (e) {
+            setError("Connexion impossible. Vérifie les identifiants.");
         }
     }
 
@@ -32,7 +39,18 @@ export default function LoginPage({ onLogin }) {
                 border: "1px solid #334155"
             }}>
                 <h1>ComptaPilot V3</h1>
-                <p>Connexion SaaS cabinet</p>
+                <p>Connexion JWT sécurisée SaaS cabinet</p>
+
+                {error && (
+                    <div style={{
+                        background: "#7f1d1d",
+                        padding: "12px",
+                        borderRadius: "12px",
+                        marginBottom: "12px"
+                    }}>
+                        {error}
+                    </div>
+                )}
 
                 <input
                     value={email}

@@ -1,23 +1,24 @@
-﻿export function loginDemo(email, password) {
+﻿import { API } from "../api/apiClient";
 
-    const token = btoa(`${email}:${password}:${Date.now()}`);
+export async function loginApi(email, password) {
+    const response = await API.post("/auth/login", {
+        email,
+        password
+    });
 
-    localStorage.setItem("comptapilot_token", token);
-    localStorage.setItem("comptapilot_user", email);
+    if (response.data.success) {
+        localStorage.setItem("comptapilot_token", response.data.token);
+        localStorage.setItem("comptapilot_user", response.data.user.email);
+        localStorage.setItem("comptapilot_role", response.data.user.role);
+    }
 
-    return {
-        success: true,
-        token,
-        user: {
-            email,
-            role: "SUPER_ADMIN"
-        }
-    };
+    return response.data;
 }
 
 export function logout() {
     localStorage.removeItem("comptapilot_token");
     localStorage.removeItem("comptapilot_user");
+    localStorage.removeItem("comptapilot_role");
 }
 
 export function isAuthenticated() {
@@ -25,5 +26,8 @@ export function isAuthenticated() {
 }
 
 export function currentUser() {
-    return localStorage.getItem("comptapilot_user") || "admin@comptapilot.local";
+    return {
+        email: localStorage.getItem("comptapilot_user") || "admin@comptapilot.local",
+        role: localStorage.getItem("comptapilot_role") || "SUPER_ADMIN"
+    };
 }
