@@ -1,0 +1,1 @@
+﻿# Package industrialisation réelle

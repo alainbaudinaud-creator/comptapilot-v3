@@ -1,0 +1,50 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Industrialisation Réelle V3</title>
+    <style>
+        body { margin:0; background:#020617; color:#e5e7eb; font-family:Arial,sans-serif; }
+        .page { padding:32px; }
+        .hero { background:linear-gradient(135deg,#111827,#be123c); padding:30px; border-radius:24px; margin-bottom:24px; }
+        .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+        .card { background:#0f172a; border:1px solid #334155; border-radius:18px; padding:20px; }
+        .num { font-size:32px; color:#fda4af; font-weight:bold; }
+        ul { line-height:1.9; }
+        a { color:#fecdd3; }
+    </style>
+</head>
+<body>
+<main class="page">
+    <section class="hero">
+        <h1>Industrialisation Métier Réelle V3</h1>
+        <p>OCR réel, OpenAI, import FEC, import bancaire, API REST, monitoring, files IA et GED probatoire.</p>
+    </section>
+
+    <section class="grid">
+        {% for label, value in stats.items() %}
+        <div class="card">
+            <div>{{ label }}</div>
+            <div class="num">{{ value }}</div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <section class="card" style="margin-top:24px;">
+        <h2>Bloc industriel activé</h2>
+        <ul>
+            <li>OCR réel prêt à brancher</li>
+            <li>Analyse OpenAI structurée</li>
+            <li>Import FEC réel</li>
+            <li>Import bancaire CSV/OFX</li>
+            <li>API REST SaaS V3</li>
+            <li>Monitoring production</li>
+            <li>Files d’attente IA</li>
+            <li>GED probatoire</li>
+        </ul>
+    </section>
+
+    <p style="margin-top:28px;"><a href="/">← Retour accueil</a></p>
+</main>
+</body>
+</html>
