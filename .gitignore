@@ -16,3 +16,24 @@ coverage/
 
 .vscode/
 .idea/
+
+# Archives SQLite
+archive/bases_sqlite/
+
+# Backups historiques
+archive/versions_historiques/
+
+# React dependencies
+frontend/react_real/node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.env.*
+
+# Build
+build/
+dist/
