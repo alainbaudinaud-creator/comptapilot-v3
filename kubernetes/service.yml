@@ -1,0 +1,18 @@
+﻿apiVersion: v1
+kind: Service
+
+metadata:
+  name: comptapilot-service
+
+spec:
+
+  selector:
+    app: comptapilot
+
+  ports:
+
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+
+  type: LoadBalancer

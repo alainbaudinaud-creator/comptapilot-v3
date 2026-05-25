@@ -78,6 +78,7 @@ from controllers.integrations_production.integrations_production_controller impo
 from controllers.openai_reel.openai_reel_controller import bp_openai_reel
 from controllers.tesseract_reel.tesseract_reel_controller import bp_tesseract_reel
 from controllers.orchestration_reelle.orchestration_reelle_controller import bp_orchestration_reelle
+from controllers.securite_probatoire.securite_probatoire_controller import bp_securite_probatoire
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -151,6 +152,7 @@ app.register_blueprint(bp_integrations_production)
 app.register_blueprint(bp_openai_reel)
 app.register_blueprint(bp_tesseract_reel)
 app.register_blueprint(bp_orchestration_reelle)
+app.register_blueprint(bp_securite_probatoire)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -181,6 +183,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 

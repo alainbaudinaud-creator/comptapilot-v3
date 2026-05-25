@@ -1,0 +1,35 @@
+﻿name: ComptaPilot CI/CD
+
+on:
+
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Import test
+        run: |
+          python -c "import app_production"
+
+      - name: Docker build
+        run: |
+          docker build -t comptapilot-v3 .
