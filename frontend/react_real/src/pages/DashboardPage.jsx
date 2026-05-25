@@ -1,9 +1,15 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
+
 import { theme } from "../theme/theme";
+
 import useCockpitLive from "../hooks/useCockpitLive";
+
 import LiveModuleCard from "../widgets/live/LiveModuleCard";
 import LiveActivityFeed from "../widgets/live/LiveActivityFeed";
 import LiveAlerts from "../widgets/live/LiveAlerts";
+import SkeletonCard from "../widgets/live/SkeletonCard";
+
+import { useToast } from "../context/ToastContext";
 
 export default function DashboardPage() {
 
@@ -13,6 +19,29 @@ export default function DashboardPage() {
         error,
         refresh
     } = useCockpitLive(10000);
+
+    const { pushToast } = useToast();
+
+    useEffect(() => {
+
+        pushToast(
+            "Cockpit ComptaPilot V3 connecté",
+            "success"
+        );
+
+    }, []);
+
+    useEffect(() => {
+
+        if (error) {
+
+            pushToast(
+                "Erreur chargement APIs live",
+                "error"
+            );
+        }
+
+    }, [error]);
 
     const financier = data?.financier?.data?.finance;
     const production = data?.production?.stats;
@@ -24,104 +53,81 @@ export default function DashboardPage() {
 
     return (
         <div>
-            <header style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                marginBottom: theme.spacing.xl
-            }}>
-                <div>
-                    <h1 style={{
-                        fontSize: "38px",
-                        marginBottom: theme.spacing.sm
-                    }}>
-                        Cockpit ComptaPilot V3
-                    </h1>
 
-                    <p style={{
-                        color: theme.colors.textSecondary,
-                        fontSize: "16px"
-                    }}>
-                        Supervision SaaS live — données connectées aux APIs V3
-                    </p>
-                </div>
+            <section
+                className="cockpit-grid"
+                style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
+                    gap: theme.spacing.lg
+                }}
+            >
 
-                <button
-                    onClick={refresh}
-                    style={{
-                        background: theme.colors.primary,
-                        color: "white",
-                        border: 0,
-                        borderRadius: theme.radius.button,
-                        padding: "12px 16px",
-                        cursor: "pointer",
-                        fontWeight: "bold"
-                    }}
-                >
-                    Rafraîchir
-                </button>
-            </header>
+                {loading ? (
+                    <>
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                        <SkeletonCard />
+                    </>
+                ) : (
+                    <>
+                        <LiveModuleCard
+                            title="CA"
+                            payload={data.financier}
+                            metric={financier?.chiffre_affaires
+                                ? `${financier.chiffre_affaires} €`
+                                : "—"}
+                        />
 
-            {loading && (
-                <p style={{ color: theme.colors.textSecondary }}>
-                    Chargement du cockpit live...
-                </p>
-            )}
+                        <LiveModuleCard
+                            title="Trésorerie"
+                            payload={data.financier}
+                            metric={financier?.tresorerie
+                                ? `${financier.tresorerie} €`
+                                : "—"}
+                        />
 
-            {error && (
-                <p style={{ color: theme.colors.danger }}>
-                    {error}
-                </p>
-            )}
+                        <LiveModuleCard
+                            title="Production premium"
+                            payload={data.production}
+                            metric={production?.traitements_total ?? "—"}
+                        />
 
-            <section style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))",
-                gap: theme.spacing.lg
-            }}>
-                <LiveModuleCard
-                    title="CA"
-                    payload={data.financier}
-                    metric={financier?.chiffre_affaires ? `${financier.chiffre_affaires} €` : "—"}
-                />
+                        <LiveModuleCard
+                            title="Workers"
+                            payload={data.orchestration}
+                            metric={orchestration?.workers ?? "—"}
+                        />
 
-                <LiveModuleCard
-                    title="Trésorerie"
-                    payload={data.financier}
-                    metric={financier?.tresorerie ? `${financier.tresorerie} €` : "—"}
-                />
+                        <LiveModuleCard
+                            title="Audits légaux"
+                            payload={data.securite}
+                            metric={securite?.audits ?? "—"}
+                        />
 
-                <LiveModuleCard
-                    title="Production premium"
-                    payload={data.production}
-                    metric={production?.traitements_total ?? "—"}
-                />
+                        <LiveModuleCard
+                            title="Readiness"
+                            payload={data.goLive}
+                            metric={goLive?.score_readiness
+                                ? `${goLive.score_readiness} %`
+                                : "—"}
+                        />
+                    </>
+                )}
 
-                <LiveModuleCard
-                    title="Workers"
-                    payload={data.orchestration}
-                    metric={orchestration?.workers ?? "—"}
-                />
-
-                <LiveModuleCard
-                    title="Audits légaux"
-                    payload={data.securite}
-                    metric={securite?.audits ?? "—"}
-                />
-
-                <LiveModuleCard
-                    title="Readiness"
-                    payload={data.goLive}
-                    metric={goLive?.score_readiness ? `${goLive.score_readiness} %` : "—"}
-                />
             </section>
 
-            <section style={{
-                marginTop: theme.spacing.xl,
-                display: "grid",
-                gridTemplateColumns: "2fr 1fr",
-                gap: theme.spacing.lg
-            }}>
+            <section
+                className="cockpit-two-columns"
+                style={{
+                    marginTop: theme.spacing.xl,
+                    display: "grid",
+                    gridTemplateColumns: "2fr 1fr",
+                    gap: theme.spacing.lg
+                }}
+            >
+
                 <LiveActivityFeed data={data} />
 
                 <div style={{
@@ -129,6 +135,7 @@ export default function DashboardPage() {
                     flexDirection: "column",
                     gap: theme.spacing.lg
                 }}>
+
                     <LiveModuleCard
                         title="Réglementaire"
                         payload={data.reglementaire}
@@ -146,14 +153,48 @@ export default function DashboardPage() {
                         payload={data.enterprise}
                         metric={data?.enterprise?.data?.cloud_status ?? "—"}
                     />
+
                 </div>
+
             </section>
 
             <section style={{
                 marginTop: theme.spacing.xl
             }}>
+
                 <LiveAlerts data={data} />
+
             </section>
+
+            <div style={{
+                marginTop: theme.spacing.xl
+            }}>
+
+                <button
+                    onClick={() => {
+                        refresh();
+
+                        pushToast(
+                            "Cockpit actualisé",
+                            "info"
+                        );
+                    }}
+                    style={{
+                        background:
+                            "linear-gradient(135deg,#2563eb,#38bdf8)",
+                        color: "white",
+                        border: 0,
+                        borderRadius: "14px",
+                        padding: "14px 20px",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                    }}
+                >
+                    Actualiser les données live
+                </button>
+
+            </div>
+
         </div>
     );
 }

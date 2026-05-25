@@ -6,21 +6,35 @@ import Sidebar from "./layouts/Sidebar";
 import Header from "./layouts/Header";
 import DashboardPage from "./pages/DashboardPage";
 
+import { ToastProvider } from "./context/ToastContext";
+
 function App() {
     return (
-        <AppShell>
-            <Sidebar />
+        <ToastProvider>
 
-            <main style={{
-                flex: 1,
-                padding: "32px",
-                maxWidth: "1600px",
-                margin: "0 auto"
-            }}>
-                <Header />
-                <DashboardPage />
-            </main>
-        </AppShell>
+            <AppShell>
+
+                <Sidebar />
+
+                <main
+                    className="app-main"
+                    style={{
+                        flex: 1,
+                        padding: "32px",
+                        maxWidth: "1600px",
+                        margin: "0 auto",
+                        width: "100%"
+                    }}
+                >
+                    <Header />
+
+                    <DashboardPage />
+
+                </main>
+
+            </AppShell>
+
+        </ToastProvider>
     );
 }
 
