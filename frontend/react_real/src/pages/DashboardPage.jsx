@@ -1,5 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import StatCard from "../widgets/StatCard";
+import NotificationsPanel from "../widgets/NotificationsPanel";
+import LiveDashboardPanel from "../widgets/LiveDashboardPanel";
 import { chargerDashboard } from "../api/dashboardApi";
 
 export default function DashboardPage() {
@@ -7,16 +9,26 @@ export default function DashboardPage() {
     const [data, setData] = useState({});
 
     useEffect(() => {
+
         async function load() {
+
             const result = await chargerDashboard();
+
             setData(result);
         }
 
         load();
+
+        const timer = setInterval(load, 10000);
+
+        return () => clearInterval(timer);
+
     }, []);
 
     return (
+
         <section>
+
             <h2>Dashboard Temps Réel</h2>
 
             <div style={{
@@ -25,14 +37,23 @@ export default function DashboardPage() {
                 gap: "20px",
                 marginTop: "20px"
             }}>
+
                 {Object.entries(data).map(([endpoint, payload]) => (
+
                     <StatCard
                         key={endpoint}
                         title={endpoint}
                         value={payload.success ? "ONLINE" : "ERROR"}
                     />
+
                 ))}
+
             </div>
+
+            <LiveDashboardPanel />
+
+            <NotificationsPanel />
+
         </section>
     );
 }
