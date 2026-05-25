@@ -1,30 +1,26 @@
 ﻿import axios from "axios";
 
-export const API = axios.create({
-    baseURL: "http://localhost:5001/api/v3"
-});
+const apiClient = axios.create({
 
-API.interceptors.request.use((config) => {
-    const token = localStorage.getItem("comptapilot_token");
+    baseURL: "http://localhost:5001/api/v3",
 
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    headers: {
+        "Content-Type": "application/json"
     }
-
-    return config;
 });
 
-export async function getJson(endpoint) {
-    const response = await API.get(endpoint);
-    return response.data;
-}
+export async function getJson(url) {
 
-export async function postForm(endpoint, formData) {
-    const response = await API.post(endpoint, formData, {
-        headers: {
-            "Content-Type": "multipart/form-data"
-        }
-    });
+    const response = await apiClient.get(url);
 
     return response.data;
 }
+
+export async function postJson(url, data) {
+
+    const response = await apiClient.post(url, data);
+
+    return response.data;
+}
+
+export default apiClient;
