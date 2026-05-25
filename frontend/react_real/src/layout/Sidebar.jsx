@@ -3,9 +3,10 @@
 export default function Sidebar({ onNavigate }) {
 
     const menus = [
-        { key: "dashboard", label: "Dashboard" },
+        { key: "dashboard", label: "Dashboard live" },
         { key: "cabinet", label: "Cabinet" },
         { key: "production", label: "Production IA" },
+        { key: "ocr", label: "Upload OCR" },
         { key: "client", label: "Portail Client" }
     ];
 

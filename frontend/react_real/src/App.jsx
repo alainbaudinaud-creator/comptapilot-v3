@@ -6,6 +6,8 @@ import Sidebar from "./layout/Sidebar";
 import CabinetPage from "./pages/cabinet/CabinetPage";
 import PortailClientPage from "./pages/client/PortailClientPage";
 import ProductionPage from "./pages/production/ProductionPage";
+import UploadOCRPage from "./pages/production/UploadOCRPage";
+import NotificationsPanel from "./widgets/NotificationsPanel";
 import { isAuthenticated, logout } from "./auth/authService";
 
 export default function App() {
@@ -45,9 +47,16 @@ export default function App() {
             }}>
                 <Header user={user} onLogout={handleLogout} />
 
-                {page === "dashboard" && <DashboardPage embedded />}
+                {page === "dashboard" && (
+                    <>
+                        <DashboardPage />
+                        <NotificationsPanel />
+                    </>
+                )}
+
                 {page === "cabinet" && <CabinetPage />}
                 {page === "production" && <ProductionPage />}
+                {page === "ocr" && <UploadOCRPage />}
                 {page === "client" && <PortailClientPage />}
             </main>
         </div>
