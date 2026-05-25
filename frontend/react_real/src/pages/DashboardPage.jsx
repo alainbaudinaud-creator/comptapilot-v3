@@ -12,6 +12,7 @@ import TesseractRealPanel from "../ocr/TesseractRealPanel";
 import WorkersPanel from "../workers/WorkersPanel";
 import CloudProductionPanel from "../production/CloudProductionPanel";
 import SecurityProbativePanel from "../security/SecurityProbativePanel";
+import EnterprisePanel from "../enterprise/EnterprisePanel";
 import { chargerDashboard } from "../api/dashboardApi";
 
 export default function DashboardPage() {
@@ -19,18 +20,26 @@ export default function DashboardPage() {
     const [data, setData] = useState({});
 
     useEffect(() => {
+
         async function load() {
+
             const result = await chargerDashboard();
+
             setData(result);
         }
 
         load();
+
         const timer = setInterval(load, 10000);
+
         return () => clearInterval(timer);
+
     }, []);
 
     return (
+
         <section>
+
             <h2>Dashboard Temps Réel</h2>
 
             <div style={{
@@ -39,27 +48,45 @@ export default function DashboardPage() {
                 gap: "20px",
                 marginTop: "20px"
             }}>
+
                 {Object.entries(data).map(([endpoint, payload]) => (
+
                     <StatCard
                         key={endpoint}
                         title={endpoint}
                         value={payload.success ? "ONLINE" : "ERROR"}
                     />
+
                 ))}
+
             </div>
 
             <FinancialDashboard />
+
             <InfrastructurePanel />
+
             <CloudProductionPanel />
+
             <ProductionPremiumPanel />
+
             <IntegrationsProductionPanel />
+
             <OpenAIRealPanel />
+
             <TesseractRealPanel />
+
             <WorkersPanel />
+
             <SecurityProbativePanel />
+
+            <EnterprisePanel />
+
             <SocketLivePanel />
+
             <LiveDashboardPanel />
+
             <NotificationsPanel />
+
         </section>
     );
 }
