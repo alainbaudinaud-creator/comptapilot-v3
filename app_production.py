@@ -66,6 +66,7 @@ from controllers.produit_final.produit_final_controller import bp_produit_final
 from controllers.finalisation_industrielle.finalisation_industrielle_controller import bp_finalisation_industrielle
 from controllers.commercialisation_saas.commercialisation_saas_controller import bp_commercialisation_saas
 from controllers.experience_finale.experience_finale_controller import bp_experience_finale
+from controllers.plateforme_reelle.plateforme_reelle_controller import bp_plateforme_reelle
 from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
 from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
 from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
@@ -127,6 +128,7 @@ app.register_blueprint(bp_produit_final)
 app.register_blueprint(bp_finalisation_industrielle)
 app.register_blueprint(bp_commercialisation_saas)
 app.register_blueprint(bp_experience_finale)
+app.register_blueprint(bp_plateforme_reelle)
 app.register_blueprint(bp_documents_fin_exercice)
 app.register_blueprint(bp_cloture_exercice)
 app.register_blueprint(bp_revision_comptable)
@@ -157,6 +159,7 @@ if __name__ == "__main__":
 
 
 app.register_blueprint(bp_ocr)
+
 
 
 
