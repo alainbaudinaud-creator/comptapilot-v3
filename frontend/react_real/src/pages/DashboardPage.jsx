@@ -2,6 +2,7 @@
 
 import WelcomeHero from "../onboarding/WelcomeHero";
 import QuickNavigation from "../cockpit/QuickNavigation";
+import AICommandCenter from "../ai/AICommandCenter";
 import OnboardingChecklist from "../onboarding/OnboardingChecklist";
 
 import { theme } from "../theme/theme";
@@ -63,6 +64,8 @@ export default function DashboardPage() {
             <WelcomeHero />
 
             <QuickNavigation />
+
+            <AICommandCenter />
 
             <section style={{
                 marginBottom: theme.spacing.xl
@@ -216,4 +219,5 @@ export default function DashboardPage() {
         </div>
     );
 }
+
 
