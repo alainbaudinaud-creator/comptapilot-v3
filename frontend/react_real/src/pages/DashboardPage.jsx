@@ -7,6 +7,7 @@ import FinancialDashboard from "../finance/FinancialDashboard";
 import SocketLivePanel from "../widgets/SocketLivePanel";
 import ProductionPremiumPanel from "../premium/ProductionPremiumPanel";
 import IntegrationsProductionPanel from "../production/IntegrationsProductionPanel";
+import OpenAIRealPanel from "../ai/OpenAIRealPanel";
 import { chargerDashboard } from "../api/dashboardApi";
 
 export default function DashboardPage() {
@@ -47,6 +48,7 @@ export default function DashboardPage() {
             <InfrastructurePanel />
             <ProductionPremiumPanel />
             <IntegrationsProductionPanel />
+            <OpenAIRealPanel />
             <SocketLivePanel />
             <LiveDashboardPanel />
             <NotificationsPanel />
