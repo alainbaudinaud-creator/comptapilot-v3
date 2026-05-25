@@ -1,0 +1,108 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Finalisation Industrielle V3</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#020617;
+    color:#e5e7eb;
+    font-family:Arial,sans-serif;
+}
+
+.page{
+    padding:32px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#111827,#7c3aed);
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:24px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+}
+
+.card{
+    background:#0f172a;
+    border:1px solid #334155;
+    border-radius:18px;
+    padding:20px;
+}
+
+.num{
+    font-size:32px;
+    color:#c4b5fd;
+    font-weight:bold;
+}
+
+ul{
+    line-height:1.9;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main class="page">
+
+<section class="hero">
+
+<h1>Finalisation Industrielle V3</h1>
+
+<p>
+Frontend React, websocket live,
+OpenAI structuré, OCR Tesseract,
+Stripe SaaS, supervision DevOps
+et architecture cloud finale.
+</p>
+
+</section>
+
+<section class="grid">
+
+{% for label, value in stats.items() %}
+
+<div class="card">
+<div>{{ label }}</div>
+<div class="num">{{ value }}</div>
+</div>
+
+{% endfor %}
+
+</section>
+
+<section class="card" style="margin-top:24px;">
+
+<h2>Infrastructure produit final</h2>
+
+<ul>
+
+<li>✔ React frontend</li>
+<li>✔ Websocket live</li>
+<li>✔ JWT sécurisé</li>
+<li>✔ OpenAI structuré</li>
+<li>✔ OCR Tesseract</li>
+<li>✔ Rapprochement IA</li>
+<li>✔ Lettrage IA</li>
+<li>✔ PDF professionnel</li>
+<li>✔ Stripe SaaS</li>
+<li>✔ Supervision DevOps</li>
+
+</ul>
+
+</section>
+
+</main>
+
+</body>
+</html>
