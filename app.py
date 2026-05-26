@@ -165,6 +165,38 @@ app.register_blueprint(bp_pdp_v3)
 def favicon():
     return "", 204
 
+
+@app.route("/bootstrap-admin")
+def bootstrap_admin_direct():
+
+    from werkzeug.security import generate_password_hash
+    from sqlalchemy import text
+    from services.db_postgres import get_engine
+
+    with get_engine().begin() as conn:
+
+        existing = conn.execute(text("""
+            SELECT id
+            FROM users
+            WHERE username = :username
+        """), {
+            "username": "admin"
+        }).fetchone()
+
+        if not existing:
+
+            conn.execute(text("""
+                INSERT INTO users (username, password)
+                VALUES (:username, :password)
+            """), {
+                "username": "admin",
+                "password": generate_password_hash("AdminComptaPilot2026!")
+            })
+
+            return "SUPER ADMIN cree"
+
+    return "SUPER ADMIN deja existant"
+
 @app.route("/")
 def home():
     return render_template("accueil.html")
@@ -232,4 +264,5 @@ try:
 except Exception as e:
 
     print(f"Erreur création admin : {e}")
+
 
