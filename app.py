@@ -238,3 +238,105 @@ if __name__ == "__main__":
 
 
 
+
+# DIRECT LOGIN ROUTES
+
+from flask import request
+from flask import session
+from flask import redirect
+from flask import render_template_string
+
+@app.route("/login", methods=["GET", "POST"])
+def direct_login():
+
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "admin" and password == "AdminComptaPilot2026!":
+
+            session["user"] = "admin"
+
+            return redirect("/")
+
+        return "Identifiants invalides"
+
+    return render_template_string("""
+
+    <html>
+    <head>
+        <title>ComptaPilot V3 Login</title>
+
+        <style>
+
+            body{
+                background:#0b1120;
+                color:white;
+                font-family:Arial;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                height:100vh;
+            }
+
+            .box{
+                background:#111827;
+                padding:40px;
+                border-radius:20px;
+                width:360px;
+                box-shadow:0 20px 60px rgba(0,0,0,.4);
+            }
+
+            input{
+                width:100%;
+                padding:14px;
+                margin-top:14px;
+                border-radius:12px;
+                border:none;
+                background:#1f2937;
+                color:white;
+            }
+
+            button{
+                width:100%;
+                padding:14px;
+                margin-top:20px;
+                border:none;
+                border-radius:12px;
+                background:#6366f1;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="box">
+
+            <h1>ComptaPilot V3</h1>
+
+            <form method="POST">
+
+                <input name="username" placeholder="Utilisateur">
+
+                <input type="password" name="password" placeholder="Mot de passe">
+
+                <button type="submit">
+                    Connexion
+                </button>
+
+            </form>
+
+        </div>
+
+    </body>
+
+    </html>
+
+    """)
+
