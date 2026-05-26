@@ -236,33 +236,4 @@ if __name__ == "__main__":
 )
 
 
-from werkzeug.security import generate_password_hash
-
-try:
-
-    from models.user import User
-
-    with app.app_context():
-
-        admin = User.query.filter_by(email="admin@comptapilot.fr").first()
-
-        if not admin:
-
-            admin = User(
-                nom="SUPER",
-                prenom="ADMIN",
-                email="admin@comptapilot.fr",
-                password=generate_password_hash("AdminComptaPilot2026!"),
-                role="SUPER_ADMIN"
-            )
-
-            db.session.add(admin)
-            db.session.commit()
-
-            print("SUPER ADMIN créé")
-
-except Exception as e:
-
-    print(f"Erreur création admin : {e}")
-
 
