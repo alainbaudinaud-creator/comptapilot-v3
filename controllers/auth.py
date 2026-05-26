@@ -118,3 +118,34 @@ def logout():
 
     return redirect("/auth/login")
 
+
+@auth_routes.route("/bootstrap-admin")
+def bootstrap_admin():
+
+    from werkzeug.security import generate_password_hash
+    from sqlalchemy import text
+
+    with get_engine().begin() as conn:
+
+        existing = conn.execute(text("""
+            SELECT id
+            FROM users
+            WHERE username = :username
+        """), {
+            "username": "admin"
+        }).fetchone()
+
+        if not existing:
+
+            conn.execute(text("""
+                INSERT INTO users (username, password)
+                VALUES (:username, :password)
+            """), {
+                "username": "admin",
+                "password": generate_password_hash("AdminComptaPilot2026!")
+            })
+
+            return "SUPER ADMIN créé"
+
+    return "SUPER ADMIN déjà existant"
+
