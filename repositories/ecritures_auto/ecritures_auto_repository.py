@@ -17,3 +17,4 @@ def fetch_nombre_ecritures_auto():
 
     return fetch_count("ecritures_auto")
 
+

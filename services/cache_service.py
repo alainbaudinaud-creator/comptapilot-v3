@@ -7,3 +7,4 @@ def get_cache(key):
 def set_cache(key, value):
     CACHE[key] = value
 
+

@@ -53,3 +53,4 @@ class Écriture:
             'description': self.description
         }
 
+

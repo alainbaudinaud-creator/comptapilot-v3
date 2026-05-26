@@ -181,3 +181,4 @@ def dashboard_plateforme_reelle():
 
     return stats
 
+

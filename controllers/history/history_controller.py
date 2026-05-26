@@ -38,3 +38,4 @@ def api_history():
         success_response(result)
     )
 
+

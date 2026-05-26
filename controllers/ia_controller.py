@@ -8,3 +8,4 @@ bp_ia_controller = Blueprint("ia_controller", __name__)
 def ia_analyse():
     return jsonify(analyser_comptabilite())
 
+

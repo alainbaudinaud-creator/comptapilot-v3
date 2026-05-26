@@ -126,3 +126,4 @@ print("Comptes modele :", len(pcg))
 print("Dossiers alimentes :", len(dossiers))
 print("Comptes ajoutes dans plan_comptable :", insertions)
 
+

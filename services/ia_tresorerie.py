@@ -7,3 +7,4 @@ def prediction_tresorerie():
         "risque": "faible"
     }
 
+

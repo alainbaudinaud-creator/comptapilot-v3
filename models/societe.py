@@ -17,3 +17,4 @@ class Societe(db.Model):
             "adresse": self.adresse
         }
 
+

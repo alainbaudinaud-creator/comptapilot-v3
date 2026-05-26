@@ -41,3 +41,4 @@ def get_supervision_page_data():
         "events": fetch_supervision_events()
     }
 
+

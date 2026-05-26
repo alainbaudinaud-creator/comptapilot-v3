@@ -54,3 +54,4 @@ def generer_bilan_pdf(db="db.sqlite", fichier="bilan.pdf"):
     con.close()
     return fichier
 
+

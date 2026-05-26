@@ -36,3 +36,4 @@ def api_plateforme_reelle():
         "stats": stats,
     })
 
+

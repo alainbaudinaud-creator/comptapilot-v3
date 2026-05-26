@@ -53,3 +53,4 @@ def generer_liasse_complete(fichier="liasse_complete.pdf"):
     doc.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
     return fichier
 
+

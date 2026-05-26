@@ -26,3 +26,4 @@ def api_integrations():
             "error": str(e),
         }), 500
 
+

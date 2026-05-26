@@ -67,3 +67,4 @@ def charger_facture_depuis_base(facture_id: int):
 def charger_facture_metier(facture_id: int):
     return charger_facture_depuis_base(facture_id)
 
+

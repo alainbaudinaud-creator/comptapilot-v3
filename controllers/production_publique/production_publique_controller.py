@@ -60,3 +60,4 @@ def api_mobile():
         "resultat": simulation_mobile(),
     })
 
+

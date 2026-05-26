@@ -59,3 +59,4 @@ def generer_grand_livre_pdf(db="db.sqlite", fichier="grand_livre.pdf"):
     con.close()
     return fichier
 
+

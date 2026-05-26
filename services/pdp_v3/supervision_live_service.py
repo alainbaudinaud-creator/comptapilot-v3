@@ -59,3 +59,4 @@ def charger_supervision_temps_reel():
 
     return data
 
+

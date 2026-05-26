@@ -141,3 +141,4 @@ def get_precompta(precompta_id):
         "compte_fournisseur": row[10]
     }
 
+

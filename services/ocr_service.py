@@ -32,3 +32,4 @@ def analyser_facture(path):
         "tva": "20%"
     }
 
+

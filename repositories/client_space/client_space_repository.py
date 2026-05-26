@@ -103,3 +103,4 @@ def get_client_space_data(societe_id):
         ]
     }
 
+

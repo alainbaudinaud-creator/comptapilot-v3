@@ -28,3 +28,4 @@ def api_live_notifications():
         "notifications": liste_notifications(),
     })
 
+

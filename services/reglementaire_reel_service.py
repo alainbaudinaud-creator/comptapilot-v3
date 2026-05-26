@@ -168,3 +168,4 @@ def dashboard_reglementaire():
         "server_time": datetime.utcnow().isoformat(),
     }
 
+

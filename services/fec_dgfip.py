@@ -48,3 +48,4 @@ def export_fec_dgfip(db="db.sqlite"):
 
     return fichier
 
+

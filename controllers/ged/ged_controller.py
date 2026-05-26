@@ -76,3 +76,4 @@ def api_archive_document(document_id):
         success_response(result)
     )
 
+

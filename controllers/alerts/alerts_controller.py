@@ -39,3 +39,4 @@ def api_alerts_center():
         success_response(result)
     )
 
+

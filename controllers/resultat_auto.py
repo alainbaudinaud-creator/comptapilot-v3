@@ -22,3 +22,4 @@ def resultat():
 
     return render_template("comptabilite/resultat.html", rows=rows)
 
+

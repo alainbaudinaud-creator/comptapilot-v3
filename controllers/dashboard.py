@@ -37,3 +37,4 @@ def dashboard_complet():
 def page_dashboard_pro():
     return redirect('/ecritures/tableau-bord')
 
+

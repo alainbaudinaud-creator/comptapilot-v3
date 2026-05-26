@@ -6,3 +6,4 @@ def commentaire_bilan():
     et une structure financi?re stable.
     """
 
+

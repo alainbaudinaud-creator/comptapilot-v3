@@ -71,3 +71,4 @@ def socle_donnees_index():
     </html>
     """, stats=stats)
 
+

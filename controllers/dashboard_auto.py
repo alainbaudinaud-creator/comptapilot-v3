@@ -7,3 +7,4 @@ bp_dashboard_auto = Blueprint("dashboard_auto", __name__)
 def home():
     return render_template("dashboard/index.html")
 
+

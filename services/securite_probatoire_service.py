@@ -178,3 +178,4 @@ def dashboard_securite_probatoire():
         "server_time": datetime.utcnow().isoformat(),
     }
 
+

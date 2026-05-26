@@ -29,3 +29,4 @@ def generer_liasse_pdf(fichier="liasse_fiscale.pdf"):
 
     return fichier
 
+

@@ -17,3 +17,4 @@ def plateforme_cabinet_index():
         stats=stats,
     )
 
+

@@ -69,3 +69,4 @@ def fetch_totaux_debit_credit():
             "total_credit": float(row[1] or 0)
         }
 
+

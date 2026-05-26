@@ -7,3 +7,4 @@ def analyser_anomalies():
         "Compte fournisseur d?biteur"
     ]
 
+

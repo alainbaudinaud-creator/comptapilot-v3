@@ -34,3 +34,4 @@ def api_produit_final():
         "stats": stats,
     })
 
+

@@ -47,3 +47,4 @@ with engine.begin() as conn:
 print(f"{len(rows)} écritures importées")
 
 
+

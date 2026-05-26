@@ -19,3 +19,4 @@ def error_response(message="error", code="UNKNOWN_ERROR", details=None):
         }
     }
 
+

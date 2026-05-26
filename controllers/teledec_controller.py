@@ -34,3 +34,4 @@ def teledec_client():
 
     return render_template("teledec/client.html")
 
+

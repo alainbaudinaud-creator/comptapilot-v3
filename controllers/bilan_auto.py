@@ -21,3 +21,4 @@ def bilan():
 
     return render_template("comptabilite/bilan.html", rows=rows)
 
+

@@ -44,3 +44,4 @@ def create_client_onboarding(
 
     return societe_id
 
+

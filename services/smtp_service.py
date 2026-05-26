@@ -70,3 +70,4 @@ def envoyer_email(destinataire, sujet, contenu, piece_jointe=None):
 
     return statut
 
+

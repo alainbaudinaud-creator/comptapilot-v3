@@ -29,3 +29,4 @@ def journaliser_evenement_pdp(
 
     return evenement
 
+

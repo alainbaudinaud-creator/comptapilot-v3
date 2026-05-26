@@ -182,3 +182,4 @@ def format_amount(value):
 
     return "{:.2f}".format(float(value)).replace(".", ",")
 
+

@@ -7,3 +7,4 @@ def calculer_kpi():
         "tresorerie": 45000
     }
 
+

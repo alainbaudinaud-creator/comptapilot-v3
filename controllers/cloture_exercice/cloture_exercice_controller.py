@@ -11,3 +11,4 @@ def cloture_exercice_index():
 
     return render_template("cloture_exercice_v3.html")
 
+

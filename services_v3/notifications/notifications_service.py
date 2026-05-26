@@ -88,3 +88,4 @@ def read_notification(notification_id):
         "message": "Notification marquée comme lue"
     }
 
+

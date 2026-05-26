@@ -6,3 +6,4 @@ def paginate(rows, page=1, size=50):
 
     return rows[start:end]
 
+

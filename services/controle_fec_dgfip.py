@@ -25,3 +25,4 @@ def verifier_fec(fichier):
 
     return erreurs
 
+

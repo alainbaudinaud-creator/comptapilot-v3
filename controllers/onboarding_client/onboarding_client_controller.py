@@ -11,3 +11,4 @@ def onboarding_client_index():
 
     return render_template("onboarding_client_v3.html")
 
+

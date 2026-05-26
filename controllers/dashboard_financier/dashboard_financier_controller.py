@@ -27,3 +27,4 @@ def api_dashboard_financier():
             "error": str(e),
         }), 500
 
+

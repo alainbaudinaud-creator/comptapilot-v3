@@ -87,3 +87,4 @@ def stats_temps_reel():
         "live_mode": True,
     }
 
+

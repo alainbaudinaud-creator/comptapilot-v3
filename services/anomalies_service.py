@@ -71,3 +71,4 @@ def detecter_anomalies_ecritures():
 
     return anomalies
 
+

@@ -31,3 +31,4 @@ def get_plan_comptable():
         for row in rows
     ])
 
+

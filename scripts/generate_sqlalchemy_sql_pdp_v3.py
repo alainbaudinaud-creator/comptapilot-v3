@@ -19,3 +19,4 @@ for model in models:
     print(sql)
     print()
 
+

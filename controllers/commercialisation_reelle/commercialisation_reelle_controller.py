@@ -50,3 +50,4 @@ def api_onboarding():
         "resultat": onboarding_client(),
     })
 
+

@@ -169,3 +169,4 @@ def has_permission(permission):
 
     return result > 0
 
+

@@ -97,3 +97,4 @@ def fetch_ecritures_export_dashboard():
 
         return result.fetchall()
 
+

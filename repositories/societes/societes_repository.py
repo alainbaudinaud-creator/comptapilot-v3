@@ -31,3 +31,4 @@ def fetch_societe_by_id(societe_id: int):
 
         return result.fetchone()
 
+

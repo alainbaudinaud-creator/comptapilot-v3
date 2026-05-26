@@ -231,3 +231,4 @@ def mark_relance_sent(relance_id):
     session.commit()
     session.close()
 
+

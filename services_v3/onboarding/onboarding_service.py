@@ -21,3 +21,4 @@ def onboard_new_client(data):
         "statut": "client_cree"
     }
 
+

@@ -27,3 +27,4 @@ def detecter_anomalies():
 
     return len(anomalies)
 
+

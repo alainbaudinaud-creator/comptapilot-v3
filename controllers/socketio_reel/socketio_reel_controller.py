@@ -48,3 +48,4 @@ def socketio_push_ocr():
         "event": push_ocr_event(filename),
     })
 
+

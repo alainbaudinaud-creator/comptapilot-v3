@@ -195,3 +195,4 @@ def generer_pre_ecriture(client_id, analyse):
         "equilibre": True,
     }
 
+

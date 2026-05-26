@@ -81,3 +81,4 @@ def list_role_permissions():
         for row in rows
     ]
 
+

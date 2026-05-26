@@ -83,3 +83,4 @@ def archive_ged_document(document_id):
         "message": "Document archivé"
     }
 
+

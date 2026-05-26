@@ -33,3 +33,4 @@ def teledeclarer_exercice(exercice="2026", email_client=None):
 
     return resultat
 
+

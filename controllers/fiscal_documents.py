@@ -26,3 +26,4 @@ def fiscal_view(filename):
 def fiscal_download(filename):
     return send_file(BASE / filename, mimetype="application/pdf", as_attachment=True)
 
+

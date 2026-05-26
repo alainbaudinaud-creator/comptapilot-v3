@@ -94,3 +94,4 @@ def get_alerts_center():
         "items": alerts[:100]
     }
 
+

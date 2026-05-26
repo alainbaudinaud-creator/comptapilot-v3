@@ -42,3 +42,4 @@ def api_journal_v3():
         success_response(result)
     )
 
+

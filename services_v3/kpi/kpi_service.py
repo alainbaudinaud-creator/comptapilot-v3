@@ -37,3 +37,4 @@ def get_kpi_financiers():
         "statut": "ok"
     }
 
+

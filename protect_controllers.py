@@ -48,3 +48,4 @@ for filename, permission in FILES.items():
 
     print(f"PROTEGE : {filename} -> {permission}")
 
+

@@ -36,3 +36,4 @@ def api_commercialisation():
         "stats": stats,
     })
 
+

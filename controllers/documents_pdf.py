@@ -76,3 +76,4 @@ def email_pdf(name):
 
     return render_template("documents/email.html", name=name, title=item["title"])
 
+

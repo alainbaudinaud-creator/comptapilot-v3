@@ -8,3 +8,4 @@ def cabinet():
 
     return render_template("dashboard/cabinet.html")
 
+

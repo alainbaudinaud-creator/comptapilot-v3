@@ -12,3 +12,4 @@ def get_supervision_stats():
         "journal": 0
     }
 
+

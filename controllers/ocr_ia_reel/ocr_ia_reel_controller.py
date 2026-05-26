@@ -62,3 +62,4 @@ def api_ocr_ia_demo():
             "error": str(e),
         }), 500
 
+

@@ -123,3 +123,4 @@ def stats_integrations_reelles():
         "timestamp": datetime.utcnow().isoformat(),
     }
 
+

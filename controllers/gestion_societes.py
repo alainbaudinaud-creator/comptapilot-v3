@@ -31,3 +31,4 @@ def add_societe():
     new_societe.save()
     return jsonify(new_societe.serialize()), 201
 
+

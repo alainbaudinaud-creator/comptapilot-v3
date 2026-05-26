@@ -43,3 +43,4 @@ def send_email_smtp(to_email, subject, body):
             "message": str(exc)
         }
 
+

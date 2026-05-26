@@ -59,3 +59,4 @@ def cloture_annuelle(db="db.sqlite", exercice="2026", exercice_suivant="2027", r
 
     return "Clôture terminée avec veille réglementaire et liasse pré-remplie"
 
+

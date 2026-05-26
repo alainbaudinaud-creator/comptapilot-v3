@@ -3,3 +3,4 @@
 
 def importer_plan_comptable_defaut():
     return True
+

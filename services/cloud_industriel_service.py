@@ -197,3 +197,4 @@ def dashboard_cloud_industriel():
 
     return stats
 
+

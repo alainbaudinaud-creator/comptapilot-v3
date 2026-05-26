@@ -33,3 +33,4 @@ def journaliser(module, evenement, niveau="INFO"):
     con.commit()
     con.close()
 
+

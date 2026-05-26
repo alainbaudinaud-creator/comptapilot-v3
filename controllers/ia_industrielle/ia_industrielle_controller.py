@@ -17,3 +17,4 @@ def ia_industrielle_index():
         stats=stats,
     )
 
+

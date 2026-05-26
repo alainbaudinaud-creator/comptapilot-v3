@@ -9,3 +9,4 @@ def analyser_facture(fichier):
         "statut": "OCR_OK"
     }
 
+

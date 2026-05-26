@@ -257,3 +257,4 @@ def dashboard_finalisation_industrielle():
 
     return stats
 
+

@@ -74,3 +74,4 @@ def upload_client_document(file, societe_id):
         "message": "Document reçu et prêt pour OCR"
     }
 
+

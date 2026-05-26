@@ -41,3 +41,4 @@ def analyser_comptabilite():
         "score": max(0, 100 - len(alertes)*10)
     }
 
+

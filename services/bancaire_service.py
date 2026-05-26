@@ -23,3 +23,4 @@ def lister_ecritures_bancaires():
 
     return ecritures
 
+

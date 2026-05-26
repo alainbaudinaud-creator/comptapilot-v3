@@ -81,3 +81,4 @@ def normaliser_date_ocr(texte_ocr):
 
     return ""
 
+

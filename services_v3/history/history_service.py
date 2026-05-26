@@ -52,3 +52,4 @@ def get_history_dashboard():
         "items": items
     }
 
+

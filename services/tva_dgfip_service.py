@@ -6,3 +6,4 @@ def generer_ca3():
         "tva_due": 0
     }
 
+

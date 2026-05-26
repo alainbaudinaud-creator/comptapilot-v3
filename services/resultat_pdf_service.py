@@ -55,3 +55,4 @@ def generer_resultat_pdf(db="db.sqlite", fichier="compte_resultat.pdf"):
     con.close()
     return fichier
 
+

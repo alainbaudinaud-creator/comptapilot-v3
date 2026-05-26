@@ -101,3 +101,4 @@ def api_convert_precompta_to_ecriture(precompta_id):
         success_response(result)
     )
 
+

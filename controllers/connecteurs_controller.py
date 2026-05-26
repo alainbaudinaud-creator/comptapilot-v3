@@ -39,3 +39,4 @@ def connecteurs():
     con.close()
     return render_template("connecteurs/index.html", rows=rows)
 
+

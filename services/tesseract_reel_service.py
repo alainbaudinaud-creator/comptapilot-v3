@@ -113,3 +113,4 @@ def dashboard_tesseract():
         "history": [dict(r) for r in rows]
     }
 
+

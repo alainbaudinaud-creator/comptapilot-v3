@@ -227,3 +227,4 @@ def creer_ecriture_depuis_analyse(analyse):
         "credit_total": analyse["montant_ttc"],
     }
 
+

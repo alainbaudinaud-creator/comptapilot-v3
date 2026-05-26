@@ -57,3 +57,4 @@ def api_tva():
         "resultat": moteur_tva_avance(),
     })
 
+

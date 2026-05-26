@@ -31,3 +31,4 @@ def fetch_supervision_stats():
 
     return stats
 
+

@@ -38,3 +38,4 @@ def api_isolation_dashboard():
         success_response(result)
     )
 
+

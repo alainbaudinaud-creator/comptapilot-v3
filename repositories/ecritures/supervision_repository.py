@@ -36,3 +36,4 @@ def fetch_supervision_counts():
         "nb_audit": fetch_count_safe("audit_actions")
     }
 
+

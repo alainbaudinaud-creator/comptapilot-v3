@@ -86,3 +86,4 @@ def analyse_ocr(fichier):
     con.commit()
     con.close()
 
+

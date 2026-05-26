@@ -160,3 +160,4 @@ TOTAL_STYLE = TableStyle([
     ("BOTTOMPADDING", (0,0), (-1,-1), 10),
 ])
 
+

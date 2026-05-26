@@ -6,3 +6,4 @@ def analyse_complete():
         "tresorerie": "stable"
     }
 
+

@@ -66,3 +66,4 @@ def remplir_liasse():
     remplir_liasse_depuis_comptabilite("2026", "RSI")
     return redirect(url_for("veille_reglementaire.reglementaire"))
 
+

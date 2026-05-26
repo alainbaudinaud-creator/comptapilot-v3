@@ -29,3 +29,4 @@ def insert_journal_evenement(evenement: dict):
 
         return result.scalar_one()
 
+

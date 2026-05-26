@@ -36,3 +36,4 @@ def api_cloud_industriel():
         "stats": stats,
     })
 
+

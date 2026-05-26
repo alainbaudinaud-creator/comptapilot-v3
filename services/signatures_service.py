@@ -60,3 +60,4 @@ def signer_document(document, signataire):
         "empreinte": empreinte
     }
 
+

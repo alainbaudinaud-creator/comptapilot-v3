@@ -258,3 +258,4 @@ if __name__ == "__main__":
     remplir_liasse_depuis_comptabilite("2026", "RSI")
     print("OK")
 
+

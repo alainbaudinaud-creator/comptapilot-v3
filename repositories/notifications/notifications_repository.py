@@ -134,3 +134,4 @@ def count_unread_notifications():
 
     return count
 
+

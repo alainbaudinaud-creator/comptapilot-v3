@@ -60,3 +60,4 @@ def get_alerts_raw_data():
 
     return data
 
+

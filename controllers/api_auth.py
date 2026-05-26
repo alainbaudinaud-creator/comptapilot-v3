@@ -243,3 +243,4 @@ def api_supprimer_utilisateur(utilisateur_id):
         "utilisateur_id": utilisateur_id
     })
 
+

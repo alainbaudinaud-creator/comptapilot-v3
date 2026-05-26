@@ -39,3 +39,4 @@ def get_client_portal_summary(societe_id):
         "telephone": row[4]
     }
 
+

@@ -15,3 +15,4 @@ def client_envoyer_document():
     resultat = envoyer_document_client(email, document)
     return render_template("client/resultat.html", resultat=resultat)
 
+

@@ -36,3 +36,4 @@ def api_finalisation_industrielle():
         "stats": stats,
     })
 
+

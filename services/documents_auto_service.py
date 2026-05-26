@@ -35,3 +35,4 @@ IFG SOLUTION
 def envoyer_liasse_client(email):
     return envoyer_document_client(email, "liasse")
 
+

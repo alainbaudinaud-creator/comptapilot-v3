@@ -17,3 +17,4 @@ def rapprochement_bancaire():
         ecritures=ecritures
     )
 
+

@@ -57,3 +57,4 @@ def api_signature():
         "resultat": signer_document(document, signataire),
     })
 
+

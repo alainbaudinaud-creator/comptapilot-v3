@@ -35,3 +35,4 @@ def get_client_portal_dashboard(societe_id):
         }
     }
 
+

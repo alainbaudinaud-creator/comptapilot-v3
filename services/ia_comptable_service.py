@@ -37,3 +37,4 @@ def analyser_comptabilite_ia():
 
     return message
 
+

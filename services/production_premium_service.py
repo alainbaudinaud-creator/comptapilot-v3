@@ -85,3 +85,4 @@ def stats_production_premium():
         "logs": [dict(r) for r in rows]
     }
 
+

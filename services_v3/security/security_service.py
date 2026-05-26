@@ -20,3 +20,4 @@ def get_security_dashboard():
         "role_permissions": role_permissions
     }
 
+

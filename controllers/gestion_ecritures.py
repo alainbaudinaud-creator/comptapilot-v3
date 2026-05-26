@@ -16901,3 +16901,4 @@ def operationnel_pret_tableau(pret_id):
 
 
 
+

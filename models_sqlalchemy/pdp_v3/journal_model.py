@@ -30,3 +30,4 @@ class JournalTechniquePDPModel(Base):
         nullable=True
     )
 
+

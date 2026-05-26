@@ -40,3 +40,4 @@ def analyser_risque_fiscal():
         "anomalies": 0
     }
 
+

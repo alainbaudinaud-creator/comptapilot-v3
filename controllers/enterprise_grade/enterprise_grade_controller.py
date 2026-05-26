@@ -57,3 +57,4 @@ def api_enterprise_predictif():
         "resultat": moteur_predictif(),
     })
 
+

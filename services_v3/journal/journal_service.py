@@ -31,3 +31,4 @@ def get_journal_dashboard(societe_id=None):
         "items": ecritures
     }
 
+

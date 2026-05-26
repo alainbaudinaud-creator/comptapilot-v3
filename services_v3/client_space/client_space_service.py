@@ -20,3 +20,4 @@ def get_client_space_dashboard(societe_id=1):
         "recent_documents": data.get("recent_documents")
     }
 
+

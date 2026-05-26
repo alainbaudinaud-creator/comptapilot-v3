@@ -28,3 +28,4 @@ with engine.begin() as conn:
 
 print("Table precompta_documents OK")
 
+

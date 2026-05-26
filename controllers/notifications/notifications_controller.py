@@ -71,3 +71,4 @@ def api_read_notification(notification_id):
         success_response(result)
     )
 
+

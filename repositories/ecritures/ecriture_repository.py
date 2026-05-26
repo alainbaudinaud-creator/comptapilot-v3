@@ -117,3 +117,4 @@ def create_ecriture_lines(precompta, lines):
 
     session.close()
 
+

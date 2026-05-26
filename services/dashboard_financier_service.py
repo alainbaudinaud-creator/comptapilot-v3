@@ -132,3 +132,4 @@ def dashboard_financier_data():
         "server_time": datetime.utcnow().isoformat(),
     }
 
+

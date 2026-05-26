@@ -131,3 +131,4 @@ Statut :
 Document prêt pour analyse précomptable IA.
 """.strip()
 
+

@@ -69,3 +69,4 @@ def fetch_plan_comptable():
 
         return result.fetchall()
 
+

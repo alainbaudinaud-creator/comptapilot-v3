@@ -10,3 +10,4 @@ class JournalTechniquePDP:
     empreinte_sha256: Optional[str]
     date_evenement: Optional[str]
 
+
