@@ -140,3 +140,4 @@ def to_decimal(value):
     return Decimal(str(value)).quantize(
         Decimal("0.01")
     )
+

@@ -38,3 +38,4 @@ def api_alerts_center():
     return jsonify(
         success_response(result)
     )
+

@@ -1,4 +1,4 @@
-
+﻿
 from services.smtp_service import envoyer_email
 
 def relancer_client(email, document):
@@ -16,3 +16,4 @@ Cordialement,
 IFG SOLUTION
 """
     )
+

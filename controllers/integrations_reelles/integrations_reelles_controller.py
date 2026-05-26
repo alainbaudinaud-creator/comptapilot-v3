@@ -25,3 +25,4 @@ def api_integrations():
             "module": "integrations_reelles_v3",
             "error": str(e),
         }), 500
+

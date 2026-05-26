@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -32,3 +32,4 @@ def teledeclarer_exercice(exercice="2026", email_client=None):
         envoyer_liasse_client(email_client)
 
     return resultat
+

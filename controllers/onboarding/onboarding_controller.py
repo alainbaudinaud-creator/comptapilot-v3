@@ -44,3 +44,4 @@ def api_onboarding_client():
     return jsonify(
         success_response(result)
     )
+

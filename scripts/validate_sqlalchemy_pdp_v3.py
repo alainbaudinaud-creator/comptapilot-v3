@@ -24,3 +24,4 @@ if missing:
     raise SystemExit(1)
 
 print("Validation SQLAlchemy PDP V3 OK")
+

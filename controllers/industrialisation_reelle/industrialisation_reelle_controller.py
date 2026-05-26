@@ -41,3 +41,4 @@ def api_v3_dashboard():
             "module": "industrialisation_reelle_v3",
             "error": str(e),
         }), 500
+

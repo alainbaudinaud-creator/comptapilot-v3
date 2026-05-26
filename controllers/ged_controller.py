@@ -48,3 +48,4 @@ def ged():
         "cabinet/ged.html",
         stats=stats
     )
+

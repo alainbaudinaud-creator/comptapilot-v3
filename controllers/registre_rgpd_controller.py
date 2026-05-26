@@ -77,3 +77,4 @@ def ajouter_traitement_rgpd():
         "ajouter_traitement_rgpd.html"
     )
 
+

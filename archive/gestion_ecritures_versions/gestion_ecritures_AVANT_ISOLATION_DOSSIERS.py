@@ -15326,3 +15326,4 @@ def changer_dossier(dossier_id):
 
     return redirect("/ecritures/dossiers-comptables")
 
+

@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -39,3 +39,4 @@ def analyser_risque_fiscal():
         "risque": "FAIBLE",
         "anomalies": 0
     }
+

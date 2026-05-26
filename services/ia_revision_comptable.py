@@ -1,4 +1,4 @@
-
+﻿
 def analyser_anomalies():
 
     return [
@@ -6,3 +6,4 @@ def analyser_anomalies():
         "?criture non lettr?e",
         "Compte fournisseur d?biteur"
     ]
+

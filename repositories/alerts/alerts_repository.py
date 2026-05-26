@@ -59,3 +59,4 @@ def get_alerts_raw_data():
     session.close()
 
     return data
+

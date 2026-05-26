@@ -256,3 +256,4 @@ def compute_confidence(
         score += 20
 
     return score
+

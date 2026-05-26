@@ -42,3 +42,4 @@ def deposer_facture_pdp(facture_id: int):
 
 def simuler_depot_facture(facture_id: int):
     return deposer_facture_pdp(facture_id)
+

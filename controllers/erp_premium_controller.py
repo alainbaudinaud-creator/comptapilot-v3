@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 from flask import Blueprint, render_template
@@ -42,3 +42,4 @@ def erp_premium():
         stats=stats,
         ia=ia
     )
+

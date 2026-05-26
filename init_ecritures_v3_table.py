@@ -24,3 +24,4 @@ with engine.begin() as conn:
     conn.execute(text(sql))
 
 print("Table ecritures_v3 OK")
+

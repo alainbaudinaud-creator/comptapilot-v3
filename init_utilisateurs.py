@@ -33,3 +33,4 @@ connexion.commit()
 connexion.close()
 
 print("Table utilisateurs créée avec utilisateur admin.")
+

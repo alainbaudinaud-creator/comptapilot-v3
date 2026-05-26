@@ -167,3 +167,4 @@ def dashboard_produit_final():
                 stats[key] = 0
 
     return stats
+

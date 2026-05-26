@@ -167,3 +167,4 @@ def dashboard_reglementaire():
         "statut": "REGLEMENTAIRE_READY",
         "server_time": datetime.utcnow().isoformat(),
     }
+

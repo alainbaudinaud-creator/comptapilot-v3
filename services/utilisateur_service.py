@@ -141,3 +141,4 @@ def supprimer_utilisateur(utilisateur_id):
 
     connexion.commit()
     connexion.close()
+

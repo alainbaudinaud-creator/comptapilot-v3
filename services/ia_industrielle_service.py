@@ -214,3 +214,4 @@ def dashboard_ia():
                 stats[key] = 0
 
     return stats
+

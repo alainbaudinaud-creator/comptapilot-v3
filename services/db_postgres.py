@@ -1,4 +1,4 @@
-from database import engine
+﻿from database import engine
 from database import SessionLocal
 
 def get_engine():
@@ -6,3 +6,4 @@ def get_engine():
 
 def get_session():
     return SessionLocal()
+

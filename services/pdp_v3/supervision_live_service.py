@@ -58,3 +58,4 @@ def charger_supervision_temps_reel():
         print("SUPERVISION TEMPS REEL WARNING:", e)
 
     return data
+

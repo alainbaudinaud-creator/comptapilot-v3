@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 from database import engine
 
 def insert_journal_evenement(evenement: dict):
@@ -28,3 +28,4 @@ def insert_journal_evenement(evenement: dict):
         })
 
         return result.scalar_one()
+

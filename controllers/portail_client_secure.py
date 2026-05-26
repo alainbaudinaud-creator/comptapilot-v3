@@ -1,4 +1,4 @@
-
+﻿
 from flask import Blueprint, render_template, request
 from services.documents_auto_service import envoyer_document_client
 
@@ -14,3 +14,4 @@ def client_envoyer_document():
     document = request.form.get("document")
     resultat = envoyer_document_client(email, document)
     return render_template("client/resultat.html", resultat=resultat)
+

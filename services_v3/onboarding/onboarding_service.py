@@ -20,3 +20,4 @@ def onboard_new_client(data):
         "precompta_ia": "prête",
         "statut": "client_cree"
     }
+

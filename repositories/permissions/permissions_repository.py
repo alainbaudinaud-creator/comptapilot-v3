@@ -28,3 +28,4 @@ def user_has_permission_repository(user_id: int, permission: str) -> bool:
         return True
 
     return fetch_permission_count(user_id, permission) > 0
+

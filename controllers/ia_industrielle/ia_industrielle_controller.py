@@ -16,3 +16,4 @@ def ia_industrielle_index():
         "ia_industrielle_v3.html",
         stats=stats,
     )
+

@@ -164,3 +164,4 @@ def dashboard_plateforme():
                 stats[key] = 0
 
     return stats
+

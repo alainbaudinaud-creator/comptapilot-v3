@@ -256,3 +256,4 @@ def dashboard_finalisation_industrielle():
                 stats[key] = 0
 
     return stats
+

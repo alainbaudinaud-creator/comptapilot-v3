@@ -125,3 +125,4 @@ def row_to_action(row):
         "message": row[7],
         "created_at": str(row[8])
     }
+

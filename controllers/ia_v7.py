@@ -165,3 +165,4 @@ def supervision_robots_v7():
         'supervision_robots_v7.html',
         logs=logs
     )
+

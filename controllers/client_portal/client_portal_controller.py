@@ -104,3 +104,4 @@ def api_generate_document_precompta(document_id):
     return jsonify(
         success_response(result)
     )
+

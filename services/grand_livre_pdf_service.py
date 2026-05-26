@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from reportlab.platypus import SimpleDocTemplate, Table, Spacer, Paragraph
 from reportlab.lib.pagesizes import landscape, A4
@@ -58,3 +58,4 @@ def generer_grand_livre_pdf(db="db.sqlite", fichier="grand_livre.pdf"):
     doc.build(elements)
     con.close()
     return fichier
+

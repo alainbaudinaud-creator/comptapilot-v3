@@ -122,3 +122,4 @@ def stats_integrations_reelles():
         "ram_usage": round(random.uniform(30, 60), 2),
         "timestamp": datetime.utcnow().isoformat(),
     }
+

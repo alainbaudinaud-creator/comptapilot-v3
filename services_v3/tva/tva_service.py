@@ -13,3 +13,4 @@ def get_tva_estimee():
         "base_charges": analytics["charges"],
         "statut": "ok"
     }
+

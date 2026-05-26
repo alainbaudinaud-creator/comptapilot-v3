@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -85,3 +85,4 @@ def analyse_ocr(fichier):
 
     con.commit()
     con.close()
+

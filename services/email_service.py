@@ -31,3 +31,4 @@ def envoyer_email(destinataire, sujet, contenu, mail=None):
     except Exception as erreur:
         log_erreur(f"Erreur email : {erreur}")
         return False
+

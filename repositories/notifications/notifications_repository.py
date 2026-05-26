@@ -133,3 +133,4 @@ def count_unread_notifications():
     session.close()
 
     return count
+

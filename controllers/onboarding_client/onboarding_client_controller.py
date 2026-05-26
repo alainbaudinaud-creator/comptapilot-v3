@@ -10,3 +10,4 @@ def onboarding_client_index():
         return redirect("/login")
 
     return render_template("onboarding_client_v3.html")
+

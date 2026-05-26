@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -42,3 +42,4 @@ def uploads():
         "cabinet/uploads.html",
         stats=stats
     )
+

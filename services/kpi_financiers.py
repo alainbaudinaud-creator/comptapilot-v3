@@ -1,4 +1,4 @@
-
+﻿
 def calculer_kpi():
 
     return {
@@ -6,3 +6,4 @@ def calculer_kpi():
         "marge": 25000,
         "tresorerie": 45000
     }
+

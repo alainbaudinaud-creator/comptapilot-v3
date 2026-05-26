@@ -55,3 +55,4 @@ def create_document_record(
     session.close()
 
     return document_id
+

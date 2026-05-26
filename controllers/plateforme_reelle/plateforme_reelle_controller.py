@@ -35,3 +35,4 @@ def api_plateforme_reelle():
         "module": "plateforme_reelle_v3",
         "stats": stats,
     })
+

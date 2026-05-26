@@ -1,4 +1,4 @@
-
+﻿
 def supervision():
 
     return {
@@ -6,3 +6,4 @@ def supervision():
         "ram": "ok",
         "db": "ok"
     }
+

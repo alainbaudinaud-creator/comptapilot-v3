@@ -68,3 +68,4 @@ def build_diagnostics(societes, counts, access):
         "warnings": warnings,
         "status": "ok" if not warnings else "attention"
     }
+

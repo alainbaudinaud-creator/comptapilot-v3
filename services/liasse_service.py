@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -30,3 +30,4 @@ def generer_liasse():
     con.close()
 
     return "OK"
+

@@ -27,3 +27,4 @@ def api_live_notifications():
         "success": True,
         "notifications": liste_notifications(),
     })
+

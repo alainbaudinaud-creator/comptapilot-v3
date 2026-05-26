@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 from flask import Blueprint, render_template
@@ -37,3 +37,4 @@ def cabinet_dashboard():
         "cabinet/dashboard.html",
         data=data
     )
+

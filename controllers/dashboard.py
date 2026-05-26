@@ -36,3 +36,4 @@ def dashboard_complet():
 @permission_required("ACCESS_DASHBOARD")
 def page_dashboard_pro():
     return redirect('/ecritures/tableau-bord')
+

@@ -27,3 +27,4 @@ def balance():
         "comptabilite/balance.html",
         rows=rows
     )
+

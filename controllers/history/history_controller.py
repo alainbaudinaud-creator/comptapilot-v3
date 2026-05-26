@@ -37,3 +37,4 @@ def api_history():
     return jsonify(
         success_response(result)
     )
+

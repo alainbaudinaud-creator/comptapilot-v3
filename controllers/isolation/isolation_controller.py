@@ -37,3 +37,4 @@ def api_isolation_dashboard():
     return jsonify(
         success_response(result)
     )
+

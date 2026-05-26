@@ -1,4 +1,4 @@
-from flask import Blueprint
+﻿from flask import Blueprint
 from flask import jsonify
 from flask import request
 
@@ -57,3 +57,4 @@ def create_client():
         )
 
     return jsonify({"status": "ok"})
+

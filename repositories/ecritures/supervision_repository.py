@@ -35,3 +35,4 @@ def fetch_supervision_counts():
         "nb_precompta": fetch_count_safe("precompta_ia"),
         "nb_audit": fetch_count_safe("audit_actions")
     }
+

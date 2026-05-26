@@ -75,3 +75,4 @@ def api_archive_document(document_id):
     return jsonify(
         success_response(result)
     )
+

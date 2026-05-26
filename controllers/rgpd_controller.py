@@ -211,3 +211,4 @@ def accept_cookies():
             "message": str(e)
         }, 500
 
+

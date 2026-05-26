@@ -149,3 +149,4 @@ def bootstrap_admin():
 
     return "SUPER ADMIN déjà existant"
 
+

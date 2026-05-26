@@ -115,3 +115,4 @@ def dashboard_production_publique():
         "server_time": datetime.utcnow().isoformat(),
         "production": "PUBLIC_READY",
     }
+

@@ -84,3 +84,4 @@ def stats_production_premium():
         "timestamp": datetime.utcnow().isoformat(),
         "logs": [dict(r) for r in rows]
     }
+

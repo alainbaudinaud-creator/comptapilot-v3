@@ -70,3 +70,4 @@ def api_read_notification(notification_id):
     return jsonify(
         success_response(result)
     )
+

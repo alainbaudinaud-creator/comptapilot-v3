@@ -576,3 +576,4 @@ output = scrolledtext.ScrolledText(root, height=22, font=("Consolas", 10))
 output.pack(fill=tk.BOTH, expand=True, padx=20, pady=10)
 
 root.mainloop()
+

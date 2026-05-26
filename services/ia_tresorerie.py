@@ -1,4 +1,4 @@
-
+﻿
 def prediction_tresorerie():
 
     return {
@@ -6,3 +6,4 @@ def prediction_tresorerie():
         "prevision_60j": 8000,
         "risque": "faible"
     }
+

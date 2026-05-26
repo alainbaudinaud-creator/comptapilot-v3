@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -32,3 +32,4 @@ def journaliser(module, evenement, niveau="INFO"):
 
     con.commit()
     con.close()
+

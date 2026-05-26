@@ -1,4 +1,4 @@
-import psycopg2
+﻿import psycopg2
 from datetime import datetime
 
 def get_conn():
@@ -27,3 +27,4 @@ def scheduler_status():
 
 def demarrer_scheduler():
     return lancer_scheduler()
+

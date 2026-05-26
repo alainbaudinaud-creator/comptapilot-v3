@@ -1,4 +1,4 @@
-
+﻿
 import re
 import sqlite3
 import urllib.request
@@ -125,3 +125,4 @@ print("Plan comptable ANC 2026 importe.")
 print("Comptes modele :", len(pcg))
 print("Dossiers alimentes :", len(dossiers))
 print("Comptes ajoutes dans plan_comptable :", insertions)
+

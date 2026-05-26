@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 from database import engine
 
 def insert_workflow(workflow: dict):
@@ -37,3 +37,4 @@ def insert_workflow(workflow: dict):
         })
 
         return result.scalar_one()
+

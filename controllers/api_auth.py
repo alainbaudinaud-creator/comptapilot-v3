@@ -242,3 +242,4 @@ def api_supprimer_utilisateur(utilisateur_id):
         "message": "Utilisateur supprimé avec succès",
         "utilisateur_id": utilisateur_id
     })
+

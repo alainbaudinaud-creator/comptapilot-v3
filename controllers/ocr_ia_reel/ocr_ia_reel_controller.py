@@ -61,3 +61,4 @@ def api_ocr_ia_demo():
             "success": False,
             "error": str(e),
         }), 500
+

@@ -59,3 +59,4 @@ def signer_document(document, signataire):
         "date_signature": date_signature,
         "empreinte": empreinte
     }
+

@@ -1,4 +1,4 @@
-
+﻿
 import os
 
 def statut():
@@ -7,3 +7,4 @@ def statut():
         "db_size": os.path.getsize("db.sqlite"),
         "status": "OK"
     }
+

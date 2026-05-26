@@ -1,4 +1,4 @@
-def generate_accounting_entry(text):
+﻿def generate_accounting_entry(text):
 
     text = text.lower()
 
@@ -24,3 +24,4 @@ def generate_accounting_entry(text):
         "label": "Charge a categoriser",
         "vat": "20%"
     }
+

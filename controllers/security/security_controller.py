@@ -37,3 +37,4 @@ def api_security_dashboard():
     return jsonify(
         success_response(result)
     )
+

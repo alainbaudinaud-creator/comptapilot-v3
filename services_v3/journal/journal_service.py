@@ -30,3 +30,4 @@ def get_journal_dashboard(societe_id=None):
         "equilibre": ecart == 0,
         "items": ecritures
     }
+

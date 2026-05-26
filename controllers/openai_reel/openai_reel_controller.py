@@ -52,3 +52,4 @@ def api_openai_analyse_facture():
             "success": False,
             "error": str(e),
         }), 500
+

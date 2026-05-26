@@ -21,3 +21,4 @@ def transmission_factures():
         'transmission_factures.html',
         factures=factures
     )
+

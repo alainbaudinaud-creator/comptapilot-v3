@@ -52,3 +52,4 @@ class Écriture:
             'montant': self.montant,
             'description': self.description
         }
+

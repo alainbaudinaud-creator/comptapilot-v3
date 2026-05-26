@@ -81,3 +81,4 @@ def production_comptable_index():
         resultat=resultat,
         stats=stats,
     )
+

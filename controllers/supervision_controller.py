@@ -44,3 +44,4 @@ def supervision():
         events=stats["events"],
         notifications=stats["notifications"]
     )
+

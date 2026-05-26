@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 from database import engine
 
 def fetch_supervision_stats():
@@ -30,3 +30,4 @@ def fetch_supervision_stats():
                 stats[key] = 0
 
     return stats
+

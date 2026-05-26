@@ -1,4 +1,4 @@
-
+﻿
 from flask import Blueprint, render_template, request, redirect, url_for
 
 from services.teledec_gateway_service import (
@@ -33,3 +33,4 @@ def teledec_client():
         return redirect(url_for("teledec.teledec_home"))
 
     return render_template("teledec/client.html")
+

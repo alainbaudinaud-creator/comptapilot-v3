@@ -168,3 +168,4 @@ def has_permission(permission):
         }).scalar()
 
     return result > 0
+

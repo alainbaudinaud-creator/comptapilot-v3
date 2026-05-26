@@ -15124,3 +15124,4 @@ def creer_ecriture_ia(piece_id):
 
     return redirect("/ecritures/pieces-jointes")
 
+

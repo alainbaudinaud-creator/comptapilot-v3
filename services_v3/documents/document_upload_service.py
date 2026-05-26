@@ -73,3 +73,4 @@ def upload_client_document(file, societe_id):
         "statut_precompta": "en_attente",
         "message": "Document reçu et prêt pour OCR"
     }
+

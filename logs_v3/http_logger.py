@@ -41,3 +41,4 @@ def install_http_logging(app):
         return response
 
     return app
+

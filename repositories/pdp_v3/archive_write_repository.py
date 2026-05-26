@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 from database import engine
 
 def insert_archive(archive: dict):
@@ -25,3 +25,4 @@ def insert_archive(archive: dict):
         })
 
         return result.scalar_one()
+

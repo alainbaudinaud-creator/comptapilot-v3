@@ -56,3 +56,4 @@ def api_signature():
         "success": True,
         "resultat": signer_document(document, signataire),
     })
+

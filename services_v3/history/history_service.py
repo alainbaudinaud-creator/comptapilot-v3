@@ -51,3 +51,4 @@ def get_history_dashboard():
         "count": len(items),
         "items": items
     }
+

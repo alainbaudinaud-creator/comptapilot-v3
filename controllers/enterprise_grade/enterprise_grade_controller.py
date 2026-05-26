@@ -56,3 +56,4 @@ def api_enterprise_predictif():
         "success": True,
         "resultat": moteur_predictif(),
     })
+

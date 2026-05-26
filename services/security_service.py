@@ -1,4 +1,4 @@
-import psycopg2
+﻿import psycopg2
 
 def get_conn():
     return psycopg2.connect(
@@ -24,3 +24,4 @@ def audit(user_email, action, ip=None):
 
 def require_login():
     return True
+

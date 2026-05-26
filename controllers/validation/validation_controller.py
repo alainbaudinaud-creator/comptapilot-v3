@@ -100,3 +100,4 @@ def api_convert_precompta_to_ecriture(precompta_id):
     return jsonify(
         success_response(result)
     )
+

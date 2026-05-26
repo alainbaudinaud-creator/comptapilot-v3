@@ -16,3 +16,4 @@ def plateforme_cabinet_index():
         "plateforme_cabinet_v3.html",
         stats=stats,
     )
+

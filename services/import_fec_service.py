@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -25,3 +25,4 @@ def importer_fec(fichier):
     con.close()
 
     return "IMPORT_OK"
+

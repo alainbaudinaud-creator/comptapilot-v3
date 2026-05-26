@@ -61,3 +61,4 @@ conn.commit()
 conn.close()
 
 print("Permissions injectées")
+

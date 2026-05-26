@@ -37,3 +37,4 @@ def fetch_users_with_roles():
         """))
 
         return result.fetchall()
+

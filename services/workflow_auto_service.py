@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -20,3 +20,4 @@ def creer_tache(dossier, collaborateur, titre):
     con.close()
 
     return "TACHE_CREEE"
+

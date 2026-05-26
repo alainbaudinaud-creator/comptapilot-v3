@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -40,3 +40,4 @@ def analyser_comptabilite():
         "alertes": len(alertes),
         "score": max(0, 100 - len(alertes)*10)
     }
+

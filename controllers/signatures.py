@@ -42,3 +42,4 @@ def signature_electronique_renforcee():
         date_signature=resultat['date_signature'],
         empreinte=resultat['empreinte']
     )
+

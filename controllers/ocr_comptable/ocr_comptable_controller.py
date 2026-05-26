@@ -10,3 +10,4 @@ def ocr_comptable_index():
         return redirect("/login")
 
     return render_template("ocr_comptable_v3.html")
+

@@ -34,3 +34,4 @@ def api_go_live_rapport():
         "success": True,
         "resultat": generer_rapport_lancement(),
     })
+

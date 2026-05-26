@@ -233,3 +233,4 @@ def build_relance_message(alert):
         "Cordialement,\n"
         "Votre cabinet"
     )
+

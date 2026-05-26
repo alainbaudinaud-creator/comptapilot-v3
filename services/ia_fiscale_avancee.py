@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -34,3 +34,4 @@ def analyser_risque_fiscal():
         "score": max(0, 100 - len(alertes)*15),
         "alertes": alertes
     }
+

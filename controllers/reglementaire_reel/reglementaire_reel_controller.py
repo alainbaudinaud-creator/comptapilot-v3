@@ -56,3 +56,4 @@ def api_tva():
         "success": True,
         "resultat": moteur_tva_avance(),
     })
+

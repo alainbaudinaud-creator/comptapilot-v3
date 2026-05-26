@@ -33,3 +33,4 @@ def api_produit_final():
         "module": "produit_final_v3",
         "stats": stats,
     })
+

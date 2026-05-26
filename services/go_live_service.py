@@ -113,3 +113,4 @@ ComptaPilot V3 est prêt pour une phase de bêta privée contrôlée.
         "score_readiness": data["score_readiness"],
         "statut": data["statut"],
     }
+

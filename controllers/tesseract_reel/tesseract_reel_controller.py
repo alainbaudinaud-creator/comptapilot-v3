@@ -54,3 +54,4 @@ def api_tesseract_analyse():
             "success": False,
             "error": str(e),
         }), 500
+

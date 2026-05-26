@@ -182,3 +182,4 @@ def dashboard_moteurs_reels():
                 stats[key] = 0
 
     return stats
+

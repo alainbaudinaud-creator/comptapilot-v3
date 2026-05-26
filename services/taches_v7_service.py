@@ -180,3 +180,4 @@ def supprimer_tache_v7(tache_id):
     connexion.close()
 
     return lignes_supprimees
+

@@ -138,3 +138,4 @@ def dashboard_openai_reel():
         "model": os.getenv("OPENAI_MODEL", "gpt-4.1-mini"),
         "history": [dict(row) for row in rows],
     }
+

@@ -10,3 +10,4 @@ def lettrage_ia_index():
         return redirect("/login")
 
     return render_template("lettrage_ia_v3.html")
+

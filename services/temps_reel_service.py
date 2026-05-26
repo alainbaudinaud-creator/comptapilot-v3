@@ -86,3 +86,4 @@ def stats_temps_reel():
         "websocket_status": "READY",
         "live_mode": True,
     }
+

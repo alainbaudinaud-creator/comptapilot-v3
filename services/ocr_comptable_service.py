@@ -1,4 +1,4 @@
-
+﻿
 def analyser_facture(fichier):
 
     return {
@@ -8,3 +8,4 @@ def analyser_facture(fichier):
         "date": "2026-05-20",
         "statut": "OCR_OK"
     }
+

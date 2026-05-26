@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -46,3 +46,4 @@ def fiscal():
         "cabinet/fiscal.html",
         stats=stats
     )
+

@@ -259,3 +259,4 @@ def dashboard_commercialisation():
                 stats[key] = 0
 
     return stats
+

@@ -16,3 +16,4 @@ class Societe(db.Model):
             "siret": self.siret,
             "adresse": self.adresse
         }
+

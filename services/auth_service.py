@@ -1,4 +1,4 @@
-import psycopg2
+﻿import psycopg2
 from werkzeug.security import check_password_hash
 
 def get_conn():
@@ -45,3 +45,4 @@ def login(email, password):
         pass
 
     return None
+

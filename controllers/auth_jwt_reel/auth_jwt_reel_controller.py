@@ -52,3 +52,4 @@ def api_auth_dashboard():
         "module": "auth_jwt_reel_v3",
         "stats": dashboard_auth_jwt(),
     })
+

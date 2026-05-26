@@ -27,3 +27,4 @@ with engine.begin() as conn:
     conn.execute(text(sql))
 
 print("Table precompta_documents OK")
+

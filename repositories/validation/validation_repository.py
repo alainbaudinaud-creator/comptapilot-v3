@@ -140,3 +140,4 @@ def get_precompta(precompta_id):
         "compte_tva": row[9],
         "compte_fournisseur": row[10]
     }
+

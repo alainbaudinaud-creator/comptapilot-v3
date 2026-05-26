@@ -226,3 +226,4 @@ def dashboard_automatisation():
                 stats[key] = 0
 
     return stats
+

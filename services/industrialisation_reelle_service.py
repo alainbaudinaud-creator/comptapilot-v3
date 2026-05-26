@@ -158,3 +158,4 @@ def dashboard_industrialisation_reelle():
                 stats[key] = 0
 
     return stats
+

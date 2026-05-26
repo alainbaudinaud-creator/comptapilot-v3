@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 from flask import Blueprint, render_template, send_file, request, redirect, url_for
 
@@ -75,3 +75,4 @@ def email_pdf(name):
         )
 
     return render_template("documents/email.html", name=name, title=item["title"])
+

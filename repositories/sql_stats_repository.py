@@ -39,3 +39,4 @@ def fetch_count_safe(table_name: str):
         return fetch_count(table_name)
     except Exception:
         return "table_absente"
+

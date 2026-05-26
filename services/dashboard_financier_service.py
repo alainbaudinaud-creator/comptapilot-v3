@@ -131,3 +131,4 @@ def dashboard_financier_data():
         "charts": graphiques,
         "server_time": datetime.utcnow().isoformat(),
     }
+

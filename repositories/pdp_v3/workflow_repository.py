@@ -1,4 +1,4 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 from database import engine
 
 def fetch_workflows(limit=200):
@@ -24,3 +24,4 @@ def fetch_workflows(limit=200):
         })
 
         return result.fetchall()
+

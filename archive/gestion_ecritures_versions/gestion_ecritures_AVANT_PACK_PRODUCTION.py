@@ -15595,3 +15595,4 @@ def dossier_dashboard():
     <p><a href='/ecritures/dossier/pieces-jointes'>Pi?ces justificatives</a></p>
     """
 
+

@@ -65,3 +65,4 @@ def api_v3_supervision():
             get_supervision_comptable()
         )
     )
+

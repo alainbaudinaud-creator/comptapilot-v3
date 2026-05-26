@@ -67,3 +67,4 @@ def api_safe(handler):
             ), 500
 
     return wrapper
+

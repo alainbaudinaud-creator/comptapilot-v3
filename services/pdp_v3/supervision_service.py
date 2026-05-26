@@ -11,3 +11,4 @@ def get_supervision_stats():
         "archives": 0,
         "journal": 0
     }
+

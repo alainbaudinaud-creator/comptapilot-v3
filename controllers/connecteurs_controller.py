@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 from flask import Blueprint, render_template, request, redirect, url_for
@@ -38,3 +38,4 @@ def connecteurs():
 
     con.close()
     return render_template("connecteurs/index.html", rows=rows)
+

@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from reportlab.platypus import SimpleDocTemplate, Table, Spacer, Paragraph
 from services.pdf_theme import PAGE_SIZE, TABLE_STYLE, TOTAL_STYLE, SECTION, BODY, cover, kpi_table, money, header_footer
@@ -53,3 +53,4 @@ def generer_bilan_pdf(db="db.sqlite", fichier="bilan.pdf"):
     doc.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
     con.close()
     return fichier
+

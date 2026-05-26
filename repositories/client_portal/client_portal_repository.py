@@ -38,3 +38,4 @@ def get_client_portal_summary(societe_id):
         "email": row[3],
         "telephone": row[4]
     }
+

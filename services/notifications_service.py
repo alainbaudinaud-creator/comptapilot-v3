@@ -13,3 +13,4 @@ def creer_notification(message, type_notif="INFO", utilisateur_id=None):
         "type_notif": type_notif,
         "utilisateur_id": utilisateur_id
     }
+

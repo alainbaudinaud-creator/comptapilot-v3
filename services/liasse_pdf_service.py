@@ -1,4 +1,4 @@
-
+﻿
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 
@@ -28,3 +28,4 @@ def generer_liasse_pdf(fichier="liasse_fiscale.pdf"):
     doc.build(elements)
 
     return fichier
+

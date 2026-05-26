@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 import csv
 from datetime import datetime
@@ -47,3 +47,4 @@ def export_fec(db_path="db.sqlite"):
     con.close()
 
     return fichier
+

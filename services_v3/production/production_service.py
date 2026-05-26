@@ -56,3 +56,4 @@ def compute_production_health(metrics):
         "status": "ok",
         "message": "Production cabinet stable."
     }
+

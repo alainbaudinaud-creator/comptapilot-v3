@@ -55,3 +55,4 @@ def lister_logs(limit=100):
     conn.close()
 
     return logs
+

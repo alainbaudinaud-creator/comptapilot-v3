@@ -117,3 +117,4 @@ def api_dashboard():
         'api_dashboard.html',
         routes_api=routes_api
     )
+

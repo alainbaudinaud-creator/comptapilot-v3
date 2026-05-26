@@ -59,3 +59,4 @@ def api_mobile():
         "success": True,
         "resultat": simulation_mobile(),
     })
+

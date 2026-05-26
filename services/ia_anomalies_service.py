@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -26,3 +26,4 @@ def detecter_anomalies():
     con.close()
 
     return len(anomalies)
+

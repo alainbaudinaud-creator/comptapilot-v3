@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 
 DB = "db.sqlite"
@@ -99,3 +99,4 @@ conn.commit()
 conn.close()
 
 print(f"{corrections} corrections d'?quilibre cr??es.")
+

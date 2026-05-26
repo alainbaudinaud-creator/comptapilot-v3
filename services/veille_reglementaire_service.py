@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 import urllib.request
 from pathlib import Path
@@ -257,3 +257,4 @@ if __name__ == "__main__":
     print("REMPLISSAGE LIASSE")
     remplir_liasse_depuis_comptabilite("2026", "RSI")
     print("OK")
+

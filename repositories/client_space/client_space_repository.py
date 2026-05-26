@@ -102,3 +102,4 @@ def get_client_space_data(societe_id):
             for row in recent_documents
         ]
     }
+

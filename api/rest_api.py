@@ -1,4 +1,4 @@
-
+﻿
 from flask import Blueprint, jsonify
 
 bp_rest_api = Blueprint("rest_api", __name__)
@@ -22,3 +22,4 @@ def health():
         "scheduler": "OK",
         "ia": "OK"
     })
+

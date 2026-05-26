@@ -10,3 +10,4 @@ def cloture_exercice_index():
         return redirect("/login")
 
     return render_template("cloture_exercice_v3.html")
+

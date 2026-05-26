@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 
 from services.veille_reglementaire_service import (
@@ -58,3 +58,4 @@ def cloture_annuelle(db="db.sqlite", exercice="2026", exercice_suivant="2027", r
     con.close()
 
     return "Clôture terminée avec veille réglementaire et liasse pré-remplie"
+

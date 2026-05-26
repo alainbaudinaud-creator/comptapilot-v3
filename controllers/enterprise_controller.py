@@ -1,4 +1,4 @@
-from flask import Blueprint
+﻿from flask import Blueprint
 from flask import render_template
 
 from sqlalchemy import text
@@ -47,3 +47,4 @@ def enterprise():
         "cabinet/enterprise.html",
         stats=stats
     )
+

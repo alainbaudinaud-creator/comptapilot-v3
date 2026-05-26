@@ -161,3 +161,4 @@ def dashboard_saas_realtime():
                 stats[key] = 0
 
     return stats
+

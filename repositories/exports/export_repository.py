@@ -72,3 +72,4 @@ def get_ecritures_for_export(societe_id=None):
         }
         for row in rows
     ]
+

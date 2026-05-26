@@ -99,3 +99,4 @@ def create_precompta_document(data):
     session.close()
 
     return precompta_id
+

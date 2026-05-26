@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 from services.smtp_service import envoyer_email
 
@@ -34,3 +34,4 @@ IFG SOLUTION
 
 def envoyer_liasse_client(email):
     return envoyer_document_client(email, "liasse")
+

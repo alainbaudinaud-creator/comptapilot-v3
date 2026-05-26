@@ -16,3 +16,4 @@ def rapprochement_bancaire():
         'rapprochement.html',
         ecritures=ecritures
     )
+

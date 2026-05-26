@@ -113,3 +113,4 @@ def reject_precompta(precompta_id, data):
         "statut_validation": "rejetee",
         "message": "Précompta rejetée"
     }
+

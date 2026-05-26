@@ -30,3 +30,4 @@ def liste_sauvegardes():
         'liste_sauvegardes.html',
         fichiers=fichiers
     )
+

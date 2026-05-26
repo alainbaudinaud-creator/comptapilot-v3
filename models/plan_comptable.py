@@ -39,3 +39,4 @@ class PlanComptable:
             'name': self.name,
             'type': self.type_
         }
+

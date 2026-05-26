@@ -28,3 +28,4 @@ def get_analytics_financier():
         "tva_deductible": round(charges * 0.20, 2),
         "tva_a_payer": round((produits * 0.20) - (charges * 0.20), 2)
     }
+

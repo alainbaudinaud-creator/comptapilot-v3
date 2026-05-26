@@ -40,3 +40,4 @@ def get_supervision_page_data():
         "nb_audit": counts["nb_audit"],
         "events": fetch_supervision_events()
     }
+

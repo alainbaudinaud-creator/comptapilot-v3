@@ -170,3 +170,4 @@ def dashboard_auth_jwt():
             stats[key] = conn.execute(text(query)).scalar() or 0
 
     return stats
+

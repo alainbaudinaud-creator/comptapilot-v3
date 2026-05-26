@@ -1,4 +1,4 @@
-from functools import wraps
+﻿from functools import wraps
 
 from flask import session
 from flask import abort
@@ -21,3 +21,4 @@ def require_role(*roles):
         return wrapper
 
     return decorator
+

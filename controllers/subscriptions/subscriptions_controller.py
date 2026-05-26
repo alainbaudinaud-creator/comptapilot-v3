@@ -11,3 +11,4 @@ def subscriptions_index():
 
     return render_template("subscriptions_v3.html")
 
+

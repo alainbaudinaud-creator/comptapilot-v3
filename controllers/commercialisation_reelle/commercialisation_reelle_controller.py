@@ -49,3 +49,4 @@ def api_onboarding():
         "success": True,
         "resultat": onboarding_client(),
     })
+

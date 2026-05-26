@@ -177,3 +177,4 @@ def dashboard_securite_probatoire():
         "statut": "SECURITE_PROBATOIRE_READY",
         "server_time": datetime.utcnow().isoformat(),
     }
+

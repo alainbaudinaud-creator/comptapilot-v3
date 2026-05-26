@@ -127,3 +127,4 @@ def list_user_societe_access():
         }
         for row in rows
     ]
+

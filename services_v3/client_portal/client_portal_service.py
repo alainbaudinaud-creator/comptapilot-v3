@@ -34,3 +34,4 @@ def get_client_portal_dashboard(societe_id):
             "message": "Votre cabinet suit votre dossier en temps réel."
         }
     }
+

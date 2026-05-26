@@ -174,3 +174,4 @@ def import_pcg_standard(societe_id):
 
     return redirect('/plan-comptable/ui')
 
+

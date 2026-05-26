@@ -28,3 +28,4 @@ def journaliser_evenement_pdp(
     evenement["id"] = event_id
 
     return evenement
+

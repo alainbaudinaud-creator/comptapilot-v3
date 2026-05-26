@@ -18,3 +18,4 @@ for model in models:
     sql = str(CreateTable(model.__table__).compile())
     print(sql)
     print()
+

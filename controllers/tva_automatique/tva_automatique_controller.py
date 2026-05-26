@@ -10,3 +10,4 @@ def tva_automatique_index():
         return redirect("/login")
 
     return render_template("tva_automatique_v3.html")
+

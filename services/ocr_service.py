@@ -1,4 +1,4 @@
-import pytesseract
+﻿import pytesseract
 
 from PIL import Image
 
@@ -31,3 +31,4 @@ def analyser_facture(path):
         "montant": "A analyser",
         "tva": "20%"
     }
+

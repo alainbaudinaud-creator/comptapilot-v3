@@ -80,3 +80,4 @@ def normaliser_date_ocr(texte_ocr):
             return f"{jour}/{mois_num}/{annee}"
 
     return ""
+

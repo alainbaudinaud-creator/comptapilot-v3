@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -32,3 +32,4 @@ def generer_kpi():
     con.close()
 
     return data
+

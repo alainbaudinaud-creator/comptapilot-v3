@@ -1,4 +1,4 @@
-
+﻿
 from flask import Blueprint, jsonify
 
 bp_api_saas = Blueprint("api_saas", __name__)
@@ -11,3 +11,4 @@ def status():
         "version": "production",
         "message": "API SaaS opérationnelle"
     })
+

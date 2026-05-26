@@ -108,3 +108,4 @@ def dashboard_enterprise():
         "server_time": datetime.utcnow().isoformat(),
         "cloud_status": "ENTERPRISE_READY",
     }
+

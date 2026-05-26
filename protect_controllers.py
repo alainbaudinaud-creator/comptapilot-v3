@@ -47,3 +47,4 @@ for filename, permission in FILES.items():
     path.write_text("\n".join(new_lines) + "\n", encoding="utf-8")
 
     print(f"PROTEGE : {filename} -> {permission}")
+

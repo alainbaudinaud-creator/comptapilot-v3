@@ -1,4 +1,4 @@
-
+﻿
 from pathlib import Path
 from flask import Blueprint, render_template, send_file
 
@@ -25,3 +25,4 @@ def fiscal_view(filename):
 @bp_fiscal_documents.route("/fiscal/documents/download/<filename>")
 def fiscal_download(filename):
     return send_file(BASE / filename, mimetype="application/pdf", as_attachment=True)
+

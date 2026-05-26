@@ -15,3 +15,4 @@ def construire_workflow_facture(facture_id: int):
         "date_action": datetime.utcnow().isoformat(),
         "detail": "Workflow PDP V3 initialisé"
     }
+

@@ -10,3 +10,4 @@ def pre_ecritures_ia_index():
         return redirect("/login")
 
     return render_template("pre_ecritures_ia_v3.html")
+

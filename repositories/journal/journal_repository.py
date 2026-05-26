@@ -77,3 +77,4 @@ def list_ecritures_v3(societe_id=None):
         }
         for row in rows
     ]
+

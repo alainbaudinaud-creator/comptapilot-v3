@@ -24,3 +24,4 @@ def grand_livre():
         rows = []
 
     return render_template("comptabilite/grand_livre.html", rows=rows)
+

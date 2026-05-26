@@ -18,3 +18,4 @@ def get_dashboard_financier():
         "nb_ecritures": stats["nb_ecritures"],
         "statut": "ok"
     }
+

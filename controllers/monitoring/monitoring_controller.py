@@ -37,3 +37,4 @@ def api_system_health():
     return jsonify(
         success_response(result)
     )
+

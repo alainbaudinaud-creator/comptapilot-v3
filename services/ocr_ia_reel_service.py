@@ -226,3 +226,4 @@ def creer_ecriture_depuis_analyse(analyse):
         "debit_total": analyse["montant_ht"] + analyse["montant_tva"],
         "credit_total": analyse["montant_ttc"],
     }
+

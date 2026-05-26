@@ -1,4 +1,4 @@
-
+﻿
 from reportlab.platypus import SimpleDocTemplate, Table, Spacer, Paragraph, PageBreak
 from services.pdf_theme import PAGE_SIZE, TABLE_STYLE, SECTION, BODY, cover, kpi_table, money, header_footer
 
@@ -52,3 +52,4 @@ def generer_liasse_complete(fichier="liasse_complete.pdf"):
 
     doc.build(elements, onFirstPage=header_footer, onLaterPages=header_footer)
     return fichier
+

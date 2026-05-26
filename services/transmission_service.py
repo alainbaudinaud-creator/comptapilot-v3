@@ -10,3 +10,4 @@ def enregistrer_acces_transmission():
 
 def lister_factures_transmission():
     return []
+

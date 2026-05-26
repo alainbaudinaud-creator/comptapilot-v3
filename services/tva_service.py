@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -37,3 +37,4 @@ def generer_tva():
     con.close()
 
     return payer
+

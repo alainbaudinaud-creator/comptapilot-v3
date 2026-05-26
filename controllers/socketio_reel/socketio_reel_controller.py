@@ -47,3 +47,4 @@ def socketio_push_ocr():
         "success": True,
         "event": push_ocr_event(filename),
     })
+

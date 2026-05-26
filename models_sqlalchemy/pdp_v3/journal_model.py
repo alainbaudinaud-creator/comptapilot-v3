@@ -1,4 +1,4 @@
-from sqlalchemy import Integer
+﻿from sqlalchemy import Integer
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -29,3 +29,4 @@ class JournalTechniquePDPModel(Base):
         String(255),
         nullable=True
     )
+

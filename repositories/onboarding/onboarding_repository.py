@@ -43,3 +43,4 @@ def create_client_onboarding(
     session.close()
 
     return societe_id
+

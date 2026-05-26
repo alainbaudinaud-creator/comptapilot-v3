@@ -180,3 +180,4 @@ def dashboard_plateforme_reelle():
                 stats[key] = 0
 
     return stats
+

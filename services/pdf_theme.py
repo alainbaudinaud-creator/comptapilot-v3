@@ -1,4 +1,4 @@
-
+﻿
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -159,3 +159,4 @@ TOTAL_STYLE = TableStyle([
     ("TOPPADDING", (0,0), (-1,-1), 10),
     ("BOTTOMPADDING", (0,0), (-1,-1), 10),
 ])
+

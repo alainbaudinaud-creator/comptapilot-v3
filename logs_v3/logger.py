@@ -27,3 +27,4 @@ def log_warning(module: str, message: str, context=None):
 
 def log_error(module: str, message: str, context=None):
     return log_event("ERROR", module, message, context)
+

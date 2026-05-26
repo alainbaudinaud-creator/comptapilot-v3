@@ -10,3 +10,4 @@ def rapprochement_bancaire_index():
         return redirect("/login")
 
     return render_template("rapprochement_bancaire_v3.html")
+

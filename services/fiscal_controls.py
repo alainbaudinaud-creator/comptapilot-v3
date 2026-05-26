@@ -1,4 +1,4 @@
-
+﻿
 def verifier_conformite():
 
     return {
@@ -6,3 +6,4 @@ def verifier_conformite():
         "tva": "ok",
         "liasse": "ok"
     }
+

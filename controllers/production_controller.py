@@ -39,3 +39,4 @@ def production():
             data[table] = 0
 
     return render_template("production/index.html", data=data)
+

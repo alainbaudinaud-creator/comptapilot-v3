@@ -35,3 +35,4 @@ def api_cloud_industriel():
         "module": "cloud_industriel_v3",
         "stats": stats,
     })
+

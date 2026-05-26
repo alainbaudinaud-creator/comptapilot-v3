@@ -1,4 +1,4 @@
-
+﻿
 import smtplib
 import sqlite3
 from email.message import EmailMessage
@@ -69,3 +69,4 @@ def envoyer_email(destinataire, sujet, contenu, piece_jointe=None):
     con.close()
 
     return statut
+

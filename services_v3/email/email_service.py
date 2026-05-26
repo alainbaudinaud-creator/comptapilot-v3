@@ -42,3 +42,4 @@ def send_email_smtp(to_email, subject, body):
             "status": "erreur_smtp",
             "message": str(exc)
         }
+

@@ -32,3 +32,4 @@ def admin_users():
         "admin_users.html",
         users=users
     )
+

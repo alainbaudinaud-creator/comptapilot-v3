@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -48,3 +48,4 @@ def erp_advanced():
         stats=stats,
         kpi=kpi
     )
+

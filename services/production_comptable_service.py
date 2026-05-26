@@ -194,3 +194,4 @@ def generer_pre_ecriture(client_id, analyse):
         "piece": analyse["numero_facture"],
         "equilibre": True,
     }
+

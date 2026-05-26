@@ -1,4 +1,4 @@
-
+﻿
 import csv
 
 def verifier_fec(fichier):
@@ -24,3 +24,4 @@ def verifier_fec(fichier):
                 erreurs.append(f"Colonne absente : {col}")
 
     return erreurs
+

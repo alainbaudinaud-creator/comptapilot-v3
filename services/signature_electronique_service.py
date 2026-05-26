@@ -1,4 +1,4 @@
-
+﻿
 import sqlite3
 from pathlib import Path
 
@@ -19,3 +19,4 @@ def creer_demande_signature(document, signataire):
     con.close()
 
     return "DEMANDE_SIGNATURE_CREEE"
+

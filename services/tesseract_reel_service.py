@@ -112,3 +112,4 @@ def dashboard_tesseract():
         "documents": total,
         "history": [dict(r) for r in rows]
     }
+

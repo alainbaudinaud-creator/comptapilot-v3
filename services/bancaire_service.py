@@ -22,3 +22,4 @@ def lister_ecritures_bancaires():
     conn.close()
 
     return ecritures
+

@@ -31,3 +31,4 @@ def api_websocket_push():
         "success": True,
         "event": payload,
     })
+

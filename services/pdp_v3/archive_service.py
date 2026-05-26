@@ -23,3 +23,4 @@ def archiver_workflow_probatoire(workflow: dict):
     archive["id"] = archive_id
 
     return archive
+

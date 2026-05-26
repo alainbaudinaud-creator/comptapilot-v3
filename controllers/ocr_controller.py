@@ -83,3 +83,4 @@ def ocr():
                 }
 
     return render_template("cabinet/ocr.html", result=result, clients=clients)
+

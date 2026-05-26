@@ -93,3 +93,4 @@ class ComptaApp(tk.Tk):
 if __name__ == "__main__":
     app = ComptaApp()
     app.mainloop()
+

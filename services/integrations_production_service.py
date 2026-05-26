@@ -64,3 +64,4 @@ def dashboard_integrations_production():
         "items": [dict(row) for row in rows],
         "server_time": datetime.utcnow().isoformat(),
     }
+

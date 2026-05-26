@@ -35,3 +35,4 @@ def api_finalisation_industrielle():
         "module": "finalisation_industrielle_v3",
         "stats": stats,
     })
+

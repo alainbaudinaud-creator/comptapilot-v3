@@ -41,3 +41,4 @@ def api_journal_v3():
     return jsonify(
         success_response(result)
     )
+
