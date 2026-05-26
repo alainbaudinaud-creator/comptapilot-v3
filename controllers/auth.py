@@ -16,7 +16,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
 
         if "user_id" not in session:
-            return redirect("/auth/login")
+            return redirect("/login")
 
         return f(*args, **kwargs)
 
@@ -46,7 +46,7 @@ def register():
             "password": password_hash
         })
 
-    return redirect("/auth/login")
+    return redirect("/login")
 
 
 @limiter.limit("5 per minute")
@@ -116,7 +116,7 @@ def logout():
 
     session.clear()
 
-    return redirect("/auth/login")
+    return redirect("/login")
 
 
 @auth_routes.route("/bootstrap-admin")
