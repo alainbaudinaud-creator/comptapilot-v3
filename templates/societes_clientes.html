@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Sociétés clientes - ComptaPilot V3</title>
+    <link rel="stylesheet" href="/static/css/comptapilot.css">
+    <link rel="stylesheet" href="/static/css/erp_premium.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">CP</div>
+            <div>
+                <div class="brand-name">ComptaPilot</div>
+                <div class="brand-subtitle">ERP comptable intelligent</div>
+            </div>
+        </div>
+        <nav class="nav-section">
+            <a href="/">Dashboard</a>
+            <a href="/societe/ui">Sociétés clientes</a>
+            <a href="/societe/add">Créer une société</a>
+            <a href="/ecritures/saisie-rapide">Saisie rapide</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h1>Sociétés clientes</h1>
+                <p>Portefeuille cabinet et création de dossiers clients</p>
+            </div>
+        </header>
+
+        <section class="cards-grid">
+            <div class="card">
+                <h2>Créer une société cliente</h2>
+                <form method="post" action="/societe/add">
+                    <label>Nom société</label><br>
+                    <input name="nom" placeholder="Ex : Orange SA"><br><br>
+
+                    <label>SIREN</label><br>
+                    <input name="siren" placeholder="Ex : 380129866"><br><br>
+
+                    <label>Ville</label><br>
+                    <input name="ville" placeholder="Ex : Paris"><br><br>
+
+                    <label>Email contact</label><br>
+                    <input name="email" type="email" placeholder="contact@societe.fr"><br><br>
+
+                    <button type="submit">Créer le dossier client</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Actions rapides</h2>
+                <p><a href="/societe/">Voir les sociétés</a></p>
+                <p><a href="/plan-comptable/import">Importer le plan comptable</a></p>
+                <p><a href="/ecritures/operationnel/import-plan-modele">Plan comptable modèle</a></p>
+            </div>
+        </section>
+    </main>
+</div>
+</body>
+</html>

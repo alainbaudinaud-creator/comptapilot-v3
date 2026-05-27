@@ -1,0 +1,327 @@
+﻿
+from flask import Flask
+
+from controllers.dashboard_auto import bp_dashboard_auto
+from controllers.balance_generale import bp_balance
+from controllers.grand_livre_auto import bp_gl
+from controllers.bilan_auto import bp_bilan
+from controllers.resultat_auto import bp_resultat
+from controllers.documents_pdf import bp_documents_pdf
+from controllers.fiscal_documents import bp_fiscal_documents
+from controllers.veille_reglementaire import bp_veille_reglementaire
+from controllers.teledec_controller import bp_teledec
+from controllers.supervision_controller import bp_supervision
+from controllers.production_controller import bp_production
+from controllers.pdp_v3.routes import bp_pdp_v3
+from controllers.ia_controller import bp_ia_controller
+from controllers.erp_premium_controller import bp_erp_premium
+from controllers.erp_advanced_controller import bp_erp_advanced
+from controllers.enterprise_controller import bp_enterprise
+from controllers.ocr_controller import bp_ocr
+from controllers.login_controller import bp_login
+from controllers.fiscal_controller import bp_fiscal
+from controllers.ged_controller import bp_ged
+from controllers.upload_controller import bp_upload
+from api.rest_api import bp_rest_api
+from controllers.cabinet_dashboard_controller import bp_cabinet_dashboard
+from controllers.portail_client_secure import bp_portail_client_secure
+from controllers.connecteurs_controller import bp_connecteurs
+from controllers.api_saas import bp_api_saas
+from controllers.cabinet_controller import bp_cabinet
+from controllers.api_v3.routes import api_v3_routes
+from controllers.dashboard_v3 import bp_dashboard_v3
+from controllers.onboarding.onboarding_controller import bp_onboarding
+from controllers.client_portal.client_portal_controller import bp_client_portal
+from controllers.validation.validation_controller import bp_validation
+from controllers.journal_v3.journal_controller import bp_journal_v3
+from controllers.exports_v3.export_controller import bp_exports_v3
+from controllers.production.production_controller import bp_production
+from controllers.alerts.alerts_controller import bp_alerts
+from controllers.notifications.notifications_controller import bp_notifications
+from controllers.relances.relances_controller import bp_relances
+from controllers.history.history_controller import bp_history
+from controllers.audit_v3.audit_controller import bp_audit_v3
+from controllers.security.security_controller import bp_security
+from controllers.isolation.isolation_controller import bp_isolation
+from controllers.client_space.client_space_controller import bp_client_space
+from controllers.ged.ged_controller import bp_ged
+from controllers.backup.backup_controller import bp_backup
+from controllers.monitoring.monitoring_controller import bp_monitoring
+from controllers.subscriptions.subscriptions_controller import bp_subscriptions
+from controllers.onboarding_client.onboarding_client_controller import bp_onboarding_client
+from controllers.import_client.import_client_controller import bp_import_client
+from controllers.ocr_comptable.ocr_comptable_controller import bp_ocr_comptable
+from controllers.socle_donnees.socle_donnees_controller import bp_socle_donnees
+from controllers.production_comptable.production_comptable_controller import bp_production_comptable
+from controllers.moteurs_comptables.moteurs_comptables_controller import bp_moteurs_comptables
+from controllers.plateforme_cabinet.plateforme_cabinet_controller import bp_plateforme_cabinet
+from controllers.ia_industrielle.ia_industrielle_controller import bp_ia_industrielle
+from controllers.industrialisation_reelle.industrialisation_reelle_controller import bp_industrialisation_reelle
+from controllers.ocr_ia_reel.ocr_ia_reel_controller import bp_ocr_ia_reel
+from controllers.moteurs_metiers_reels.moteurs_metiers_reels_controller import bp_moteurs_metiers_reels
+from controllers.automatisation_cabinet.automatisation_cabinet_controller import bp_automatisation_cabinet
+from controllers.saas_realtime.saas_realtime_controller import bp_saas_realtime
+from controllers.cloud_industriel.cloud_industriel_controller import bp_cloud_industriel
+from controllers.produit_final.produit_final_controller import bp_produit_final
+from controllers.finalisation_industrielle.finalisation_industrielle_controller import bp_finalisation_industrielle
+from controllers.commercialisation_saas.commercialisation_saas_controller import bp_commercialisation_saas
+from controllers.experience_finale.experience_finale_controller import bp_experience_finale
+from controllers.plateforme_reelle.plateforme_reelle_controller import bp_plateforme_reelle
+from controllers.auth_jwt_reel.auth_jwt_reel_controller import bp_auth_jwt_reel
+from controllers.temps_reel.temps_reel_controller import bp_temps_reel
+from controllers.websocket_live.websocket_live_controller import bp_websocket_live
+from controllers.integrations_reelles.integrations_reelles_controller import bp_integrations_reelles
+from controllers.dashboard_financier.dashboard_financier_controller import bp_dashboard_financier
+from controllers.socketio_reel.socketio_reel_controller import bp_socketio_reel
+from controllers.production_premium.production_premium_controller import bp_production_premium
+from controllers.integrations_production.integrations_production_controller import bp_integrations_production
+from controllers.openai_reel.openai_reel_controller import bp_openai_reel
+from controllers.tesseract_reel.tesseract_reel_controller import bp_tesseract_reel
+from controllers.orchestration_reelle.orchestration_reelle_controller import bp_orchestration_reelle
+from controllers.securite_probatoire.securite_probatoire_controller import bp_securite_probatoire
+from controllers.enterprise_grade.enterprise_grade_controller import bp_enterprise_grade
+from controllers.reglementaire_reel.reglementaire_reel_controller import bp_reglementaire_reel
+from controllers.commercialisation_reelle.commercialisation_reelle_controller import bp_commercialisation_reelle
+from controllers.production_publique.production_publique_controller import bp_production_publique
+from controllers.go_live.go_live_controller import bp_go_live
+from controllers.documents_fin_exercice.documents_fin_exercice_controller import bp_documents_fin_exercice
+from controllers.cloture_exercice.cloture_exercice_controller import bp_cloture_exercice
+from controllers.revision_comptable.revision_comptable_controller import bp_revision_comptable
+from controllers.tva_automatique.tva_automatique_controller import bp_tva_automatique
+from controllers.rapprochement_bancaire.rapprochement_bancaire_controller import bp_rapprochement_bancaire
+from controllers.lettrage_ia.lettrage_ia_controller import bp_lettrage_ia
+from controllers.pre_ecritures_ia.pre_ecritures_ia_controller import bp_pre_ecritures_ia
+from controllers.admin_users import admin_users_routes
+from logs_v3.http_logger import install_http_logging
+
+app = Flask(__name__)
+app.config["SECRET_KEY"] = "COMPTAPILOT_SECRET_2026"
+
+app.register_blueprint(bp_dashboard_auto)
+app.register_blueprint(bp_balance)
+app.register_blueprint(bp_gl)
+app.register_blueprint(bp_bilan)
+app.register_blueprint(bp_resultat)
+app.register_blueprint(bp_documents_pdf)
+app.register_blueprint(bp_fiscal_documents)
+app.register_blueprint(bp_veille_reglementaire)
+app.register_blueprint(bp_teledec)
+app.register_blueprint(bp_supervision)
+app.register_blueprint(bp_production)
+app.register_blueprint(bp_alerts)
+app.register_blueprint(bp_notifications)
+app.register_blueprint(bp_relances)
+app.register_blueprint(bp_history)
+app.register_blueprint(bp_audit_v3)
+app.register_blueprint(bp_security)
+app.register_blueprint(bp_isolation)
+app.register_blueprint(bp_client_space)
+app.register_blueprint(bp_pdp_v3)
+app.register_blueprint(bp_ia_controller)
+app.register_blueprint(bp_erp_premium)
+app.register_blueprint(bp_erp_advanced)
+app.register_blueprint(bp_enterprise)
+app.register_blueprint(bp_login)
+app.register_blueprint(bp_fiscal)
+app.register_blueprint(bp_ged)
+app.register_blueprint(bp_backup)
+app.register_blueprint(bp_monitoring)
+app.register_blueprint(bp_subscriptions)
+app.register_blueprint(bp_onboarding_client)
+app.register_blueprint(bp_import_client)
+app.register_blueprint(bp_ocr_comptable)
+app.register_blueprint(bp_socle_donnees)
+app.register_blueprint(bp_production_comptable)
+app.register_blueprint(bp_moteurs_comptables)
+app.register_blueprint(bp_plateforme_cabinet)
+app.register_blueprint(bp_ia_industrielle)
+app.register_blueprint(bp_industrialisation_reelle)
+app.register_blueprint(bp_ocr_ia_reel)
+app.register_blueprint(bp_moteurs_metiers_reels)
+app.register_blueprint(bp_automatisation_cabinet)
+app.register_blueprint(bp_saas_realtime)
+app.register_blueprint(bp_cloud_industriel)
+app.register_blueprint(bp_produit_final)
+app.register_blueprint(bp_finalisation_industrielle)
+app.register_blueprint(bp_commercialisation_saas)
+app.register_blueprint(bp_experience_finale)
+app.register_blueprint(bp_plateforme_reelle)
+app.register_blueprint(bp_auth_jwt_reel)
+app.register_blueprint(bp_temps_reel)
+app.register_blueprint(bp_websocket_live)
+app.register_blueprint(bp_integrations_reelles)
+app.register_blueprint(bp_dashboard_financier)
+app.register_blueprint(bp_socketio_reel)
+app.register_blueprint(bp_production_premium)
+app.register_blueprint(bp_integrations_production)
+app.register_blueprint(bp_openai_reel)
+app.register_blueprint(bp_tesseract_reel)
+app.register_blueprint(bp_orchestration_reelle)
+app.register_blueprint(bp_securite_probatoire)
+app.register_blueprint(bp_enterprise_grade)
+app.register_blueprint(bp_reglementaire_reel)
+app.register_blueprint(bp_commercialisation_reelle)
+app.register_blueprint(bp_production_publique)
+app.register_blueprint(bp_go_live)
+app.register_blueprint(bp_documents_fin_exercice)
+app.register_blueprint(bp_cloture_exercice)
+app.register_blueprint(bp_revision_comptable)
+app.register_blueprint(bp_tva_automatique)
+app.register_blueprint(bp_rapprochement_bancaire)
+app.register_blueprint(bp_lettrage_ia)
+app.register_blueprint(bp_pre_ecritures_ia)
+app.register_blueprint(bp_upload)
+app.register_blueprint(bp_rest_api)
+app.register_blueprint(bp_cabinet_dashboard)
+app.register_blueprint(bp_portail_client_secure)
+app.register_blueprint(bp_connecteurs)
+app.register_blueprint(bp_api_saas)
+app.register_blueprint(bp_cabinet)
+app.register_blueprint(api_v3_routes)
+app.register_blueprint(bp_dashboard_v3)
+app.register_blueprint(bp_onboarding)
+app.register_blueprint(bp_client_portal)
+app.register_blueprint(bp_validation)
+app.register_blueprint(bp_journal_v3)
+app.register_blueprint(bp_exports_v3)
+app.register_blueprint(admin_users_routes)
+
+install_http_logging(app)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
+
+
+app.register_blueprint(bp_ocr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# =========================================================
+# ROUTES ERP V3 RESTAUREES DEFINITIVES
+# =========================================================
+
+@app.route("/ecritures/saisie-rapide")
+def restauration_saisie_rapide_prod():
+    return """
+    <html>
+    <head>
+        <title>ComptaPilot - Saisie rapide</title>
+    </head>
+    <body style="font-family:Arial;padding:40px">
+        <h1>ComptaPilot V3 - Saisie rapide</h1>
+
+        <p>Module restauré avec succès.</p>
+
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/societe/ui">Sociétés clientes</a></li>
+            <li><a href="/v3/ecritures">Ecritures V3</a></li>
+        </ul>
+    </body>
+    </html>
+    """
+
+@app.route("/societe/ui")
+def restauration_societes_ui_prod():
+    return """
+    <html>
+    <head>
+        <title>ComptaPilot - Sociétés clientes</title>
+    </head>
+    <body style="font-family:Arial;padding:40px">
+        <h1>Sociétés clientes</h1>
+
+        <p>Gestion des dossiers clients restaurée.</p>
+
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/ecritures/saisie-rapide">Saisie rapide</a></li>
+        </ul>
+
+        <hr>
+
+        <form>
+            <input placeholder="Nom société"><br><br>
+            <input placeholder="SIREN"><br><br>
+            <input placeholder="Ville"><br><br>
+            <button>Créer société</button>
+        </form>
+    </body>
+    </html>
+    """
+
+@app.route("/v3/ecritures")
+@app.route("/v3/ecritures/")
+@app.route("/public/v3/ecritures")
+def restauration_v3_prod():
+    return restauration_saisie_rapide_prod()
+

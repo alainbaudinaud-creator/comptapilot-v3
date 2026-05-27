@@ -416,36 +416,6 @@ except Exception as e:
     print("CSRF exempt dynamic_api:", e)
 app.register_blueprint(bp_dynamic_api)
 
-
-
-# === RESTAURATION ROUTES METIER COMPTAPILOT V3 ===
-
-@app.route("/ecritures/saisie-rapide", methods=["GET"])
-def restauration_saisie_rapide_v3():
-    return """
-    <h1>ComptaPilot V3 - Saisie rapide</h1>
-    <p>Route restaurée.</p>
-    <p><a href="/">Retour Dashboard</a></p>
-    <p><a href="/societe/ui">Sociétés clientes</a></p>
-    """
-
-@app.route("/societe/ui", methods=["GET"])
-def restauration_societes_clientes_v3():
-    return """
-    <h1>ComptaPilot V3 - Sociétés clientes</h1>
-    <p>Route restaurée.</p>
-    <p><a href="/">Retour Dashboard</a></p>
-    <p><a href="/societe/add">Créer une société</a></p>
-    <p><a href="/ecritures/saisie-rapide">Saisie rapide</a></p>
-    """
-
-@app.route("/v3/ecritures", methods=["GET"])
-@app.route("/v3/ecritures/", methods=["GET"])
-@app.route("/public/v3/ecritures", methods=["GET"])
-def restauration_ecritures_v3():
-    return restauration_saisie_rapide_v3()
-
-
 if __name__ == "__main__":
     log_info("DÃ©marrage application ComptaPilot")
     demarrer_scheduler()
@@ -610,19 +580,3 @@ def public_v3_ecritures_direct():
 @app.route("/")
 def dashboard():
     return render_template("dashboard.html")
-
-# === ROUTES DE SECOURS ERP V3 - RESTAURATION POST MIGRATION ===
-
-@app.route("/ecritures/saisie-rapide", methods=["GET"])
-def route_saisie_rapide_secours():
-    return render_template("saisie_rapide.html")
-
-@app.route("/v3/ecritures", methods=["GET"])
-@app.route("/v3/ecritures/", methods=["GET"])
-@app.route("/public/v3/ecritures", methods=["GET"])
-def route_v3_ecritures_secours():
-    return render_template("saisie_rapide.html")
-
-@app.route("/societe/ui", methods=["GET"])
-def route_societes_clientes_secours():
-    return render_template("societes_clientes.html")
