@@ -22,3 +22,8 @@ SessionLocal = sessionmaker(
 )
 
 Base = declarative_base()
+
+
+# Compatibilité API dynamique ComptaPilot V3
+def get_db_connection():
+    return engine.raw_connection()

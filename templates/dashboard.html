@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ComptaPilot V3</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 260px;
+            background: #0f172a;
+            color: white;
+            padding: 24px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 32px;
+        }
+        .menu a {
+            display: block;
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+        }
+        .menu a:hover, .menu .active {
+            background: #2563eb;
+            color: white;
+        }
+        .main {
+            flex: 1;
+            padding: 28px;
+        }
+        .topbar {
+            background: white;
+            border-radius: 18px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+            margin-bottom: 28px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+        }
+        .card h3 {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+        .card .value {
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+        .workspace {
+            background: white;
+            border-radius: 18px;
+            padding: 28px;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, .08);
+        }
+        .client {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 0;
+        }
+        .badge {
+            background: #dcfce7;
+            color: #166534;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 13px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo">ComptaPilot V3</div>
+        <nav class="menu">
+            <a class="active" href="/">Dashboard</a>
+            <a href="#">Sociétés</a>
+            <a href="#">Clients</a>
+            <a href="#">Comptabilité</a>
+            <a href="#">Facturation</a>
+            <a href="#">GED</a>
+            <a href="#">TVA</a>
+            <a href="#">Fiscal</a>
+            <a href="#">Banques</a>
+            <a href="#">Utilisateurs</a>
+            <a href="#">Paramètres</a>
+        </nav>
+    </aside>
+
+    <main class="main">
+
+        <section class="topbar">
+            <div>
+                <strong>Cabinet : IFG Solution</strong><br>
+                Dossier client : Orange SA — Exercice 2025
+            </div>
+            <div>
+                Alain Baudinaud<br>
+                Profil : Administrateur
+            </div>
+        </section>
+
+        <section class="grid">
+            <div class="card">
+                <h3>Dossiers actifs</h3>
+                <div class="value">12</div>
+            </div>
+            <div class="card">
+                <h3>Pièces à traiter</h3>
+                <div class="value">48</div>
+            </div>
+            <div class="card">
+                <h3>TVA à déclarer</h3>
+                <div class="value">7</div>
+            </div>
+            <div class="card">
+                <h3>Alertes fiscales</h3>
+                <div class="value">3</div>
+            </div>
+        </section>
+
+        <section class="workspace">
+            <h2>Portefeuille clients</h2>
+
+            <div class="client">
+                <div>
+                    <strong>Orange SA</strong><br>
+                    SIREN : 380129866 — TVA : FR89380129866
+                </div>
+                <div>
+                    Dirigeant<br>
+                    Stéphane Richard
+                </div>
+                <div>
+                    <span class="badge">Dossier à jour</span>
+                </div>
+            </div>
+
+            <div class="client">
+                <div>
+                    <strong>IFG Solution</strong><br>
+                    SIREN : en cours — TVA : en cours
+                </div>
+                <div>
+                    Dirigeant<br>
+                    Alain Baudinaud
+                </div>
+                <div>
+                    <span class="badge">Actif</span>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+</div>
+</body>
+</html>

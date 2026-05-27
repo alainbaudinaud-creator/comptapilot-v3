@@ -1,129 +1,65 @@
-﻿{% extends "base.html" %}
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>Saisie rapide - ComptaPilot V3</title>
+    <link rel="stylesheet" href="/static/css/comptapilot.css">
+    <link rel="stylesheet" href="/static/css/erp_premium.css">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-logo">CP</div>
+            <div>
+                <div class="brand-name">ComptaPilot</div>
+                <div class="brand-subtitle">ERP comptable intelligent</div>
+            </div>
+        </div>
+        <nav class="nav-section">
+            <a href="/">Dashboard</a>
+            <a href="/ecritures/saisie-rapide">Saisie rapide</a>
+            <a href="/societe/ui">Sociétés clientes</a>
+            <a href="/ecritures/operationnel/plan-comptable">Plan comptable</a>
+            <a href="/ecritures/dashboard-financier">Cockpit financier</a>
+        </nav>
+    </aside>
 
-{% block content %}
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <h1>Saisie rapide</h1>
+                <p>Création rapide d'écritures comptables</p>
+            </div>
+        </header>
 
-<h1>Saisie rapide</h1>
+        <section class="cards-grid">
+            <div class="card">
+                <h2>Nouvelle écriture</h2>
+                <form method="post" action="/public-api/ecritures">
+                    <label>Date</label><br>
+                    <input name="date_ecriture" type="date"><br><br>
 
-<p>
-    Enregistrement rapide d'une écriture comptable.
-</p>
+                    <label>Journal</label><br>
+                    <input name="journal" value="OD"><br><br>
 
-<div class="card">
+                    <label>Compte</label><br>
+                    <input name="compte" placeholder="Ex : 606000"><br><br>
 
-    <form method="POST">
+                    <label>Libellé</label><br>
+                    <input name="libelle" placeholder="Libellé de l'écriture"><br><br>
 
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <label>Débit</label><br>
+                    <input name="debit" type="number" step="0.01" value="0"><br><br>
 
-        <p>
-            <label>Date</label><br>
-            <input type="date" name="date_ecriture" required>
-        </p>
+                    <label>Crédit</label><br>
+                    <input name="credit" type="number" step="0.01" value="0"><br><br>
 
-        <p>
-            <label>Pièce</label><br>
-            <input type="text" name="piece" placeholder="FAC-001" required>
-        </p>
-
-        <p>
-            <label>Libellé</label><br>
-            <input type="text" name="libelle" placeholder="Achat fournisseur" required>
-        </p>
-
-        <p>
-            <label>Compte</label><br>
-            <select name="compte_id" required>
-                {% for compte in comptes %}
-                    <option value="{{ compte[0] }}">
-                        {{ compte[1] }} - {{ compte[2] }}
-                    </option>
-                {% endfor %}
-            </select>
-        </p>
-
-        <p>
-            <label>Débit</label><br>
-            <input type="number" step="0.01" name="debit" value="0">
-        </p>
-
-        <p>
-            <label>Crédit</label><br>
-            <input type="number" step="0.01" name="credit" value="0">
-        </p>
-
-        <p>
-            <label>Société ID</label><br>
-            <input type="number" name="societe_id" value="1">
-        </p>
-
-        <button type="submit">
-            Enregistrer l'écriture
-        </button>
-
-    </form>
-
+                    <button type="submit">Enregistrer</button>
+                </form>
+            </div>
+        </section>
+    </main>
 </div>
-<hr>
-
-<h2>Dernières écritures</h2>
-
-<table border="1" cellpadding="8" cellspacing="0">
-
-    <tr>
-        <th>Date</th>
-        <th>Pièce</th>
-        <th>Libellé</th>
-        <th>Compte</th>
-        <th>Débit</th>
-        <th>Crédit</th>
-        <th>Action</th>
-    </tr>
-
-    {% for ecriture in dernieres_ecritures %}
-
-    <tr>
-
-        <td>{{ ecriture[1] }}</td>
-
-        <td>{{ ecriture[2] }}</td>
-
-        <td>{{ ecriture[3] }}</td>
-
-        <td>
-            {{ ecriture[6] }} - {{ ecriture[7] }}
-        </td>
-
-        <td>{{ ecriture[4] }}</td>
-
-        <td>{{ ecriture[5] }}</td>
-
-        <td>
-            <a href="/ecritures/supprimer-ecriture/{{ ecriture[0] }}">
-                Supprimer
-            </a>
-        </td>
-
-    </tr>
-
-    {% endfor %}
-
-</table>
-
-<br>
-
-<div class="card">
-
-    <h3>Totaux</h3>
-
-    <p>
-        <strong>Total débit :</strong>
-        {{ total_debit }}
-    </p>
-
-    <p>
-        <strong>Total crédit :</strong>
-        {{ total_credit }}
-    </p>
-
-</div>
-
-{% endblock %}
+</body>
+</html>
