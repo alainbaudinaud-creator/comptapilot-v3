@@ -1,0 +1,7 @@
+{% extends "layouts/erp.html" %}
+{% block title %}Grand Livre - ComptaPilot V3{% endblock %}
+{% block content %}
+<section class="hero-card"><div><p class="eyebrow">Analyse comptable</p><h1>Grand Livre</h1><p>Consultation détaillée des mouvements par compte, tiers et période.</p></div><div class="hero-actions"><a class="btn-primary" href="/erp-premium">Cockpit</a><a class="btn-secondary" href="/cabinet/journal">Journal</a></div></section>
+<section class="premium-grid"><div class="premium-card"><span>Comptes mouvementés</span><strong>74</strong><small>Exercice 2025</small></div><div class="premium-card"><span>Solde clients</span><strong>42 800 €</strong><small>411</small></div><div class="premium-card"><span>Solde fournisseurs</span><strong>31 200 €</strong><small>401</small></div><div class="premium-card"><span>Contrôle IA</span><strong>OK</strong><small>Cohérence comptes</small></div></section>
+<section class="workspace-card"><h2>Comptes suivis</h2><div class="client-line"><b>401000 Fournisseurs</b><span>31 200 €</span><em class="warn">À lettrer</em></div><div class="client-line"><b>411000 Clients</b><span>42 800 €</span><em class="ok">Suivi</em></div><div class="client-line"><b>512000 Banque</b><span>18 950 €</span><em class="ok">Rapproché</em></div></section>
+{% endblock %}

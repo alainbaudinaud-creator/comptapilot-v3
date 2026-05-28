@@ -1,0 +1,7 @@
+{% extends "layouts/erp.html" %}
+{% block title %}Journal comptable - ComptaPilot V3{% endblock %}
+{% block content %}
+<section class="hero-card"><div><p class="eyebrow">Production comptable</p><h1>Journal comptable</h1><p>Suivi des écritures par journal, période, compte et statut de validation.</p></div><div class="hero-actions"><a class="btn-primary" href="/erp-premium">Cockpit</a><a class="btn-secondary" href="/ecritures/saisie-rapide">Nouvelle écriture</a></div></section>
+<section class="premium-grid"><div class="premium-card"><span>Écritures</span><strong>286</strong><small>Exercice 2025</small></div><div class="premium-card"><span>Journaux</span><strong>5</strong><small>AC / VE / BQ / OD</small></div><div class="premium-card"><span>Brouillons</span><strong>8</strong><small>À valider</small></div><div class="premium-card"><span>Équilibre</span><strong>OK</strong><small>Débit = Crédit</small></div></section>
+<section class="workspace-card"><h2>Dernières écritures</h2><div class="client-line"><b>AC - Facture fournisseur</b><span>606000 / 401000</span><em class="ok">Validée</em></div><div class="client-line"><b>BQ - Encaissement client</b><span>512000 / 411000</span><em class="ok">Lettrable</em></div><div class="client-line"><b>OD - Clôture mensuelle</b><span>À compléter</span><em class="warn">Brouillon</em></div></section>
+{% endblock %}

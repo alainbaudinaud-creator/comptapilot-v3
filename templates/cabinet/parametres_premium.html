@@ -1,0 +1,48 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Paramètres Cabinet - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Configuration SaaS</p>
+        <h1>Paramètres cabinet</h1>
+        <p>Identité cabinet, exercice, sécurité, connecteurs, automatisations et préférences métier.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/utilisateurs">Utilisateurs</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Cabinet</span><strong>IFG</strong><small>IFG Solution</small></div>
+    <div class="premium-card"><span>Exercice actif</span><strong>2025</strong><small>Production ouverte</small></div>
+    <div class="premium-card"><span>Connecteurs</span><strong>6</strong><small>GED, TVA, fiscal, banques</small></div>
+    <div class="premium-card"><span>Sécurité</span><strong>OK</strong><small>HTTPS actif</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Identité cabinet</h2>
+        <div class="form-grid">
+            <label>Nom cabinet<input value="IFG Solution"></label>
+            <label>Responsable<input value="Alain Baudinaud"></label>
+            <label>Email<input value="ifgsolutions16@gmail.com"></label>
+            <label>Exercice actif<input value="2025"></label>
+        </div>
+        <br>
+        <button class="premium-button">Enregistrer les paramètres</button>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Modules activés</h2>
+        <div class="client-line"><b>GED</b><span>OCR + archivage</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>TVA</b><span>CA3 automatique</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Fiscal</b><span>Liasse / FEC</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Banques</b><span>Rapprochement</span><em class="ok">Actif</em></div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Utilisateurs & rôles - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Sécurité SaaS</p>
+        <h1>Utilisateurs & rôles</h1>
+        <p>Gestion des accès cabinet, collaborateurs, clients, droits modules et supervision sécurité.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/societes">Sociétés clientes</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Utilisateurs</span><strong>8</strong><small>Cabinet + clients</small></div>
+    <div class="premium-card"><span>Admins</span><strong>2</strong><small>Droits complets</small></div>
+    <div class="premium-card"><span>Clients actifs</span><strong>5</strong><small>Portail client</small></div>
+    <div class="premium-card"><span>Sécurité</span><strong>OK</strong><small>Contrôle rôles</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Profils utilisateurs</h2>
+        <div class="client-line"><b>Alain Baudinaud</b><span>Administrateur cabinet</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Collaborateur comptable</b><span>Dossiers assignés</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Client test</b><span>Portail client limité</span><em class="warn">À valider</em></div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Droits par rôle</h2>
+        <div class="client-line"><b>ADMIN</b><span>Tous modules</span><em class="ok">Complet</em></div>
+        <div class="client-line"><b>COLLAB</b><span>Dossiers affectés</span><em class="ok">Restreint</em></div>
+        <div class="client-line"><b>CLIENT</b><span>Son entreprise</span><em class="ok">Portail</em></div>
+    </div>
+</section>
+
+{% endblock %}

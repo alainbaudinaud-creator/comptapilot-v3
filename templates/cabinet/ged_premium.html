@@ -1,0 +1,53 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}GED Comptable - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">GED & OCR</p>
+        <h1>GED comptable intelligente</h1>
+        <p>Centralisation des pièces, analyse OCR, pré-comptabilisation IA et archivage probatoire.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/ecritures/saisie-rapide">Saisie rapide</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Documents reçus</span><strong>124</strong><small>Mois en cours</small></div>
+    <div class="premium-card"><span>OCR terminé</span><strong>98%</strong><small>Analyse IA</small></div>
+    <div class="premium-card"><span>À valider</span><strong>14</strong><small>Pré-compta</small></div>
+    <div class="premium-card"><span>Archivage</span><strong>OK</strong><small>Probatoire</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Importer des pièces</h2>
+        <div class="upload-zone">
+            <strong>Déposer factures, relevés, justificatifs</strong>
+            <p>PDF, images, Factur-X, exports bancaires.</p>
+            <button class="premium-button">Importer un document</button>
+        </div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Workflow IA</h2>
+        <div class="client-line"><b>OCR</b><span>Extraction texte</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Pré-compta</b><span>Compte suggéré</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Validation</b><span>Expert-comptable</span><em class="warn">À revoir</em></div>
+    </div>
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Documents récents</h2>
+    <div class="client-line"><b>Facture fournisseur Orange.pdf</b><span>606000 / TVA détectée</span><em class="ok">Pré-comptabilisée</em></div>
+    <div class="client-line"><b>Relevé bancaire mai.csv</b><span>Banque</span><em class="ok">Importé</em></div>
+    <div class="client-line"><b>Facture client test.pdf</b><span>OCR incomplet</span><em class="warn">À vérifier</em></div>
+</section>
+
+{% endblock %}

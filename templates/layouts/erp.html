@@ -1,18 +1,15 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="fr">
 <head>
     <meta charset="utf-8">
-    <title>{% block page_title %}ComptaPilot V3{% endblock %}</title>
+    <title>{% block title %}ComptaPilot V3{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#0b1320">
-
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/comptapilot.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/erp_premium.css') }}">
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="stylesheet" href="/static/css/erp_premium.css">
 </head>
 
 <body>
 <div class="app-shell">
+
     <aside class="sidebar">
         <div class="brand">
             <div class="brand-logo">CP</div>
@@ -24,56 +21,58 @@
 
         <nav class="nav-section">
             <div class="nav-label">Pilotage</div>
-            <a href="/">Dashboard</a>
-            <a href="/ecritures/dashboard-financier">Cockpit financier</a>
-            <a href="/supervision">Supervision</a>
+            <a class="{% if request.path == '/erp-premium' %}active{% endif %}" href="/erp-premium">Cockpit cabinet</a>
+            <a class="{% if request.path == '/societe/ui' %}active{% endif %}" href="/cabinet/societes">Sociétés clientes</a>
+            <a class="{% if request.path == '/ecritures/saisie-rapide' %}active{% endif %}" href="/ecritures/saisie-rapide">Saisie rapide</a>
+            <a class="{% if request.path == '/cabinet/portail-client' %}active{% endif %}" href="/cabinet/portail-client">Portail client</a>
         </nav>
 
         <nav class="nav-section">
             <div class="nav-label">Comptabilité</div>
-            <a href="/balance">Balance générale</a>
-            <a href="/grand-livre">Grand livre</a>
-            <a href="/bilan">Bilan</a>
-            <a href="/ecritures/saisie-rapide">Saisie rapide</a>
+            <a class="{% if request.path == '/cabinet/journal' %}active{% endif %}" href="/cabinet/journal">Journal comptable</a>
+            <a class="{% if request.path == '/cabinet/grand-livre' %}active{% endif %}" href="/cabinet/grand-livre">Grand Livre</a>
+            <a class="{% if request.path == '/cabinet/balance' %}active{% endif %}" href="/cabinet/balance">Balance</a>
+            <a class="{% if request.path == '/cabinet/banques' %}active{% endif %}" href="/cabinet/banques">Banques</a>
         </nav>
 
         <nav class="nav-section">
-            <div class="nav-label">Automatisation</div>
-            <a href="/ged">GED & OCR</a>
-            <a href="/ecritures/assistant-ia-comptable">Assistant IA</a>
-            <a href="/ecritures/rapprochement-bancaire">Banque</a>
+            <div class="nav-label">Production</div>
+            <a class="{% if request.path == '/cabinet/ged' %}active{% endif %}" href="/cabinet/ged">GED comptable</a>
+            <a class="{% if request.path == '/cabinet/tva' %}active{% endif %}" href="/cabinet/tva">TVA</a>
+            <a class="{% if request.path == '/cabinet/fiscal' %}active{% endif %}" href="/cabinet/fiscal">Fiscal</a>
+            <a class="{% if request.path == '/cabinet/immobilisations' %}active{% endif %}" href="/cabinet/immobilisations">Immobilisations</a>
         </nav>
 
         <nav class="nav-section">
-            <div class="nav-label">Fiscal & conformité</div>
-            <a href="/fiscal">Fiscal IA</a>
-            <a href="/ecritures/export-fec-dgfip">Export FEC</a>
-            <a href="/teledec">Télé-déclaration</a>
+            <div class="nav-label">Administration</div>
+            <a class="{% if request.path == '/cabinet/utilisateurs' %}active{% endif %}" href="/cabinet/utilisateurs">Utilisateurs & rôles</a>
+            <a class="{% if request.path == '/cabinet/parametres' %}active{% endif %}" href="/cabinet/parametres">Paramètres cabinet</a>
         </nav>
     </aside>
 
-    <main class="main">
+    <main class="main-content">
+
         <header class="topbar">
-            <div>
-                <div class="eyebrow">ComptaPilot V3</div>
-                <h1>{% block title %}Tableau de bord{% endblock %}</h1>
+            <div class="topbar-left">
+                <input class="searchbar" placeholder="Rechercher un dossier, une écriture, une facture...">
             </div>
-            <div class="topbar-actions">
-                <span class="status-pill">Production ready</span>
+
+            <div class="topbar-right">
+                <div class="top-pill">Production HTTPS</div>
+                <div class="top-pill">IA Active</div>
+                <div class="top-user">
+                    <div class="top-avatar">AB</div>
+                    <div>
+                        <strong>Alain Baudinaud</strong>
+                        <small>Administrateur</small>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <section class="content">
-            {% block content %}{% endblock %}
-        </section>
+        {% block content %}{% endblock %}
     </main>
-</div>
 
-<script src="{{ url_for('static', filename='js/erp_performance.js') }}"></script>
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/service-worker.js');
-}
-</script>
+</div>
 </body>
 </html>

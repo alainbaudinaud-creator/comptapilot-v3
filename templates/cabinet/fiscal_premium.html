@@ -1,0 +1,44 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Centre fiscal - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Production fiscale</p>
+        <h1>Centre fiscal intelligent</h1>
+        <p>Préparation liasse fiscale, contrôles FEC, TVA, échéances et alertes avant clôture.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/tva">TVA</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Liasses à préparer</span><strong>5</strong><small>Exercice 2025</small></div>
+    <div class="premium-card"><span>Contrôles FEC</span><strong>OK</strong><small>Structure conforme</small></div>
+    <div class="premium-card"><span>Clôtures proches</span><strong>3</strong><small>À surveiller</small></div>
+    <div class="premium-card"><span>Risque fiscal IA</span><strong>Faible</strong><small>Score 92/100</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Checklist fiscale</h2>
+        <div class="client-line"><b>Balance</b><span>Contrôle comptes</span><em class="ok">OK</em></div>
+        <div class="client-line"><b>FEC</b><span>Export DGFIP</span><em class="ok">Prêt</em></div>
+        <div class="client-line"><b>Liasse</b><span>2050 à 2059</span><em class="warn">À préparer</em></div>
+        <div class="client-line"><b>Annexes</b><span>Immobilisations / emprunts</span><em class="warn">À compléter</em></div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Actions rapides</h2>
+        <a class="module-link" href="/cabinet/tva">Préparer TVA</a>
+        <a class="module-link" href="/cabinet/ged">Contrôler GED</a>
+        <a class="module-link" href="/ecritures/saisie-rapide">Saisie rapide</a>
+        <a class="module-link" href="/erp-premium">Cockpit cabinet</a>
+    </div>
+</section>
+
+{% endblock %}

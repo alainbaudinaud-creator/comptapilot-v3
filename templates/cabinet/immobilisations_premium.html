@@ -1,0 +1,42 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Immobilisations - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Production comptable avancée</p>
+        <h1>Immobilisations & emprunts</h1>
+        <p>Gestion des actifs, tableaux d’amortissement, emprunts bancaires et écritures automatiques.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/fiscal">Centre fiscal</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Immobilisations</span><strong>36</strong><small>Actifs suivis</small></div>
+    <div class="premium-card"><span>Dotations</span><strong>12 840 €</strong><small>Exercice 2025</small></div>
+    <div class="premium-card"><span>Emprunts</span><strong>4</strong><small>Tableaux actifs</small></div>
+    <div class="premium-card"><span>Écritures auto</span><strong>OK</strong><small>Clôture mensuelle</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Actifs principaux</h2>
+        <div class="client-line"><b>Matériel informatique</b><span>Amort. linéaire 3 ans</span><em class="ok">À jour</em></div>
+        <div class="client-line"><b>Véhicule société</b><span>Amort. 5 ans</span><em class="ok">À jour</em></div>
+        <div class="client-line"><b>Logiciel métier</b><span>À classifier</span><em class="warn">À vérifier</em></div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Emprunts bancaires</h2>
+        <div class="client-line"><b>Prêt équipement</b><span>Mensualités</span><em class="ok">Plan actif</em></div>
+        <div class="client-line"><b>Crédit véhicule</b><span>Capital restant dû</span><em class="ok">Suivi</em></div>
+        <a class="module-link" href="/cabinet/fiscal">Impact liasse fiscale</a>
+    </div>
+</section>
+
+{% endblock %}
