@@ -1,13 +1,8 @@
-﻿import sqlite3
-from pathlib import Path
-
-from flask import Blueprint
-from flask import render_template
+from flask import Blueprint, render_template
+from sqlalchemy import text
+from database import engine
 
 bp_ged = Blueprint("ged", __name__)
-
-ROOT = Path("/app")
-DB = ROOT / "db.sqlite"
 
 @bp_ged.route("/ged")
 def ged():
@@ -20,26 +15,19 @@ def ged():
 
     try:
 
-        con = sqlite3.connect(DB)
-        cur = con.cursor()
+        with engine.begin() as conn:
 
-        tables = [
-            "documents_clients",
-            "imports_fec_reels",
-            "ocr_analyse"
-        ]
+            stats["documents_clients"] = conn.execute(text(
+                "select count(*) from factures"
+            )).scalar() or 0
 
-        for t in tables:
+            stats["imports_fec_reels"] = conn.execute(text(
+                "select count(*) from ecritures_premium"
+            )).scalar() or 0
 
-            try:
-                stats[t] = cur.execute(
-                    f"SELECT COUNT(*) FROM {t}"
-                ).fetchone()[0]
-
-            except Exception:
-                stats[t] = 0
-
-        con.close()
+            stats["ocr_analyse"] = conn.execute(text(
+                "select count(*) from societes_clientes_premium"
+            )).scalar() or 0
 
     except Exception as e:
         print("GED WARNING:", e)
@@ -48,5 +36,3 @@ def ged():
         "cabinet/ged.html",
         stats=stats
     )
-
-
