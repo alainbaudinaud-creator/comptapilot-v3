@@ -567,6 +567,7 @@ def centre_fiscal():
     )
 
 
+@csrf.exempt
 @app.route("/login", methods=["GET", "POST"])
 def direct_login():
 
