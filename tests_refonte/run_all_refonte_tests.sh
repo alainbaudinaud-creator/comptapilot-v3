@@ -34,4 +34,8 @@ echo "Mini-app Flask créée, test Flask complet différé à l’environnement 
 echo "=== TEST 8 - PLAN COMPTABLE FRANCAIS ==="
 PYTHONPATH=. python3 tests_refonte/test_pcg_service.py
 
+
+echo "=== TEST 9 - IMMOBILISATIONS PREMIUM ==="
+PYTHONPATH=. python3 tests_refonte/test_amortissement_ecritures.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
