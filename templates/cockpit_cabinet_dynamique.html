@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>ComptaPilot V3 - Cockpit Cabinet Dynamique</title>
+<link rel="stylesheet" href="/static/css/comptapilot_design_system.css">
+<style>
+body{margin:0;background:#0f172a;color:#e5e7eb;font-family:Arial, sans-serif}
+.shell{display:flex;min-height:100vh}
+.sidebar{width:260px;background:#020617;padding:24px}
+.brand{font-size:22px;font-weight:800;margin-bottom:32px}
+.sidebar a{display:block;color:#cbd5e1;text-decoration:none;padding:12px;border-radius:10px;margin:6px 0}
+.sidebar a.active,.sidebar a:hover{background:#1e293b;color:white}
+.main{flex:1;padding:32px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
+.metric,.card{background:#111827;border:1px solid #334155;border-radius:18px;padding:22px;box-shadow:0 20px 40px rgba(0,0,0,.25)}
+.metric span{color:#94a3b8;font-size:14px}
+.metric strong{display:block;font-size:34px;margin-top:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.badge{padding:6px 10px;border-radius:999px;font-size:12px;font-weight:bold}
+.ok{background:#064e3b;color:#bbf7d0}
+.warn{background:#78350f;color:#fde68a}
+.danger{background:#7f1d1d;color:#fecaca}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px;border-bottom:1px solid #334155;text-align:left}
+.small{color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<aside class="sidebar">
+<div class="brand">ComptaPilot V3</div>
+<a class="active" href="/cockpit-cabinet">Cockpit</a>
+<a href="/plan-comptable/">Plan comptable</a>
+<a href="/ecritures">Écritures</a>
+<a href="/ecritures/operationnel/immobilisations">Immobilisations</a>
+<a href="/logout">Déconnexion</a>
+</aside>
+
+<main class="main">
+
+<div class="topbar">
+<div>
+<h1>Cockpit Cabinet Dynamique</h1>
+<p class="small">Données issues de PostgreSQL — socle premium</p>
+</div>
+</div>
+
+<section class="metrics">
+<div class="metric"><span>Sociétés</span><strong>{{ kpis.nb_societes }}</strong></div>
+<div class="metric"><span>Écritures</span><strong>{{ kpis.nb_ecritures }}</strong></div>
+<div class="metric"><span>Immobilisations</span><strong>{{ kpis.nb_immobilisations }}</strong></div>
+<div class="metric"><span>Factures</span><strong>{{ kpis.nb_factures }}</strong></div>
+</section>
+
+<div class="grid">
+
+<div class="card">
+<h2>Alertes métier IA</h2>
+{% if alertes %}
+<table>
+{% for a in alertes %}
+<tr>
+<td>{{ a.message }}</td>
+<td><span class="badge {{ a.niveau }}">{{ a.label }}</span></td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p>Aucune alerte critique détectée.</p>
+{% endif %}
+</div>
+
+<div class="card">
+<h2>Sociétés clientes</h2>
+<table>
+<tr><th>Nom</th><th>Ville</th><th>Statut</th></tr>
+{% for s in societes %}
+<tr>
+<td>{{ s.nom }}</td>
+<td>{{ s.ville or "-" }}</td>
+<td><span class="badge ok">{{ s.statut or "ACTIF" }}</span></td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+<br>
+
+<div class="card">
+<h2>Dernières écritures</h2>
+<table>
+<tr>
+<th>Date</th>
+<th>Journal</th>
+<th>Compte débit</th>
+<th>Compte crédit</th>
+<th>Libellé</th>
+<th>Montant TTC</th>
+</tr>
+{% for e in ecritures %}
+<tr>
+<td>{{ e.date_ecriture }}</td>
+<td>{{ e.journal }}</td>
+<td>{{ e.compte_debit }}</td>
+<td>{{ e.compte_credit }}</td>
+<td>{{ e.libelle }}</td>
+<td>{{ "%.2f"|format(e.montant_ttc or 0) }} €</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+<br>
+
+<div class="card">
+<h2>Immobilisations</h2>
+<table>
+<tr>
+<th>Désignation</th>
+<th>Date acquisition</th>
+<th>Valeur origine</th>
+<th>Durée</th>
+<th>Amortissement annuel</th>
+</tr>
+{% for i in immobilisations %}
+<tr>
+<td>{{ i.designation }}</td>
+<td>{{ i.date_acquisition }}</td>
+<td>{{ "%.2f"|format(i.valeur_origine or 0) }} €</td>
+<td>{{ i.duree_amortissement }} ans</td>
+<td>{{ "%.2f"|format(i.amortissement_annuel or 0) }} €</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+</main>
+</div>
+</body>
+</html>
