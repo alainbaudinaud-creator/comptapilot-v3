@@ -517,6 +517,54 @@ def cabinet_workflow_saas():
         taches=taches
     )
 
+
+
+# === CENTRE FISCAL PREMIUM ===
+@app.route("/centre-fiscal")
+def centre_fiscal():
+
+    notifications = []
+    immobilisations = []
+    rapprochements = []
+
+    try:
+        from database import engine
+        from sqlalchemy import text
+
+        with engine.connect() as conn:
+
+            notifications = conn.execute(text("""
+                SELECT *
+                FROM notifications_workflow
+                ORDER BY created_at DESC
+                LIMIT 20
+            """)).mappings().all()
+
+            immobilisations = conn.execute(text("""
+                SELECT *
+                FROM immobilisations
+                ORDER BY created_at DESC
+                LIMIT 20
+            """)).mappings().all()
+
+            rapprochements = conn.execute(text("""
+                SELECT *
+                FROM rapprochements_bancaires
+                ORDER BY created_at DESC
+                LIMIT 20
+            """)).mappings().all()
+
+    except Exception as e:
+        print(e)
+
+    return render_template(
+        "centre_fiscal.html",
+        notifications=notifications,
+        immobilisations=immobilisations,
+        rapprochements=rapprochements
+    )
+
+
 @app.route("/login", methods=["GET", "POST"])
 def direct_login():
 
