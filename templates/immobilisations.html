@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Rapprochement bancaire — ComptaPilot V3</title>
+<title>Immobilisations — ComptaPilot V3</title>
 <link rel="stylesheet" href="/static/v3/css/cockpit-premium.css">
 <style>
 body{margin:0;background:#07111f;color:white;font-family:Arial;padding:34px}
@@ -14,15 +14,16 @@ th{background:#102a43;color:#bfdbfe}
 </head>
 <body>
 <a href="/">← Retour cockpit</a>
-<h1>Rapprochement bancaire</h1>
+<h1>Immobilisations</h1>
 <table>
-<tr><th>Date</th><th>Libellé</th><th>Montant</th><th>Rapproché</th></tr>
-{% for r in rapprochements %}
+<tr><th>Désignation</th><th>Date acquisition</th><th>Valeur origine</th><th>Durée</th><th>Amortissement annuel</th></tr>
+{% for i in immobilisations %}
 <tr>
-<td>{{ r.date_operation or "—" }}</td>
-<td>{{ r.libelle }}</td>
-<td>{{ r.montant }}</td>
-<td>{{ "Oui" if r.rapproche else "Non" }}</td>
+<td>{{ i.designation }}</td>
+<td>{{ i.date_acquisition or "—" }}</td>
+<td>{{ i.valeur_origine }}</td>
+<td>{{ i.duree_amortissement }} ans</td>
+<td>{{ i.amortissement_annuel }}</td>
 </tr>
 {% endfor %}
 </table>

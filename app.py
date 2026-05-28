@@ -1,4 +1,5 @@
-﻿from flask import Flask, redirect, render_template, request, jsonify
+﻿from controllers.premium_saas_routes import premium_saas
+from flask import Flask, redirect, render_template, request, jsonify
 from flask_mail import Mail
 from flasgger import Swagger
 from flask_jwt_extended import JWTManager
@@ -85,6 +86,7 @@ csrf.init_app(app)
 mail = Mail(app)
 jwt = JWTManager(app)
 swagger = Swagger(app)
+app.register_blueprint(premium_saas)
 
 @app.errorhandler(RateLimitExceeded)
 def handle_rate_limit(e):
