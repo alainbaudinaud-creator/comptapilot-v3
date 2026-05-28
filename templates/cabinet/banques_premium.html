@@ -1,0 +1,43 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Banques - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Banques & DSP2</p>
+        <h1>Rapprochement bancaire intelligent</h1>
+        <p>Import bancaire, matching IA, lettrage automatique et contrôle des flux financiers.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/ged">GED</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Flux importés</span><strong>286</strong><small>Mois courant</small></div>
+    <div class="premium-card"><span>Rapprochés</span><strong>91%</strong><small>Matching IA</small></div>
+    <div class="premium-card"><span>À lettrer</span><strong>24</strong><small>Contrôle requis</small></div>
+    <div class="premium-card"><span>Anomalies</span><strong>2</strong><small>À vérifier</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Rapprochement automatique</h2>
+        <div class="client-line"><b>Relevé bancaire mai</b><span>184 lignes</span><em class="ok">Importé</em></div>
+        <div class="client-line"><b>Factures fournisseurs</b><span>Matching paiements</span><em class="ok">91%</em></div>
+        <div class="client-line"><b>Écarts détectés</b><span>2 mouvements</span><em class="warn">À contrôler</em></div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Actions rapides</h2>
+        <a class="module-link" href="/ecritures/saisie-rapide">Créer une écriture</a>
+        <a class="module-link" href="/cabinet/ged">Contrôler les pièces</a>
+        <a class="module-link" href="/cabinet/tva">Impact TVA</a>
+        <a class="module-link" href="/erp-premium">Cockpit cabinet</a>
+    </div>
+</section>
+
+{% endblock %}

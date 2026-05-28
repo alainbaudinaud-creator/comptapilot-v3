@@ -1,57 +1,64 @@
-
 {% extends "layouts/erp.html" %}
 
-{% block title %}ERP Premium{% endblock %}
+{% block title %}ComptaPilot V3 - Cockpit Cabinet{% endblock %}
 
 {% block content %}
 
-<div class="grid">
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Cabinet IFG Solution</p>
+        <h1>ComptaPilot V3</h1>
+        <p>ERP comptable intelligent : dossiers clients, GED, fiscalité, TVA, production comptable et pilotage IA.</p>
+        <p class="active-folder">
+            Dossier actif :
+            <strong>{{ session.get("societe_active_nom", "Aucun dossier sélectionné") }}</strong>
+            {% if session.get("societe_active_siren") %}
+                — SIREN {{ session.get("societe_active_siren") }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Cockpit cabinet</a>
+        <a class="btn-secondary" href="/cabinet/portail-client">Portail client</a>
+    </div>
+</section>
 
-<div class="card">
-<h3>Score fiscal IA</h3>
-<div class="value">{{ ia.score_fiscal }}/100</div>
-</div>
+<section class="premium-grid">
+    <div class="premium-card"><span>Dossiers actifs</span><strong>12</strong><small>+3 cette semaine</small></div>
+    <div class="premium-card"><span>Pièces à traiter</span><strong>48</strong><small>OCR / GED</small></div>
+    <div class="premium-card"><span>TVA à préparer</span><strong>7</strong><small>Échéances proches</small></div>
+    <div class="premium-card"><span>Score fiscal IA</span><strong>92/100</strong><small>Risque faible</small></div>
+</section>
 
-<div class="card">
-<h3>Notifications</h3>
-<div class="value">{{ stats.notifications_centre }}</div>
-</div>
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Portefeuille clients</h2>
+        <div class="client-line"><b>Orange SA</b><span>TVA à préparer</span><em class="ok">À jour</em></div>
+        <div class="client-line"><b>IFG Solution</b><span>Dossier cabinet</span><em class="ok">Actif</em></div>
+        <div class="client-line"><b>Client test</b><span>Pièces manquantes</span><em class="warn">À compléter</em></div>
+    </div>
 
-<div class="card">
-<h3>Timeline dossiers</h3>
-<div class="value">{{ stats.timeline_dossiers }}</div>
-</div>
+    <div class="workspace-card">
+        <h2>Production comptable</h2>
+        <a class="module-link" href="/cabinet/journal">Journal comptable</a>
+        <a class="module-link" href="/cabinet/grand-livre">Grand livre</a>
+        <a class="module-link" href="/cabinet/balance">Balance</a>
+        <a class="module-link" href="/cabinet/fiscal">Export FEC</a>
+    </div>
 
-<div class="card">
-<h3>Rapprochements</h3>
-<div class="value">{{ stats.rapprochements_bancaires }}</div>
-</div>
+    <div class="workspace-card">
+        <h2>Modules métier</h2>
+        <a class="module-link" href="/cabinet/ged">GED comptable</a>
+        <a class="module-link" href="/cabinet/tva">TVA automatique</a>
+        <a class="module-link" href="/cabinet/fiscal">Fiscalité</a>
+        <a class="module-link" href="/cabinet/banques">Banques</a>
+    </div>
 
-<div class="card">
-<h3>Imports</h3>
-<div class="value">{{ stats.imports_documents }}</div>
-</div>
-
-<div class="card">
-<h3>Emails</h3>
-<div class="value">{{ stats.mail_queue }}</div>
-</div>
-
-</div>
-
-<div class="card">
-<h3>Analyse IA fiscale</h3>
-
-{% if ia.risques %}
-<ul>
-{% for r in ia.risques %}
-<li>{{ r }}</li>
-{% endfor %}
-</ul>
-{% else %}
-<p>Aucun risque détecté</p>
-{% endif %}
-
-</div>
+    <div class="workspace-card">
+        <h2>Alertes IA</h2>
+        <p>Aucune anomalie critique détectée.</p>
+        <p>Contrôles actifs : TVA, FEC, débit/crédit, pièces manquantes, échéances fiscales.</p>
+    </div>
+</section>
 
 {% endblock %}

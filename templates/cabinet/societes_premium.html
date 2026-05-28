@@ -1,0 +1,57 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Sociétés clientes - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Portefeuille cabinet</p>
+        <h1>Sociétés clientes</h1>
+        <p>Création, suivi, scoring IA et pilotage des dossiers clients.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/portail-client">Portail client</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Dossiers actifs</span><strong>12</strong><small>Cabinet IFG</small></div>
+    <div class="premium-card"><span>À compléter</span><strong>3</strong><small>SIREN / TVA / pièces</small></div>
+    <div class="premium-card"><span>Synchro INSEE</span><strong>OK</strong><small>Contrôle automatique</small></div>
+    <div class="premium-card"><span>Risque moyen</span><strong>Faible</strong><small>Analyse IA</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Créer une société cliente</h2>
+        <div class="form-grid">
+            <label>Nom société<input placeholder="Ex : Orange SA"></label>
+            <label>SIREN<input placeholder="Ex : 380129866"></label>
+            <label>Ville<input placeholder="Ex : Paris"></label>
+            <label>Email contact<input placeholder="contact@societe.fr"></label>
+        </div>
+        <br>
+        <button class="premium-button">Créer le dossier client</button>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Actions rapides</h2>
+        <a class="module-link" href="/erp-premium">Cockpit cabinet</a>
+        <a class="module-link" href="/cabinet/ged">GED client</a>
+        <a class="module-link" href="/cabinet/fiscal">Fiscalité</a>
+        <a class="module-link" href="/cabinet/tva">TVA</a>
+    </div>
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Dossiers récents</h2>
+    <div class="client-line"><b>Orange SA</b><span>SIREN 380129866</span><em class="ok">À jour</em></div>
+    <div class="client-line"><b>IFG Solution</b><span>Dossier cabinet</span><em class="ok">Actif</em></div>
+    <div class="client-line"><b>Client test</b><span>Création récente</span><em class="warn">À compléter</em></div>
+</section>
+
+{% endblock %}

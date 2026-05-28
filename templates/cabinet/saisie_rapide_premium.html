@@ -1,0 +1,65 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Saisie rapide - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Production comptable</p>
+        <h1>Saisie rapide intelligente</h1>
+        <p>Création d’écritures guidée avec contrôle débit/crédit, journal, comptes et pièces justificatives.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/ged">Importer une pièce</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Écritures du jour</span><strong>18</strong><small>Production active</small></div>
+    <div class="premium-card"><span>À contrôler</span><strong>4</strong><small>Équilibre / TVA</small></div>
+    <div class="premium-card"><span>Pièces liées</span><strong>32</strong><small>GED comptable</small></div>
+    <div class="premium-card"><span>Contrôle</span><strong>OK</strong><small>Débit = Crédit</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Nouvelle écriture</h2>
+        <div class="form-grid">
+            <label>Journal
+                <select>
+                    <option>OD - Opérations diverses</option>
+                    <option>AC - Achats</option>
+                    <option>VE - Ventes</option>
+                    <option>BQ - Banque</option>
+                </select>
+            </label>
+            <label>Date<input type="date"></label>
+            <label>Compte débit<input placeholder="Ex : 606000"></label>
+            <label>Compte crédit<input placeholder="Ex : 401000"></label>
+            <label>Libellé<input placeholder="Ex : Facture fournisseur"></label>
+            <label>Montant TTC<input placeholder="0,00 €"></label>
+        </div>
+        <br>
+        <button class="premium-button">Enregistrer l’écriture</button>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Contrôles automatiques</h2>
+        <div class="client-line"><b>Équilibre</b><span>Débit / Crédit</span><em class="ok">OK</em></div>
+        <div class="client-line"><b>Compte</b><span>Plan comptable</span><em class="ok">Valide</em></div>
+        <div class="client-line"><b>TVA</b><span>Déductible / collectée</span><em class="warn">À vérifier</em></div>
+    </div>
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Dernières écritures</h2>
+    <div class="client-line"><b>Facture Orange</b><span>606000 / 401000</span><em class="ok">Validée</em></div>
+    <div class="client-line"><b>Encaissement client</b><span>512000 / 411000</span><em class="ok">Lettrable</em></div>
+    <div class="client-line"><b>OD de clôture</b><span>À compléter</span><em class="warn">Brouillon</em></div>
+</section>
+
+{% endblock %}

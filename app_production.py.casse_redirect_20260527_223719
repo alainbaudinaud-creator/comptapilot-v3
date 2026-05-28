@@ -265,8 +265,18 @@ app.register_blueprint(bp_ocr)
 
 
 
+@app.route("/societe/ui")
+def societe_ui_redirect_premium():
+    return redirect("/erp-premium")
 
+@app.route("/ecritures/saisie-rapide")
+def saisie_rapide_redirect_premium():
+    return redirect("/erp-premium")
 
-# Routes premium sûres ajoutées hors app_production
-from controllers.premium_safe_routes import bp_premium_safe
-app.register_blueprint(bp_premium_safe)
+@app.route("/societe/ui")
+def societe_ui_redirect_premium():
+    return redirect("/erp-premium")
+
+@app.route("/ecritures/saisie-rapide")
+def saisie_rapide_redirect_premium():
+    return redirect("/erp-premium")

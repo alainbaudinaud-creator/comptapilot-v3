@@ -1,0 +1,122 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Sociétés clientes - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Portefeuille cabinet</p>
+        <h1>Sociétés clientes</h1>
+        <p>Création, recherche INSEE/SIREN et fiche réglementaire complète.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/societes">Actualiser</a>
+    </div>
+</section>
+
+<section class="workspace-card">
+    <h2>Recherche automatique INSEE / SIREN</h2>
+
+    <form method="get" action="/cabinet/societes" class="search-company-box">
+        <div class="search-company-line">
+            <input name="search" value="{{ search or '' }}" placeholder="Nom société ou SIREN, ex : Orange ou 380129866">
+            <button class="premium-button" type="submit">Rechercher</button>
+        </div>
+    </form>
+
+    {% if search_results %}
+        <div class="company-results">
+            {% for e in search_results %}
+            <form method="post" action="/cabinet/societes/creer" class="company-result">
+                <strong>{{ e.nom }}</strong>
+                <span>SIREN : {{ e.siren }} — SIRET siège : {{ e.siret }}</span>
+                <span>TVA intracom : {{ e.tva_intracom }}</span>
+                <small>{{ e.adresse }} — {{ e.code_postal }} {{ e.ville }}</small>
+                <small>Forme juridique : {{ e.forme_juridique or "Non renseignée" }} — APE/NAF : {{ e.activite_ape }} — État : {{ e.etat_administratif }}</small>
+
+                <input type="hidden" name="nom" value="{{ e.nom }}">
+                <input type="hidden" name="siren" value="{{ e.siren }}">
+                <input type="hidden" name="siret" value="{{ e.siret }}">
+                <input type="hidden" name="tva_intracom" value="{{ e.tva_intracom }}">
+                <input type="hidden" name="adresse" value="{{ e.adresse }}">
+                <input type="hidden" name="code_postal" value="{{ e.code_postal }}">
+                <input type="hidden" name="ville" value="{{ e.ville }}">
+                <input type="hidden" name="forme_juridique" value="{{ e.forme_juridique }}">
+                <input type="hidden" name="activite_ape" value="{{ e.activite_ape }}">
+                <input type="hidden" name="etat_administratif" value="{{ e.etat_administratif }}">
+                <input type="hidden" name="email" value="">
+
+                <button type="submit">Créer le dossier avec cette fiche légale</button>
+            </form>
+            {% endfor %}
+        </div>
+    {% elif search %}
+        <p>Aucune société trouvée.</p>
+    {% endif %}
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Création manuelle</h2>
+    <form method="post" action="/cabinet/societes/creer">
+        <div class="form-grid">
+            <label>Nom société<input name="nom" required></label>
+            <label>SIREN<input name="siren"></label>
+            <label>SIRET siège<input name="siret"></label>
+            <label>TVA intracom<input name="tva_intracom"></label>
+            <label>Adresse<input name="adresse"></label>
+            <label>Code postal<input name="code_postal"></label>
+            <label>Ville<input name="ville"></label>
+            <label>Forme juridique<input name="forme_juridique"></label>
+            <label>APE / NAF<input name="activite_ape"></label>
+            <label>État administratif<input name="etat_administratif"></label>
+            <label>Email contact<input name="email"></label>
+        </div>
+        <br>
+        <button class="premium-button" type="submit">Créer le dossier client</button>
+    </form>
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Dossiers clients</h2>
+
+    {% if societes %}
+        {% for s in societes %}
+        <div class="client-line">
+            <b>{{ s.nom }}</b>
+            <span>
+                SIREN {{ s.siren or "-" }}<br>
+                SIRET {{ s.siret or "-" }}<br>
+                TVA {{ s.tva_intracom or "-" }}<br>
+                {{ s.adresse or "" }} {{ s.code_postal or "" }} {{ s.ville or "" }}<br>
+                APE {{ s.activite_ape or "-" }} — {{ s.forme_juridique or "-" }}
+            </span>
+            <span>
+                {% if s.statut == "ARCHIVE" %}
+                    <em class="warn">Archivé</em>
+                {% else %}
+                    <em class="ok">Actif</em>
+                {% endif %}
+            </span>
+            <span class="actions-inline">
+                <a class="small-button" href="/cabinet/societes/{{ s.id }}">Voir / Modifier</a>
+                <form method="post" action="/cabinet/societes/{{ s.id }}/archiver">
+                    <button class="small-button" type="submit">Archiver</button>
+                </form>
+                <form method="post" action="/cabinet/societes/{{ s.id }}/supprimer" onsubmit="return confirm('Confirmer la suppression de cette société cliente ?');">
+                    <button class="small-button danger" type="submit">Supprimer</button>
+                </form>
+            </span>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucune société cliente enregistrée.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

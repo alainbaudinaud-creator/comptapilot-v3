@@ -1,0 +1,62 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}Fiche société cliente - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Fiche client</p>
+        <h1>{{ societe.nom }}</h1>
+        <p>Consultation et modification de la fiche réglementaire société cliente.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/cabinet/societes">Retour sociétés</a>
+        <a class="btn-secondary" href="/erp-premium">Cockpit</a>
+    </div>
+</section>
+
+<section class="workspace-card">
+    <h2>Informations réglementaires</h2>
+
+    
+        <form method="post" action="/cabinet/societes/{{ societe.id }}/selectionner">
+            <button class="premium-button" type="submit">Définir comme dossier actif</button>
+        </form>
+        <br>
+<form method="post" action="/cabinet/societes/{{ societe.id }}/modifier">
+        <div class="form-grid">
+            <label>Nom société<input name="nom" value="{{ societe.nom or '' }}" required></label>
+            <label>SIREN<input name="siren" value="{{ societe.siren or '' }}"></label>
+            <label>SIRET siège<input name="siret" value="{{ societe.siret or '' }}"></label>
+            <label>TVA intracom<input name="tva_intracom" value="{{ societe.tva_intracom or '' }}"></label>
+            <label>Adresse<input name="adresse" value="{{ societe.adresse or '' }}"></label>
+            <label>Code postal<input name="code_postal" value="{{ societe.code_postal or '' }}"></label>
+            <label>Ville<input name="ville" value="{{ societe.ville or '' }}"></label>
+            <label>Forme juridique<input name="forme_juridique" value="{{ societe.forme_juridique or '' }}"></label>
+            <label>APE / NAF<input name="activite_ape" value="{{ societe.activite_ape or '' }}"></label>
+            <label>État administratif<input name="etat_administratif" value="{{ societe.etat_administratif or '' }}"></label>
+            <label>Email contact<input name="email" value="{{ societe.email or '' }}"></label>
+            <label>Statut
+                <select name="statut">
+                    <option value="ACTIF" {% if societe.statut == "ACTIF" %}selected{% endif %}>ACTIF</option>
+                    <option value="ARCHIVE" {% if societe.statut == "ARCHIVE" %}selected{% endif %}>ARCHIVE</option>
+                </select>
+            </label>
+        </div>
+
+        <br>
+        <button class="premium-button" type="submit">Enregistrer les modifications</button>
+    </form>
+</section>
+
+<br>
+
+<section class="workspace-card">
+    <h2>Actions dossier</h2>
+    <div class="client-line"><b>GED</b><span>Documents de la société</span><a class="small-button" href="/cabinet/ged">Ouvrir</a></div>
+    <div class="client-line"><b>TVA</b><span>Déclarations et contrôles</span><a class="small-button" href="/cabinet/tva">Ouvrir</a></div>
+    <div class="client-line"><b>Comptabilité</b><span>Journal, grand livre, balance</span><a class="small-button" href="/cabinet/journal">Ouvrir</a></div>
+</section>
+
+{% endblock %}

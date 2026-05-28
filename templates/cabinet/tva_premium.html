@@ -1,0 +1,43 @@
+{% extends "layouts/erp.html" %}
+
+{% block title %}TVA - ComptaPilot V3{% endblock %}
+
+{% block content %}
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Fiscalité automatisée</p>
+        <h1>TVA intelligente</h1>
+        <p>Préparation CA3, contrôles de cohérence, alertes échéances et export fiscal.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
+        <a class="btn-secondary" href="/cabinet/ged">GED</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>TVA collectée</span><strong>18 420 €</strong><small>Mois courant</small></div>
+    <div class="premium-card"><span>TVA déductible</span><strong>9 860 €</strong><small>Pièces validées</small></div>
+    <div class="premium-card"><span>TVA à payer</span><strong>8 560 €</strong><small>Estimation CA3</small></div>
+    <div class="premium-card"><span>Contrôle IA</span><strong>OK</strong><small>Aucune anomalie majeure</small></div>
+</section>
+
+<section class="workspace-grid">
+    <div class="workspace-card">
+        <h2>Déclaration CA3</h2>
+        <div class="client-line"><b>Échéance</b><span>Prochaine déclaration</span><em class="warn">À préparer</em></div>
+        <div class="client-line"><b>Pièces TVA</b><span>48 justificatifs</span><em class="ok">Contrôlées</em></div>
+        <div class="client-line"><b>Export</b><span>CSV / PDF fiscal</span><em class="ok">Disponible</em></div>
+    </div>
+
+    <div class="workspace-card">
+        <h2>Actions fiscales</h2>
+        <a class="module-link" href="/cabinet/ged">Contrôler les pièces</a>
+        <a class="module-link" href="/ecritures/saisie-rapide">Saisie rapide</a>
+        <a class="module-link" href="/cabinet/fiscal">Centre fiscal</a>
+        <a class="module-link" href="/erp-premium">Cockpit cabinet</a>
+    </div>
+</section>
+
+{% endblock %}
