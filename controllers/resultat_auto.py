@@ -1,25 +1,32 @@
-﻿from flask import Blueprint, render_template
-import sqlite3
+from flask import Blueprint, render_template
+from sqlalchemy import text
+from database import engine
 
 bp_resultat = Blueprint("resultat_auto", __name__)
 
 @bp_resultat.route("/compte-resultat")
 def resultat():
+
     rows = []
 
     try:
-        con = sqlite3.connect("db.sqlite")
-        cur = con.cursor()
-        rows = cur.execute("""
-            SELECT *
-            FROM vue_compte_resultat
-            ORDER BY numero
-        """).fetchall()
-        con.close()
+        with engine.begin() as conn:
+            rows = conn.execute(text("""
+                SELECT
+                    numero,
+                    libelle,
+                    type,
+                    debit,
+                    credit,
+                    solde
+                FROM vue_compte_resultat_postgres
+                ORDER BY numero
+            """)).fetchall()
+
     except Exception as e:
         print("COMPTE RESULTAT WARNING:", e)
-        rows = []
 
-    return render_template("comptabilite/resultat.html", rows=rows)
-
-
+    return render_template(
+        "comptabilite/resultat.html",
+        rows=rows
+    )
