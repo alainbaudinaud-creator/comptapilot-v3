@@ -1,7 +1,8 @@
-﻿from flask import Blueprint, Response, request
-import sqlite3
+from flask import Blueprint, Response
 import csv
 import io
+from sqlalchemy import text
+from database import engine
 from controllers.auth import login_required
 from services.permission_service import permission_required
 
@@ -9,25 +10,40 @@ balance_routes = Blueprint("balance", __name__)
 
 
 def get_balance():
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
+    sql = """
+        WITH lignes AS (
+            SELECT
+                societe_id,
+                compte_debit AS numero,
+                montant_ttc AS debit,
+                0::numeric AS credit
+            FROM ecritures_premium
 
-    c.execute("""
+            UNION ALL
+
+            SELECT
+                societe_id,
+                compte_credit AS numero,
+                0::numeric AS debit,
+                montant_ttc AS credit
+            FROM ecritures_premium
+        )
         SELECT
             p.numero,
             p.libelle,
-            COALESCE(SUM(e.debit), 0) AS total_debit,
-            COALESCE(SUM(e.credit), 0) AS total_credit,
-            COALESCE(SUM(e.debit), 0) - COALESCE(SUM(e.credit), 0) AS solde
+            COALESCE(SUM(l.debit), 0) AS total_debit,
+            COALESCE(SUM(l.credit), 0) AS total_credit,
+            COALESCE(SUM(l.debit), 0) - COALESCE(SUM(l.credit), 0) AS solde
         FROM plan_comptable p
-        LEFT JOIN ecritures e ON e.compte_id = p.id
-        GROUP BY p.id, p.numero, p.libelle
+        LEFT JOIN lignes l
+            ON l.numero = p.numero
+           AND (l.societe_id = p.societe_id OR p.societe_id IS NULL)
+        GROUP BY p.numero, p.libelle
         ORDER BY p.numero
-    """)
+    """
 
-    rows = c.fetchall()
-    conn.close()
-    return rows
+    with engine.begin() as conn:
+        return conn.execute(text(sql)).fetchall()
 
 
 @balance_routes.route("/")
@@ -42,17 +58,17 @@ def balance_home():
     total_solde = 0
 
     for r in rows:
-        total_debit += r[2]
-        total_credit += r[3]
-        total_solde += r[4]
+        total_debit += float(r[2] or 0)
+        total_credit += float(r[3] or 0)
+        total_solde += float(r[4] or 0)
 
         lignes += f"""
         <tr>
             <td>{r[0]}</td>
             <td>{r[1]}</td>
-            <td class="text-end">{r[2]:.2f}</td>
-            <td class="text-end">{r[3]:.2f}</td>
-            <td class="text-end">{r[4]:.2f}</td>
+            <td class="text-end">{float(r[2] or 0):.2f}</td>
+            <td class="text-end">{float(r[3] or 0):.2f}</td>
+            <td class="text-end">{float(r[4] or 0):.2f}</td>
         </tr>
         """
 
@@ -66,7 +82,7 @@ def balance_home():
     </head>
     <body class="bg-light">
         <div class="container py-5">
-            <h1 class="mb-4">Balance comptable</h1>
+            <h1 class="mb-4">Balance comptable PostgreSQL</h1>
 
             <div class="mb-3">
                 <a href="/balance/export.csv" class="btn btn-success">Export CSV</a>
@@ -123,8 +139,5 @@ def balance_export_csv():
         mimetype="text/csv; charset=utf-8-sig",
         headers={
             "Content-Disposition": "attachment; filename=balance_comptable.csv"
-        }
+        },
     )
-
-
-
