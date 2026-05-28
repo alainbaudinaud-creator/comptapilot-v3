@@ -1,1 +1,12 @@
 === GIT AUTO SAVE ===
+[main 9fc535c] Auto backup ComptaPilot 2026-05-28 02:30:01
+ 8 files changed, 9 insertions(+)
+ create mode 100644 backup.log
+ create mode 100644 backups/comptapilot_backup_20260528_013001.tar.gz
+ create mode 100644 backups/comptapilot_backup_20260528_020001.tar.gz
+ create mode 100644 backups/comptapilot_backup_20260528_023001/app.py
+ create mode 100644 backups/comptapilot_backup_20260528_023001/app_production.py
+ create mode 100644 backups/full_backup_20260528_020001.tar.gz
+ create mode 100644 git_backup.log
+fatal: could not read Username for 'https://github.com': No such device or address
+=== PUSH TERMINE ===
