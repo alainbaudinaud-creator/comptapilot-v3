@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Rapprochement bancaire — ComptaPilot V3</title>
+<title>Workflow Cabinet — ComptaPilot V3</title>
 <link rel="stylesheet" href="/static/v3/css/cockpit-premium.css">
 <style>
 body{margin:0;background:#07111f;color:white;font-family:Arial;padding:34px}
@@ -10,19 +10,22 @@ a{color:#38bdf8;text-decoration:none;font-weight:bold}
 table{width:100%;border-collapse:collapse;background:#0f1f35;border-radius:18px;overflow:hidden}
 th,td{padding:14px;border-bottom:1px solid #223b5c;text-align:left}
 th{background:#102a43;color:#bfdbfe}
+.pill{border:1px solid #2563eb;background:#102a43;border-radius:999px;padding:6px 10px;color:#bfdbfe}
 </style>
 </head>
 <body>
 <a href="/">← Retour cockpit</a>
-<h1>Rapprochement bancaire</h1>
+<h1>Workflow Cabinet</h1>
 <table>
-<tr><th>Date</th><th>Libellé</th><th>Montant</th><th>Rapproché</th></tr>
-{% for r in rapprochements %}
+<tr><th>Tâche</th><th>Module</th><th>Statut</th><th>Priorité</th><th>Assigné à</th><th>Échéance</th></tr>
+{% for t in taches %}
 <tr>
-<td>{{ r.date_operation or "—" }}</td>
-<td>{{ r.libelle }}</td>
-<td>{{ r.montant }}</td>
-<td>{{ "Oui" if r.rapproche else "Non" }}</td>
+<td>{{ t.titre }}</td>
+<td>{{ t.module }}</td>
+<td><span class="pill">{{ t.statut }}</span></td>
+<td>{{ t.priorite }}</td>
+<td>{{ t.assigne_a or "Non assigné" }}</td>
+<td>{{ t.echeance or "—" }}</td>
 </tr>
 {% endfor %}
 </table>
