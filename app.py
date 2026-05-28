@@ -730,3 +730,77 @@ def route_v3_ecritures_secours():
 @app.route("/societe/ui", methods=["GET"])
 def route_societes_clientes_secours():
     return render_template("societes_clientes.html")
+
+# === COCKPIT CABINET DYNAMIQUE V3 ===
+@app.route("/cockpit-cabinet")
+def cockpit_cabinet_dynamique_v3():
+    from flask import render_template
+    from sqlalchemy import text
+
+    def scalar_safe(sql):
+        try:
+            with engine.connect() as conn:
+                return conn.execute(text(sql)).scalar() or 0
+        except Exception:
+            return 0
+
+    def rows_safe(sql):
+        try:
+            with engine.connect() as conn:
+                return conn.execute(text(sql)).mappings().all()
+        except Exception:
+            return []
+
+    kpis = {
+        "nb_societes": scalar_safe("SELECT COUNT(*) FROM societes_clientes_premium"),
+        "nb_ecritures": scalar_safe("SELECT COUNT(*) FROM ecritures_premium"),
+        "nb_immobilisations": scalar_safe("SELECT COUNT(*) FROM immobilisations"),
+        "nb_factures": scalar_safe("SELECT COUNT(*) FROM factures"),
+    }
+
+    societes = rows_safe("""
+        SELECT id, nom, ville, statut
+        FROM societes_clientes_premium
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+
+    ecritures = rows_safe("""
+        SELECT id, date_ecriture, journal, compte_debit, compte_credit, libelle, montant_ttc
+        FROM ecritures_premium
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+
+    immobilisations = rows_safe("""
+        SELECT id, designation, date_acquisition, valeur_origine, duree_amortissement, amortissement_annuel
+        FROM immobilisations
+        ORDER BY id DESC
+        LIMIT 10
+    """)
+
+    alertes = []
+
+    if kpis["nb_societes"] == 0:
+        alertes.append({"message": "Aucune société cliente chargée", "niveau": "danger", "label": "Critique"})
+
+    if kpis["nb_ecritures"] == 0:
+        alertes.append({"message": "Aucune écriture comptable disponible", "niveau": "warn", "label": "À traiter"})
+
+    if kpis["nb_immobilisations"] == 0:
+        alertes.append({"message": "Aucune immobilisation enregistrée", "niveau": "warn", "label": "À enrichir"})
+
+    if kpis["nb_factures"] == 0:
+        alertes.append({"message": "Aucune facture dans le workflow", "niveau": "warn", "label": "À alimenter"})
+
+    if not alertes:
+        alertes.append({"message": "Socle métier alimenté et exploitable", "niveau": "ok", "label": "OK"})
+
+    return render_template(
+        "cockpit_cabinet_dynamique.html",
+        kpis=kpis,
+        societes=societes,
+        ecritures=ecritures,
+        immobilisations=immobilisations,
+        alertes=alertes,
+    )
