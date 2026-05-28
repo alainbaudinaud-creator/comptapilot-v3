@@ -38,4 +38,8 @@ PYTHONPATH=. python3 tests_refonte/test_pcg_service.py
 echo "=== TEST 9 - IMMOBILISATIONS PREMIUM ==="
 PYTHONPATH=. python3 tests_refonte/test_amortissement_ecritures.py
 
+
+echo "=== TEST 10 - EMPRUNTS PREMIUM ==="
+PYTHONPATH=. python3 tests_refonte/test_emprunts_premium.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
