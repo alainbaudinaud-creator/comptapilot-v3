@@ -9,6 +9,13 @@
         <p class="eyebrow">Production fiscale</p>
         <h1>Centre fiscal intelligent</h1>
         <p>Préparation liasse fiscale, contrôles FEC, TVA, échéances et alertes avant clôture.</p>
+        <p class="active-folder">
+            Dossier actif :
+            <strong>{{ session.get("societe_active_nom", "Aucun dossier sélectionné") }}</strong>
+            {% if session.get("societe_active_siren") %}
+                — SIREN {{ session.get("societe_active_siren") }}
+            {% endif %}
+        </p>
     </div>
     <div class="hero-actions">
         <a class="btn-primary" href="/erp-premium">Retour cockpit</a>

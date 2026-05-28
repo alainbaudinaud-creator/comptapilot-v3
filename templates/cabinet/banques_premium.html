@@ -9,6 +9,13 @@
         <p class="eyebrow">Banques & DSP2</p>
         <h1>Rapprochement bancaire intelligent</h1>
         <p>Import bancaire, matching IA, lettrage automatique et contrôle des flux financiers.</p>
+        <p class="active-folder">
+            Dossier actif :
+            <strong>{{ session.get("societe_active_nom", "Aucun dossier sélectionné") }}</strong>
+            {% if session.get("societe_active_siren") %}
+                — SIREN {{ session.get("societe_active_siren") }}
+            {% endif %}
+        </p>
     </div>
     <div class="hero-actions">
         <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
