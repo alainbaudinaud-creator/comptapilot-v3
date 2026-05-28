@@ -1,99 +1,109 @@
-﻿
 from flask import Blueprint, request, jsonify, render_template, Response, redirect
 from controllers.auth import login_required
-import sqlite3
+from services.permission_service import permission_required
+from sqlalchemy import text
+from database import engine
 import csv
 import io
-from services.permission_service import permission_required
 
-plan_comptable_routes = Blueprint('plan_comptable', __name__)
+plan_comptable_routes = Blueprint("plan_comptable", __name__)
 
 
-@plan_comptable_routes.route('/ui')
+@plan_comptable_routes.route("/ui")
 @login_required
 @permission_required("ACCESS_ADMIN")
 def ui():
     return render_template("plan_comptable.html")
 
 
-@plan_comptable_routes.route('/', methods=['GET'])
+@plan_comptable_routes.route("/", methods=["GET"])
 @login_required
 @permission_required("ACCESS_ADMIN")
 def get_plan_comptable():
     societe_id = request.args.get("societe_id")
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-
     if societe_id:
-        c.execute("""
+        sql = """
             SELECT id, numero, libelle, type
             FROM plan_comptable
-            WHERE societe_id = ?
+            WHERE societe_id = :societe_id
             ORDER BY numero
-        """, (societe_id,))
+        """
+        params = {"societe_id": societe_id}
     else:
-        c.execute("""
+        sql = """
             SELECT id, numero, libelle, type
             FROM plan_comptable
-            ORDER BY numero
-        """)
+            ORDER BY societe_id NULLS FIRST, numero
+        """
+        params = {}
 
-    rows = c.fetchall()
-    conn.close()
+    with engine.begin() as conn:
+        rows = conn.execute(text(sql), params).mappings().all()
 
     return jsonify([
-        {"id": r[0], "numero": r[1], "libelle": r[2], "type": r[3]}
+        {
+            "id": r["id"],
+            "numero": r["numero"],
+            "libelle": r["libelle"],
+            "type": r["type"],
+        }
         for r in rows
     ])
 
 
-@plan_comptable_routes.route('/add', methods=['POST'])
+@plan_comptable_routes.route("/add", methods=["POST"])
 @login_required
 @permission_required("ACCESS_ADMIN")
 def add_compte():
-    data = request.get_json()
+    data = request.get_json() or {}
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
+    numero = data.get("numero")
+    libelle = data.get("libelle")
+    type_compte = data.get("type")
+    societe_id = data.get("societe_id")
 
-    c.execute("""
-        INSERT INTO plan_comptable (numero, libelle, type, societe_id)
-        VALUES (?, ?, ?, ?)
-    """, (
-        data.get('numero'),
-        data.get('libelle'),
-        data.get('type'),
-        data.get('societe_id')
-    ))
+    if not numero or not libelle:
+        return jsonify({"error": "numero et libelle obligatoires"}), 400
 
-    conn.commit()
-    conn.close()
+    with engine.begin() as conn:
+        conn.execute(text("""
+            INSERT INTO plan_comptable (numero, libelle, type, societe_id)
+            VALUES (:numero, :libelle, :type, :societe_id)
+            ON CONFLICT (numero, societe_id)
+            DO UPDATE SET
+                libelle = EXCLUDED.libelle,
+                type = EXCLUDED.type
+        """), {
+            "numero": numero,
+            "libelle": libelle,
+            "type": type_compte,
+            "societe_id": societe_id,
+        })
 
     return jsonify({"message": "Compte ajouté"}), 201
 
 
-@plan_comptable_routes.route('/modele.csv')
+@plan_comptable_routes.route("/modele.csv")
 @login_required
 @permission_required("ACCESS_ADMIN")
 def modele_plan_comptable():
     output = io.StringIO()
-    writer = csv.writer(output, delimiter=';')
+    writer = csv.writer(output, delimiter=";")
 
     writer.writerow(["numero", "libelle", "type"])
-    writer.writerow(["101", "Capital", "Passif"])
-    writer.writerow(["164", "Emprunts", "Passif"])
-    writer.writerow(["401", "Fournisseurs", "Passif"])
-    writer.writerow(["411", "Clients", "Actif"])
-    writer.writerow(["512", "Banque", "Actif"])
-    writer.writerow(["530", "Caisse", "Actif"])
-    writer.writerow(["601", "Achats de matières", "Charge"])
-    writer.writerow(["606", "Achats non stockés", "Charge"])
-    writer.writerow(["613", "Locations", "Charge"])
-    writer.writerow(["622", "Honoraires", "Charge"])
-    writer.writerow(["641", "Salaires", "Charge"])
-    writer.writerow(["701", "Ventes de produits finis", "Produit"])
-    writer.writerow(["706", "Prestations de services", "Produit"])
+    writer.writerow(["101000", "Capital social", "Passif"])
+    writer.writerow(["164000", "Emprunts auprès des établissements de crédit", "Passif"])
+    writer.writerow(["401000", "Fournisseurs", "Passif"])
+    writer.writerow(["411000", "Clients", "Actif"])
+    writer.writerow(["512000", "Banque", "Actif"])
+    writer.writerow(["606000", "Achats non stockés", "Charge"])
+    writer.writerow(["607000", "Achats de marchandises", "Charge"])
+    writer.writerow(["661100", "Intérêts des emprunts", "Charge"])
+    writer.writerow(["681120", "Dotations amortissements immobilisations", "Charge"])
+    writer.writerow(["701000", "Ventes de produits finis", "Produit"])
+    writer.writerow(["706000", "Prestations de services", "Produit"])
+    writer.writerow(["707000", "Ventes de marchandises", "Produit"])
 
     csv_data = "\ufeff" + output.getvalue()
     output.close()
@@ -103,76 +113,92 @@ def modele_plan_comptable():
         mimetype="text/csv; charset=utf-8-sig",
         headers={
             "Content-Disposition": "attachment; filename=modele_plan_comptable.csv"
-        }
+        },
     )
 
 
-@plan_comptable_routes.route('/import', methods=['POST'])
+@plan_comptable_routes.route("/import", methods=["POST"])
 @login_required
 @permission_required("ACCESS_ADMIN")
 def import_plan_comptable():
-    file = request.files.get('file')
+    file = request.files.get("file")
     societe_id = request.form.get("societe_id")
 
     if not file:
-        return "Aucun fichier sélectionné"
+        return "Aucun fichier sélectionné", 400
 
     if not societe_id:
-        return "Société obligatoire"
+        return "Société obligatoire", 400
 
-    content = file.read().decode('utf-8-sig').splitlines()
-    reader = csv.DictReader(content, delimiter=';')
+    content = file.read().decode("utf-8-sig").splitlines()
+    reader = csv.DictReader(content, delimiter=";")
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
+    with engine.begin() as conn:
+        for row in reader:
+            numero = row.get("numero")
+            libelle = row.get("libelle")
+            type_compte = row.get("type")
 
-    for row in reader:
-        numero = row.get("numero")
-        libelle = row.get("libelle")
-        type_compte = row.get("type")
+            if numero and libelle:
+                conn.execute(text("""
+                    INSERT INTO plan_comptable (numero, libelle, type, societe_id)
+                    VALUES (:numero, :libelle, :type, :societe_id)
+                    ON CONFLICT (numero, societe_id)
+                    DO UPDATE SET
+                        libelle = EXCLUDED.libelle,
+                        type = EXCLUDED.type
+                """), {
+                    "numero": numero,
+                    "libelle": libelle,
+                    "type": type_compte,
+                    "societe_id": societe_id,
+                })
 
-        if numero and libelle and type_compte:
-            c.execute("""
-                INSERT INTO plan_comptable (numero, libelle, type, societe_id)
-                VALUES (?, ?, ?, ?)
-            """, (numero, libelle, type_compte, societe_id))
+    return redirect("/plan-comptable/ui")
 
-    conn.commit()
-    conn.close()
 
-    return redirect('/plan-comptable/ui')
-@plan_comptable_routes.route('/import-pcg/<int:societe_id>')
+@plan_comptable_routes.route("/import-pcg/<int:societe_id>")
 @login_required
 @permission_required("ACCESS_ADMIN")
 def import_pcg_standard(societe_id):
     comptes = [
-        ("101", "Capital", "Passif"),
-        ("401", "Fournisseurs", "Passif"),
-        ("411", "Clients", "Actif"),
-        ("512", "Banque", "Actif"),
-        ("601", "Achats", "Charge"),
-        ("606", "Fournitures", "Charge"),
-        ("701", "Ventes", "Produit"),
-        ("706", "Prestations", "Produit"),
+        ("101000", "Capital social", "Passif"),
+        ("164000", "Emprunts auprès des établissements de crédit", "Passif"),
+        ("218300", "Matériel informatique", "Actif"),
+        ("281830", "Amortissements du matériel informatique", "Passif"),
+        ("401000", "Fournisseurs", "Passif"),
+        ("411000", "Clients", "Actif"),
+        ("445620", "TVA déductible sur immobilisations", "Actif"),
+        ("445660", "TVA déductible sur autres biens et services", "Actif"),
+        ("445710", "TVA collectée", "Passif"),
+        ("512000", "Banque", "Actif"),
+        ("530000", "Caisse", "Actif"),
+        ("606000", "Achats non stockés", "Charge"),
+        ("607000", "Achats de marchandises", "Charge"),
+        ("613000", "Locations", "Charge"),
+        ("622000", "Honoraires", "Charge"),
+        ("641000", "Rémunérations du personnel", "Charge"),
+        ("661100", "Intérêts des emprunts", "Charge"),
+        ("681120", "Dotations amortissements immobilisations corporelles", "Charge"),
+        ("701000", "Ventes de produits finis", "Produit"),
+        ("706000", "Prestations de services", "Produit"),
+        ("707000", "Ventes de marchandises", "Produit"),
     ]
 
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
+    with engine.begin() as conn:
+        for numero, libelle, type_compte in comptes:
+            conn.execute(text("""
+                INSERT INTO plan_comptable (numero, libelle, type, societe_id)
+                VALUES (:numero, :libelle, :type, :societe_id)
+                ON CONFLICT (numero, societe_id)
+                DO UPDATE SET
+                    libelle = EXCLUDED.libelle,
+                    type = EXCLUDED.type
+            """), {
+                "numero": numero,
+                "libelle": libelle,
+                "type": type_compte,
+                "societe_id": societe_id,
+            })
 
-    for numero, libelle, type_compte in comptes:
-        c.execute("""
-            INSERT INTO plan_comptable (numero, libelle, type, societe_id)
-            SELECT ?, ?, ?, ?
-            WHERE NOT EXISTS (
-                SELECT 1 FROM plan_comptable
-                WHERE numero = ? AND societe_id = ?
-            )
-        """, (numero, libelle, type_compte, societe_id, numero, societe_id))
-
-    conn.commit()
-    conn.close()
-
-    return redirect('/plan-comptable/ui')
-
-
-
+    return redirect("/plan-comptable/ui")
