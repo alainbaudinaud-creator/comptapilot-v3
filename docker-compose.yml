@@ -3,6 +3,7 @@ services:
   comptapilot:
     build: .
     container_name: comptapilot-v3-comptapilot
+    command: gunicorn -w 2 -b 0.0.0.0:5000 wsgi:app
     ports:
       - "5001:5000"
     restart: always
