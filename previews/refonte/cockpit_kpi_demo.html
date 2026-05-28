@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>ComptaPilot V3 — Cockpit KPI Demo</title>
+  <link rel="stylesheet" href="../../app_refonte/static/css/cockpit_premium.css">
+  <style>
+    .priority {
+      background:rgba(15,31,53,.86);
+      border:1px solid rgba(148,163,184,.16);
+      border-radius:22px;
+      padding:18px;
+      display:grid;
+      gap:8px;
+    }
+    .priority span { color:#38bdf8;font-weight:900;font-size:12px;letter-spacing:.08em }
+    .priority strong { font-size:17px }
+    .priority em { color:#fbbf24;font-style:normal }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <strong>ComptaPilot V3</strong>
+          <span>KPI Demo dynamique</span>
+        </div>
+      </div>
+      <nav>
+        <a class="active">Cockpit dynamique</a>
+        <a>Production comptable</a>
+        <a>Fiscalité française</a>
+        <a>Immobilisations</a>
+        <a>Emprunts</a>
+        <a>PDP</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Démonstration KPI isolée</p>
+          <h1>Cockpit piloté par le moteur métier ComptaPilot.</h1>
+        </div>
+        <div class="status"><span></span>Score production 87%</div>
+      </header>
+
+      <section class="metrics">
+        <article><span>Sociétés</span><strong>3</strong><em>Dossiers actifs</em></article>
+        <article><span>Écritures</span><strong>4</strong><em>Débit = Crédit : True</em></article>
+        <article><span>Documents à traiter</span><strong>2</strong><em>OCR / IA</em></article>
+        <article><span>Alertes critiques</span><strong>1</strong><em>Supervision cabinet</em></article>
+      </section>
+
+      <section class="hero">
+        <div>
+          <h2>Production comptable augmentée</h2>
+          <p>
+            Cette page est générée à partir des services métier isolés :
+            KPI, priorités, équilibre comptable, documents, tâches et alertes.
+          </p>
+          <div class="actions">
+            <button>Valider le cockpit</button>
+            <button class="secondary">Préparer intégration</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <span>Total débit / crédit</span>
+          <strong>3700.0</strong>
+          <p>Crédit : 3700.0 — équilibre : True</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Priorités intelligentes</h2>
+        <div class="grid">
+          
+        <article class="priority">
+          <span>DOCUMENT</span>
+          <strong>Traiter document : facture-materiel.pdf</strong>
+          <em>HAUTE</em>
+        </article>
+        
+
+        <article class="priority">
+          <span>WORKFLOW</span>
+          <strong>Contrôler TVA mai</strong>
+          <em>HAUTE</em>
+        </article>
+        
+
+        <article class="priority">
+          <span>ALERTE</span>
+          <strong>Deux documents sont en attente de validation</strong>
+          <em>WARNING</em>
+        </article>
+        
+
+        <article class="priority">
+          <span>DOCUMENT</span>
+          <strong>Traiter document : facture-orange.pdf</strong>
+          <em>NORMALE</em>
+        </article>
+        
+
+        <article class="priority">
+          <span>WORKFLOW</span>
+          <strong>Valider dossier Demo SAS</strong>
+          <em>NORMALE</em>
+        </article>
+        
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
