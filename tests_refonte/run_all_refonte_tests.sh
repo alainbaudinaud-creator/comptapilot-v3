@@ -42,4 +42,8 @@ PYTHONPATH=. python3 tests_refonte/test_amortissement_ecritures.py
 echo "=== TEST 10 - EMPRUNTS PREMIUM ==="
 PYTHONPATH=. python3 tests_refonte/test_emprunts_premium.py
 
+
+echo "=== TEST 11 - TVA PREMIUM ==="
+PYTHONPATH=. python3 tests_refonte/test_tva_premium.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
