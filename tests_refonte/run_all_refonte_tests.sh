@@ -54,4 +54,8 @@ PYTHONPATH=. python3 tests_refonte/test_fec_premium.py
 echo "=== TEST 13 - OCR IA PREMIUM ==="
 PYTHONPATH=. python3 tests_refonte/test_ocr_ia.py
 
+
+echo "=== TEST 14 - RAPPROCHEMENT BANCAIRE PREMIUM ==="
+PYTHONPATH=. python3 tests_refonte/test_rapprochement_bancaire.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
