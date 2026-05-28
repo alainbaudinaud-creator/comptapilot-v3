@@ -470,6 +470,53 @@ from flask import session
 from flask import redirect
 from flask import render_template_string
 
+
+# === CABINET WORKFLOW SAAS ===
+@app.route("/cabinet/workflow")
+def cabinet_workflow_saas():
+    collaborateurs = []
+    permissions = []
+    taches = []
+
+    try:
+        from database import engine
+        from sqlalchemy import text
+
+        with engine.connect() as conn:
+            collaborateurs = conn.execute(text("""
+                SELECT nom, email, role, actif
+                FROM cabinet_collaborateurs
+                ORDER BY nom
+            """)).mappings().all()
+
+            permissions = conn.execute(text("""
+                SELECT role, module, peut_lire, peut_ecrire, peut_valider
+                FROM cabinet_permissions
+                ORDER BY role, module
+            """)).mappings().all()
+
+            taches = conn.execute(text("""
+                SELECT
+                    t.titre,
+                    t.module,
+                    t.statut,
+                    t.priorite,
+                    c.nom AS assigne_a,
+                    t.echeance
+                FROM cabinet_workflow_taches t
+                LEFT JOIN cabinet_collaborateurs c ON c.id = t.assigne_a
+                ORDER BY t.echeance NULLS LAST, t.priorite DESC, t.created_at DESC
+            """)).mappings().all()
+    except Exception as e:
+        print("Erreur cabinet_workflow_saas:", e)
+
+    return render_template(
+        "cabinet_workflow.html",
+        collaborateurs=collaborateurs,
+        permissions=permissions,
+        taches=taches
+    )
+
 @app.route("/login", methods=["GET", "POST"])
 def direct_login():
 

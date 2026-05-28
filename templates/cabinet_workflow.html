@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>ComptaPilot V3 — Cabinet & Workflow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/v3/css/cockpit-premium.css">
+  <style>
+    body{margin:0;background:#07111f;color:#f8fafc;font-family:Inter,Arial,sans-serif}
+    .wrap{padding:34px;max-width:1280px;margin:auto}
+    .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+    .back{color:#38bdf8;text-decoration:none;font-weight:700}
+    table{width:100%;border-collapse:collapse;background:#0f1f35;border:1px solid #223b5c;border-radius:18px;overflow:hidden}
+    th,td{padding:14px;border-bottom:1px solid #223b5c;text-align:left}
+    th{color:#bfdbfe;background:#102a43}
+    .pill{display:inline-block;border-radius:999px;padding:6px 10px;background:#102a43;border:1px solid #2563eb;color:#bfdbfe}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:24px}
+    .card{background:#0f1f35;border:1px solid #243b59;border-radius:22px;padding:24px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <h1>Cabinet & Workflow</h1>
+        <p style="color:#94a3b8">Pilotage collaboratif, permissions et tâches cabinet.</p>
+      </div>
+      <a class="back" href="/">← Retour cockpit</a>
+    </div>
+
+    <section class="grid2">
+      <div class="card">
+        <h2>Collaborateurs</h2>
+        <p style="color:#94a3b8">Total actifs : <strong>{{ collaborateurs|length }}</strong></p>
+        <table>
+          <tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Actif</th></tr>
+          {% for c in collaborateurs %}
+          <tr>
+            <td>{{ c.nom }}</td>
+            <td>{{ c.email }}</td>
+            <td><span class="pill">{{ c.role }}</span></td>
+            <td>{{ "Oui" if c.actif else "Non" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="card">
+        <h2>Permissions</h2>
+        <table>
+          <tr><th>Rôle</th><th>Module</th><th>Lire</th><th>Écrire</th><th>Valider</th></tr>
+          {% for p in permissions %}
+          <tr>
+            <td>{{ p.role }}</td>
+            <td>{{ p.module }}</td>
+            <td>{{ "✓" if p.peut_lire else "—" }}</td>
+            <td>{{ "✓" if p.peut_ecrire else "—" }}</td>
+            <td>{{ "✓" if p.peut_valider else "—" }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Tâches de production</h2>
+      <table>
+        <tr><th>Titre</th><th>Module</th><th>Statut</th><th>Priorité</th><th>Assigné à</th><th>Échéance</th></tr>
+        {% for t in taches %}
+        <tr>
+          <td>{{ t.titre }}</td>
+          <td>{{ t.module }}</td>
+          <td><span class="pill">{{ t.statut }}</span></td>
+          <td>{{ t.priorite }}</td>
+          <td>{{ t.assigne_a or "Non assigné" }}</td>
+          <td>{{ t.echeance or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </section>
+  </div>
+</body>
+</html>
