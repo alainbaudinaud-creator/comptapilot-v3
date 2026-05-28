@@ -732,7 +732,7 @@ def route_societes_clientes_secours():
     return render_template("societes_clientes.html")
 
 # === COCKPIT CABINET DYNAMIQUE V3 ===
-@app.route("/cockpit-cabinet")
+@app.route("/cockpit-cabinet", methods=["GET"])
 def cockpit_cabinet_dynamique_v3():
     from flask import render_template
     from sqlalchemy import text
