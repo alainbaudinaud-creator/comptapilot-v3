@@ -28,4 +28,8 @@ test -f previews/refonte/cockpit_kpi_demo.html
 grep -q "Cockpit piloté" previews/refonte/cockpit_kpi_demo.html
 grep -q "Score production" previews/refonte/cockpit_kpi_demo.html
 
+
+echo "=== TEST 7 - APP FLASK REFONTE ISOLEE ==="
+PYTHONPATH=. python3 tests_refonte/test_app_refonte.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>ComptaPilot V3 — Refonte Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <strong>ComptaPilot V3</strong>
+          <span>Refonte SaaS Premium</span>
+        </div>
+      </div>
+      <nav>
+        <a class="active">Cockpit</a>
+        <a>Production comptable</a>
+        <a>Fiscalité</a>
+        <a>Immobilisations</a>
+        <a>Emprunts</a>
+        <a>PDP</a>
+        <a>OCR IA</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Refonte test isolée</p>
+          <h1>ComptaPilot V3 premium, piloté par de vrais services métier.</h1>
+        </div>
+        <div class="status"><span></span>Score {{ kpis.score_production }}%</div>
+      </header>
+
+      <section class="metrics">
+        <article><span>Sociétés</span><strong>{{ kpis.total_societes }}</strong><em>Dossiers actifs</em></article>
+        <article><span>Écritures</span><strong>{{ kpis.total_ecritures }}</strong><em>Équilibre : {{ kpis.equilibre_comptable }}</em></article>
+        <article><span>Documents</span><strong>{{ kpis.documents_a_traiter }}</strong><em>À traiter</em></article>
+        <article><span>Alertes</span><strong>{{ kpis.alertes_critiques }}</strong><em>Critiques</em></article>
+      </section>
+
+      <section class="hero">
+        <div>
+          <h2>Cockpit cabinet futuriste</h2>
+          <p>Cette version est isolée, testable, et ne touche pas à la production. Elle servira de base propre pour l’intégration future.</p>
+          <div class="actions">
+            <button>Valider UX</button>
+            <button class="secondary">Préparer intégration</button>
+          </div>
+        </div>
+        <div class="hero-card">
+          <span>Débit / Crédit</span>
+          <strong>{{ kpis.total_debit }}</strong>
+          <p>Crédit : {{ kpis.total_credit }}</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Priorités intelligentes</h2>
+        <div class="grid">
+          {% for p in priorites %}
+          <article class="module">
+            <h3>{{ p.type }}</h3>
+            <p>{{ p.titre }}</p>
+            <span>{{ p.niveau }}</span>
+          </article>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
