@@ -62,4 +62,8 @@ PYTHONPATH=. python3 tests_refonte/test_rapprochement_bancaire.py
 echo "=== TEST 15 - WORKFLOW CABINET PREMIUM ==="
 PYTHONPATH=. python3 tests_refonte/test_workflow_cabinet.py
 
+
+echo "=== TEST 16 - PDP FACTURATION ELECTRONIQUE PREMIUM ==="
+PYTHONPATH=. python3 tests_refonte/test_pdp_premium.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
