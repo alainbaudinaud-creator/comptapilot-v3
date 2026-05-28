@@ -37,3 +37,9 @@ __pycache__/
 # Build
 build/
 dist/
+
+# Sauvegardes locales serveur
+backups/
+*.bak
+*.tar.gz
+*.sql
