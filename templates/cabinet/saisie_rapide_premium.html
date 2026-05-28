@@ -8,58 +8,91 @@
     <div>
         <p class="eyebrow">Production comptable</p>
         <h1>Saisie rapide intelligente</h1>
-        <p>Création d’écritures guidée avec contrôle débit/crédit, journal, comptes et pièces justificatives.</p>
+        <p>Création d’écritures guidée avec rattachement automatique au dossier actif.</p>
+        <p class="active-folder">
+            Dossier actif :
+            <strong>{{ session.get("societe_active_nom", "Aucun dossier sélectionné") }}</strong>
+            {% if session.get("societe_active_siren") %}
+                — SIREN {{ session.get("societe_active_siren") }}
+            {% endif %}
+        </p>
     </div>
     <div class="hero-actions">
         <a class="btn-primary" href="/erp-premium">Retour cockpit</a>
-        <a class="btn-secondary" href="/cabinet/ged">Importer une pièce</a>
+        <a class="btn-secondary" href="/cabinet/societes">Changer de dossier</a>
     </div>
 </section>
 
 <section class="premium-grid">
-    <div class="premium-card"><span>Écritures du jour</span><strong>18</strong><small>Production active</small></div>
-    <div class="premium-card"><span>À contrôler</span><strong>4</strong><small>Équilibre / TVA</small></div>
-    <div class="premium-card"><span>Pièces liées</span><strong>32</strong><small>GED comptable</small></div>
-    <div class="premium-card"><span>Contrôle</span><strong>OK</strong><small>Débit = Crédit</small></div>
+    <div class="premium-card"><span>Dossier actif</span><strong>{{ session.get("societe_active_nom", "Aucun") }}</strong><small>Société sélectionnée</small></div>
+    <div class="premium-card"><span>Écritures récentes</span><strong>{{ ecritures|length }}</strong><small>Sur ce dossier</small></div>
+    <div class="premium-card"><span>Statut</span><strong>Brouillon</strong><small>Validation à venir</small></div>
+    <div class="premium-card"><span>Contrôle</span><strong>OK</strong><small>Débit / crédit préparé</small></div>
 </section>
 
 <section class="workspace-grid">
     <div class="workspace-card">
         <h2>Nouvelle écriture</h2>
-        <div class="form-grid">
-            <label>Journal
-                <select>
-                    <option>OD - Opérations diverses</option>
-                    <option>AC - Achats</option>
-                    <option>VE - Ventes</option>
-                    <option>BQ - Banque</option>
-                </select>
-            </label>
-            <label>Date<input type="date"></label>
-            <label>Compte débit<input placeholder="Ex : 606000"></label>
-            <label>Compte crédit<input placeholder="Ex : 401000"></label>
-            <label>Libellé<input placeholder="Ex : Facture fournisseur"></label>
-            <label>Montant TTC<input placeholder="0,00 €"></label>
-        </div>
-        <br>
-        <button class="premium-button">Enregistrer l’écriture</button>
+
+        {% if not session.get("societe_active_id") %}
+            <p><strong>Aucun dossier actif sélectionné.</strong></p>
+            <p>Avant de saisir une écriture, sélectionne une société cliente.</p>
+            <a class="premium-button" href="/cabinet/societes">Choisir une société cliente</a>
+        {% else %}
+            <form method="post" action="/cabinet/ecritures/creer">
+                <div class="form-grid">
+                    <label>Journal
+                        <select name="journal">
+                            <option value="OD">OD - Opérations diverses</option>
+                            <option value="AC">AC - Achats</option>
+                            <option value="VE">VE - Ventes</option>
+                            <option value="BQ">BQ - Banque</option>
+                        </select>
+                    </label>
+                    <label>Date<input name="date_ecriture" type="date"></label>
+                    <label>Compte débit<input name="compte_debit" placeholder="Ex : 606000"></label>
+                    <label>Compte crédit<input name="compte_credit" placeholder="Ex : 401000"></label>
+                    <label>Libellé<input name="libelle" placeholder="Ex : Facture fournisseur"></label>
+                    <label>Montant TTC<input name="montant_ttc" placeholder="0,00"></label>
+                </div>
+                <br>
+                <button class="premium-button" type="submit">Enregistrer l’écriture</button>
+            </form>
+        {% endif %}
     </div>
 
     <div class="workspace-card">
         <h2>Contrôles automatiques</h2>
-        <div class="client-line"><b>Équilibre</b><span>Débit / Crédit</span><em class="ok">OK</em></div>
-        <div class="client-line"><b>Compte</b><span>Plan comptable</span><em class="ok">Valide</em></div>
-        <div class="client-line"><b>TVA</b><span>Déductible / collectée</span><em class="warn">À vérifier</em></div>
+        <div class="client-line"><b>Dossier</b><span>{{ session.get("societe_active_nom", "Non sélectionné") }}</span><em class="ok">Contexte</em></div>
+        <div class="client-line"><b>Compte</b><span>Plan comptable</span><em class="ok">Prévu</em></div>
+        <div class="client-line"><b>TVA</b><span>Déductible / collectée</span><em class="warn">À enrichir</em></div>
     </div>
 </section>
 
 <br>
 
 <section class="workspace-card">
-    <h2>Dernières écritures</h2>
-    <div class="client-line"><b>Facture Orange</b><span>606000 / 401000</span><em class="ok">Validée</em></div>
-    <div class="client-line"><b>Encaissement client</b><span>512000 / 411000</span><em class="ok">Lettrable</em></div>
-    <div class="client-line"><b>OD de clôture</b><span>À compléter</span><em class="warn">Brouillon</em></div>
+    <h2>Dernières écritures du dossier actif</h2>
+
+    {% if ecritures %}
+        {% for e in ecritures %}
+        <div class="client-line">
+            <b>{{ e.journal }} - {{ e.libelle }}</b>
+            <span>{{ e.date_ecriture or "-" }} — {{ e.compte_debit }} / {{ e.compte_credit }} — {{ e.montant_ttc }} €</span>
+            <span class="actions-inline">
+                <em class="{% if e.statut == 'VALIDEE' %}ok{% else %}warn{% endif %}">{{ e.statut }}</em>
+                <form method="post" action="/cabinet/ecritures/{{ e.id }}/valider">
+                    <button class="small-button" type="submit">Valider</button>
+                </form>
+                <form method="post" action="/cabinet/ecritures/{{ e.id }}/supprimer" onsubmit="return confirm('Supprimer cette écriture ?');">
+                    <button class="small-button danger" type="submit">Supprimer</button>
+                </form>
+            </span>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucune écriture enregistrée pour ce dossier.</p>
+    {% endif %}
 </section>
 
 {% endblock %}

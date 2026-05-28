@@ -1,7 +1,53 @@
 {% extends "layouts/erp.html" %}
+
 {% block title %}Journal comptable - ComptaPilot V3{% endblock %}
+
 {% block content %}
-<section class="hero-card"><div><p class="eyebrow">Production comptable</p><h1>Journal comptable</h1><p>Suivi des écritures par journal, période, compte et statut de validation.</p></div><div class="hero-actions"><a class="btn-primary" href="/erp-premium">Cockpit</a><a class="btn-secondary" href="/ecritures/saisie-rapide">Nouvelle écriture</a></div></section>
-<section class="premium-grid"><div class="premium-card"><span>Écritures</span><strong>286</strong><small>Exercice 2025</small></div><div class="premium-card"><span>Journaux</span><strong>5</strong><small>AC / VE / BQ / OD</small></div><div class="premium-card"><span>Brouillons</span><strong>8</strong><small>À valider</small></div><div class="premium-card"><span>Équilibre</span><strong>OK</strong><small>Débit = Crédit</small></div></section>
-<section class="workspace-card"><h2>Dernières écritures</h2><div class="client-line"><b>AC - Facture fournisseur</b><span>606000 / 401000</span><em class="ok">Validée</em></div><div class="client-line"><b>BQ - Encaissement client</b><span>512000 / 411000</span><em class="ok">Lettrable</em></div><div class="client-line"><b>OD - Clôture mensuelle</b><span>À compléter</span><em class="warn">Brouillon</em></div></section>
+
+<section class="hero-card">
+    <div>
+        <p class="eyebrow">Production comptable</p>
+        <h1>Journal comptable</h1>
+        <p>Écritures rattachées au dossier actif.</p>
+        <p class="active-folder">
+            Dossier actif :
+            <strong>{{ session.get("societe_active_nom", "Aucun dossier sélectionné") }}</strong>
+            {% if session.get("societe_active_siren") %}
+                — SIREN {{ session.get("societe_active_siren") }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="hero-actions">
+        <a class="btn-primary" href="/ecritures/saisie-rapide">Nouvelle écriture</a>
+        <a class="btn-secondary" href="/erp-premium">Cockpit</a>
+        <a class="btn-secondary" href="/cabinet/export/journal.csv">Exporter CSV</a>
+    </div>
+</section>
+
+<section class="premium-grid">
+    <div class="premium-card"><span>Écritures</span><strong>{{ ecritures|length }}</strong><small>Dossier actif</small></div>
+    <div class="premium-card"><span>Total TTC</span><strong>{{ total }} €</strong><small>Somme écritures</small></div>
+    <div class="premium-card"><span>Statut</span><strong>Production</strong><small>Journal réel</small></div>
+    <div class="premium-card"><span>Contexte</span><strong>{{ session.get("societe_active_nom", "Aucun") }}</strong><small>Société</small></div>
+</section>
+
+<section class="workspace-card">
+    <h2>Journal du dossier actif</h2>
+
+    {% if not session.get("societe_active_id") %}
+        <p>Aucun dossier actif sélectionné.</p>
+        <a class="premium-button" href="/cabinet/societes">Choisir une société cliente</a>
+    {% elif ecritures %}
+        {% for e in ecritures %}
+        <div class="client-line">
+            <b>{{ e.journal }} - {{ e.libelle }}</b>
+            <span>{{ e.date_ecriture or "-" }} — {{ e.compte_debit }} / {{ e.compte_credit }} — {{ e.montant_ttc }} €</span>
+            <em class="{% if e.statut == 'VALIDEE' %}ok{% else %}warn{% endif %}">{{ e.statut }}</em>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucune écriture pour ce dossier.</p>
+    {% endif %}
+</section>
+
 {% endblock %}

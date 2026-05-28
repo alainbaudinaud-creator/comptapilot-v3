@@ -229,3 +229,24 @@
     border-radius:16px;
     display:inline-block;
 }
+
+.table-premium{
+    border:1px solid #e5e7eb;
+    border-radius:18px;
+    overflow:hidden;
+}
+.table-head,
+.table-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:12px;
+    padding:14px 16px;
+    border-bottom:1px solid #e5e7eb;
+}
+.table-head{
+    background:#f8fafc;
+    color:#334155;
+}
+.table-row:last-child{
+    border-bottom:0;
+}

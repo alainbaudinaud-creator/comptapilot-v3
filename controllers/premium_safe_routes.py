@@ -190,7 +190,21 @@ def api_recherche_entreprise_premium():
 
 @bp_premium_safe.route("/ecritures/saisie-rapide")
 def saisie_rapide_safe():
-    return render_template("cabinet/saisie_rapide_premium.html")
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    ecritures = []
+
+    if societe_id:
+        with engine.begin() as conn:
+            ecritures = conn.execute(text("""
+                SELECT id, journal, date_ecriture, compte_debit, compte_credit, libelle, montant_ttc, statut, created_at
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+                ORDER BY id DESC
+                LIMIT 20
+            """), {"societe_id": societe_id}).mappings().all()
+
+    return render_template("cabinet/saisie_rapide_premium.html", ecritures=ecritures)
 
 
 @bp_premium_safe.route("/v3/ecritures")
@@ -237,17 +251,105 @@ def parametres_premium_safe():
 
 @bp_premium_safe.route("/cabinet/journal")
 def journal_premium_safe():
-    return render_template("cabinet/journal_premium.html")
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    ecritures = []
+    total = 0
+
+    if societe_id:
+        with engine.begin() as conn:
+            ecritures = conn.execute(text("""
+                SELECT id, journal, date_ecriture, compte_debit, compte_credit, libelle, montant_ttc, statut, created_at
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+                ORDER BY id DESC
+            """), {"societe_id": societe_id}).mappings().all()
+
+            total = conn.execute(text("""
+                SELECT COALESCE(SUM(montant_ttc), 0)
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+            """), {"societe_id": societe_id}).scalar()
+
+    return render_template("cabinet/journal_premium.html", ecritures=ecritures, total=total)
 
 
 @bp_premium_safe.route("/cabinet/grand-livre")
 def grand_livre_premium_safe():
-    return render_template("cabinet/grand_livre_premium.html")
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    comptes = []
+
+    if societe_id:
+        with engine.begin() as conn:
+            comptes = conn.execute(text("""
+                SELECT compte_debit AS compte, COUNT(*) AS nb, COALESCE(SUM(montant_ttc),0) AS total
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+                GROUP BY compte_debit
+
+                UNION ALL
+
+                SELECT compte_credit AS compte, COUNT(*) AS nb, COALESCE(SUM(montant_ttc),0) AS total
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+                GROUP BY compte_credit
+
+                ORDER BY compte
+            """), {"societe_id": societe_id}).mappings().all()
+
+    return render_template("cabinet/grand_livre_premium.html", comptes=comptes)
 
 
 @bp_premium_safe.route("/cabinet/balance")
 def balance_premium_safe():
-    return render_template("cabinet/balance_premium.html")
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    lignes = []
+    total_debit = 0
+    total_credit = 0
+
+    if societe_id:
+        with engine.begin() as conn:
+            lignes = conn.execute(text("""
+                WITH mouvements AS (
+                    SELECT compte_debit AS compte, COALESCE(SUM(montant_ttc),0) AS debit, 0::numeric AS credit
+                    FROM ecritures_premium
+                    WHERE societe_id = :societe_id
+                    GROUP BY compte_debit
+
+                    UNION ALL
+
+                    SELECT compte_credit AS compte, 0::numeric AS debit, COALESCE(SUM(montant_ttc),0) AS credit
+                    FROM ecritures_premium
+                    WHERE societe_id = :societe_id
+                    GROUP BY compte_credit
+                )
+                SELECT compte,
+                       COALESCE(SUM(debit),0) AS debit,
+                       COALESCE(SUM(credit),0) AS credit,
+                       COALESCE(SUM(debit),0) - COALESCE(SUM(credit),0) AS solde
+                FROM mouvements
+                WHERE compte IS NOT NULL AND compte <> ''
+                GROUP BY compte
+                ORDER BY compte
+            """), {"societe_id": societe_id}).mappings().all()
+
+            totals = conn.execute(text("""
+                SELECT COALESCE(SUM(montant_ttc),0) AS total
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+            """), {"societe_id": societe_id}).mappings().first()
+
+            total_debit = totals["total"] if totals else 0
+            total_credit = totals["total"] if totals else 0
+
+    return render_template(
+        "cabinet/balance_premium.html",
+        lignes=lignes,
+        total_debit=total_debit,
+        total_credit=total_credit
+    )
 
 
 @bp_premium_safe.route("/cabinet/portail-client")
@@ -326,3 +428,159 @@ def selectionner_societe_active(societe_id):
         session["societe_active_siren"] = societe["siren"]
 
     return redirect("/erp-premium")
+
+
+def ensure_ecritures_premium_table():
+    with engine.begin() as conn:
+        conn.execute(text("""
+            CREATE TABLE IF NOT EXISTS ecritures_premium (
+                id SERIAL PRIMARY KEY,
+                societe_id INTEGER,
+                journal TEXT,
+                date_ecriture TEXT,
+                compte_debit TEXT,
+                compte_credit TEXT,
+                libelle TEXT,
+                montant_ttc NUMERIC(14,2) DEFAULT 0,
+                statut TEXT DEFAULT 'BROUILLON',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """))
+
+
+@bp_premium_safe.route("/cabinet/ecritures/creer", methods=["POST"])
+def creer_ecriture_premium():
+    ensure_ecritures_premium_table()
+
+    societe_id = session.get("societe_active_id")
+    if not societe_id:
+        return redirect("/cabinet/societes")
+
+    with engine.begin() as conn:
+        conn.execute(text("""
+            INSERT INTO ecritures_premium
+            (societe_id, journal, date_ecriture, compte_debit, compte_credit, libelle, montant_ttc, statut)
+            VALUES
+            (:societe_id, :journal, :date_ecriture, :compte_debit, :compte_credit, :libelle, :montant_ttc, 'BROUILLON')
+        """), {
+            "societe_id": societe_id,
+            "journal": request.form.get("journal", "").strip(),
+            "date_ecriture": request.form.get("date_ecriture", "").strip(),
+            "compte_debit": request.form.get("compte_debit", "").strip(),
+            "compte_credit": request.form.get("compte_credit", "").strip(),
+            "libelle": request.form.get("libelle", "").strip(),
+            "montant_ttc": request.form.get("montant_ttc", "0").replace(",", ".").strip() or 0,
+        })
+
+    return redirect("/ecritures/saisie-rapide")
+
+
+@bp_premium_safe.route("/cabinet/ecritures/<int:ecriture_id>/valider", methods=["POST"])
+def valider_ecriture_premium(ecriture_id):
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    with engine.begin() as conn:
+        conn.execute(text("""
+            UPDATE ecritures_premium
+            SET statut = 'VALIDEE'
+            WHERE id = :id AND societe_id = :societe_id
+        """), {"id": ecriture_id, "societe_id": societe_id})
+    return redirect("/ecritures/saisie-rapide")
+
+
+@bp_premium_safe.route("/cabinet/ecritures/<int:ecriture_id>/supprimer", methods=["POST"])
+def supprimer_ecriture_premium(ecriture_id):
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+    with engine.begin() as conn:
+        conn.execute(text("""
+            DELETE FROM ecritures_premium
+            WHERE id = :id AND societe_id = :societe_id
+        """), {"id": ecriture_id, "societe_id": societe_id})
+    return redirect("/ecritures/saisie-rapide")
+
+# === EXPORTS CSV PREMIUM DOSSIER ACTIF ===
+
+import csv
+import io
+from flask import Response
+
+@bp_premium_safe.route("/cabinet/export/journal.csv")
+def export_journal_csv_premium():
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=";")
+    writer.writerow(["Journal", "Date", "Compte debit", "Compte credit", "Libelle", "Montant TTC", "Statut"])
+
+    if societe_id:
+        with engine.begin() as conn:
+            rows = conn.execute(text("""
+                SELECT journal, date_ecriture, compte_debit, compte_credit, libelle, montant_ttc, statut
+                FROM ecritures_premium
+                WHERE societe_id = :societe_id
+                ORDER BY id DESC
+            """), {"societe_id": societe_id}).mappings().all()
+
+        for r in rows:
+            writer.writerow([
+                r["journal"],
+                r["date_ecriture"],
+                r["compte_debit"],
+                r["compte_credit"],
+                r["libelle"],
+                r["montant_ttc"],
+                r["statut"]
+            ])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=journal_comptapilot.csv"}
+    )
+
+
+@bp_premium_safe.route("/cabinet/export/balance.csv")
+def export_balance_csv_premium():
+    ensure_ecritures_premium_table()
+    societe_id = session.get("societe_active_id")
+
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=";")
+    writer.writerow(["Compte", "Debit", "Credit", "Solde"])
+
+    if societe_id:
+        with engine.begin() as conn:
+            rows = conn.execute(text("""
+                WITH mouvements AS (
+                    SELECT compte_debit AS compte, COALESCE(SUM(montant_ttc),0) AS debit, 0::numeric AS credit
+                    FROM ecritures_premium
+                    WHERE societe_id = :societe_id
+                    GROUP BY compte_debit
+
+                    UNION ALL
+
+                    SELECT compte_credit AS compte, 0::numeric AS debit, COALESCE(SUM(montant_ttc),0) AS credit
+                    FROM ecritures_premium
+                    WHERE societe_id = :societe_id
+                    GROUP BY compte_credit
+                )
+                SELECT compte,
+                       COALESCE(SUM(debit),0) AS debit,
+                       COALESCE(SUM(credit),0) AS credit,
+                       COALESCE(SUM(debit),0) - COALESCE(SUM(credit),0) AS solde
+                FROM mouvements
+                WHERE compte IS NOT NULL AND compte <> ''
+                GROUP BY compte
+                ORDER BY compte
+            """), {"societe_id": societe_id}).mappings().all()
+
+        for r in rows:
+            writer.writerow([r["compte"], r["debit"], r["credit"], r["solde"]])
+
+    return Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        headers={"Content-Disposition": "attachment; filename=balance_comptapilot.csv"}
+    )
