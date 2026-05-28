@@ -38,36 +38,50 @@ def detecter_fournisseur(txt):
 
 def extraire_montants(txt):
     txt = nettoyer_texte(txt)
+    txt_lower = txt.lower()
 
-    montants = re.findall(r"(\d+[.,]\d{2})", txt)
+    def find_label(patterns):
+        for pattern in patterns:
+            match = re.search(pattern, txt_lower)
+            if match:
+                return Decimal(match.group(1).replace(",", "."))
+        return None
 
-    valeurs = [
+    ht = find_label([
+        r"ht\s*(\d+[.,]\d{2})",
+        r"montant ht\s*(\d+[.,]\d{2})",
+        r"total ht\s*(\d+[.,]\d{2})",
+    ])
+
+    tva = find_label([
+        r"tva\s*(\d+[.,]\d{2})",
+        r"montant tva\s*(\d+[.,]\d{2})",
+    ])
+
+    ttc = find_label([
+        r"ttc\s*(\d+[.,]\d{2})",
+        r"total ttc\s*(\d+[.,]\d{2})",
+        r"total\s*(\d+[.,]\d{2})",
+    ])
+
+    montants = [
         Decimal(m.replace(",", "."))
-        for m in montants
+        for m in re.findall(r"(\d+[.,]\d{2})", txt)
     ]
 
-    if not valeurs:
-        return {
-            "ht": 0,
-            "tva": 0,
-            "ttc": 0,
-        }
+    if ttc is None and montants:
+        ttc = max(montants)
 
-    valeurs = sorted(valeurs)
-
-    ttc = valeurs[-1]
-
-    tva = Decimal("0")
-    ht = ttc
-
-    if len(valeurs) >= 2:
-        tva = valeurs[-2]
+    if ht is None and ttc is not None and tva is not None:
         ht = ttc - tva
 
+    if tva is None and ttc is not None and ht is not None:
+        tva = ttc - ht
+
     return {
-        "ht": float(ht),
-        "tva": float(tva),
-        "ttc": float(ttc),
+        "ht": float(ht or 0),
+        "tva": float(tva or 0),
+        "ttc": float(ttc or 0),
     }
 
 
