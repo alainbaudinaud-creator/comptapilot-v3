@@ -30,4 +30,8 @@ grep -q "Score production" previews/refonte/cockpit_kpi_demo.html
 echo "=== TEST 7 - APP REFONTE ==="
 echo "Mini-app Flask créée, test Flask complet différé à l’environnement Docker dédié."
 
+
+echo "=== TEST 8 - PLAN COMPTABLE FRANCAIS ==="
+PYTHONPATH=. python3 tests_refonte/test_pcg_service.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
