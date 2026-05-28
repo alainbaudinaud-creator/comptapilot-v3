@@ -757,6 +757,7 @@ def cockpit_cabinet_dynamique_v3():
         "nb_ecritures": scalar_safe("SELECT COUNT(*) FROM ecritures_premium"),
         "nb_immobilisations": scalar_safe("SELECT COUNT(*) FROM immobilisations"),
         "nb_factures": scalar_safe("SELECT COUNT(*) FROM factures"),
+        "nb_emprunts": scalar_safe("SELECT COUNT(*) FROM emprunts_bancaires"),
     }
 
     societes = rows_safe("""
