@@ -1,7 +1,9 @@
-﻿from flask import Blueprint, render_template
-import sqlite3
+from flask import Blueprint, render_template
+from sqlalchemy import text
+from database import engine
 
 bp_balance = Blueprint("bp_balance", __name__)
+
 
 @bp_balance.route("/balance")
 def balance():
@@ -9,15 +11,17 @@ def balance():
     rows = []
 
     try:
-        conn = sqlite3.connect("db.sqlite")
-        cur = conn.cursor()
-
-        rows = cur.execute("""
-            SELECT compte, libelle, debit, credit, solde
-            FROM vue_balance
-        """).fetchall()
-
-        conn.close()
+        with engine.begin() as conn:
+            rows = conn.execute(text("""
+                SELECT
+                    numero AS compte,
+                    libelle,
+                    debit,
+                    credit,
+                    solde
+                FROM vue_balance_postgres
+                ORDER BY numero
+            """)).fetchall()
 
     except Exception as e:
         print("BALANCE WARNING:", e)
@@ -27,5 +31,3 @@ def balance():
         "comptabilite/balance.html",
         rows=rows
     )
-
-
