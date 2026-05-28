@@ -446,6 +446,13 @@ def restauration_ecritures_v3():
     return restauration_saisie_rapide_v3()
 
 
+
+# === REDIRECTION DASHBOARD RACINE ===
+@app.route("/dashboard")
+def dashboard_redirect_root():
+    from flask import redirect
+    return redirect("/ecritures/dashboard")
+
 if __name__ == "__main__":
     log_info("DÃ©marrage application ComptaPilot")
     demarrer_scheduler()
