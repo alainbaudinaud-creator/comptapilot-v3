@@ -642,6 +642,7 @@ def direct_login():
             <h1>ComptaPilot V3</h1>
 
             <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
                 <input name="username" placeholder="Utilisateur">
 
