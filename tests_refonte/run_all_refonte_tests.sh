@@ -70,4 +70,8 @@ PYTHONPATH=. python3 tests_refonte/test_pdp_premium.py
 echo "=== TEST 17 - COCKPIT CABINET PREMIUM ==="
 PYTHONPATH=. python3 tests_refonte/test_cockpit_cabinet.py
 
+
+echo "=== TEST 18 - SUPERVISION IA CABINET ==="
+PYTHONPATH=. python3 tests_refonte/test_supervision_ia.py
+
 echo "=== TOUS LES TESTS REFONTE SONT OK ==="
