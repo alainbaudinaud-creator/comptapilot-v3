@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Grand Livre — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Grand Livre</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a href="/refonte/immobilisations">Immobilisations</a>
+        <a href="/refonte/emprunts">Emprunts</a>
+        <a href="/refonte/tva">TVA</a>
+        <a href="/refonte/fec">FEC</a>
+        <a href="/refonte/balance">Balance</a>
+        <a class="active" href="/refonte/grand-livre">Grand Livre</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">État comptable réel</p>
+          <h1>Grand Livre</h1>
+        </div>
+        <div class="status"><span></span><strong id="total">0</strong>&nbsp;lignes</div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Filtrer par compte</h2>
+          <p>Exemples : 164000, 512000, 681120, 281830, 661100.</p>
+          <input id="compte" placeholder="Compte ou vide pour tout afficher">
+          <button onclick="charger()">Afficher</button>
+        </div>
+        <div class="hero-card">
+          <span>Solde</span>
+          <strong id="solde">0,00</strong>
+          <p>Débit : <span id="debit">0,00</span> — Crédit : <span id="credit">0,00</span></p>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <h2>Détail des écritures</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th><th>Pièce</th><th>Compte</th><th>Libellé</th><th>Débit</th><th>Crédit</th><th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+function fmt(v){
+  return Number(v || 0).toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+async function charger(){
+  const compte = document.getElementById('compte').value;
+  const res = await fetch('/refonte/api/refonte/grand-livre?compte=' + encodeURIComponent(compte));
+  const data = await res.json();
+
+  document.getElementById('total').textContent = data.total;
+  document.getElementById('debit').textContent = fmt(data.total_debit);
+  document.getElementById('credit').textContent = fmt(data.total_credit);
+  document.getElementById('solde').textContent = fmt(data.solde);
+
+  document.getElementById('rows').innerHTML = data.lignes.map(l => `
+    <tr>
+      <td>${l.date_ecriture || ''}</td>
+      <td>${l.piece || ''}</td>
+      <td><strong>${l.compte}</strong><br><small>${l.compte_libelle}</small></td>
+      <td>${l.libelle || ''}</td>
+      <td>${fmt(l.debit)}</td>
+      <td>${fmt(l.credit)}</td>
+      <td>${l.source || ''}</td>
+    </tr>
+  `).join('');
+}
+charger();
+</script>
+</body>
+</html>

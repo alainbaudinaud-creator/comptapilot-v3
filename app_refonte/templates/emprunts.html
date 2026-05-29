@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Emprunts Premium — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Emprunts premium</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a href="/refonte/immobilisations">Immobilisations</a>
+        <a class="active" href="/refonte/emprunts">Emprunts</a>
+        <a href="/refonte/tva">TVA</a>
+        <a href="/refonte/fec">FEC</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Module premium</p>
+          <h1>Emprunts, échéancier et écritures automatiques</h1>
+        </div>
+        <div class="status"><span></span><strong id="mensualite">0.00</strong>&nbsp;€/mois</div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Paramètres de l’emprunt</h2>
+          <p>Calcul complet avec génération automatique des écritures comptables.</p>
+          <input id="capital" value="100000" placeholder="Capital emprunté">
+          <input id="taux" value="3.5" placeholder="Taux annuel %">
+          <input id="duree" value="12" placeholder="Durée en mois">
+          <button onclick="calculer()">Calculer</button>
+        </div>
+        <div class="hero-card">
+          <span>Comptes utilisés</span>
+          <strong>164 / 661 / 512</strong>
+          <p>Emprunt, intérêts, banque</p>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <h2>Tableau d’amortissement</h2>
+        <table>
+          <thead>
+            <tr><th>Mois</th><th>Mensualité</th><th>Intérêts</th><th>Capital</th><th>CRD</th></tr>
+          </thead>
+          <tbody id="rowsTableau"></tbody>
+        </table>
+      </section>
+
+      <section class="table-card">
+        <h2>Écritures comptables générées</h2>
+        <table>
+          <thead>
+            <tr><th>Mois</th><th>Journal</th><th>Compte</th><th>Débit</th><th>Crédit</th></tr>
+          </thead>
+          <tbody id="rowsEcritures"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+async function calculer(){
+  const res = await fetch('/refonte/api/refonte/emprunt/premium', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      capital: Number(document.getElementById('capital').value),
+      taux_annuel: Number(document.getElementById('taux').value),
+      duree_mois: Number(document.getElementById('duree').value)
+    })
+  });
+
+  const data = await res.json();
+  const t = data.tableau;
+
+  document.getElementById('mensualite').textContent = t.mensualite;
+
+  document.getElementById('rowsTableau').innerHTML = t.tableau.map(l => `
+    <tr>
+      <td>${l.mois}</td>
+      <td>${l.mensualite}</td>
+      <td>${l.interets}</td>
+      <td>${l.remboursement_capital}</td>
+      <td>${l.capital_restant_du}</td>
+    </tr>
+  `).join('');
+
+  let lignes = [];
+  data.ecritures.forEach((e, idx) => {
+    e.lignes.forEach(l => {
+      lignes.push(`
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${e.journal}</td>
+          <td>${l.compte}</td>
+          <td>${l.debit}</td>
+          <td>${l.credit}</td>
+        </tr>
+      `);
+    });
+  });
+
+  document.getElementById('rowsEcritures').innerHTML = lignes.join('');
+}
+calculer();
+</script>
+</body>
+</html>

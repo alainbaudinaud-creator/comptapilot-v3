@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Contrôle FEC — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Contrôle FEC</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a href="/refonte/immobilisations">Immobilisations</a>
+        <a href="/refonte/emprunts">Emprunts</a>
+        <a href="/refonte/tva">TVA</a>
+        <a class="active" href="/refonte/fec">FEC</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Conformité comptable</p>
+          <h1>Contrôle structure FEC</h1>
+        </div>
+        <div class="status"><span></span><strong id="statut">-</strong></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Contrôle des colonnes obligatoires</h2>
+          <p>Vérifie la présence des champs attendus pour un fichier FEC conforme.</p>
+          <button onclick="controler()">Contrôler le modèle FEC</button>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <table>
+          <thead><tr><th>Colonnes attendues</th><th>Colonnes manquantes</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+async function controler(){
+  const res = await fetch('/refonte/api/refonte/fec/controle-demo');
+  const data = await res.json();
+  const r = data.resultat;
+  document.getElementById('statut').textContent = r.conforme ? 'CONFORME' : 'NON CONFORME';
+  document.getElementById('rows').innerHTML = `
+    <tr>
+      <td>${r.colonnes_attendues.join('<br>')}</td>
+      <td>${r.colonnes_manquantes.length ? r.colonnes_manquantes.join('<br>') : 'Aucune'}</td>
+    </tr>
+  `;
+}
+controler();
+</script>
+</body>
+</html>

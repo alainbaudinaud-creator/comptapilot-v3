@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Journal Général</title>
+<link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+
+<div class="shell">
+
+<aside class="sidebar">
+<div class="brand">
+<div class="logo">CP</div>
+<div>
+<strong>ComptaPilot V3</strong>
+<span>Journal général</span>
+</div>
+</div>
+
+<nav>
+<a href="/refonte/">Cockpit</a>
+<a href="/refonte/balance">Balance</a>
+<a href="/refonte/grand-livre">Grand Livre</a>
+<a class="active" href="/refonte/journal">Journal</a>
+</nav>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+<div>
+<p class="eyebrow">Comptabilité réelle</p>
+<h1>Journal Général</h1>
+</div>
+<div class="status">
+<span></span>
+<strong id="nb">0</strong>
+</div>
+</header>
+
+<section class="table-card">
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Pièce</th>
+<th>Compte</th>
+<th>Libellé</th>
+<th>Débit</th>
+<th>Crédit</th>
+</tr>
+</thead>
+<tbody id="rows"></tbody>
+</table>
+</section>
+
+</main>
+</div>
+
+<script>
+function fmt(v){
+ return Number(v||0).toLocaleString(
+   'fr-FR',
+   {minimumFractionDigits:2,maximumFractionDigits:2}
+ );
+}
+
+fetch('/refonte/api/refonte/journal')
+.then(r=>r.json())
+.then(data=>{
+
+ document.getElementById("nb").innerText=data.total;
+
+ document.getElementById("rows").innerHTML=
+ data.lignes.map(r=>`
+ <tr>
+   <td>${r.date_ecriture||''}</td>
+   <td>${r.piece||''}</td>
+   <td><strong>${r.compte}</strong></td>
+   <td>${r.compte_libelle}</td>
+   <td>${fmt(r.debit)}</td>
+   <td>${fmt(r.credit)}</td>
+ </tr>
+ `).join('');
+
+});
+</script>
+
+</body>
+</html>

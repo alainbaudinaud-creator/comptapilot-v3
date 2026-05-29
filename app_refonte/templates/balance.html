@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Balance générale — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Balance générale</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a href="/refonte/immobilisations">Immobilisations</a>
+        <a href="/refonte/emprunts">Emprunts</a>
+        <a href="/refonte/tva">TVA</a>
+        <a href="/refonte/fec">FEC</a>
+        <a class="active" href="/refonte/balance">Balance</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">État comptable réel</p>
+          <h1>Balance générale</h1>
+        </div>
+        <div class="status"><span></span><strong id="equilibre">-</strong></div>
+      </header>
+
+      <section class="metrics">
+        <article><span>Total débit</span><strong id="totalDebit">0</strong><em>Écritures V3</em></article>
+        <article><span>Total crédit</span><strong id="totalCredit">0</strong><em>Écritures V3</em></article>
+        <article><span>Comptes</span><strong id="nbComptes">0</strong><em>Mouvementés</em></article>
+        <article><span>Équilibre</span><strong id="etat">-</strong><em>Débit = Crédit</em></article>
+      </section>
+
+      <section class="table-card">
+        <h2>Détail par compte</h2>
+        <table>
+          <thead>
+            <tr><th>Compte</th><th>Libellé</th><th>Débit</th><th>Crédit</th><th>Solde</th></tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+function fmt(v){
+  return Number(v || 0).toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/balance');
+  const data = await res.json();
+
+  document.getElementById('totalDebit').textContent = fmt(data.total_debit);
+  document.getElementById('totalCredit').textContent = fmt(data.total_credit);
+  document.getElementById('nbComptes').textContent = data.comptes.length;
+  document.getElementById('etat').textContent = data.equilibre ? 'OK' : 'Erreur';
+  document.getElementById('equilibre').textContent = data.equilibre ? 'Équilibrée' : 'Déséquilibrée';
+
+  document.getElementById('rows').innerHTML = data.comptes.map(c => `
+    <tr>
+      <td><strong>${c.compte}</strong></td>
+      <td>${c.libelle}</td>
+      <td>${fmt(c.total_debit)}</td>
+      <td>${fmt(c.total_credit)}</td>
+      <td>${fmt(c.solde)}</td>
+    </tr>
+  `).join('');
+}
+charger();
+</script>
+</body>
+</html>

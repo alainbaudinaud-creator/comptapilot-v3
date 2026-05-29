@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Compte de résultat — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Résultat</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/grand-livre">Grand Livre</a>
+      <a href="/refonte/journal">Journal</a>
+      <a href="/refonte/fec-export">Export FEC</a>
+      <a class="active" href="/refonte/compte-resultat">Compte de résultat</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Reporting financier</p>
+        <h1>Compte de résultat</h1>
+      </div>
+      <div class="status"><span></span><strong id="typeResultat">-</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Charges</span><strong id="charges">0</strong><em>Classe 6</em></article>
+      <article><span>Produits</span><strong id="produits">0</strong><em>Classe 7</em></article>
+      <article><span>Résultat</span><strong id="resultat">0</strong><em>Bénéfice / Perte</em></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Charges</h2>
+      <table><thead><tr><th>Compte</th><th>Libellé</th><th>Montant</th></tr></thead><tbody id="rowsCharges"></tbody></table>
+    </section>
+
+    <section class="table-card">
+      <h2>Produits</h2>
+      <table><thead><tr><th>Compte</th><th>Libellé</th><th>Montant</th></tr></thead><tbody id="rowsProduits"></tbody></table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/compte-resultat')
+.then(r=>r.json())
+.then(data=>{
+  document.getElementById('charges').textContent = fmt(data.total_charges);
+  document.getElementById('produits').textContent = fmt(data.total_produits);
+  document.getElementById('resultat').textContent = fmt(data.resultat);
+  document.getElementById('typeResultat').textContent = data.type_resultat;
+
+  document.getElementById('rowsCharges').innerHTML = data.charges.map(x=>`
+    <tr><td><strong>${x.compte}</strong></td><td>${x.libelle}</td><td>${fmt(x.montant)}</td></tr>
+  `).join('');
+
+  document.getElementById('rowsProduits').innerHTML = data.produits.map(x=>`
+    <tr><td><strong>${x.compte}</strong></td><td>${x.libelle}</td><td>${fmt(x.montant)}</td></tr>
+  `).join('');
+});
+</script>
+</body>
+</html>
