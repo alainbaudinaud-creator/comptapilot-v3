@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Simulation clôture — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Simulation clôture</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/cloture">Contrôle clôture</a>
+      <a class="active" href="/refonte/cloture-simulation">Simulation</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/bilan">Bilan</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Fin d'exercice</p>
+        <h1>Simulation de clôture</h1>
+      </div>
+      <div class="status"><span></span><strong id="typeResultat">-</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Exercice</span><strong id="exercice">-</strong><em>Statut ouvert</em></article>
+      <article><span>Résultat</span><strong id="resultat">0</strong><em>Bénéfice / Perte</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Clôture définitive sécurisée</h2>
+        <p>ComptaPilot refuse la clôture si des contrôles bloquants restent présents.</p>
+        <button onclick="tenterCloture()">Tenter la clôture définitive</button>
+      </div>
+      <div class="hero-card">
+        <span>Résultat tentative</span>
+        <strong id="clotureStatut">En attente</strong>
+        <p id="clotureDetail">Aucune tentative lancée</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Écriture de clôture simulée</h2>
+      <table>
+        <thead><tr><th>Compte</th><th>Débit</th><th>Crédit</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/cloture/simulation')
+.then(r=>r.json())
+.then(data=>{
+  const ex = data.exercice || {};
+  function frDate(d){
+    return new Date(d).toLocaleDateString('fr-FR', {
+      day:'2-digit',
+      month:'2-digit',
+      year:'numeric'
+    });
+  }
+
+  document.getElementById('exercice').textContent =
+    frDate(ex.date_debut) + ' → ' + frDate(ex.date_fin);
+  document.getElementById('resultat').textContent = fmt(data.resultat);
+  document.getElementById('typeResultat').textContent = data.type_resultat;
+
+  document.getElementById('rows').innerHTML = data.simulation_ecriture.lignes.map(l=>`
+    <tr>
+      <td><strong>${l.compte}</strong></td>
+      <td>${fmt(l.debit)}</td>
+      <td>${fmt(l.credit)}</td>
+    </tr>
+  `).join('');
+});
+
+async function tenterCloture(){
+  const res = await fetch('/refonte/api/refonte/cloture/definitive', {
+    method:'POST'
+  });
+
+  const data = await res.json();
+
+  if(data.success){
+    document.getElementById('clotureStatut').textContent = 'Clôturée';
+    document.getElementById('clotureDetail').textContent =
+      'Écriture clôture : ' + data.ecriture_cloture_id + ' — Résultat : ' + fmt(data.resultat);
+  } else {
+    document.getElementById('clotureStatut').textContent = 'Refusée';
+    document.getElementById('clotureDetail').textContent =
+      (data.blocages || [data.error || 'Erreur inconnue']).join(' | ');
+  }
+}
+</script>
+</body>
+</html>

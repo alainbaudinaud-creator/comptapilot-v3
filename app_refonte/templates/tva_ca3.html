@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>TVA CA3 — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>TVA CA3</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/tva">TVA</a>
+      <a class="active" href="/refonte/tva-ca3">CA3</a>
+      <a href="/refonte/journal">Journal</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/fec-export">Export FEC</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Déclaration fiscale</p>
+        <h1>TVA CA3 automatique</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">-</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Ligne 08</span><strong id="collectee">0</strong><em>TVA collectée</em></article>
+      <article><span>Ligne 20</span><strong id="deductibleAbs">0</strong><em>TVA déductible ABS</em></article>
+      <article><span>Ligne 21</span><strong id="deductibleImmo">0</strong><em>TVA déductible immos</em></article>
+      <article><span>Ligne 28</span><strong id="nette">0</strong><em>TVA nette</em></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Synthèse CA3</h2>
+      <table>
+        <thead><tr><th>Ligne</th><th>Libellé</th><th>Montant</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/tva/ca3')
+.then(r=>r.json())
+.then(data=>{
+  const c = data.ca3;
+  document.getElementById('statut').textContent = c.statut;
+  document.getElementById('collectee').textContent = fmt(c.ligne_08_tva_collectee);
+  document.getElementById('deductibleAbs').textContent = fmt(c.ligne_20_tva_deductible_abs);
+  document.getElementById('deductibleImmo').textContent = fmt(c.ligne_21_tva_deductible_immo);
+  document.getElementById('nette').textContent = fmt(c.ligne_28_tva_nette);
+
+  document.getElementById('rows').innerHTML = `
+    <tr><td>08</td><td>TVA collectée</td><td>${fmt(c.ligne_08_tva_collectee)}</td></tr>
+    <tr><td>20</td><td>TVA déductible sur autres biens et services</td><td>${fmt(c.ligne_20_tva_deductible_abs)}</td></tr>
+    <tr><td>21</td><td>TVA déductible sur immobilisations</td><td>${fmt(c.ligne_21_tva_deductible_immo)}</td></tr>
+    <tr><td>28</td><td>TVA nette à payer / crédit</td><td>${fmt(c.ligne_28_tva_nette)}</td></tr>
+  `;
+});
+</script>
+</body>
+</html>

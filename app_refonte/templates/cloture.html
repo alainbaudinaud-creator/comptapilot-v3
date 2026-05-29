@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Clôture — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Clôture</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/compte-resultat">Compte de résultat</a>
+      <a href="/refonte/bilan">Bilan</a>
+      <a class="active" href="/refonte/cloture">Clôture</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Fin d'exercice</p>
+        <h1>Contrôle de clôture</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">-</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Résultat</span><strong id="resultat">0</strong><em id="typeResultat">-</em></article>
+      <article><span>Clôturable</span><strong id="cloturable">-</strong><em>Contrôles obligatoires</em></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Contrôles avant clôture</h2>
+      <table>
+        <thead><tr><th>Code</th><th>Contrôle</th><th>Statut</th><th>Détail</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/cloture/controle')
+.then(r=>r.json())
+.then(data=>{
+  document.getElementById('resultat').textContent = fmt(data.resultat);
+  document.getElementById('typeResultat').textContent = data.type_resultat;
+  document.getElementById('cloturable').textContent = data.cloturable ? 'OUI' : 'NON';
+  document.getElementById('statut').textContent = data.cloturable ? 'Clôturable' : 'À corriger';
+
+  document.getElementById('rows').innerHTML = data.controles.map(c=>`
+    <tr>
+      <td><strong>${c.code}</strong></td>
+      <td>${c.libelle}</td>
+      <td>${c.ok ? 'OK' : 'BLOQUANT'}</td>
+      <td>${c.detail}</td>
+    </tr>
+  `).join('');
+});
+</script>
+</body>
+</html>

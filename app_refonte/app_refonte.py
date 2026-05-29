@@ -79,6 +79,26 @@ def create_app_refonte():
     def validation_ocr():
         return render_template("validation_ocr.html")
 
+    @app.get("/rapprochement-bancaire")
+    def rapprochement_bancaire():
+        return render_template("rapprochement_bancaire.html")
+
+    @app.get("/tva-ca3")
+    def tva_ca3():
+        return render_template("tva_ca3.html")
+
+    @app.get("/cloture")
+    def cloture():
+        return render_template("cloture.html")
+
+    @app.get("/cloture-simulation")
+    def cloture_simulation():
+        return render_template("cloture_simulation.html")
+
+    @app.get("/admin-comptable")
+    def admin_comptable():
+        return render_template("admin_comptable.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
