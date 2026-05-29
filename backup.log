@@ -4,3 +4,9 @@
 === ROTATION BACKUPS > 15 JOURS ===
 === BACKUP TERMINE ===
 backups/full_backup_20260528_020001.tar.gz
+=== BACKUP APPLICATION ===
+=== BACKUP POSTGRESQL ===
+=== COMPRESSION ===
+=== ROTATION BACKUPS > 15 JOURS ===
+=== BACKUP TERMINE ===
+backups/full_backup_20260529_020001.tar.gz
