@@ -6,7 +6,6 @@ services:
     command: gunicorn -w 2 -b 0.0.0.0:5000 app:app
     ports:
       - "5001:5000"
-      - "5099:5099"
     restart: always
     environment:
       - FLASK_ENV=production
