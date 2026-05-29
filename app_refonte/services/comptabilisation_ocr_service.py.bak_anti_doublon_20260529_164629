@@ -1,64 +1,11 @@
 from datetime import date
-from decimal import Decimal
 
 from sqlalchemy import text
 
 from database import engine
 
 
-def _montant_ttc(ecriture):
-    for ligne in ecriture.get("lignes", []):
-        if str(ligne.get("compte", "")).startswith("401") and Decimal(str(ligne.get("credit", 0) or 0)) > 0:
-            return Decimal(str(ligne.get("credit", 0))).quantize(Decimal("0.01"))
-    return Decimal("0.00")
-
-
-def verifier_doublon_ocr(ecriture, client_id=1):
-    libelle = ecriture.get("libelle", "OCR IA")
-    montant_ttc = _montant_ttc(ecriture)
-
-    if montant_ttc <= 0:
-        return {
-            "doublon": False,
-            "ecriture_existante_id": None,
-        }
-
-    with engine.begin() as conn:
-        row = conn.execute(text("""
-            SELECT e.id
-            FROM ecritures_v3 e
-            JOIN lignes_ecritures_v3 l
-                 ON l.ecriture_id = e.id
-            WHERE e.client_id = :client_id
-              AND e.source = 'OCR_IA'
-              AND LOWER(e.libelle) = LOWER(:libelle)
-              AND l.compte LIKE '401%'
-              AND ROUND(l.credit, 2) = ROUND(CAST(:montant_ttc AS NUMERIC), 2)
-            ORDER BY e.id
-            LIMIT 1
-        """), {
-            "client_id": client_id,
-            "libelle": libelle,
-            "montant_ttc": montant_ttc,
-        }).fetchone()
-
-    return {
-        "doublon": row is not None,
-        "ecriture_existante_id": row[0] if row else None,
-    }
-
-
 def comptabiliser_ecriture_ocr(ecriture, client_id=1):
-
-    controle_doublon = verifier_doublon_ocr(ecriture, client_id=client_id)
-
-    if controle_doublon["doublon"]:
-        return {
-            "success": False,
-            "doublon": True,
-            "ecriture_existante_id": controle_doublon["ecriture_existante_id"],
-            "error": "Doublon OCR détecté : comptabilisation refusée",
-        }
 
     lignes = ecriture.get("lignes", [])
 
@@ -119,6 +66,5 @@ def comptabiliser_ecriture_ocr(ecriture, client_id=1):
 
     return {
         "success": True,
-        "doublon": False,
         "ecriture_id": ecriture_id,
     }

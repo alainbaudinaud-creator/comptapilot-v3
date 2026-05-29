@@ -1025,3 +1025,624 @@ def api_valider_piece_ocr():
         "ecriture_id": ecriture_id,
     })
 
+
+
+@api_metier_demo.post("/api/refonte/banque/seed-demo")
+def api_banque_seed_demo():
+    operations = [
+        {"date_operation": "2026-05-29", "libelle": "Echeance emprunt mois 1", "montant": -8492.16},
+        {"date_operation": "2026-05-29", "libelle": "Facture Orange", "montant": -120.00},
+        {"date_operation": "2026-05-29", "libelle": "Frais bancaires", "montant": -12.50},
+    ]
+
+    ids = []
+    with engine.begin() as conn:
+        for op in operations:
+            oid = conn.execute(text("""
+                INSERT INTO operations_bancaires_v3 (
+                    client_id, date_operation, libelle, montant
+                )
+                VALUES (
+                    1, :date_operation, :libelle, :montant
+                )
+                RETURNING id
+            """), op).scalar()
+            ids.append(oid)
+
+    return jsonify({"success": True, "operation_ids": ids})
+
+
+@api_metier_demo.get("/api/refonte/banque/operations")
+def api_banque_operations():
+    with engine.begin() as conn:
+        rows = conn.execute(text("""
+            SELECT id, client_id, date_operation, libelle, montant, compte_banque, statut
+            FROM operations_bancaires_v3
+            ORDER BY id DESC
+            LIMIT 200
+        """)).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "total": len(rows),
+        "operations": [dict(r) for r in rows],
+    })
+
+
+@api_metier_demo.get("/api/refonte/banque/propositions")
+def api_banque_propositions():
+    from app_refonte.services.rapprochement_bancaire_service import proposer_rapprochements
+
+    with engine.begin() as conn:
+        operations = conn.execute(text("""
+            SELECT id, date_operation, libelle, montant
+            FROM operations_bancaires_v3
+            WHERE statut = 'A_RAPPROCHER'
+            ORDER BY date_operation, id
+        """)).mappings().all()
+
+        ecritures = conn.execute(text("""
+            SELECT
+                e.id AS ecriture_id,
+                e.date_ecriture,
+                e.piece,
+                e.libelle,
+                l.compte,
+                l.debit,
+                l.credit
+            FROM ecritures_v3 e
+            JOIN lignes_ecritures_v3 l ON l.ecriture_id = e.id
+            WHERE l.compte = '512000'
+            ORDER BY e.date_ecriture, e.id
+        """)).mappings().all()
+
+    propositions = proposer_rapprochements(
+        [dict(o) for o in operations],
+        [dict(e) for e in ecritures],
+        seuil=70
+    )
+
+    return jsonify({
+        "success": True,
+        "total": len(propositions),
+        "propositions": propositions,
+    })
+
+
+@api_metier_demo.post("/api/refonte/banque/valider-rapprochement")
+def api_banque_valider_rapprochement():
+    data = request.get_json(silent=True) or {}
+    operation_id = data.get("operation_id")
+    ecriture_id = data.get("ecriture_id")
+    score = data.get("score", 0)
+
+    if not operation_id or not ecriture_id:
+        return jsonify({"success": False, "error": "operation_id et ecriture_id obligatoires"}), 400
+
+    with engine.begin() as conn:
+        rid = conn.execute(text("""
+            INSERT INTO rapprochements_bancaires_v3 (
+                operation_id, ecriture_id, score, statut
+            )
+            VALUES (
+                :operation_id, :ecriture_id, :score, 'VALIDE'
+            )
+            RETURNING id
+        """), {
+            "operation_id": operation_id,
+            "ecriture_id": ecriture_id,
+            "score": score,
+        }).scalar()
+
+        conn.execute(text("""
+            UPDATE operations_bancaires_v3
+            SET statut = 'RAPPROCHE'
+            WHERE id = :operation_id
+        """), {"operation_id": operation_id})
+
+    return jsonify({
+        "success": True,
+        "rapprochement_id": rid,
+        "operation_id": operation_id,
+        "ecriture_id": ecriture_id,
+    })
+
+
+
+@api_metier_demo.post("/api/refonte/lettrage/seed-paiement-demo")
+def api_lettrage_seed_paiement_demo():
+    with engine.begin() as conn:
+        ecriture_id = conn.execute(text("""
+            INSERT INTO ecritures_v3 (
+                client_id, date_ecriture, piece, libelle, statut, source
+            )
+            VALUES (
+                1, CURRENT_DATE, 'PAY-ORANGE-1', 'Paiement facture Orange', 'VALIDE', 'PAIEMENT_DEMO'
+            )
+            RETURNING id
+        """)).scalar()
+
+        conn.execute(text("""
+            INSERT INTO lignes_ecritures_v3 (ecriture_id, compte, libelle, debit, credit)
+            VALUES (:ecriture_id, '401000', 'Paiement facture Orange', 120.00, 0)
+        """), {"ecriture_id": ecriture_id})
+
+        conn.execute(text("""
+            INSERT INTO lignes_ecritures_v3 (ecriture_id, compte, libelle, debit, credit)
+            VALUES (:ecriture_id, '512000', 'Paiement facture Orange', 0, 120.00)
+        """), {"ecriture_id": ecriture_id})
+
+    return jsonify({"success": True, "ecriture_id": ecriture_id})
+
+
+@api_metier_demo.get("/api/refonte/lettrage/propositions")
+def api_lettrage_propositions():
+    compte = request.args.get("compte", "401000")
+
+    with engine.begin() as conn:
+        debits = conn.execute(text("""
+            SELECT e.id AS ecriture_id, e.date_ecriture, e.piece, e.libelle, l.debit AS montant
+            FROM ecritures_v3 e
+            JOIN lignes_ecritures_v3 l ON l.ecriture_id = e.id
+            WHERE l.compte = :compte AND l.debit > 0
+            ORDER BY e.id
+        """), {"compte": compte}).mappings().all()
+
+        credits = conn.execute(text("""
+            SELECT e.id AS ecriture_id, e.date_ecriture, e.piece, e.libelle, l.credit AS montant
+            FROM ecritures_v3 e
+            JOIN lignes_ecritures_v3 l ON l.ecriture_id = e.id
+            WHERE l.compte = :compte AND l.credit > 0
+            ORDER BY e.id
+        """), {"compte": compte}).mappings().all()
+
+        deja_lettres = conn.execute(text("""
+            SELECT ecriture_debit_id, ecriture_credit_id
+            FROM lettrages_tiers_v3
+            WHERE compte = :compte
+        """), {"compte": compte}).mappings().all()
+
+    paires_existantes = {
+        (r["ecriture_debit_id"], r["ecriture_credit_id"])
+        for r in deja_lettres
+    }
+
+    propositions = []
+    for d in debits:
+        for c in credits:
+            if (d["ecriture_id"], c["ecriture_id"]) in paires_existantes:
+                continue
+
+            if round(float(d["montant"]), 2) == round(float(c["montant"]), 2):
+                propositions.append({
+                    "compte": compte,
+                    "debit": dict(d),
+                    "credit": dict(c),
+                    "montant": float(d["montant"]),
+                    "score": 100,
+                    "statut": "PROPOSE",
+                })
+
+    return jsonify({
+        "success": True,
+        "total": len(propositions),
+        "propositions": propositions,
+    })
+
+
+@api_metier_demo.post("/api/refonte/lettrage/valider")
+def api_lettrage_valider():
+    data = request.get_json(silent=True) or {}
+
+    compte = data.get("compte", "401000")
+    ecriture_debit_id = data.get("ecriture_debit_id")
+    ecriture_credit_id = data.get("ecriture_credit_id")
+    montant = data.get("montant")
+
+    if not ecriture_debit_id or not ecriture_credit_id or not montant:
+        return jsonify({"success": False, "error": "Données lettrage incomplètes"}), 400
+
+    with engine.begin() as conn:
+        lettre_num = conn.execute(text("SELECT COUNT(*) + 1 FROM lettrages_tiers_v3")).scalar()
+        lettre = f"L{lettre_num}"
+
+        lettrage_id = conn.execute(text("""
+            INSERT INTO lettrages_tiers_v3 (
+                client_id, compte, ecriture_debit_id, ecriture_credit_id, montant, lettre, statut
+            )
+            VALUES (
+                1, :compte, :ecriture_debit_id, :ecriture_credit_id, :montant, :lettre, 'LETTRÉ'
+            )
+            RETURNING id
+        """), {
+            "compte": compte,
+            "ecriture_debit_id": ecriture_debit_id,
+            "ecriture_credit_id": ecriture_credit_id,
+            "montant": montant,
+            "lettre": lettre,
+        }).scalar()
+
+    return jsonify({
+        "success": True,
+        "lettrage_id": lettrage_id,
+        "lettre": lettre,
+    })
+
+
+@api_metier_demo.get("/api/refonte/lettrage")
+def api_lettrage_liste():
+    with engine.begin() as conn:
+        rows = conn.execute(text("""
+            SELECT id, compte, ecriture_debit_id, ecriture_credit_id, montant, lettre, statut, created_at
+            FROM lettrages_tiers_v3
+            ORDER BY id DESC
+        """)).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "total": len(rows),
+        "lettrages": [dict(r) for r in rows],
+    })
+
+
+
+@api_metier_demo.get("/api/refonte/ocr/doublons")
+def api_ocr_doublons():
+    sql = """
+    SELECT
+        e.libelle,
+        e.date_ecriture,
+        l401.credit AS montant_ttc,
+        COUNT(*) AS nombre,
+        ARRAY_AGG(e.id ORDER BY e.id) AS ecriture_ids
+    FROM ecritures_v3 e
+    JOIN lignes_ecritures_v3 l401
+         ON l401.ecriture_id = e.id
+        AND l401.compte LIKE '401%'
+        AND l401.credit > 0
+    WHERE e.source = 'OCR_IA'
+    GROUP BY e.libelle, e.date_ecriture, l401.credit
+    HAVING COUNT(*) > 1
+    ORDER BY nombre DESC, e.libelle
+    """
+
+    with engine.begin() as conn:
+        rows = conn.execute(text(sql)).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "total": len(rows),
+        "doublons": [dict(r) for r in rows],
+    })
+
+
+
+@api_metier_demo.get("/api/refonte/tva/ca3")
+def api_tva_ca3():
+
+    with engine.begin() as conn:
+
+        tva_collectee = conn.execute(text("""
+            SELECT COALESCE(SUM(credit),0)
+            FROM lignes_ecritures_v3
+            WHERE compte='445710'
+        """)).scalar() or 0
+
+        tva_deductible_abs = conn.execute(text("""
+            SELECT COALESCE(SUM(debit),0)
+            FROM lignes_ecritures_v3
+            WHERE compte='445660'
+        """)).scalar() or 0
+
+        tva_deductible_immo = conn.execute(text("""
+            SELECT COALESCE(SUM(debit),0)
+            FROM lignes_ecritures_v3
+            WHERE compte='445620'
+        """)).scalar() or 0
+
+    tva_nette = (
+        float(tva_collectee)
+        - float(tva_deductible_abs)
+        - float(tva_deductible_immo)
+    )
+
+    return jsonify({
+        "success": True,
+        "ca3": {
+            "ligne_08_tva_collectee": float(tva_collectee),
+            "ligne_20_tva_deductible_abs": float(tva_deductible_abs),
+            "ligne_21_tva_deductible_immo": float(tva_deductible_immo),
+            "ligne_28_tva_nette": round(tva_nette, 2),
+            "statut": "A_PAYER" if tva_nette > 0 else "CREDIT_TVA"
+        }
+    })
+
+
+
+@api_metier_demo.get("/api/refonte/cloture/controle")
+def api_cloture_controle():
+
+    with engine.begin() as conn:
+        balance = conn.execute(text("""
+            SELECT
+                SUM(COALESCE(debit,0)) AS total_debit,
+                SUM(COALESCE(credit,0)) AS total_credit
+            FROM lignes_ecritures_v3
+        """)).mappings().first()
+
+        resultat = conn.execute(text("""
+            SELECT
+                SUM(
+                    CASE
+                        WHEN compte LIKE '7%' THEN COALESCE(credit,0) - COALESCE(debit,0)
+                        WHEN compte LIKE '6%' THEN COALESCE(debit,0) - COALESCE(credit,0)
+                        ELSE 0
+                    END
+                ) AS resultat
+            FROM lignes_ecritures_v3
+            WHERE compte LIKE '6%' OR compte LIKE '7%'
+        """)).scalar() or 0
+
+        tiers_non_lettres = conn.execute(text("""
+            SELECT COUNT(*) AS nb
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE (l.compte LIKE '401%' OR l.compte LIKE '411%')
+              AND e.id NOT IN (
+                  SELECT ecriture_debit_id FROM lettrages_tiers_v3
+                  UNION
+                  SELECT ecriture_credit_id FROM lettrages_tiers_v3
+              )
+        """)).scalar() or 0
+
+        banques_non_rapprochees = conn.execute(text("""
+            SELECT COUNT(*) AS nb
+            FROM operations_bancaires_v3
+            WHERE statut <> 'RAPPROCHE'
+        """)).scalar() or 0
+
+    total_debit = float(balance["total_debit"] or 0)
+    total_credit = float(balance["total_credit"] or 0)
+    equilibre = round(total_debit, 2) == round(total_credit, 2)
+
+    controles = [
+        {
+            "code": "BALANCE_EQUILIBREE",
+            "libelle": "Balance débit/crédit équilibrée",
+            "ok": equilibre,
+            "detail": f"Débit {total_debit:.2f} / Crédit {total_credit:.2f}",
+        },
+        {
+            "code": "TIERS_LETTRES",
+            "libelle": "Comptes tiers lettrés",
+            "ok": tiers_non_lettres == 0,
+            "detail": f"{tiers_non_lettres} ligne(s) tiers non lettrée(s)",
+        },
+        {
+            "code": "BANQUE_RAPPROCHEE",
+            "libelle": "Banque rapprochée",
+            "ok": banques_non_rapprochees == 0,
+            "detail": f"{banques_non_rapprochees} opération(s) bancaire(s) non rapprochée(s)",
+        },
+    ]
+
+    cloturable = all(c["ok"] for c in controles)
+
+    return jsonify({
+        "success": True,
+        "cloturable": cloturable,
+        "resultat": float(resultat),
+        "type_resultat": "BENEFICE" if float(resultat) >= 0 else "PERTE",
+        "controles": controles,
+    })
+
+
+
+@api_metier_demo.get("/api/refonte/cloture/simulation")
+def api_cloture_simulation():
+
+    with engine.begin() as conn:
+        exercice = conn.execute(text("""
+            SELECT id, client_id, date_debut, date_fin, statut
+            FROM exercices_v3
+            WHERE statut = 'OUVERT'
+            ORDER BY id
+            LIMIT 1
+        """)).mappings().first()
+
+        resultat = conn.execute(text("""
+            SELECT
+                SUM(
+                    CASE
+                        WHEN compte LIKE '7%' THEN COALESCE(credit,0) - COALESCE(debit,0)
+                        WHEN compte LIKE '6%' THEN COALESCE(debit,0) - COALESCE(credit,0)
+                        ELSE 0
+                    END
+                ) AS resultat
+            FROM lignes_ecritures_v3
+            WHERE compte LIKE '6%' OR compte LIKE '7%'
+        """)).scalar() or 0
+
+    if not exercice:
+        return jsonify({
+            "success": False,
+            "error": "Aucun exercice ouvert trouvé"
+        }), 404
+
+    resultat_float = float(resultat)
+
+    if resultat_float >= 0:
+        ecriture_cloture = {
+            "libelle": "Affectation résultat bénéficiaire",
+            "lignes": [
+                {"compte": "120000", "debit": 0, "credit": resultat_float},
+                {"compte": "129000", "debit": resultat_float, "credit": 0},
+            ]
+        }
+    else:
+        perte = abs(resultat_float)
+        ecriture_cloture = {
+            "libelle": "Affectation résultat déficitaire",
+            "lignes": [
+                {"compte": "129000", "debit": perte, "credit": 0},
+                {"compte": "120000", "debit": 0, "credit": perte},
+            ]
+        }
+
+    return jsonify({
+        "success": True,
+        "exercice": dict(exercice),
+        "resultat": resultat_float,
+        "type_resultat": "BENEFICE" if resultat_float >= 0 else "PERTE",
+        "simulation_ecriture": ecriture_cloture,
+    })
+
+
+
+@api_metier_demo.post("/api/refonte/cloture/definitive")
+def api_cloture_definitive():
+
+    with engine.begin() as conn:
+        exercice = conn.execute(text("""
+            SELECT id, client_id, date_debut, date_fin, statut
+            FROM exercices_v3
+            WHERE statut = 'OUVERT'
+            ORDER BY id
+            LIMIT 1
+        """)).mappings().first()
+
+        if not exercice:
+            return jsonify({"success": False, "error": "Aucun exercice ouvert"}), 404
+
+        balance = conn.execute(text("""
+            SELECT SUM(COALESCE(debit,0)) AS total_debit,
+                   SUM(COALESCE(credit,0)) AS total_credit
+            FROM lignes_ecritures_v3
+        """)).mappings().first()
+
+        tiers_non_lettres = conn.execute(text("""
+            SELECT COUNT(*)
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE (l.compte LIKE '401%' OR l.compte LIKE '411%')
+              AND e.id NOT IN (
+                  SELECT ecriture_debit_id FROM lettrages_tiers_v3
+                  UNION
+                  SELECT ecriture_credit_id FROM lettrages_tiers_v3
+              )
+        """)).scalar() or 0
+
+        banques_non_rapprochees = conn.execute(text("""
+            SELECT COUNT(*)
+            FROM operations_bancaires_v3
+            WHERE statut <> 'RAPPROCHE'
+        """)).scalar() or 0
+
+        total_debit = float(balance["total_debit"] or 0)
+        total_credit = float(balance["total_credit"] or 0)
+
+        blocages = []
+
+        if round(total_debit, 2) != round(total_credit, 2):
+            blocages.append("Balance déséquilibrée")
+
+        if tiers_non_lettres > 0:
+            blocages.append(f"{tiers_non_lettres} ligne(s) tiers non lettrée(s)")
+
+        if banques_non_rapprochees > 0:
+            blocages.append(f"{banques_non_rapprochees} opération(s) bancaire(s) non rapprochée(s)")
+
+        if blocages:
+            return jsonify({
+                "success": False,
+                "cloture_refusee": True,
+                "blocages": blocages,
+            }), 400
+
+        resultat = conn.execute(text("""
+            SELECT
+                SUM(
+                    CASE
+                        WHEN compte LIKE '7%' THEN COALESCE(credit,0) - COALESCE(debit,0)
+                        WHEN compte LIKE '6%' THEN COALESCE(debit,0) - COALESCE(credit,0)
+                        ELSE 0
+                    END
+                ) AS resultat
+            FROM lignes_ecritures_v3
+            WHERE compte LIKE '6%' OR compte LIKE '7%'
+        """)).scalar() or 0
+
+        resultat_float = float(resultat)
+
+        ecriture_id = conn.execute(text("""
+            INSERT INTO ecritures_v3 (
+                client_id,
+                exercice_id,
+                date_ecriture,
+                piece,
+                libelle,
+                statut,
+                source
+            )
+            VALUES (
+                :client_id,
+                :exercice_id,
+                :date_fin,
+                'CLOTURE',
+                'Ecriture de clôture exercice',
+                'VALIDE',
+                'CLOTURE_AUTO'
+            )
+            RETURNING id
+        """), {
+            "client_id": exercice["client_id"],
+            "exercice_id": exercice["id"],
+            "date_fin": exercice["date_fin"],
+        }).scalar()
+
+        if resultat_float >= 0:
+            lignes = [
+                {"compte": "129000", "debit": resultat_float, "credit": 0},
+                {"compte": "120000", "debit": 0, "credit": resultat_float},
+            ]
+        else:
+            perte = abs(resultat_float)
+            lignes = [
+                {"compte": "129000", "debit": 0, "credit": perte},
+                {"compte": "120000", "debit": perte, "credit": 0},
+            ]
+
+        for ligne in lignes:
+            conn.execute(text("""
+                INSERT INTO lignes_ecritures_v3 (
+                    ecriture_id, compte, libelle, debit, credit
+                )
+                VALUES (
+                    :ecriture_id, :compte, 'Ecriture de clôture exercice', :debit, :credit
+                )
+            """), {
+                "ecriture_id": ecriture_id,
+                "compte": ligne["compte"],
+                "debit": ligne["debit"],
+                "credit": ligne["credit"],
+            })
+
+        conn.execute(text("""
+            UPDATE exercices_v3
+            SET statut = 'CLOTURE',
+                date_cloture = CURRENT_TIMESTAMP,
+                resultat_cloture = :resultat
+            WHERE id = :id
+        """), {
+            "id": exercice["id"],
+            "resultat": resultat_float,
+        })
+
+    return jsonify({
+        "success": True,
+        "exercice_id": exercice["id"],
+        "ecriture_cloture_id": ecriture_id,
+        "resultat": resultat_float,
+        "statut": "CLOTURE",
+    })
+
