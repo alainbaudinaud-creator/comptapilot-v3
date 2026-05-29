@@ -83,7 +83,7 @@ app.config["MAIL_DEFAULT_SENDER"] = config.MAIL_DEFAULT_SENDER
 
 db.init_app(app)
 # limiter.init_app(app)
-# csrf.init_app(app)  # TEMP désactivé pour login OVH
+# # csrf.init_app(app)  # TEMP DESACTIVE LOGIN  # TEMP désactivé pour login OVH
 
 @app.before_request
 def enforce_csrf_except_login():
