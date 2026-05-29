@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>TVA — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>TVA</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a href="/refonte/immobilisations">Immobilisations</a>
+        <a href="/refonte/emprunts">Emprunts</a>
+        <a class="active" href="/refonte/tva">TVA</a>
+        <a>PDP</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Module fiscal</p>
+          <h1>Calcul TVA</h1>
+        </div>
+        <div class="status"><span></span><strong id="statut">-</strong></div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>TVA collectée / TVA déductible</h2>
+          <p>Calcule automatiquement la TVA à payer ou le crédit de TVA.</p>
+          <input id="collectee" value="4200" placeholder="TVA collectée">
+          <input id="deductible" value="1750" placeholder="TVA déductible">
+          <button onclick="calculer()">Calculer</button>
+        </div>
+        <div class="hero-card">
+          <span>TVA à payer</span>
+          <strong id="payer">0.00</strong>
+          <p>Crédit : <span id="credit">0.00</span></p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script>
+async function calculer(){
+  const res = await fetch('/refonte/api/refonte/tva/calcul', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      tva_collectee: Number(document.getElementById('collectee').value),
+      tva_deductible: Number(document.getElementById('deductible').value)
+    })
+  });
+  const data = await res.json();
+  const r = data.resultat;
+  document.getElementById('statut').textContent = r.statut;
+  document.getElementById('payer').textContent = r.tva_a_payer;
+  document.getElementById('credit').textContent = r.credit_tva;
+}
+calculer();
+</script>
+</body>
+</html>

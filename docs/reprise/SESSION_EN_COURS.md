@@ -1,46 +1,87 @@
 # Session de reprise ComptaPilot V3
 
-Date : Fri May 29 01:09:29 UTC 2026
+Date : Fri May 29 2026
 
 ## Serveur actif
 IP : 57.130.60.80
-URL : http://57.130.60.80
+URL refonte : http://57.130.60.80/refonte/
 
-## Etat validé
-- Nginx fonctionne
-- Docker fonctionne
-- Gunicorn répond
-- Le 502 est supprimé
-- docker-compose.yml est revenu sur : gunicorn app:app
-- / répond par 302 vers /login
-- app_refonte existe sur le serveur mais pas dans l'image Docker actuelle
+## Infrastructure validée
+- Nginx OK
+- Docker OK
+- PostgreSQL OK
+- Gunicorn refonte OK sur 5099
+- /refonte/ OK
+- /refonte-static/ OK
 
-## Dernier point fonctionnel
-Commande active :
-gunicorn -w 2 -b 0.0.0.0:5000 app:app
+## Socle comptable validé
+- Plan comptable PostgreSQL : plan_comptable
+- Écritures : ecritures_v3
+- Lignes : lignes_ecritures_v3
+- Pièces : pieces_v3
 
-Test validé :
-curl -I http://127.0.0.1:5001/
-Retour :
-HTTP/1.1 302 FOUND
-Location: /login
+## Modules opérationnels
+- Cockpit réel
+- Plan comptable
+- Immobilisations + amortissements + écritures OD
+- Emprunts + échéanciers + écritures BQ
+- OCR texte → écriture comptable
+- OCR PDF → extraction texte
+- Validation OCR humaine
+- Journal général
+- Grand livre
+- Balance générale
+- Compte de résultat
+- Bilan
+- Export FEC
 
-## Problème ouvert
-La vraie interface V3 moderne semble être dans :
-/home/ubuntu/apps/comptapilot-v3/app_refonte
+## URLs validées
+- /refonte/
+- /refonte/pcg
+- /refonte/immobilisations
+- /refonte/emprunts
+- /refonte/tva
+- /refonte/fec
+- /refonte/balance
+- /refonte/grand-livre
+- /refonte/journal
+- /refonte/compte-resultat
+- /refonte/bilan
+- /refonte/fec-export
+- /refonte/ocr
+- /refonte/ocr-pdf
+- /refonte/validation-ocr
 
-Mais elle n'est pas présente dans le conteneur Docker actuel :
-/app/app_refonte absent
+## Workflow OCR validé
+PDF facture
+→ upload
+→ extraction texte PDFPlumber / PyMuPDF / Tesseract
+→ analyse IA
+→ proposition d’écriture
+→ statut A_VALIDER
+→ validation humaine
+→ comptabilisation PostgreSQL
+→ journal / grand livre / balance / FEC
+
+## Fichiers principaux modifiés
+- app_refonte/app_refonte.py
+- app_refonte/routes/api_metier_demo.py
+- app_refonte/services/cockpit_reel_service.py
+- app_refonte/services/comptabilisation_ocr_service.py
+- app_refonte/services/ocr_pdf_service.py
+- app_refonte/templates/*.html
+
+## Attention
+Les fichiers app_refonte sont copiés manuellement dans le conteneur avec :
+docker cp app_refonte/. comptapilot-v3-comptapilot:/app/app_refonte/
+
+Si le conteneur est reconstruit, vérifier que app_refonte est bien inclus dans l’image.
 
 ## Prochaine étape recommandée
-Avant toute nouvelle bascule :
-1. Inspecter Dockerfile
-2. Comprendre pourquoi app_refonte n'est pas copiée dans l'image
-3. Créer une sauvegarde avant modification
-4. Rebuild contrôlé uniquement après validation
+1. Sauvegarde Git complète
+2. Commit clair
+3. Push GitHub
+4. Puis seulement : industrialiser Dockerfile pour inclure app_refonte proprement
 
 ## Règle de travail
-Ne plus modifier docker-compose.yml, app.py ou Dockerfile sans :
-1. Sauvegarde complète
-2. Note dans ce fichier
-3. Test de retour arrière connu
+Ne plus modifier docker-compose.yml, app.py, Dockerfile ou Nginx sans sauvegarde et test de retour arrière.

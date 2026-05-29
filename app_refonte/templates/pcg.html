@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Plan comptable — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+  <style>
+    .table-card{background:#0f2138;border:1px solid rgba(92,200,255,.2);border-radius:22px;padding:24px;margin-top:24px}
+    .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+    .toolbar input,.toolbar select{background:#091827;color:white;border:1px solid rgba(92,200,255,.25);border-radius:12px;padding:12px 14px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+    th{color:#46d9ff}
+    .badge{padding:6px 10px;border-radius:999px;background:rgba(70,217,255,.12);color:#46d9ff;font-weight:700}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Plan comptable</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a class="active" href="/refonte/pcg">Plan comptable</a>
+        <a>Immobilisations</a>
+        <a>Emprunts</a>
+        <a>TVA</a>
+        <a>PDP</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Référentiel comptable</p>
+          <h1>Plan comptable société</h1>
+        </div>
+        <div class="status"><span></span><strong id="total">0</strong>&nbsp;comptes</div>
+      </header>
+
+      <section class="table-card">
+        <div class="toolbar">
+          <input id="q" placeholder="Rechercher un compte, TVA, banque..." oninput="chargerPCG()">
+          <select id="classe" onchange="chargerPCG()">
+            <option value="">Toutes les classes</option>
+            <option value="1">Classe 1 — Capitaux</option>
+            <option value="2">Classe 2 — Immobilisations</option>
+            <option value="3">Classe 3 — Stocks</option>
+            <option value="4">Classe 4 — Tiers</option>
+            <option value="5">Classe 5 — Financiers</option>
+            <option value="6">Classe 6 — Charges</option>
+            <option value="7">Classe 7 — Produits</option>
+          </select>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Numéro</th>
+              <th>Libellé</th>
+              <th>Classe</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+async function chargerPCG(){
+  const q = document.getElementById('q').value;
+  const classe = document.getElementById('classe').value;
+  const url = `/refonte/api/refonte/pcg?q=${encodeURIComponent(q)}&classe=${encodeURIComponent(classe)}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  document.getElementById('total').textContent = data.total;
+  document.getElementById('rows').innerHTML = data.comptes.map(c => `
+    <tr>
+      <td><strong>${c.numero}</strong></td>
+      <td>${c.libelle}</td>
+      <td><span class="badge">Classe ${c.classe}</span></td>
+      <td>${c.source}</td>
+    </tr>
+  `).join('');
+}
+chargerPCG();
+</script>
+</body>
+</html>

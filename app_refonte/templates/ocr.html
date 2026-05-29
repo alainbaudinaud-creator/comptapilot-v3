@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>OCR IA — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>OCR IA</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/grand-livre">Grand Livre</a>
+      <a href="/refonte/journal">Journal</a>
+      <a href="/refonte/fec-export">Export FEC</a>
+      <a class="active" href="/refonte/ocr">OCR IA</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Automatisation comptable</p>
+        <h1>OCR IA → Écriture comptable</h1>
+      </div>
+      <div class="status"><span></span><strong id="score">0%</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Texte facture OCR</h2>
+        <p>Colle ici le texte extrait d'une facture. ComptaPilot détecte fournisseur, HT, TVA, TTC et comptabilise.</p>
+        <textarea id="texte" style="width:100%;height:160px;background:#091827;color:white;border:1px solid rgba(92,200,255,.25);border-radius:12px;padding:14px;">Facture Orange Total HT 100.00 TVA 20.00 Total TTC 120.00</textarea>
+        <br><br>
+        <button onclick="analyser()">Analyser et comptabiliser</button>
+      </div>
+      <div class="hero-card">
+        <span>Fournisseur</span>
+        <strong id="fournisseur">-</strong>
+        <p>Compte : <span id="compte">-</span></p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Écriture générée</h2>
+      <table>
+        <thead><tr><th>Compte</th><th>Débit</th><th>Crédit</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+async function analyser(){
+  const res = await fetch('/refonte/api/refonte/ocr/analyser-comptabiliser', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({texte: document.getElementById('texte').value})
+  });
+  const data = await res.json();
+
+  document.getElementById('score').textContent = (data.analyse?.score_ia || 0) + '%';
+  document.getElementById('fournisseur').textContent = data.analyse?.fournisseur || '-';
+  document.getElementById('compte').textContent = data.analyse?.compte_charge || '-';
+
+  document.getElementById('rows').innerHTML = (data.ecriture?.lignes || []).map(l => `
+    <tr><td><strong>${l.compte}</strong></td><td>${fmt(l.debit)}</td><td>${fmt(l.credit)}</td></tr>
+  `).join('');
+}
+</script>
+</body>
+</html>

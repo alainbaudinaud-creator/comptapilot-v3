@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Immobilisations Premium — ComptaPilot V3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Immobilisations premium</span></div></div>
+      <nav>
+        <a href="/refonte/">Cockpit</a>
+        <a href="/refonte/pcg">Plan comptable</a>
+        <a class="active" href="/refonte/immobilisations">Immobilisations</a>
+        <a href="/refonte/emprunts">Emprunts</a>
+        <a href="/refonte/tva">TVA</a>
+        <a href="/refonte/fec">FEC</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Module premium</p>
+          <h1>Immobilisations, amortissements et écritures OD</h1>
+        </div>
+        <div class="status"><span></span><strong id="valeurTitre">0.00</strong>&nbsp;€</div>
+      </header>
+
+      <section class="hero">
+        <div>
+          <h2>Paramètres de l’immobilisation</h2>
+          <p>Génère le plan d’amortissement et les écritures comptables de dotation.</p>
+          <input id="designation" value="Ordinateur portable" placeholder="Désignation">
+          <input id="valeur" value="24000" placeholder="Valeur d'origine">
+          <input id="duree" value="24" placeholder="Durée en mois">
+          <button onclick="calculer()">Calculer</button>
+        </div>
+        <div class="hero-card">
+          <span>Comptes utilisés</span>
+          <strong>218 / 281 / 681</strong>
+          <p>Immobilisation, amortissement, dotation</p>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <h2>Plan d’amortissement</h2>
+        <table>
+          <thead>
+            <tr><th>Mois</th><th>Dotation</th><th>Cumul</th><th>VNC</th></tr>
+          </thead>
+          <tbody id="rowsPlan"></tbody>
+        </table>
+      </section>
+
+      <section class="table-card">
+        <h2>Écritures comptables générées</h2>
+        <table>
+          <thead>
+            <tr><th>Mois</th><th>Journal</th><th>Compte</th><th>Débit</th><th>Crédit</th></tr>
+          </thead>
+          <tbody id="rowsEcritures"></tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+<script>
+async function calculer(){
+  const res = await fetch('/refonte/api/refonte/immobilisation/premium', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      designation: document.getElementById('designation').value,
+      valeur_origine: Number(document.getElementById('valeur').value),
+      duree_mois: Number(document.getElementById('duree').value)
+    })
+  });
+
+  const data = await res.json();
+  const plan = data.plan;
+
+  document.getElementById('valeurTitre').textContent = plan.valeur_origine || 0;
+
+  document.getElementById('rowsPlan').innerHTML = plan.plan.map(l => `
+    <tr>
+      <td>${l.mois}</td>
+      <td>${l.dotation}</td>
+      <td>${l.cumul}</td>
+      <td>${l.vnc}</td>
+    </tr>
+  `).join('');
+
+  let lignes = [];
+  data.ecritures.forEach((e, idx) => {
+    e.lignes.forEach(l => {
+      lignes.push(`
+        <tr>
+          <td>${idx + 1}</td>
+          <td>${e.journal}</td>
+          <td>${l.compte}</td>
+          <td>${l.debit}</td>
+          <td>${l.credit}</td>
+        </tr>
+      `);
+    });
+  });
+
+  document.getElementById('rowsEcritures').innerHTML = lignes.join('');
+}
+calculer();
+</script>
+</body>
+</html>

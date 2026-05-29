@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Validation OCR — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Validation OCR</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/ocr-pdf">OCR PDF</a>
+      <a class="active" href="/refonte/validation-ocr">Validation OCR</a>
+      <a href="/refonte/journal">Journal</a>
+      <a href="/refonte/balance">Balance</a>
+      <a href="/refonte/fec-export">Export FEC</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Workflow cabinet</p>
+        <h1>Pièces OCR à valider</h1>
+      </div>
+      <div class="status"><span></span><strong id="total">0</strong>&nbsp;pièces</div>
+    </header>
+
+    <section class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fichier</th>
+            <th>Fournisseur</th>
+            <th>Montants</th>
+            <th>Score</th>
+            <th>Contrôle</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/ocr/pieces-a-valider');
+  const data = await res.json();
+
+  document.getElementById('total').textContent = data.total;
+
+  document.getElementById('rows').innerHTML = data.pieces.map(p => {
+    const a = p.analyse_ia || {};
+    const m = a.montants || {};
+    const c = p.controle_ia || {};
+    return `
+      <tr>
+        <td>${p.id}</td>
+        <td>${p.nom_fichier}</td>
+        <td><strong>${a.fournisseur || '-'}</strong><br><small>${a.compte_charge || ''}</small></td>
+        <td>HT ${fmt(m.ht)}<br>TVA ${fmt(m.tva)}<br>TTC ${fmt(m.ttc)}</td>
+        <td>${a.score_ia || 0}%</td>
+        <td>${c.equilibre ? 'Équilibrée' : 'Erreur'}</td>
+        <td><button onclick="valider(${p.id})">Valider</button></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function valider(id){
+  const res = await fetch('/refonte/api/refonte/ocr/valider-piece', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({piece_id:id})
+  });
+
+  const data = await res.json();
+  if(!data.success){
+    alert(data.error || 'Erreur validation');
+    return;
+  }
+
+  alert('Pièce ' + id + ' comptabilisée en écriture ' + data.ecriture_id);
+  charger();
+}
+
+charger();
+</script>
+</body>
+</html>
