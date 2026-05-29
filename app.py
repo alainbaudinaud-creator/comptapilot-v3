@@ -66,6 +66,7 @@ app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=2)
 
 app.config["SESSION_COOKIE_SECURE"] = False
+app.config["WTF_CSRF_CHECK_DEFAULT"] = False
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "postgresql://comptapilot:comptapilot@postgres:5432/comptapilot_v3")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -83,6 +84,22 @@ app.config["MAIL_DEFAULT_SENDER"] = config.MAIL_DEFAULT_SENDER
 db.init_app(app)
 # limiter.init_app(app)
 csrf.init_app(app)
+
+@app.before_request
+def enforce_csrf_except_login():
+    public_csrf_paths = (
+        "/login",
+        "/static",
+        "/favicon.ico",
+        "/api/v3/",
+        "/public-api",
+        "/public-dynamic"
+    )
+
+    if request.method in ("POST", "PUT", "PATCH", "DELETE"):
+        if not request.path.startswith(public_csrf_paths):
+            csrf.protect()
+
 mail = Mail(app)
 jwt = JWTManager(app)
 swagger = Swagger(app)
