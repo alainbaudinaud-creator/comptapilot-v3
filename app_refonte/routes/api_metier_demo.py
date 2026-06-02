@@ -1388,6 +1388,7 @@ def api_cloture_controle():
             FROM lignes_ecritures_v3 l
             JOIN ecritures_v3 e ON e.id = l.ecriture_id
             WHERE (l.compte LIKE '401%' OR l.compte LIKE '411%')
+              AND COALESCE(e.statut, '') <> 'ANNULE'
               AND e.id NOT IN (
                   SELECT ecriture_debit_id FROM lettrages_tiers_v3
                   UNION
