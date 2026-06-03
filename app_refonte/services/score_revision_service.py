@@ -1,3 +1,44 @@
+
+
+from sqlalchemy import create_engine, text
+import os
+
+
+def _database_url():
+    return os.getenv(
+        "DATABASE_URL",
+        "postgresql://comptapilot:comptapilot@postgres:5432/comptapilot"
+    )
+
+
+def calculer_bonus_taches():
+
+    try:
+
+        engine = create_engine(_database_url(), pool_pre_ping=True)
+
+        with engine.connect() as conn:
+
+            total = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM taches_cabinet_v3
+            """)).scalar() or 0
+
+            terminees = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM taches_cabinet_v3
+                WHERE statut='TERMINE'
+            """)).scalar() or 0
+
+        if total == 0:
+            return 0
+
+        return int((terminees / total) * 20)
+
+    except Exception:
+        return 0
+
+
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet
 from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
@@ -19,7 +60,20 @@ def calculer_score_revision():
     points_bloquants = int(revision.get("points_bloquants", 0) or 0)
     score_revision = max(0, 30 - points_bloquants)
 
-    score_global = max(0, min(100, score_visas + score_ia + score_revision))
+    
+bonus_taches = calculer_bonus_taches()
+
+score_global = max(
+    0,
+    min(
+        100,
+        score_visas +
+        score_ia +
+        score_revision +
+        bonus_taches
+    )
+)
+
 
     if score_global >= 85 and visas.get("cloture_autorisee"):
         niveau = "PRET_CLOTURE"
@@ -45,7 +99,10 @@ def calculer_score_revision():
             "nb_visas": nb_visas,
             "nb_attendus": nb_attendus,
             "risque_ia": risque_ia,
-            "points_bloquants": points_bloquants,
+            
+"points_bloquants": points_bloquants,
+"bonus_taches": bonus_taches,
+
             "cloture_autorisee": bool(visas.get("cloture_autorisee"))
         },
         "sources": {
