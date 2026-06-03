@@ -1,0 +1,128 @@
+{% extends "base_refonte.html" %}
+
+{% block title %}Révision Cabinet - ComptaPilot V3{% endblock %}
+
+{% block content %}
+<div class="page-shell">
+  <div class="hero-panel">
+    <div>
+      <p class="eyebrow">Centre expert-comptable</p>
+      <h1>Révision Cabinet</h1>
+      <p class="hero-subtitle">
+        Contrôle intelligent des comptes, anomalies, justificatifs et visas avant clôture.
+      </p>
+    </div>
+    <div class="hero-actions">
+      <span class="status-pill success">Prêt pour revue</span>
+      <span class="status-pill warning">12 contrôles actifs</span>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <span>Comptes à contrôler</span>
+      <strong>18</strong>
+      <small>Priorité haute : 6</small>
+    </div>
+    <div class="kpi-card">
+      <span>Écritures non justifiées</span>
+      <strong>9</strong>
+      <small>Pièces manquantes ou OCR à valider</small>
+    </div>
+    <div class="kpi-card">
+      <span>Anomalies TVA</span>
+      <strong>4</strong>
+      <small>Écarts détectés avant CA3</small>
+    </div>
+    <div class="kpi-card">
+      <span>Score clôture</span>
+      <strong>78%</strong>
+      <small>Visa EC requis</small>
+    </div>
+  </div>
+
+  <div class="module-grid two-cols">
+    <section class="premium-card">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Contrôles automatiques</p>
+          <h2>Points de révision</h2>
+        </div>
+        <span class="status-pill info">Analyse IA</span>
+      </div>
+
+      <div class="revision-list">
+        <div class="revision-row danger">
+          <div>
+            <strong>Comptes soldés anormalement</strong>
+            <p>471, 467 et 580 présentent des soldes à analyser.</p>
+          </div>
+          <span>3 alertes</span>
+        </div>
+        <div class="revision-row warning">
+          <div>
+            <strong>Comptes sans mouvement</strong>
+            <p>Comptes fournisseurs et clients inactifs sur l’exercice.</p>
+          </div>
+          <span>5 comptes</span>
+        </div>
+        <div class="revision-row warning">
+          <div>
+            <strong>Écritures non justifiées</strong>
+            <p>OCR absent, pièce non rattachée ou libellé incomplet.</p>
+          </div>
+          <span>9 lignes</span>
+        </div>
+        <div class="revision-row info">
+          <div>
+            <strong>Anomalies banque</strong>
+            <p>Rapprochement incomplet ou mouvements bancaires orphelins.</p>
+          </div>
+          <span>6 points</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="premium-card">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Circuit de validation</p>
+          <h2>Visas de révision</h2>
+        </div>
+      </div>
+
+      <div class="visa-timeline">
+        <div class="visa-step done">
+          <span></span>
+          <div>
+            <strong>Visa collaborateur</strong>
+            <p>Pré-révision effectuée</p>
+          </div>
+        </div>
+        <div class="visa-step active">
+          <span></span>
+          <div>
+            <strong>Visa chef de mission</strong>
+            <p>Contrôles en cours</p>
+          </div>
+        </div>
+        <div class="visa-step">
+          <span></span>
+          <div>
+            <strong>Visa expert-comptable</strong>
+            <p>En attente de validation finale</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="closure-readiness">
+        <h3>Indicateur prêt pour clôture</h3>
+        <div class="progress-bar">
+          <div style="width:78%"></div>
+        </div>
+        <p>Encore 7 points bloquants avant passage au centre fiscal et clôture.</p>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}

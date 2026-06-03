@@ -142,7 +142,11 @@ def create_app_refonte():
     return app
 
 
-if __name__ == "__main__":
+
+@app.route("/revision-cabinet")
+def revision_cabinet():
+    return render_template("revision_cabinet.html")
+\n\nif __name__ == "__main__":
     app = create_app_refonte()
     app.run(host="127.0.0.1", port=5099, debug=True)
 

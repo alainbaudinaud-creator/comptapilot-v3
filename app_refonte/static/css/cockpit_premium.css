@@ -123,3 +123,96 @@ button.secondary{background:rgba(255,255,255,.12);color:white;border:1px solid r
   .hero,.metrics,.grid{grid-template-columns:1fr}
   h1{font-size:34px}
 }
+
+/* Revision Cabinet */
+.revision-list {
+  display: grid;
+  gap: 14px;
+}
+
+.revision-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.revision-row strong {
+  display: block;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.revision-row p {
+  margin: 0;
+  color: rgba(255,255,255,0.68);
+}
+
+.revision-row span {
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.visa-timeline {
+  display: grid;
+  gap: 18px;
+  margin-top: 10px;
+}
+
+.visa-step {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: 14px;
+  align-items: start;
+}
+
+.visa-step > span {
+  width: 14px;
+  height: 14px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 0 6px rgba(255,255,255,0.05);
+}
+
+.visa-step.done > span {
+  background: #37e29f;
+}
+
+.visa-step.active > span {
+  background: #ffd166;
+}
+
+.visa-step strong {
+  color: #fff;
+}
+
+.visa-step p,
+.closure-readiness p {
+  margin: 4px 0 0;
+  color: rgba(255,255,255,0.66);
+}
+
+.closure-readiness {
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.progress-bar {
+  height: 12px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.10);
+  margin: 12px 0;
+}
+
+.progress-bar > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #37e29f, #ffd166);
+}
