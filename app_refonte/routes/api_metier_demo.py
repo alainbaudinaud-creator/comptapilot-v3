@@ -2051,3 +2051,108 @@ def api_supervision_cabinet():
         },
         "dossiers": [dict(d) for d in dossiers],
     })
+
+@api_metier_demo.get("/api/refonte/production-cabinet")
+def api_production_cabinet():
+    with engine.begin() as conn:
+        workflow = conn.execute(text("""
+            SELECT
+                w.id,
+                w.client_id,
+                c.raison_sociale,
+                w.module,
+                w.etape,
+                w.statut,
+                w.responsable,
+                w.commentaire,
+                w.created_at
+            FROM workflow_cabinet_v3 w
+            LEFT JOIN clients_v3 c ON c.id = w.client_id
+            ORDER BY
+                CASE w.statut
+                    WHEN 'A_FAIRE' THEN 1
+                    WHEN 'EN_COURS' THEN 2
+                    WHEN 'REVISION' THEN 3
+                    WHEN 'VALIDATION_EC' THEN 4
+                    WHEN 'TERMINE' THEN 5
+                    ELSE 6
+                END,
+                w.id
+        """)).mappings().all()
+
+        taches = conn.execute(text("""
+            SELECT
+                t.id,
+                t.client_id,
+                c.raison_sociale,
+                t.titre,
+                t.priorite,
+                t.statut,
+                t.echeance,
+                t.created_at
+            FROM taches_cabinet_v3 t
+            LEFT JOIN clients_v3 c ON c.id = t.client_id
+            ORDER BY
+                CASE t.priorite
+                    WHEN 'CRITIQUE' THEN 1
+                    WHEN 'HAUTE' THEN 2
+                    WHEN 'WARNING' THEN 3
+                    WHEN 'NORMALE' THEN 4
+                    ELSE 5
+                END,
+                t.id
+        """)).mappings().all()
+
+    statuts = ["A_FAIRE", "EN_COURS", "REVISION", "VALIDATION_EC", "TERMINE"]
+    modules = ["ONBOARDING", "IMPORT", "OCR", "REVISION", "CLOTURE"]
+
+    kpis = {
+        "workflow_total": len(workflow),
+        "workflow_a_faire": len([w for w in workflow if w["statut"] == "A_FAIRE"]),
+        "workflow_en_cours": len([w for w in workflow if w["statut"] == "EN_COURS"]),
+        "workflow_revision": len([w for w in workflow if w["statut"] == "REVISION"]),
+        "workflow_validation_ec": len([w for w in workflow if w["statut"] == "VALIDATION_EC"]),
+        "workflow_termine": len([w for w in workflow if w["statut"] == "TERMINE"]),
+        "taches_ouvertes": len([t for t in taches if t["statut"] != "TERMINE"]),
+        "taches_urgentes": len([t for t in taches if t["priorite"] in ("HAUTE", "CRITIQUE") and t["statut"] != "TERMINE"]),
+    }
+
+    return jsonify({
+        "success": True,
+        "kpis": kpis,
+        "statuts": statuts,
+        "modules": modules,
+        "workflow": [dict(w) for w in workflow],
+        "taches": [dict(t) for t in taches],
+    })
+
+
+@api_metier_demo.post("/api/refonte/production-cabinet/statut")
+def api_production_cabinet_statut():
+    data = request.get_json(silent=True) or {}
+    workflow_id = data.get("workflow_id")
+    statut = data.get("statut")
+
+    statuts_autorises = ["A_FAIRE", "EN_COURS", "REVISION", "VALIDATION_EC", "TERMINE"]
+
+    if not workflow_id or statut not in statuts_autorises:
+        return jsonify({
+            "success": False,
+            "error": "workflow_id obligatoire et statut invalide"
+        }), 400
+
+    with engine.begin() as conn:
+        row = conn.execute(text("""
+            UPDATE workflow_cabinet_v3
+            SET statut = :statut
+            WHERE id = :workflow_id
+            RETURNING id, client_id, module, etape, statut, responsable, commentaire
+        """), {
+            "workflow_id": workflow_id,
+            "statut": statut,
+        }).mappings().first()
+
+    if not row:
+        return jsonify({"success": False, "error": "Workflow introuvable"}), 404
+
+    return jsonify({"success": True, "workflow": dict(row)})

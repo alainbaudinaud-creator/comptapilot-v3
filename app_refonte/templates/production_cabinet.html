@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Production Cabinet — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Production cabinet</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Direction de production</p>
+        <h1>Centre de Production Cabinet</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Workflow total</span><strong id="workflowTotal">0</strong><em>Étapes</em></article>
+      <article><span>À faire</span><strong id="workflowAFaire">0</strong><em>Production</em></article>
+      <article><span>Révision</span><strong id="workflowRevision">0</strong><em>Contrôle</em></article>
+      <article><span>Validation EC</span><strong id="workflowValidation">0</strong><em>Expert-comptable</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Chaîne de production complète</h2>
+        <p>Suivez onboarding, import, OCR, révision, clôture et validation expert-comptable.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>Tâches ouvertes</span>
+        <strong id="tachesOuvertes">0</strong>
+        <p id="tachesUrgentes">0 urgence</p>
+      </div>
+    </section>
+
+    <section class="grid" id="workflowGrid"></section>
+
+    <section class="table-card">
+      <h2>Tâches opérationnelles</h2>
+      <table>
+        <thead><tr><th>Client</th><th>Tâche</th><th>Priorité</th><th>Statut</th><th>Échéance</th></tr></thead>
+        <tbody id="tachesRows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+const labels = {
+  A_FAIRE:'À faire',
+  EN_COURS:'En cours',
+  REVISION:'Révision',
+  VALIDATION_EC:'Validation EC',
+  TERMINE:'Terminé'
+};
+
+const suivants = {
+  A_FAIRE:'EN_COURS',
+  EN_COURS:'REVISION',
+  REVISION:'VALIDATION_EC',
+  VALIDATION_EC:'TERMINE',
+  TERMINE:'TERMINE'
+};
+
+function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : '-'; }
+
+async function changerWorkflow(id, statut){
+  const res = await fetch('/refonte/api/refonte/production-cabinet/statut', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({workflow_id:id, statut:statut})
+  });
+  const data = await res.json();
+  if(!data.success){ alert(data.error || 'Erreur'); }
+  charger();
+}
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/production-cabinet');
+  const data = await res.json();
+  const k = data.kpis || {};
+
+  document.getElementById('resume').textContent = (k.workflow_total || 0) + ' étape(s)';
+  document.getElementById('workflowTotal').textContent = k.workflow_total || 0;
+  document.getElementById('workflowAFaire').textContent = k.workflow_a_faire || 0;
+  document.getElementById('workflowRevision').textContent = k.workflow_revision || 0;
+  document.getElementById('workflowValidation').textContent = k.workflow_validation_ec || 0;
+  document.getElementById('tachesOuvertes').textContent = k.taches_ouvertes || 0;
+  document.getElementById('tachesUrgentes').textContent = (k.taches_urgentes || 0) + ' urgence(s)';
+
+  const statuts = data.statuts || [];
+  const workflow = data.workflow || [];
+
+  document.getElementById('workflowGrid').innerHTML = statuts.map(st => {
+    const rows = workflow.filter(w => w.statut === st);
+    return `
+      <article class="module">
+        <h3>${labels[st] || st}</h3>
+        <p>${rows.length} étape(s)</p>
+        ${rows.map(w => `
+          <div style="border-top:1px solid rgba(255,255,255,.12);padding-top:12px;margin-top:12px">
+            <strong>${w.module}</strong>
+            <p>${w.etape}</p>
+            <span>${w.raison_sociale || 'Client'}</span>
+            ${st !== 'TERMINE'
+              ? `<br><button onclick="changerWorkflow(${w.id}, '${suivants[st]}')">Passer à ${labels[suivants[st]]}</button>`
+              : ''
+            }
+          </div>
+        `).join('')}
+      </article>
+    `;
+  }).join('');
+
+  document.getElementById('tachesRows').innerHTML = (data.taches || []).map(t => `
+    <tr>
+      <td>${t.raison_sociale || '-'}</td>
+      <td>${t.titre}</td>
+      <td>${t.priorite}</td>
+      <td>${t.statut}</td>
+      <td>${frDate(t.echeance)}</td>
+    </tr>
+  `).join('');
+}
+
+charger();
+</script>
+</body>
+</html>

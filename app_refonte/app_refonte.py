@@ -115,6 +115,10 @@ def create_app_refonte():
     def supervision_cabinet():
         return render_template("supervision_cabinet.html")
 
+    @app.get("/production-cabinet")
+    def production_cabinet():
+        return render_template("production_cabinet.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
