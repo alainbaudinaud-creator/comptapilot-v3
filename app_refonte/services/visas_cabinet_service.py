@@ -83,7 +83,7 @@ def charger_visas_cabinet(societe_id=1, exercice="2025"):
     return data
 
 
-def enregistrer_visa_cabinet(type_visa, utilisateur="demo.utilisateur", commentaire=None, societe_id=1, exercice="2025"):
+def enregistrer_visa_cabinet(type_visa, utilisateur="alain.baudinaud", commentaire=None, societe_id=1, exercice="2025"):
     type_visa = (type_visa or "").upper().strip()
 
     if type_visa not in VISAS_ATTENDUS:

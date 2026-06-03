@@ -155,7 +155,7 @@ def create_app_refonte():
     def api_valider_visa_cabinet():
         payload = request.get_json(silent=True) or {}
         type_visa = payload.get("type_visa")
-        utilisateur = payload.get("utilisateur", "demo.utilisateur")
+        utilisateur = payload.get("utilisateur", "alain.baudinaud")
         commentaire = payload.get("commentaire")
         resultat = enregistrer_visa_cabinet(
             type_visa=type_visa,
