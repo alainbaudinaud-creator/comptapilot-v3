@@ -82,7 +82,9 @@
 function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : '-'; }
 
-fetch('/refonte/api/refonte/client-360?client_id=1')
+const clientId = new URLSearchParams(window.location.search).get('client_id') || '1';
+
+fetch('/refonte/api/refonte/client-360?client_id=' + clientId)
 .then(r=>r.json())
 .then(data=>{
   const c = data.client || {};

@@ -86,8 +86,8 @@ async function charger(){
       <td>${d.exercices_ouverts || 0} ouvert / ${d.exercices_clotures || 0} clôturé</td>
       <td>${fmt(d.dernier_resultat)}</td>
       <td>
-        <a href="/refonte/client-360"><span>Client 360 →</span></a><br>
-        <a href="/refonte/workflow-cabinet"><span>Workflow →</span></a>
+        <a href="/refonte/client-360?client_id=${d.id}"><span>Client 360 →</span></a><br>
+        <a href="/refonte/workflow-cabinet?client_id=${d.id}"><span>Workflow →</span></a>
       </td>
     </tr>
   `).join('');

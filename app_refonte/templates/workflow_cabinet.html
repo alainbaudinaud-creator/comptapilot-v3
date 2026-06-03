@@ -29,7 +29,7 @@
       </div>
       <div class="hero-card">
         <span>Dossier</span>
-        <strong>CLIENT DEMO COMPTAPILOT V3</strong>
+        <strong id="nomClient">Client</strong>
         <p id="detail">Chargement des tâches</p>
       </div>
     </section>
@@ -67,11 +67,14 @@ async function changerStatut(id, statut){
 }
 
 async function charger(){
-  const res = await fetch('/refonte/api/refonte/workflow-cabinet?client_id=1');
+  const res = await const clientId = new URLSearchParams(window.location.search).get('client_id') || '1';
+
+fetch('/refonte/api/refonte/workflow-cabinet?client_id=' + clientId);
   const data = await res.json();
 
   document.getElementById('resume').textContent = (data.total || 0) + ' tâche(s)';
   document.getElementById('detail').textContent = 'Workflow client ID ' + data.client_id;
+document.getElementById('nomClient').textContent = 'Client #' + data.client_id;
 
   const colonnes = data.colonnes || [];
   const kanban = data.kanban || {};
