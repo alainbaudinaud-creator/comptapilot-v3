@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify
+from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
 from app_refonte.routes.api_metier_demo import api_metier_demo
@@ -139,6 +140,14 @@ def create_app_refonte():
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
 
+
+
+    @app.get("/api/refonte/revision-cabinet")
+    def api_revision_cabinet():
+        return jsonify({
+            "success": True,
+            "revision": charger_revision_cabinet()
+        })
 
     @app.get("/revision-cabinet")
     def revision_cabinet():
