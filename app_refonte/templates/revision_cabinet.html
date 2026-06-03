@@ -138,6 +138,82 @@
 
 
 <script>
+
+async function chargerVisasCabinet() {
+  try {
+    const response = await fetch('/api/refonte/visas-cabinet');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.visas) {
+      return;
+    }
+
+    const v = payload.visas;
+    const visas = v.visas_valides || [];
+
+    document.getElementById('visa-count').textContent = `${v.nb_visas}/${v.nb_attendus}`;
+
+    const badge = document.getElementById('badge-cloture');
+    const statut = document.getElementById('visa-statut');
+    const message = document.getElementById('visa-message');
+
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (v.cloture_autorisee) {
+      badge.classList.add('success');
+      badge.textContent = 'Clôture autorisée';
+      statut.textContent = 'Tous les visas sont validés';
+      message.textContent = 'Le dossier peut passer en clôture comptable.';
+    } else if (v.nb_visas === 2) {
+      badge.classList.add('warning');
+      badge.textContent = 'Visa EC requis';
+      statut.textContent = 'Visa expert-comptable requis';
+      message.textContent = 'Le chef de mission a validé. Le visa final expert-comptable est attendu.';
+    } else if (v.nb_visas === 1) {
+      badge.classList.add('warning');
+      badge.textContent = 'Chef de mission requis';
+      statut.textContent = 'Visa chef de mission requis';
+      message.textContent = 'Le collaborateur a validé la révision. Le chef de mission doit contrôler le dossier.';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'Clôture bloquée';
+      statut.textContent = 'Révision à finaliser';
+      message.textContent = 'Aucun visa complet disponible. La clôture reste bloquée.';
+    }
+
+    const map = {
+      'COLLABORATEUR': 'visa-collaborateur',
+      'CHEF_MISSION': 'visa-chef',
+      'EXPERT_COMPTABLE': 'visa-ec'
+    };
+
+    Object.values(map).forEach(id => {
+      document.getElementById(id).classList.remove('done');
+    });
+
+    visas.forEach(type => {
+      if (map[type]) {
+        document.getElementById(map[type]).classList.add('done');
+      }
+    });
+
+    const history = document.getElementById('visa-historique');
+    if (!v.historique || v.historique.length === 0) {
+      history.innerHTML = '<p class="muted">Aucun visa enregistré.</p>';
+    } else {
+      history.innerHTML = v.historique.map(item => `
+        <div class="history-row">
+          <strong>${item.type_visa}</strong>
+          <span>${item.utilisateur || 'Utilisateur inconnu'}</span>
+          <small>${item.created_at || ''}</small>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Erreur chargement visas cabinet', error);
+  }
+}
+
 async function chargerRevisionCabinet() {
   try {
     const response = await fetch('/api/refonte/revision-cabinet');
@@ -187,7 +263,9 @@ async function chargerRevisionCabinet() {
 }
 
 chargerRevisionCabinet();
+chargerVisasCabinet();
 setInterval(chargerRevisionCabinet, 30000);
+setInterval(chargerVisasCabinet, 30000);
 </script>
 
 </body>
