@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
+from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
@@ -158,6 +159,14 @@ def create_app_refonte():
         )
         return jsonify(resultat), 200 if resultat.get("success") else 400
 
+
+
+    @app.get("/api/refonte/controle-ia")
+    def api_controle_ia():
+        return jsonify({
+            "success": True,
+            "controle": calculer_controles_ia()
+        })
 
     @app.get("/api/refonte/cloture/statut")
     def api_cloture_statut():
