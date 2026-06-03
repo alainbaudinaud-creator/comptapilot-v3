@@ -2215,3 +2215,78 @@ def api_centre_fiscal():
         "exercices": [dict(e) for e in exercices],
         "controles": controles,
     })
+
+@api_metier_demo.get("/api/refonte/dossier-permanent")
+def api_dossier_permanent():
+    client_id = int(request.args.get("client_id", 1))
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, siren, siret, raison_sociale, forme_juridique,
+                   regime_fiscal, regime_tva, adresse, statut, created_at
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        pieces = conn.execute(text("""
+            SELECT id, nom_fichier, type_piece, statut_ocr, statut_validation, created_at
+            FROM pieces_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+            LIMIT 50
+        """), {"client_id": client_id}).mappings().all()
+
+        imports = conn.execute(text("""
+            SELECT id, type_import, nom_fichier, statut, nb_lignes, created_at
+            FROM imports_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+            LIMIT 50
+        """), {"client_id": client_id}).mappings().all()
+
+        exercices = conn.execute(text("""
+            SELECT id, date_debut, date_fin, statut, date_cloture, resultat_cloture
+            FROM exercices_v3
+            WHERE client_id = :client_id
+            ORDER BY date_debut DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        immobilisations = conn.execute(text("""
+            SELECT id, designation, date_acquisition, valeur_origine, duree_mois,
+                   compte_immo, compte_amortissement, compte_dotation, statut
+            FROM immobilisations_v3
+            WHERE societe_id = :client_id
+            ORDER BY id DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        emprunts = conn.execute(text("""
+            SELECT id, organisme, capital, taux_annuel, duree_mois, date_debut,
+                   compte_emprunt, compte_interets, compte_banque, statut
+            FROM emprunts_v3
+            WHERE societe_id = :client_id
+            ORDER BY id DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        kpis = {
+            "documents": len(pieces),
+            "imports": len(imports),
+            "exercices": len(exercices),
+            "immobilisations": len(immobilisations),
+            "emprunts": len(emprunts),
+            "valeur_immobilisations": float(sum([i["valeur_origine"] or 0 for i in immobilisations])),
+            "capital_emprunts": float(sum([e["capital"] or 0 for e in emprunts])),
+        }
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "kpis": kpis,
+        "pieces": [dict(p) for p in pieces],
+        "imports": [dict(i) for i in imports],
+        "exercices": [dict(e) for e in exercices],
+        "immobilisations": [dict(i) for i in immobilisations],
+        "emprunts": [dict(e) for e in emprunts],
+    })

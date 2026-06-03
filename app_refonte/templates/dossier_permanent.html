@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Dossier Permanent — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Dossier permanent</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Dossier permanent client</p>
+        <h1 id="raisonSociale">Chargement...</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">-</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Informations permanentes du dossier</h2>
+        <p id="identite">Chargement identité société.</p>
+        <div class="actions">
+          <a href="/refonte/client-360"><button>Client 360</button></a>
+          <a href="/refonte/centre-fiscal"><button class="secondary">Centre fiscal</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Régime</span>
+        <strong id="regimeFiscal">-</strong>
+        <p id="regimeTva">-</p>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article><span>Documents</span><strong id="kDocuments">0</strong><em>Pièces permanentes</em></article>
+      <article><span>Imports</span><strong id="kImports">0</strong><em>FEC / balances</em></article>
+      <article><span>Exercices</span><strong id="kExercices">0</strong><em>Historique</em></article>
+      <article><span>Immobilisations</span><strong id="kImmobilisations">0</strong><em id="valImmos">0 €</em></article>
+    </section>
+
+    <section class="metrics">
+      <article><span>Emprunts</span><strong id="kEmprunts">0</strong><em id="capEmprunts">0 €</em></article>
+      <article><span>SIREN</span><strong id="siren">-</strong><em>Identifiant</em></article>
+      <article><span>Forme</span><strong id="forme">-</strong><em>Juridique</em></article>
+      <article><span>Statut</span><strong id="statut2">-</strong><em>Dossier</em></article>
+    </section>
+
+    <section class="grid">
+      <article class="module"><h3>Identité</h3><p>SIREN, SIRET, régime fiscal et TVA.</p><span>Permanent</span></article>
+      <article class="module"><h3>Documents</h3><p>Pièces OCR, imports et justificatifs permanents.</p><a href="/refonte/ocr-pdf"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Exercices</h3><p>Historique des exercices, clôtures et à-nouveaux.</p><a href="/refonte/exercices"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Patrimoine</h3><p>Immobilisations et emprunts du dossier.</p><a href="/refonte/immobilisations"><span>Ouvrir →</span></a></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Exercices</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Période</th><th>Statut</th><th>Résultat</th></tr></thead>
+        <tbody id="rowsExercices"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Documents permanents</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Fichier</th><th>Type</th><th>OCR</th><th>Validation</th></tr></thead>
+        <tbody id="rowsPieces"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Immobilisations et emprunts</h2>
+      <table>
+        <thead><tr><th>Nature</th><th>Désignation / organisme</th><th>Montant</th><th>Durée</th><th>Statut</th></tr></thead>
+        <tbody id="rowsPatrimoine"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : '-'; }
+
+fetch('/refonte/api/refonte/dossier-permanent?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const c = data.client || {};
+  const k = data.kpis || {};
+
+  document.getElementById('raisonSociale').textContent = c.raison_sociale || 'Client';
+  document.getElementById('statut').textContent = c.statut || '-';
+  document.getElementById('statut2').textContent = c.statut || '-';
+  document.getElementById('identite').textContent =
+    'SIREN ' + (c.siren || '-') + ' — SIRET ' + (c.siret || '-') + ' — ' + (c.adresse || '-');
+
+  document.getElementById('regimeFiscal').textContent = c.regime_fiscal || '-';
+  document.getElementById('regimeTva').textContent = 'TVA : ' + (c.regime_tva || '-');
+  document.getElementById('siren').textContent = c.siren || '-';
+  document.getElementById('forme').textContent = c.forme_juridique || '-';
+
+  document.getElementById('kDocuments').textContent = k.documents || 0;
+  document.getElementById('kImports').textContent = k.imports || 0;
+  document.getElementById('kExercices').textContent = k.exercices || 0;
+  document.getElementById('kImmobilisations').textContent = k.immobilisations || 0;
+  document.getElementById('kEmprunts').textContent = k.emprunts || 0;
+  document.getElementById('valImmos').textContent = fmt(k.valeur_immobilisations) + ' €';
+  document.getElementById('capEmprunts').textContent = fmt(k.capital_emprunts) + ' €';
+
+  document.getElementById('rowsExercices').innerHTML = (data.exercices || []).map(e=>`
+    <tr>
+      <td>${e.id}</td>
+      <td>${frDate(e.date_debut)} → ${frDate(e.date_fin)}</td>
+      <td><strong>${e.statut}</strong></td>
+      <td>${fmt(e.resultat_cloture)}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsPieces').innerHTML = (data.pieces || []).map(p=>`
+    <tr>
+      <td>${p.id}</td>
+      <td>${p.nom_fichier}</td>
+      <td>${p.type_piece || '-'}</td>
+      <td>${p.statut_ocr || '-'}</td>
+      <td>${p.statut_validation || '-'}</td>
+    </tr>
+  `).join('');
+
+  const immos = (data.immobilisations || []).map(i=>`
+    <tr><td>Immobilisation</td><td>${i.designation}</td><td>${fmt(i.valeur_origine)} €</td><td>${i.duree_mois} mois</td><td>${i.statut}</td></tr>
+  `).join('');
+
+  const emprunts = (data.emprunts || []).map(e=>`
+    <tr><td>Emprunt</td><td>${e.organisme}</td><td>${fmt(e.capital)} €</td><td>${e.duree_mois} mois</td><td>${e.statut}</td></tr>
+  `).join('');
+
+  document.getElementById('rowsPatrimoine').innerHTML = immos + emprunts;
+});
+</script>
+</body>
+</html>
