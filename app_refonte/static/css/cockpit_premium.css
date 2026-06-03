@@ -313,3 +313,34 @@ button.secondary{background:rgba(255,255,255,.12);color:white;border:1px solid r
 .visa-actions button:hover {
   transform: translateY(-1px);
 }
+
+.score-revision-card {
+  margin-bottom: 22px;
+}
+
+.score-revision-layout {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 22px;
+  align-items: center;
+}
+
+.score-revision-number {
+  min-height: 120px;
+  border-radius: 24px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.score-revision-number strong {
+  font-size: 46px;
+  color: #fff;
+  line-height: 1;
+}
+
+.score-revision-number span {
+  color: rgba(255,255,255,0.62);
+  font-weight: 700;
+}

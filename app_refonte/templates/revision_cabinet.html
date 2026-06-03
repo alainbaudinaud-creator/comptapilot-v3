@@ -27,6 +27,29 @@
     </div>
   </div>
 
+  
+  <div class="premium-card score-revision-card">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Indice transverse</p>
+        <h2>Score global de révision</h2>
+      </div>
+      <span id="badge-score-revision" class="status-pill warning">Calcul...</span>
+    </div>
+
+    <div class="score-revision-layout">
+      <div class="score-revision-number">
+        <strong id="score-revision-global">0</strong>
+        <span>/100</span>
+      </div>
+      <div>
+        <h3 id="score-revision-libelle">Analyse en cours</h3>
+        <p id="score-revision-detail">Combinaison des visas, contrôles IA et points bloquants.</p>
+      </div>
+    </div>
+  </div>
+
+
   <div class="kpi-grid">
     <div class="kpi-card">
       <span>Comptes à contrôler</span>
@@ -140,6 +163,43 @@
 <script>
 
 
+
+
+async function chargerScoreRevision() {
+  try {
+    const response = await fetch('/api/refonte/score-revision');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.score) {
+      return;
+    }
+
+    const score = payload.score;
+    const detail = score.detail || {};
+    const value = Number(score.score_global || 0);
+
+    document.getElementById('score-revision-global').textContent = value;
+    document.getElementById('score-revision-libelle').textContent = score.libelle || 'Analyse disponible';
+    document.getElementById('score-revision-detail').textContent =
+      `Visas ${detail.nb_visas || 0}/${detail.nb_attendus || 3} · Risque IA ${detail.risque_ia || 0}/100 · Points bloquants ${detail.points_bloquants || 0}`;
+
+    const badge = document.getElementById('badge-score-revision');
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (value >= 85 && detail.cloture_autorisee) {
+      badge.classList.add('success');
+      badge.textContent = 'Prêt clôture';
+    } else if (value >= 60) {
+      badge.classList.add('warning');
+      badge.textContent = 'Révision avancée';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'À sécuriser';
+    }
+  } catch (error) {
+    console.error('Erreur score révision', error);
+  }
+}
 
 async function chargerControleIA() {
   try {
@@ -346,9 +406,11 @@ async function chargerRevisionCabinet() {
 }
 
 chargerRevisionCabinet();
+chargerScoreRevision();
 chargerControleIA();
 chargerVisasCabinet();
 setInterval(chargerRevisionCabinet, 30000);
+setInterval(chargerScoreRevision, 30000);
 setInterval(chargerControleIA, 30000);
 setInterval(chargerVisasCabinet, 30000);
 </script>
