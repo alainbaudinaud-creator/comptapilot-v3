@@ -2377,3 +2377,96 @@ def api_notification_lire():
         return jsonify({"success": False, "error": "Notification introuvable"}), 404
 
     return jsonify({"success": True, "notification": dict(row)})
+
+@api_metier_demo.get("/api/refonte/planning-cabinet")
+def api_planning_cabinet():
+    with engine.begin() as conn:
+        taches = conn.execute(text("""
+            SELECT
+                t.id,
+                t.client_id,
+                c.raison_sociale,
+                t.titre,
+                t.priorite,
+                t.statut,
+                t.echeance,
+                t.created_at,
+                col.id AS collaborateur_id,
+                col.nom AS collaborateur
+            FROM taches_cabinet_v3 t
+            LEFT JOIN clients_v3 c ON c.id = t.client_id
+            LEFT JOIN affectations_dossiers_v3 a
+                ON a.client_id = t.client_id
+               AND a.statut = 'ACTIF'
+            LEFT JOIN collaborateurs_cabinet_v3 col
+                ON col.id = a.collaborateur_id
+            WHERE t.statut <> 'TERMINE'
+            ORDER BY
+                CASE WHEN t.echeance IS NULL THEN 1 ELSE 0 END,
+                t.echeance,
+                CASE t.priorite
+                    WHEN 'CRITIQUE' THEN 1
+                    WHEN 'HAUTE' THEN 2
+                    WHEN 'WARNING' THEN 3
+                    WHEN 'NORMALE' THEN 4
+                    ELSE 5
+                END,
+                t.id
+        """)).mappings().all()
+
+        charge = conn.execute(text("""
+            SELECT
+                col.id,
+                col.nom,
+                col.role,
+                COUNT(DISTINCT a.client_id) AS dossiers_affectes,
+                COUNT(DISTINCT t.id) FILTER (WHERE t.statut <> 'TERMINE') AS taches_ouvertes,
+                COUNT(DISTINCT t.id) FILTER (
+                    WHERE t.statut <> 'TERMINE'
+                      AND t.priorite IN ('HAUTE','CRITIQUE')
+                ) AS taches_urgentes
+            FROM collaborateurs_cabinet_v3 col
+            LEFT JOIN affectations_dossiers_v3 a
+                ON a.collaborateur_id = col.id
+               AND a.statut = 'ACTIF'
+            LEFT JOIN taches_cabinet_v3 t
+                ON t.client_id = a.client_id
+            WHERE col.statut = 'ACTIF'
+            GROUP BY col.id
+            ORDER BY taches_urgentes DESC, taches_ouvertes DESC, col.id
+        """)).mappings().all()
+
+        notifications = conn.execute(text("""
+            SELECT
+                n.id,
+                n.titre,
+                n.message,
+                n.niveau,
+                n.statut,
+                n.created_at,
+                col.nom AS collaborateur,
+                c.raison_sociale
+            FROM notifications_cabinet_v3 n
+            LEFT JOIN collaborateurs_cabinet_v3 col ON col.id = n.collaborateur_id
+            LEFT JOIN clients_v3 c ON c.id = n.client_id
+            WHERE n.statut = 'NON_LUE'
+            ORDER BY n.created_at DESC, n.id DESC
+            LIMIT 20
+        """)).mappings().all()
+
+    sans_echeance = len([t for t in taches if t["echeance"] is None])
+    urgentes = len([t for t in taches if t["priorite"] in ("HAUTE", "CRITIQUE")])
+
+    return jsonify({
+        "success": True,
+        "kpis": {
+            "taches_ouvertes": len(taches),
+            "taches_urgentes": urgentes,
+            "sans_echeance": sans_echeance,
+            "notifications_non_lues": len(notifications),
+            "collaborateurs_actifs": len(charge),
+        },
+        "taches": [dict(t) for t in taches],
+        "charge": [dict(c) for c in charge],
+        "notifications": [dict(n) for n in notifications],
+    })

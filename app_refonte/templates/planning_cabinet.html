@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Planning Cabinet — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Planning cabinet</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Organisation & échéances</p>
+        <h1>Planning Cabinet Premium</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Tâches ouvertes</span><strong id="kTaches">0</strong><em>Production</em></article>
+      <article><span>Urgentes</span><strong id="kUrgentes">0</strong><em>HAUTE / CRITIQUE</em></article>
+      <article><span>Sans échéance</span><strong id="kSansEcheance">0</strong><em>À planifier</em></article>
+      <article><span>Notifications</span><strong id="kNotif">0</strong><em>Non lues</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Vue planning du cabinet</h2>
+        <p>Visualisez les tâches ouvertes, les affectations collaborateurs, la charge de travail et les alertes internes.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>Collaborateurs actifs</span>
+        <strong id="kCollaborateurs">0</strong>
+        <p>Charge de production consolidée.</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Échéances et tâches</h2>
+      <table>
+        <thead><tr><th>Échéance</th><th>Client</th><th>Tâche</th><th>Priorité</th><th>Statut</th><th>Collaborateur</th></tr></thead>
+        <tbody id="rowsTaches"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Charge collaborateurs</h2>
+      <table>
+        <thead><tr><th>Collaborateur</th><th>Rôle</th><th>Dossiers</th><th>Tâches ouvertes</th><th>Urgentes</th></tr></thead>
+        <tbody id="rowsCharge"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Notifications non lues</h2>
+      <table>
+        <thead><tr><th>Niveau</th><th>Titre</th><th>Dossier</th><th>Collaborateur</th></tr></thead>
+        <tbody id="rowsNotif"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : 'Sans échéance'; }
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/planning-cabinet');
+  const data = await res.json();
+  const k = data.kpis || {};
+
+  document.getElementById('resume').textContent = (k.taches_ouvertes || 0) + ' tâche(s)';
+  document.getElementById('kTaches').textContent = k.taches_ouvertes || 0;
+  document.getElementById('kUrgentes').textContent = k.taches_urgentes || 0;
+  document.getElementById('kSansEcheance').textContent = k.sans_echeance || 0;
+  document.getElementById('kNotif').textContent = k.notifications_non_lues || 0;
+  document.getElementById('kCollaborateurs').textContent = k.collaborateurs_actifs || 0;
+
+  document.getElementById('rowsTaches').innerHTML = (data.taches || []).map(t=>`
+    <tr>
+      <td>${frDate(t.echeance)}</td>
+      <td>${t.raison_sociale || '-'}</td>
+      <td><strong>${t.titre}</strong></td>
+      <td>${t.priorite}</td>
+      <td>${t.statut}</td>
+      <td>${t.collaborateur || '-'}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsCharge').innerHTML = (data.charge || []).map(c=>`
+    <tr>
+      <td><strong>${c.nom}</strong></td>
+      <td>${c.role}</td>
+      <td>${c.dossiers_affectes || 0}</td>
+      <td>${c.taches_ouvertes || 0}</td>
+      <td>${c.taches_urgentes || 0}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsNotif').innerHTML = (data.notifications || []).map(n=>`
+    <tr>
+      <td>${n.niveau}</td>
+      <td><strong>${n.titre}</strong><br><small>${n.message || ''}</small></td>
+      <td>${n.raison_sociale || '-'}</td>
+      <td>${n.collaborateur || '-'}</td>
+    </tr>
+  `).join('');
+}
+
+charger();
+</script>
+</body>
+</html>
