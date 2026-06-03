@@ -131,6 +131,10 @@ def create_app_refonte():
     def centre_fiscal():
         return render_template("centre_fiscal.html")
 
+    @app.get("/liasse-fiscale")
+    def liasse_fiscale():
+        return render_template("liasse_fiscale.html")
+
     @app.get("/dossier-permanent")
     def dossier_permanent():
         return render_template("dossier_permanent.html")

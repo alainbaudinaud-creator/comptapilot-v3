@@ -2221,6 +2221,128 @@ def api_centre_fiscal():
         "controles": controles,
     })
 
+
+@api_metier_refonte.get("/api/refonte/liasse-fiscale")
+def api_liasse_fiscale_v3():
+    client_id = int(request.args.get("client_id", 1))
+
+    from app_refonte.services.autorisation_fiscale_service import verifier_autorisation_fiscale
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, siren, siret, raison_sociale, forme_juridique,
+                   regime_fiscal, regime_tva, adresse, statut
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        exercices = conn.execute(text("""
+            SELECT id, date_debut, date_fin, statut, resultat_cloture
+            FROM exercices_v3
+            WHERE client_id = :client_id
+            ORDER BY date_debut DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        total_ecritures = conn.execute(text("""
+            SELECT COUNT(*)
+            FROM ecritures_v3
+            WHERE client_id = :client_id
+              AND COALESCE(statut,'') <> 'ANNULE'
+        """), {"client_id": client_id}).scalar() or 0
+
+        immos = conn.execute(text("""
+            SELECT COUNT(*) AS nb, COALESCE(SUM(valeur_origine),0) AS valeur
+            FROM immobilisations_v3
+            WHERE societe_id = :client_id
+              AND statut = 'ACTIVE'
+        """), {"client_id": client_id}).mappings().first()
+
+        emprunts = conn.execute(text("""
+            SELECT COUNT(*) AS nb, COALESCE(SUM(capital),0) AS capital
+            FROM emprunts_v3
+            WHERE societe_id = :client_id
+              AND statut = 'ACTIF'
+        """), {"client_id": client_id}).mappings().first()
+
+        factures = conn.execute(text("""
+            SELECT COUNT(*) AS nb, COALESCE(SUM(montant_ht),0) AS ht,
+                   COALESCE(SUM(montant_tva),0) AS tva,
+                   COALESCE(SUM(montant_ttc),0) AS ttc
+            FROM factures_v3
+            WHERE client_id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        lignes = conn.execute(text("""
+            SELECT
+              COALESCE(SUM(CASE WHEN l.compte LIKE '6%' THEN l.debit - l.credit ELSE 0 END),0) AS charges,
+              COALESCE(SUM(CASE WHEN l.compte LIKE '7%' THEN l.credit - l.debit ELSE 0 END),0) AS produits,
+              COALESCE(SUM(CASE WHEN l.compte LIKE '2%' THEN l.debit - l.credit ELSE 0 END),0) AS actif_immo,
+              COALESCE(SUM(CASE WHEN l.compte LIKE '1%' THEN l.credit - l.debit ELSE 0 END),0) AS capitaux,
+              COALESCE(SUM(CASE WHEN l.compte LIKE '4%' THEN l.credit - l.debit ELSE 0 END),0) AS tiers,
+              COALESCE(SUM(CASE WHEN l.compte LIKE '5%' THEN l.debit - l.credit ELSE 0 END),0) AS tresorerie
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE e.client_id = :client_id
+              AND COALESCE(e.statut,'') <> 'ANNULE'
+        """), {"client_id": client_id}).mappings().first()
+
+    charges = float(lignes["charges"] or 0)
+    produits = float(lignes["produits"] or 0)
+    resultat = round(produits - charges, 2)
+    valeur_immos = float(immos["valeur"] or 0)
+    capital_emprunts = float(emprunts["capital"] or 0)
+
+    formulaires = [
+        {"formulaire": "2033-A", "rubrique": "Identification", "valeur": client["raison_sociale"], "statut": "PREPARE"},
+        {"formulaire": "2033-A", "rubrique": "SIREN", "valeur": client["siren"], "statut": "PREPARE"},
+        {"formulaire": "2033-A", "rubrique": "Actif immobilisé", "valeur": round(valeur_immos, 2), "statut": "PREPARE"},
+        {"formulaire": "2033-A", "rubrique": "Dettes financières", "valeur": round(capital_emprunts, 2), "statut": "PREPARE"},
+        {"formulaire": "2033-B", "rubrique": "Produits d'exploitation", "valeur": round(produits, 2), "statut": "PREPARE"},
+        {"formulaire": "2033-B", "rubrique": "Charges d'exploitation", "valeur": round(charges, 2), "statut": "PREPARE"},
+        {"formulaire": "2033-B", "rubrique": "Résultat fiscal", "valeur": resultat, "statut": "PREPARE"},
+        {"formulaire": "2033-C", "rubrique": "Nombre immobilisations", "valeur": int(immos["nb"] or 0), "statut": "PREPARE"},
+        {"formulaire": "2033-C", "rubrique": "Valeur immobilisations", "valeur": round(valeur_immos, 2), "statut": "PREPARE"},
+    ]
+
+    autorisation = verifier_autorisation_fiscale()
+
+    controles = {
+        "client_identifie": bool(client["siren"] and client["raison_sociale"]),
+        "exercice_present": len(exercices) > 0,
+        "ecritures_presentes": total_ecritures > 0,
+        "liasse_preparee": True,
+        "autorisation_fiscale": bool(autorisation.get("declarations_autorisees")),
+    }
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "autorisation": autorisation,
+        "kpis": {
+            "nb_exercices": len(exercices),
+            "nb_ecritures": int(total_ecritures),
+            "nb_immobilisations": int(immos["nb"] or 0),
+            "nb_emprunts": int(emprunts["nb"] or 0),
+            "nb_factures": int(factures["nb"] or 0),
+            "valeur_immobilisations": round(valeur_immos, 2),
+            "capital_emprunts": round(capital_emprunts, 2),
+            "resultat_fiscal": resultat,
+            "type_resultat": "BENEFICE" if resultat >= 0 else "PERTE",
+        },
+        "statuts": {
+            "2033-A": "PREPARE",
+            "2033-B": "PREPARE",
+            "2033-C": "PREPARE",
+        },
+        "controles": controles,
+        "exercices": [dict(e) for e in exercices],
+        "formulaires": formulaires,
+    })
+
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))
