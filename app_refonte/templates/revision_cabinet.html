@@ -140,6 +140,60 @@
 <script>
 
 
+
+async function chargerControleIA() {
+  try {
+    const response = await fetch('/api/refonte/controle-ia');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.controle) {
+      return;
+    }
+
+    const c = payload.controle;
+    const score = Number(c.score_risque || 0);
+
+    document.getElementById('score-risque-ia').textContent = score;
+    document.getElementById('source-risque-ia').textContent = `Source : ${c.table_source || 'non détectée'}`;
+
+    const badge = document.getElementById('badge-risque-ia');
+    const titre = document.getElementById('titre-risque-ia');
+
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (score < 25) {
+      badge.classList.add('success');
+      badge.textContent = 'Risque faible';
+      titre.textContent = 'Dossier globalement cohérent';
+    } else if (score < 60) {
+      badge.classList.add('warning');
+      badge.textContent = 'Risque modéré';
+      titre.textContent = 'Points de vigilance détectés';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'Risque élevé';
+      titre.textContent = 'Révision approfondie requise';
+    }
+
+    const alertes = c.alertes || [];
+    const zone = document.getElementById('alertes-risque-ia');
+
+    if (!alertes.length) {
+      zone.innerHTML = '<p class="muted">Aucune alerte détectée.</p>';
+    } else {
+      zone.innerHTML = alertes.map(a => `
+        <div class="history-row">
+          <strong>Contrôle IA</strong>
+          <span>${a}</span>
+          <small>Automatique</small>
+        </div>
+      `).join('');
+    }
+  } catch (error) {
+    console.error('Erreur chargement contrôle IA', error);
+  }
+}
+
 async function validerVisaCabinet(typeVisa) {
   try {
     const response = await fetch('/api/refonte/visas-cabinet/valider', {
@@ -292,8 +346,10 @@ async function chargerRevisionCabinet() {
 }
 
 chargerRevisionCabinet();
+chargerControleIA();
 chargerVisasCabinet();
 setInterval(chargerRevisionCabinet, 30000);
+setInterval(chargerControleIA, 30000);
 setInterval(chargerVisasCabinet, 30000);
 </script>
 
