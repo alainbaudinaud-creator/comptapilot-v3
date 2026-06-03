@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Workflow Cabinet — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Workflow cabinet</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Supervision expert-comptable</p>
+        <h1>Workflow Cabinet</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Kanban de production</h2>
+        <p>Suivez les tâches cabinet, la révision, la validation EC et la finalisation des dossiers.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>Dossier</span>
+        <strong>CLIENT DEMO COMPTAPILOT V3</strong>
+        <p id="detail">Chargement des tâches</p>
+      </div>
+    </section>
+
+    <section class="grid" id="kanban"></section>
+  </main>
+</div>
+
+<script>
+const labels = {
+  A_FAIRE: 'À faire',
+  EN_COURS: 'En cours',
+  REVISION: 'Révision',
+  VALIDATION_EC: 'Validation EC',
+  TERMINE: 'Terminé'
+};
+
+const suivants = {
+  A_FAIRE: 'EN_COURS',
+  EN_COURS: 'REVISION',
+  REVISION: 'VALIDATION_EC',
+  VALIDATION_EC: 'TERMINE',
+  TERMINE: 'TERMINE'
+};
+
+async function changerStatut(id, statut){
+  const res = await fetch('/refonte/api/refonte/workflow-cabinet/statut', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({tache_id:id, statut:statut})
+  });
+  const data = await res.json();
+  if(!data.success){ alert(data.error || 'Erreur'); }
+  charger();
+}
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/workflow-cabinet?client_id=1');
+  const data = await res.json();
+
+  document.getElementById('resume').textContent = (data.total || 0) + ' tâche(s)';
+  document.getElementById('detail').textContent = 'Workflow client ID ' + data.client_id;
+
+  const colonnes = data.colonnes || [];
+  const kanban = data.kanban || {};
+
+  document.getElementById('kanban').innerHTML = colonnes.map(col => {
+    const rows = kanban[col] || [];
+    return `
+      <article class="module">
+        <h3>${labels[col] || col}</h3>
+        <p>${rows.length} tâche(s)</p>
+        ${rows.map(t => `
+          <div style="border-top:1px solid rgba(255,255,255,.12);padding-top:12px;margin-top:12px">
+            <strong>${t.titre}</strong>
+            <p>Priorité : ${t.priorite || '-'}</p>
+            <span>${t.statut}</span>
+            ${col !== 'TERMINE'
+              ? `<br><button onclick="changerStatut(${t.id}, '${suivants[col]}')">Passer à ${labels[suivants[col]]}</button>`
+              : ''
+            }
+          </div>
+        `).join('')}
+      </article>
+    `;
+  }).join('');
+}
+
+charger();
+</script>
+</body>
+</html>

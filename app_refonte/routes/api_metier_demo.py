@@ -1935,3 +1935,80 @@ def api_client_360():
         "exercices": [dict(r) for r in exercices],
         "ecritures_speciales": [dict(r) for r in ecritures_speciales],
     })
+
+@api_metier_demo.get("/api/refonte/workflow-cabinet")
+def api_workflow_cabinet():
+    client_id = int(request.args.get("client_id", 1))
+
+    with engine.begin() as conn:
+        taches = conn.execute(text("""
+            SELECT
+                t.id,
+                t.client_id,
+                c.raison_sociale,
+                t.titre,
+                t.priorite,
+                t.statut,
+                t.echeance,
+                t.created_at
+            FROM taches_cabinet_v3 t
+            LEFT JOIN clients_v3 c ON c.id = t.client_id
+            WHERE t.client_id = :client_id
+            ORDER BY
+                CASE t.priorite
+                    WHEN 'CRITIQUE' THEN 1
+                    WHEN 'HAUTE' THEN 2
+                    WHEN 'WARNING' THEN 3
+                    WHEN 'NORMALE' THEN 4
+                    ELSE 5
+                END,
+                t.id
+        """), {"client_id": client_id}).mappings().all()
+
+    colonnes = ["A_FAIRE", "EN_COURS", "REVISION", "VALIDATION_EC", "TERMINE"]
+    kanban = {c: [] for c in colonnes}
+
+    for t in taches:
+        statut = t["statut"] or "A_FAIRE"
+        if statut not in kanban:
+            kanban[statut] = []
+        kanban[statut].append(dict(t))
+
+    return jsonify({
+        "success": True,
+        "client_id": client_id,
+        "total": len(taches),
+        "colonnes": colonnes,
+        "kanban": kanban,
+    })
+
+
+@api_metier_demo.post("/api/refonte/workflow-cabinet/statut")
+def api_workflow_cabinet_statut():
+    data = request.get_json(silent=True) or {}
+    tache_id = data.get("tache_id")
+    statut = data.get("statut")
+
+    statuts_autorises = ["A_FAIRE", "EN_COURS", "REVISION", "VALIDATION_EC", "TERMINE"]
+
+    if not tache_id or statut not in statuts_autorises:
+        return jsonify({
+            "success": False,
+            "error": "tache_id obligatoire et statut invalide"
+        }), 400
+
+    with engine.begin() as conn:
+        row = conn.execute(text("""
+            UPDATE taches_cabinet_v3
+            SET statut = :statut
+            WHERE id = :tache_id
+            RETURNING id, client_id, titre, priorite, statut, echeance
+        """), {
+            "tache_id": tache_id,
+            "statut": statut,
+        }).mappings().first()
+
+    if not row:
+        return jsonify({"success": False, "error": "Tâche introuvable"}), 404
+
+    return jsonify({"success": True, "tache": dict(row)})

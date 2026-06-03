@@ -107,6 +107,10 @@ def create_app_refonte():
     def client_360():
         return render_template("client_360.html")
 
+    @app.get("/workflow-cabinet")
+    def workflow_cabinet():
+        return render_template("workflow_cabinet.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
