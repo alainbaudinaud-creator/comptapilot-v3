@@ -139,13 +139,15 @@ def create_app_refonte():
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
 
+
+    @app.get("/revision-cabinet")
+    def revision_cabinet():
+        return render_template("revision_cabinet.html")
+
     return app
 
 
 
-@app.route("/revision-cabinet")
-def revision_cabinet():
-    return render_template("revision_cabinet.html")
 
 
 if __name__ == "__main__":
