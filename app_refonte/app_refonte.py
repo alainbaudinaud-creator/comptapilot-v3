@@ -127,6 +127,10 @@ def create_app_refonte():
     def dossier_permanent():
         return render_template("dossier_permanent.html")
 
+    @app.get("/collaborateurs")
+    def collaborateurs():
+        return render_template("collaborateurs.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})

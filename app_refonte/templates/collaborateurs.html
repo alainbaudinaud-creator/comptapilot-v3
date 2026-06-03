@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Collaborateurs — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Collaborateurs</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Organisation cabinet</p>
+        <h1>Centre Collaborateurs</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Collaborateurs</span><strong id="kCollaborateurs">0</strong><em>Actifs cabinet</em></article>
+      <article><span>Affectations</span><strong id="kAffectations">0</strong><em>Dossiers suivis</em></article>
+      <article><span>Notifications</span><strong id="kNotifications">0</strong><em>Total</em></article>
+      <article><span>Non lues</span><strong id="kNonLues">0</strong><em>À traiter</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Gestion humaine du cabinet</h2>
+        <p>Centralisez collaborateurs, rôles, affectations dossiers et notifications internes.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>Prochaine étape</span>
+        <strong>Planning cabinet</strong>
+        <p>Affectation, charge et échéances par collaborateur.</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Collaborateurs</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Nom</th><th>Email</th><th>Rôle</th><th>Statut</th></tr></thead>
+        <tbody id="rowsCollaborateurs"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Affectations dossiers</h2>
+      <table>
+        <thead><tr><th>Client</th><th>Collaborateur</th><th>Rôle cabinet</th><th>Rôle dossier</th><th>Statut</th></tr></thead>
+        <tbody id="rowsAffectations"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Notifications internes</h2>
+      <table>
+        <thead><tr><th>Niveau</th><th>Titre</th><th>Dossier</th><th>Collaborateur</th><th>Statut</th><th>Action</th></tr></thead>
+        <tbody id="rowsNotifications"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+async function lireNotification(id){
+  const res = await fetch('/refonte/api/refonte/notification/lire', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({notification_id:id})
+  });
+  const data = await res.json();
+  if(!data.success){ alert(data.error || 'Erreur'); }
+  charger();
+}
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/collaborateurs');
+  const data = await res.json();
+  const k = data.kpis || {};
+
+  document.getElementById('resume').textContent = (k.collaborateurs || 0) + ' collaborateur(s)';
+  document.getElementById('kCollaborateurs').textContent = k.collaborateurs || 0;
+  document.getElementById('kAffectations').textContent = k.affectations || 0;
+  document.getElementById('kNotifications').textContent = k.notifications || 0;
+  document.getElementById('kNonLues').textContent = k.notifications_non_lues || 0;
+
+  document.getElementById('rowsCollaborateurs').innerHTML = (data.collaborateurs || []).map(c=>`
+    <tr>
+      <td>${c.id}</td>
+      <td><strong>${c.nom}</strong></td>
+      <td>${c.email || '-'}</td>
+      <td>${c.role}</td>
+      <td>${c.statut}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsAffectations').innerHTML = (data.affectations || []).map(a=>`
+    <tr>
+      <td>${a.raison_sociale}</td>
+      <td>${a.collaborateur}</td>
+      <td>${a.role}</td>
+      <td>${a.role_dossier}</td>
+      <td>${a.statut}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsNotifications').innerHTML = (data.notifications || []).map(n=>`
+    <tr>
+      <td>${n.niveau}</td>
+      <td><strong>${n.titre}</strong><br><small>${n.message || ''}</small></td>
+      <td>${n.raison_sociale || '-'}</td>
+      <td>${n.collaborateur || '-'}</td>
+      <td>${n.statut}</td>
+      <td>${n.statut === 'NON_LUE' ? `<button onclick="lireNotification(${n.id})">Marquer lue</button>` : '-'}</td>
+    </tr>
+  `).join('');
+}
+
+charger();
+</script>
+</body>
+</html>

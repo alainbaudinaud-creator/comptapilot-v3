@@ -2290,3 +2290,90 @@ def api_dossier_permanent():
         "immobilisations": [dict(i) for i in immobilisations],
         "emprunts": [dict(e) for e in emprunts],
     })
+
+@api_metier_demo.get("/api/refonte/collaborateurs")
+def api_collaborateurs_cabinet():
+    with engine.begin() as conn:
+        collaborateurs = conn.execute(text("""
+            SELECT id, nom, email, role, statut, created_at
+            FROM collaborateurs_cabinet_v3
+            ORDER BY
+                CASE role
+                    WHEN 'EXPERT_COMPTABLE' THEN 1
+                    WHEN 'CHEF_MISSION' THEN 2
+                    WHEN 'COLLABORATEUR' THEN 3
+                    ELSE 4
+                END,
+                id
+        """)).mappings().all()
+
+        affectations = conn.execute(text("""
+            SELECT
+                a.id,
+                a.client_id,
+                c.raison_sociale,
+                a.collaborateur_id,
+                col.nom AS collaborateur,
+                col.role,
+                a.role_dossier,
+                a.statut,
+                a.created_at
+            FROM affectations_dossiers_v3 a
+            JOIN clients_v3 c ON c.id = a.client_id
+            JOIN collaborateurs_cabinet_v3 col ON col.id = a.collaborateur_id
+            ORDER BY a.id
+        """)).mappings().all()
+
+        notifications = conn.execute(text("""
+            SELECT
+                n.id,
+                n.collaborateur_id,
+                col.nom AS collaborateur,
+                n.client_id,
+                c.raison_sociale,
+                n.titre,
+                n.message,
+                n.niveau,
+                n.statut,
+                n.created_at
+            FROM notifications_cabinet_v3 n
+            LEFT JOIN collaborateurs_cabinet_v3 col ON col.id = n.collaborateur_id
+            LEFT JOIN clients_v3 c ON c.id = n.client_id
+            ORDER BY n.created_at DESC, n.id DESC
+            LIMIT 50
+        """)).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "kpis": {
+            "collaborateurs": len(collaborateurs),
+            "affectations": len(affectations),
+            "notifications": len(notifications),
+            "notifications_non_lues": len([n for n in notifications if n["statut"] == "NON_LUE"]),
+        },
+        "collaborateurs": [dict(c) for c in collaborateurs],
+        "affectations": [dict(a) for a in affectations],
+        "notifications": [dict(n) for n in notifications],
+    })
+
+
+@api_metier_demo.post("/api/refonte/notification/lire")
+def api_notification_lire():
+    data = request.get_json(silent=True) or {}
+    notification_id = data.get("notification_id")
+
+    if not notification_id:
+        return jsonify({"success": False, "error": "notification_id obligatoire"}), 400
+
+    with engine.begin() as conn:
+        row = conn.execute(text("""
+            UPDATE notifications_cabinet_v3
+            SET statut = 'LUE'
+            WHERE id = :id
+            RETURNING id, statut
+        """), {"id": notification_id}).mappings().first()
+
+    if not row:
+        return jsonify({"success": False, "error": "Notification introuvable"}), 404
+
+    return jsonify({"success": True, "notification": dict(row)})
