@@ -1903,11 +1903,16 @@ def api_client_360():
                 (SELECT COUNT(*) FROM ecritures_v3 WHERE client_id = :client_id AND COALESCE(statut,'') <> 'ANNULE') AS nb_ecritures,
                 (SELECT COUNT(*) FROM pieces_v3 WHERE client_id = :client_id) AS nb_pieces,
                 (SELECT COUNT(*) FROM factures_v3 WHERE client_id = :client_id) AS nb_factures,
-                (SELECT COUNT(*) FROM immobilisations_v3) AS nb_immobilisations,
-                (SELECT COUNT(*) FROM emprunts_v3) AS nb_emprunts,
-                (SELECT COUNT(*) FROM lettrages_tiers_v3) AS nb_lettrages,
-                (SELECT COUNT(*) FROM rapprochements_bancaires_v3) AS nb_rapprochements,
-                (SELECT COUNT(*) FROM operations_bancaires_v3 WHERE statut <> 'RAPPROCHE') AS banque_a_rapprocher,
+                (SELECT COUNT(*) FROM immobilisations_v3 WHERE societe_id = :client_id) AS nb_immobilisations,
+                (SELECT COUNT(*) FROM emprunts_v3 WHERE societe_id = :client_id) AS nb_emprunts,
+                (SELECT COUNT(*) FROM lettrages_tiers_v3 WHERE client_id = :client_id) AS nb_lettrages,
+                (
+  SELECT COUNT(*)
+  FROM rapprochements_bancaires_v3 rb
+  JOIN operations_bancaires_v3 ob ON ob.id = rb.operation_id
+  WHERE ob.client_id = :client_id
+) AS nb_rapprochements,
+                (SELECT COUNT(*) FROM operations_bancaires_v3 WHERE client_id = :client_id AND statut <> 'RAPPROCHE') AS banque_a_rapprocher,
                 (SELECT COUNT(*) FROM exercices_v3 WHERE client_id = :client_id AND statut='OUVERT') AS exercices_ouverts,
                 (SELECT COUNT(*) FROM exercices_v3 WHERE client_id = :client_id AND statut IN ('CLOTURE','VERROUILLE')) AS exercices_clotures
         """), {"client_id": client_id}).mappings().first()
