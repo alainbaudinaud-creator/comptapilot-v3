@@ -344,3 +344,28 @@ button.secondary{background:rgba(255,255,255,.12);color:white;border:1px solid r
   color: rgba(255,255,255,0.62);
   font-weight: 700;
 }
+
+.task-row {
+  grid-template-columns: 100px 1fr 100px auto;
+  align-items: center;
+}
+
+.task-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.task-actions button {
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 800;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+
+.task-actions button:hover {
+  background: rgba(255,255,255,0.14);
+}

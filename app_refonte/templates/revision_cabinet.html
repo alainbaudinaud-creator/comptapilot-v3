@@ -197,6 +197,32 @@
 
 
 
+
+async function modifierStatutTache(tacheId, statut) {
+  try {
+    const response = await fetch('/api/refonte/taches-revision/statut', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tache_id: tacheId, statut })
+    });
+
+    const payload = await response.json();
+
+    if (!payload.success) {
+      alert(payload.message || 'Impossible de mettre à jour la tâche');
+      return;
+    }
+
+    await chargerTachesRevision();
+    await chargerScoreRevision();
+    await chargerPlanActionIA();
+
+  } catch (error) {
+    console.error('Erreur statut tâche', error);
+    alert('Erreur lors de la mise à jour de la tâche');
+  }
+}
+
 async function chargerTachesRevision() {
 
   try {
@@ -211,10 +237,14 @@ async function chargerTachesRevision() {
     const lignes = payload.data.taches || [];
 
     const html = lignes.map(t => `
-      <div class="history-row">
+      <div class="history-row task-row">
         <strong>${t.priorite}</strong>
         <span>${t.titre}</span>
         <small>${t.statut}</small>
+        <div class="task-actions">
+          <button type="button" onclick="modifierStatutTache(${t.id}, 'EN_COURS')">Démarrer</button>
+          <button type="button" onclick="modifierStatutTache(${t.id}, 'TERMINE')">Terminer</button>
+        </div>
       </div>
     `).join('');
 

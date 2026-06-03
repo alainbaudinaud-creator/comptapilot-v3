@@ -4,7 +4,7 @@ from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.score_revision_service import calculer_score_revision
 from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
 from app_refonte.services.taches_ia_service import generer_taches_depuis_plan_ia
-from app_refonte.services.taches_revision_service import charger_taches_revision
+from app_refonte.services.taches_revision_service import charger_taches_revision, modifier_statut_tache_revision
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
@@ -168,6 +168,16 @@ def create_app_refonte():
 
 
 
+
+
+    @app.post("/api/refonte/taches-revision/statut")
+    def api_modifier_statut_tache_revision():
+        payload = request.get_json(silent=True) or {}
+        resultat = modifier_statut_tache_revision(
+            tache_id=payload.get("tache_id"),
+            statut=payload.get("statut")
+        )
+        return jsonify(resultat), 200 if resultat.get("success") else 400
 
     @app.get("/api/refonte/taches-revision")
     def api_taches_revision():
