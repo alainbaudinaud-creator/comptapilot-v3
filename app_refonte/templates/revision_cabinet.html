@@ -65,6 +65,21 @@
   </div>
 
 
+
+  <div class="premium-card">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Exécution opérationnelle</p>
+        <h2>Tâches de révision</h2>
+      </div>
+    </div>
+
+    <div id="liste-taches-revision">
+      <p class="muted">Chargement des tâches...</p>
+    </div>
+  </div>
+
+
 <div class="kpi-grid">
     <div class="kpi-card">
       <span>Comptes à contrôler</span>
@@ -180,6 +195,37 @@
 
 
 
+
+
+async function chargerTachesRevision() {
+
+  try {
+
+    const response =
+      await fetch('/api/refonte/taches-revision');
+
+    const payload = await response.json();
+
+    if (!payload.success) return;
+
+    const lignes = payload.data.taches || [];
+
+    const html = lignes.map(t => `
+      <div class="history-row">
+        <strong>${t.priorite}</strong>
+        <span>${t.titre}</span>
+        <small>${t.statut}</small>
+      </div>
+    `).join('');
+
+    document.getElementById(
+      'liste-taches-revision'
+    ).innerHTML = html;
+
+  } catch(e) {
+    console.error(e);
+  }
+}
 
 async function chargerPlanActionIA() {
 
@@ -454,11 +500,13 @@ async function chargerRevisionCabinet() {
 chargerRevisionCabinet();
 chargerScoreRevision();
 chargerPlanActionIA();
+chargerTachesRevision();
 chargerControleIA();
 chargerVisasCabinet();
 setInterval(chargerRevisionCabinet, 30000);
 setInterval(chargerScoreRevision, 30000);
 setInterval(chargerPlanActionIA, 30000);
+setInterval(chargerTachesRevision, 30000);
 setInterval(chargerControleIA, 30000);
 setInterval(chargerVisasCabinet, 30000);
 </script>
