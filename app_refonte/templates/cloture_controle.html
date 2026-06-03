@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Contrôle Clôture</title>
+<link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+
+<div class="page-shell">
+
+  <div class="hero-panel">
+    <div>
+      <p class="eyebrow">Contrôle réglementaire</p>
+      <h1>Autorisation de clôture</h1>
+    </div>
+
+    <div>
+      <span id="badge-cloture-global" class="status-pill warning">
+        Vérification...
+      </span>
+    </div>
+  </div>
+
+  <div class="premium-card">
+    <h2>Statut des validations</h2>
+
+    <p>
+      Visas :
+      <strong id="nb-visas">0</strong> /
+      <strong id="nb-attendus">3</strong>
+    </p>
+
+    <p id="texte-statut">
+      Chargement...
+    </p>
+
+    <button
+      id="btn-cloture"
+      disabled
+      style="margin-top:20px;padding:14px 24px;font-weight:700;">
+      Clôture comptable
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+async function verifierCloture() {
+
+  const r = await fetch('/api/refonte/cloture/statut');
+  const data = await r.json();
+
+  document.getElementById('nb-visas').textContent = data.nb_visas;
+  document.getElementById('nb-attendus').textContent = data.nb_attendus;
+
+  const badge = document.getElementById('badge-cloture-global');
+  const btn = document.getElementById('btn-cloture');
+  const texte = document.getElementById('texte-statut');
+
+  if (data.cloture_autorisee) {
+
+      badge.textContent = 'Clôture autorisée';
+      badge.className = 'status-pill success';
+
+      texte.textContent =
+        'Tous les visas sont obtenus. La clôture peut être lancée.';
+
+      btn.disabled = false;
+
+  } else {
+
+      badge.textContent = 'Clôture bloquée';
+      badge.className = 'status-pill danger';
+
+      texte.textContent =
+        'La clôture reste verrouillée tant que les 3 visas ne sont pas validés.';
+
+      btn.disabled = true;
+  }
+}
+
+verifierCloture();
+setInterval(verifierCloture,30000);
+</script>
+
+</body>
+</html>

@@ -158,6 +158,19 @@ def create_app_refonte():
         )
         return jsonify(resultat), 200 if resultat.get("success") else 400
 
+
+    @app.get("/api/refonte/cloture/statut")
+    def api_cloture_statut():
+        visas = charger_visas_cabinet()
+
+        return jsonify({
+            "success": True,
+            "cloture_autorisee": visas["cloture_autorisee"],
+            "nb_visas": visas["nb_visas"],
+            "nb_attendus": visas["nb_attendus"],
+            "statut": visas["statut"]
+        })
+
     @app.get("/api/refonte/visas-cabinet")
     def api_visas_cabinet():
         return jsonify({
@@ -171,6 +184,11 @@ def create_app_refonte():
             "success": True,
             "revision": charger_revision_cabinet()
         })
+
+
+    @app.get("/cloture-controle")
+    def cloture_controle():
+        return render_template("cloture_controle.html")
 
     @app.get("/revision-cabinet")
     def revision_cabinet():
