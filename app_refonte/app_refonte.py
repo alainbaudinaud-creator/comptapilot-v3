@@ -119,6 +119,10 @@ def create_app_refonte():
     def production_cabinet():
         return render_template("production_cabinet.html")
 
+    @app.get("/centre-fiscal")
+    def centre_fiscal():
+        return render_template("centre_fiscal.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})

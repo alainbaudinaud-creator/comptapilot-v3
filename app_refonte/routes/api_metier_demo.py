@@ -2156,3 +2156,62 @@ def api_production_cabinet_statut():
         return jsonify({"success": False, "error": "Workflow introuvable"}), 404
 
     return jsonify({"success": True, "workflow": dict(row)})
+
+@api_metier_demo.get("/api/refonte/centre-fiscal")
+def api_centre_fiscal():
+    with engine.begin() as conn:
+        tva = conn.execute(text("""
+            SELECT
+                COALESCE(SUM(CASE WHEN compte LIKE '4457%' THEN credit - debit ELSE 0 END),0) AS tva_collectee,
+                COALESCE(SUM(CASE WHEN compte LIKE '4456%' THEN debit - credit ELSE 0 END),0) AS tva_deductible
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE COALESCE(e.statut,'') <> 'ANNULE'
+        """)).mappings().first()
+
+        resultat = conn.execute(text("""
+            SELECT
+                COALESCE(SUM(CASE WHEN l.compte LIKE '7%' THEN l.credit - l.debit ELSE 0 END),0) AS produits,
+                COALESCE(SUM(CASE WHEN l.compte LIKE '6%' THEN l.debit - l.credit ELSE 0 END),0) AS charges
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE COALESCE(e.statut,'') <> 'ANNULE'
+        """)).mappings().first()
+
+        exercices = conn.execute(text("""
+            SELECT id, date_debut, date_fin, statut, resultat_cloture
+            FROM exercices_v3
+            ORDER BY date_debut DESC
+        """)).mappings().all()
+
+        controles = {
+            "fec_disponible": True,
+            "balance_disponible": True,
+            "bilan_disponible": True,
+            "compte_resultat_disponible": True,
+        }
+
+    tva_collectee = float(tva["tva_collectee"] or 0)
+    tva_deductible = float(tva["tva_deductible"] or 0)
+    tva_a_payer = round(tva_collectee - tva_deductible, 2)
+
+    produits = float(resultat["produits"] or 0)
+    charges = float(resultat["charges"] or 0)
+    resultat_fiscal = round(produits - charges, 2)
+
+    return jsonify({
+        "success": True,
+        "tva": {
+            "collectee": tva_collectee,
+            "deductible": tva_deductible,
+            "a_payer": tva_a_payer,
+        },
+        "resultat": {
+            "produits": produits,
+            "charges": charges,
+            "resultat_fiscal": resultat_fiscal,
+            "type": "BENEFICE" if resultat_fiscal >= 0 else "PERTE",
+        },
+        "exercices": [dict(e) for e in exercices],
+        "controles": controles,
+    })
