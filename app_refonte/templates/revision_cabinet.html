@@ -22,30 +22,30 @@
       </p>
     </div>
     <div class="hero-actions">
-      <span class="status-pill success">Prêt pour revue</span>
-      <span class="status-pill warning">12 contrôles actifs</span>
+      <span id="badge-revision" class="status-pill success">Prêt pour revue</span>
+      <span class="status-pill warning"><span id="kpi-controles">12</span> contrôles actifs</span>
     </div>
   </div>
 
   <div class="kpi-grid">
     <div class="kpi-card">
       <span>Comptes à contrôler</span>
-      <strong>18</strong>
-      <small>Priorité haute : 6</small>
+      <strong id="kpi-comptes">18</strong>
+      <small>Priorité haute : <span id="kpi-priorite">6</span></small>
     </div>
     <div class="kpi-card">
       <span>Écritures non justifiées</span>
-      <strong>9</strong>
+      <strong id="kpi-ecritures">9</strong>
       <small>Pièces manquantes ou OCR à valider</small>
     </div>
     <div class="kpi-card">
       <span>Anomalies TVA</span>
-      <strong>4</strong>
+      <strong id="kpi-tva">4</strong>
       <small>Écarts détectés avant CA3</small>
     </div>
     <div class="kpi-card">
       <span>Score clôture</span>
-      <strong>78%</strong>
+      <strong id="kpi-score">78%</strong>
       <small>Visa EC requis</small>
     </div>
   </div>
@@ -127,14 +127,68 @@
       <div class="closure-readiness">
         <h3>Indicateur prêt pour clôture</h3>
         <div class="progress-bar">
-          <div style="width:78%"></div>
+          <div id="progress-cloture" style="width:78%"></div>
         </div>
-        <p>Encore 7 points bloquants avant passage au centre fiscal et clôture.</p>
+        <p>Encore <span id="kpi-bloquants">7</span> points bloquants avant passage au centre fiscal et clôture.</p>
       </div>
     </section>
   </div>
 </div>
 
+
+
+<script>
+async function chargerRevisionCabinet() {
+  try {
+    const response = await fetch('/api/refonte/revision-cabinet');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.revision) {
+      return;
+    }
+
+    const r = payload.revision;
+    const totalControles =
+      Number(r.comptes_a_controler || 0) +
+      Number(r.ecritures_non_justifiees || 0) +
+      Number(r.anomalies_tva || 0) +
+      Number(r.anomalies_banque || 0) +
+      Number(r.anomalies_tiers || 0);
+
+    document.getElementById('kpi-comptes').textContent = r.comptes_a_controler ?? 0;
+    document.getElementById('kpi-priorite').textContent = r.priorite_haute ?? 0;
+    document.getElementById('kpi-ecritures').textContent = r.ecritures_non_justifiees ?? 0;
+    document.getElementById('kpi-tva').textContent = r.anomalies_tva ?? 0;
+    document.getElementById('kpi-score').textContent = `${r.score_cloture ?? 0}%`;
+    document.getElementById('kpi-bloquants').textContent = r.points_bloquants ?? 0;
+    document.getElementById('kpi-controles').textContent = totalControles;
+
+    const progress = document.getElementById('progress-cloture');
+    progress.style.width = `${r.score_cloture ?? 0}%`;
+
+    const badge = document.getElementById('badge-revision');
+    const score = Number(r.score_cloture || 0);
+
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (score >= 80) {
+      badge.classList.add('success');
+      badge.textContent = 'Prêt pour clôture';
+    } else if (score >= 50) {
+      badge.classList.add('warning');
+      badge.textContent = 'Révision en cours';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'Blocages à traiter';
+    }
+  } catch (error) {
+    console.error('Erreur chargement révision cabinet', error);
+  }
+}
+
+chargerRevisionCabinet();
+setInterval(chargerRevisionCabinet, 30000);
+</script>
 
 </body>
 </html>
