@@ -3,6 +3,7 @@ from app_refonte.services.revision_cabinet_service import charger_revision_cabin
 from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.score_revision_service import calculer_score_revision
 from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
+from app_refonte.services.taches_ia_service import generer_taches_depuis_plan_ia
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
@@ -164,6 +165,11 @@ def create_app_refonte():
 
 
 
+
+
+    @app.post("/api/refonte/plan-action-ia/generer-taches")
+    def api_generer_taches_ia():
+        return jsonify(generer_taches_depuis_plan_ia())
 
     @app.get("/api/refonte/plan-action-ia")
     def api_plan_action_ia():
