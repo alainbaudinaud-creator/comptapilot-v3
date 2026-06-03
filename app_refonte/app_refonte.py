@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
 from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.score_revision_service import calculer_score_revision
+from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
@@ -162,6 +163,14 @@ def create_app_refonte():
 
 
 
+
+
+    @app.get("/api/refonte/plan-action-ia")
+    def api_plan_action_ia():
+        return jsonify({
+            "success": True,
+            "plan": generer_plan_action_ia()
+        })
 
     @app.get("/api/refonte/score-revision")
     def api_score_revision():

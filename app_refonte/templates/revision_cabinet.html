@@ -50,7 +50,22 @@
   </div>
 
 
-  <div class="kpi-grid">
+  
+  <div class="premium-card">
+    <div class="section-header">
+      <div>
+        <p class="eyebrow">Assistant IA</p>
+        <h2>Plan d'action automatique</h2>
+      </div>
+    </div>
+
+    <div id="plan-action-ia">
+      <p class="muted">Chargement du plan d'action...</p>
+    </div>
+  </div>
+
+
+<div class="kpi-grid">
     <div class="kpi-card">
       <span>Comptes à contrôler</span>
       <strong id="kpi-comptes">18</strong>
@@ -164,6 +179,37 @@
 
 
 
+
+
+async function chargerPlanActionIA() {
+
+  try {
+
+    const response =
+      await fetch('/api/refonte/plan-action-ia');
+
+    const payload = await response.json();
+
+    if (!payload.success) {
+      return;
+    }
+
+    const plan = payload.plan;
+
+    const html = plan.actions.map((a, i) => `
+      <div class="history-row">
+        <strong>#${i + 1}</strong>
+        <span>${a.action}</span>
+        <small>${a.priorite}</small>
+      </div>
+    `).join('');
+
+    document.getElementById('plan-action-ia').innerHTML = html;
+
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 async function chargerScoreRevision() {
   try {
@@ -407,10 +453,12 @@ async function chargerRevisionCabinet() {
 
 chargerRevisionCabinet();
 chargerScoreRevision();
+chargerPlanActionIA();
 chargerControleIA();
 chargerVisasCabinet();
 setInterval(chargerRevisionCabinet, 30000);
 setInterval(chargerScoreRevision, 30000);
+setInterval(chargerPlanActionIA, 30000);
 setInterval(chargerControleIA, 30000);
 setInterval(chargerVisasCabinet, 30000);
 </script>
