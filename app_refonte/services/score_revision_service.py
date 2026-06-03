@@ -1,7 +1,9 @@
-
-
-from sqlalchemy import create_engine, text
 import os
+from sqlalchemy import create_engine, text
+
+from app_refonte.services.visas_cabinet_service import charger_visas_cabinet
+from app_refonte.services.controle_ia_service import calculer_controles_ia
+from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
 
 
 def _database_url():
@@ -12,13 +14,10 @@ def _database_url():
 
 
 def calculer_bonus_taches():
-
     try:
-
         engine = create_engine(_database_url(), pool_pre_ping=True)
 
         with engine.connect() as conn:
-
             total = conn.execute(text("""
                 SELECT COUNT(*)
                 FROM taches_cabinet_v3
@@ -27,7 +26,7 @@ def calculer_bonus_taches():
             terminees = conn.execute(text("""
                 SELECT COUNT(*)
                 FROM taches_cabinet_v3
-                WHERE statut='TERMINE'
+                WHERE statut = 'TERMINE'
             """)).scalar() or 0
 
         if total == 0:
@@ -39,15 +38,11 @@ def calculer_bonus_taches():
         return 0
 
 
-from app_refonte.services.visas_cabinet_service import charger_visas_cabinet
-from app_refonte.services.controle_ia_service import calculer_controles_ia
-from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
-
-
 def calculer_score_revision():
     visas = charger_visas_cabinet()
     controle_ia = calculer_controles_ia()
     revision = charger_revision_cabinet()
+    bonus_taches = calculer_bonus_taches()
 
     nb_visas = int(visas.get("nb_visas", 0))
     nb_attendus = int(visas.get("nb_attendus", 3) or 3)
@@ -60,20 +55,13 @@ def calculer_score_revision():
     points_bloquants = int(revision.get("points_bloquants", 0) or 0)
     score_revision = max(0, 30 - points_bloquants)
 
-    
-bonus_taches = calculer_bonus_taches()
-
-score_global = max(
-    0,
-    min(
-        100,
-        score_visas +
-        score_ia +
-        score_revision +
-        bonus_taches
+    score_global = max(
+        0,
+        min(
+            100,
+            score_visas + score_ia + score_revision + bonus_taches
+        )
     )
-)
-
 
     if score_global >= 85 and visas.get("cloture_autorisee"):
         niveau = "PRET_CLOTURE"
@@ -96,13 +84,11 @@ score_global = max(
             "score_visas": score_visas,
             "score_ia": score_ia,
             "score_revision": score_revision,
+            "bonus_taches": bonus_taches,
             "nb_visas": nb_visas,
             "nb_attendus": nb_attendus,
             "risque_ia": risque_ia,
-            
-"points_bloquants": points_bloquants,
-"bonus_taches": bonus_taches,
-
+            "points_bloquants": points_bloquants,
             "cloture_autorisee": bool(visas.get("cloture_autorisee"))
         },
         "sources": {
