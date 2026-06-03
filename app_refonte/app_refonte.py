@@ -1,6 +1,6 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
-from app_refonte.services.visas_cabinet_service import charger_visas_cabinet
+from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
 from app_refonte.routes.api_metier_demo import api_metier_demo
@@ -143,6 +143,20 @@ def create_app_refonte():
 
 
 
+
+
+    @app.post("/api/refonte/visas-cabinet/valider")
+    def api_valider_visa_cabinet():
+        payload = request.get_json(silent=True) or {}
+        type_visa = payload.get("type_visa")
+        utilisateur = payload.get("utilisateur", "demo.utilisateur")
+        commentaire = payload.get("commentaire")
+        resultat = enregistrer_visa_cabinet(
+            type_visa=type_visa,
+            utilisateur=utilisateur,
+            commentaire=commentaire
+        )
+        return jsonify(resultat), 200 if resultat.get("success") else 400
 
     @app.get("/api/refonte/visas-cabinet")
     def api_visas_cabinet():

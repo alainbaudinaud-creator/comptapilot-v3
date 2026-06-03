@@ -139,6 +139,35 @@
 
 <script>
 
+
+async function validerVisaCabinet(typeVisa) {
+  try {
+    const response = await fetch('/api/refonte/visas-cabinet/valider', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        type_visa: typeVisa,
+        utilisateur: 'demo.interface',
+        commentaire: `Validation ${typeVisa} depuis interface Révision Cabinet`
+      })
+    });
+
+    const payload = await response.json();
+
+    if (!payload.success) {
+      alert(payload.message || 'Impossible de valider le visa');
+      return;
+    }
+
+    await chargerVisasCabinet();
+  } catch (error) {
+    console.error('Erreur validation visa cabinet', error);
+    alert('Erreur lors de la validation du visa');
+  }
+}
+
 async function chargerVisasCabinet() {
   try {
     const response = await fetch('/api/refonte/visas-cabinet');

@@ -81,3 +81,60 @@ def charger_visas_cabinet(societe_id=1, exercice="2025"):
         data["erreur"] = str(e)
 
     return data
+
+
+def enregistrer_visa_cabinet(type_visa, utilisateur="demo.utilisateur", commentaire=None, societe_id=1, exercice="2025"):
+    type_visa = (type_visa or "").upper().strip()
+
+    if type_visa not in VISAS_ATTENDUS:
+        return {
+            "success": False,
+            "message": "Type de visa invalide",
+            "type_visa": type_visa
+        }
+
+    if commentaire is None:
+        commentaire = f"Visa {type_visa} validé depuis Révision Cabinet"
+
+    engine = create_engine(_database_url(), pool_pre_ping=True)
+
+    with engine.begin() as conn:
+        conn.execute(text("""
+            INSERT INTO cabinet_visas
+            (
+                societe_id,
+                exercice,
+                type_visa,
+                utilisateur,
+                commentaire,
+                valide
+            )
+            SELECT
+                :societe_id,
+                :exercice,
+                :type_visa,
+                :utilisateur,
+                :commentaire,
+                TRUE
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM cabinet_visas
+                WHERE societe_id = :societe_id
+                  AND exercice = :exercice
+                  AND type_visa = :type_visa
+                  AND valide = TRUE
+            )
+        """), {
+            "societe_id": societe_id,
+            "exercice": exercice,
+            "type_visa": type_visa,
+            "utilisateur": utilisateur,
+            "commentaire": commentaire
+        })
+
+    return {
+        "success": True,
+        "message": "Visa enregistré",
+        "type_visa": type_visa,
+        "visas": charger_visas_cabinet(societe_id=societe_id, exercice=exercice)
+    }
