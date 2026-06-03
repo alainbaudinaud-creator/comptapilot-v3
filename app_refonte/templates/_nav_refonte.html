@@ -1,0 +1,29 @@
+<nav>
+  <a class="{% if request.path == '/refonte/' %}active{% endif %}" href="/refonte/">🏠 Cockpit</a>
+  <a class="{% if request.path == '/refonte/admin-comptable' %}active{% endif %}" href="/refonte/admin-comptable">⚙ Admin comptable</a>
+
+  <a class="{% if request.path == '/refonte/exercices' %}active{% endif %}" href="/refonte/exercices">📅 Exercices</a>
+  <a class="{% if request.path == '/refonte/cloture' %}active{% endif %}" href="/refonte/cloture">🔒 Clôture</a>
+  <a class="{% if request.path == '/refonte/cloture-simulation' %}active{% endif %}" href="/refonte/cloture-simulation">🧾 Simulation clôture</a>
+
+  <a class="{% if request.path == '/refonte/journal' %}active{% endif %}" href="/refonte/journal">📒 Journal</a>
+  <a class="{% if request.path == '/refonte/grand-livre' %}active{% endif %}" href="/refonte/grand-livre">📚 Grand livre</a>
+  <a class="{% if request.path == '/refonte/balance' %}active{% endif %}" href="/refonte/balance">⚖ Balance</a>
+  <a class="{% if request.path == '/refonte/bilan' %}active{% endif %}" href="/refonte/bilan">🏛 Bilan</a>
+  <a class="{% if request.path == '/refonte/compte-resultat' %}active{% endif %}" href="/refonte/compte-resultat">📈 Résultat</a>
+
+  <a class="{% if request.path == '/refonte/pcg' %}active{% endif %}" href="/refonte/pcg">🧩 Plan comptable</a>
+  <a class="{% if request.path == '/refonte/tva' %}active{% endif %}" href="/refonte/tva">💶 TVA</a>
+  <a class="{% if request.path == '/refonte/tva-ca3' %}active{% endif %}" href="/refonte/tva-ca3">📄 TVA CA3</a>
+
+  <a class="{% if request.path == '/refonte/ocr' %}active{% endif %}" href="/refonte/ocr">🤖 OCR IA</a>
+  <a class="{% if request.path == '/refonte/ocr-pdf' %}active{% endif %}" href="/refonte/ocr-pdf">📎 OCR PDF</a>
+  <a class="{% if request.path == '/refonte/validation-ocr' %}active{% endif %}" href="/refonte/validation-ocr">✅ Validation OCR</a>
+
+  <a class="{% if request.path == '/refonte/rapprochement-bancaire' %}active{% endif %}" href="/refonte/rapprochement-bancaire">🏦 Rapprochement</a>
+  <a class="{% if request.path == '/refonte/immobilisations' %}active{% endif %}" href="/refonte/immobilisations">🏗 Immobilisations</a>
+  <a class="{% if request.path == '/refonte/emprunts' %}active{% endif %}" href="/refonte/emprunts">💳 Emprunts</a>
+
+  <a class="{% if request.path == '/refonte/fec' %}active{% endif %}" href="/refonte/fec">🧪 Contrôle FEC</a>
+  <a class="{% if request.path == '/refonte/fec-export' %}active{% endif %}" href="/refonte/fec-export">📤 Export FEC</a>
+</nav>
