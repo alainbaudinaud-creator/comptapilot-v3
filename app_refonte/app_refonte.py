@@ -9,7 +9,7 @@ from app_refonte.services.taches_revision_service import charger_taches_revision
 from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
 
 from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
-from app_refonte.routes.api_metier_demo import api_metier_demo
+from app_refonte.routes.api_metier_refonte import api_metier_refonte
 
 
 def create_app_refonte():
@@ -20,7 +20,7 @@ def create_app_refonte():
         static_url_path="/refonte-static",
     )
 
-    app.register_blueprint(api_metier_demo)
+    app.register_blueprint(api_metier_refonte)
 
     @app.get("/")
     def cockpit():
