@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Gestion exercices — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Gestion exercices</span></div></div>
+    <nav>
+      <a href="/refonte/">Cockpit</a>
+      <a href="/refonte/admin-comptable">Admin comptable</a>
+      <a href="/refonte/cloture">Contrôle clôture</a>
+      <a href="/refonte/cloture-simulation">Simulation clôture</a>
+      <a class="active" href="/refonte/exercices">Exercices</a>
+      <a href="/refonte/bilan">Bilan</a>
+      <a href="/refonte/balance">Balance</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Production cabinet</p>
+        <h1>Gestion des exercices</h1>
+      </div>
+      <div class="status"><span></span><strong id="status">Chargement</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Clôture, ouverture et à-nouveaux</h2>
+        <p>Suivez les exercices, les écritures de clôture et les écritures d'ouverture générées automatiquement.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>État</span>
+        <strong id="resume">-</strong>
+        <p id="detail">Chargement des exercices</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Exercices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Période</th>
+            <th>Statut</th>
+            <th>Résultat</th>
+            <th>Date clôture</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="exercicesRows"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Écritures spéciales</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Exercice</th>
+            <th>Date</th>
+            <th>Pièce</th>
+            <th>Libellé</th>
+            <th>Débit</th>
+            <th>Crédit</th>
+          </tr>
+        </thead>
+        <tbody id="ecrituresRows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function frDate(v){
+  if(!v) return '-';
+  return new Date(v).toLocaleDateString('fr-FR');
+}
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/exercices');
+  const data = await res.json();
+
+  document.getElementById('status').textContent = data.success ? 'OK' : 'Erreur';
+  document.getElementById('resume').textContent = (data.total || 0) + ' exercice(s)';
+  document.getElementById('detail').textContent = 'Gestion des clôtures et à-nouveaux';
+
+  const exercices = data.exercices || [];
+  document.getElementById('exercicesRows').innerHTML = exercices.map(e => `
+    <tr>
+      <td>${e.id}</td>
+      <td>${frDate(e.date_debut)} → ${frDate(e.date_fin)}</td>
+      <td><strong>${e.statut}</strong></td>
+      <td>${fmt(e.resultat_cloture)}</td>
+      <td>${frDate(e.date_cloture)}</td>
+      <td>
+        <button onclick="verrouiller(${e.id})">Verrouiller</button>
+      </td>
+    </tr>
+  `).join('');
+
+  const ecritures = data.ecritures_speciales || [];
+  document.getElementById('ecrituresRows').innerHTML = ecritures.map(e => `
+    <tr>
+      <td>${e.id}</td>
+      <td>${e.exercice_id}</td>
+      <td>${frDate(e.date_ecriture)}</td>
+      <td>${e.piece}</td>
+      <td>${e.libelle}</td>
+      <td>${fmt(e.total_debit)}</td>
+      <td>${fmt(e.total_credit)}</td>
+    </tr>
+  `).join('');
+}
+
+async function verrouiller(id){
+  const res = await fetch('/refonte/api/refonte/exercice/verrouiller', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({exercice_id:id})
+  });
+  const data = await res.json();
+  alert(data.success ? 'Exercice verrouillé' : (data.error || 'Erreur'));
+  charger();
+}
+
+charger();
+</script>
+</body>
+</html>

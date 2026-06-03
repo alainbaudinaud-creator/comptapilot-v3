@@ -1648,3 +1648,237 @@ def api_cloture_definitive():
         "statut": "CLOTURE",
     })
 
+
+@api_metier_demo.get("/api/refonte/exercices")
+def api_exercices_liste():
+    with engine.begin() as conn:
+        exercices = conn.execute(text("""
+            SELECT
+                id,
+                client_id,
+                date_debut,
+                date_fin,
+                statut,
+                date_cloture,
+                resultat_cloture,
+                created_at
+            FROM exercices_v3
+            ORDER BY date_debut DESC, id DESC
+        """)).mappings().all()
+
+        ecritures = conn.execute(text("""
+            SELECT
+                e.id,
+                e.exercice_id,
+                e.date_ecriture,
+                e.piece,
+                e.libelle,
+                e.statut,
+                e.source,
+                SUM(l.debit) AS total_debit,
+                SUM(l.credit) AS total_credit
+            FROM ecritures_v3 e
+            LEFT JOIN lignes_ecritures_v3 l ON l.ecriture_id = e.id
+            WHERE e.source IN ('CLOTURE_AUTO', 'A_NOUVEAUX_AUTO')
+              AND COALESCE(e.statut, '') <> 'ANNULE'
+            GROUP BY e.id
+            ORDER BY e.date_ecriture DESC, e.id DESC
+        """)).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "total": len(exercices),
+        "exercices": [dict(r) for r in exercices],
+        "ecritures_speciales": [dict(r) for r in ecritures],
+    })
+
+
+@api_metier_demo.post("/api/refonte/exercice/verrouiller")
+def api_exercice_verrouiller():
+    data = request.get_json(silent=True) or {}
+    exercice_id = data.get("exercice_id")
+
+    if not exercice_id:
+        return jsonify({"success": False, "error": "exercice_id obligatoire"}), 400
+
+    with engine.begin() as conn:
+        row = conn.execute(text("""
+            UPDATE exercices_v3
+            SET statut = 'VERROUILLE'
+            WHERE id = :id
+              AND statut = 'CLOTURE'
+            RETURNING id, statut
+        """), {"id": exercice_id}).mappings().first()
+
+    if not row:
+        return jsonify({
+            "success": False,
+            "error": "Exercice introuvable ou non clôturé"
+        }), 400
+
+    return jsonify({"success": True, "exercice": dict(row)})
+
+
+@api_metier_demo.post("/api/refonte/a-nouveaux/generer")
+def api_a_nouveaux_generer():
+    data = request.get_json(silent=True) or {}
+    exercice_source_id = data.get("exercice_source_id")
+    exercice_cible_id = data.get("exercice_cible_id")
+    autoriser_compte_attente = bool(data.get("autoriser_compte_attente", True))
+
+    if not exercice_source_id or not exercice_cible_id:
+        return jsonify({
+            "success": False,
+            "error": "exercice_source_id et exercice_cible_id obligatoires"
+        }), 400
+
+    with engine.begin() as conn:
+        source = conn.execute(text("""
+            SELECT id, client_id, date_debut, date_fin, statut
+            FROM exercices_v3
+            WHERE id = :id
+        """), {"id": exercice_source_id}).mappings().first()
+
+        cible = conn.execute(text("""
+            SELECT id, client_id, date_debut, date_fin, statut
+            FROM exercices_v3
+            WHERE id = :id
+        """), {"id": exercice_cible_id}).mappings().first()
+
+        if not source or not cible:
+            return jsonify({"success": False, "error": "Exercice source ou cible introuvable"}), 404
+
+        existant = conn.execute(text("""
+            SELECT id
+            FROM ecritures_v3
+            WHERE exercice_id = :exercice_cible_id
+              AND source = 'A_NOUVEAUX_AUTO'
+              AND COALESCE(statut, '') <> 'ANNULE'
+            ORDER BY id DESC
+            LIMIT 1
+        """), {"exercice_cible_id": exercice_cible_id}).scalar()
+
+        if existant:
+            return jsonify({
+                "success": False,
+                "error": "Des à-nouveaux actifs existent déjà pour cet exercice",
+                "ecriture_id": existant,
+            }), 400
+
+        soldes = conn.execute(text("""
+            SELECT
+                l.compte,
+                ROUND(SUM(l.debit - l.credit), 2) AS solde
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE e.exercice_id = :exercice_source_id
+              AND COALESCE(e.statut, '') <> 'ANNULE'
+              AND (
+                l.compte LIKE '1%'
+                OR l.compte LIKE '2%'
+                OR l.compte LIKE '3%'
+                OR l.compte LIKE '4%'
+                OR l.compte LIKE '5%'
+              )
+              AND l.compte <> '129000'
+            GROUP BY l.compte
+            HAVING ROUND(SUM(l.debit - l.credit), 2) <> 0
+            ORDER BY l.compte
+        """), {"exercice_source_id": exercice_source_id}).mappings().all()
+
+        ecriture_id = conn.execute(text("""
+            INSERT INTO ecritures_v3 (
+                client_id, exercice_id, date_ecriture, piece, libelle, statut, source
+            )
+            VALUES (
+                :client_id,
+                :exercice_cible_id,
+                :date_debut,
+                :piece,
+                :libelle,
+                'VALIDE',
+                'A_NOUVEAUX_AUTO'
+            )
+            RETURNING id
+        """), {
+            "client_id": cible["client_id"],
+            "exercice_cible_id": cible["id"],
+            "date_debut": cible["date_debut"],
+            "piece": f"AN-{str(cible['date_debut'])[:4]}",
+            "libelle": f"A-nouveaux ouverture exercice {str(cible['date_debut'])[:4]}",
+        }).scalar()
+
+        total_debit = 0.0
+        total_credit = 0.0
+
+        for row in soldes:
+            compte = row["compte"]
+            solde = float(row["solde"] or 0)
+
+            debit = solde if solde > 0 else 0
+            credit = abs(solde) if solde < 0 else 0
+            total_debit += debit
+            total_credit += credit
+
+            conn.execute(text("""
+                INSERT INTO lignes_ecritures_v3 (
+                    ecriture_id, compte, libelle, debit, credit
+                )
+                VALUES (
+                    :ecriture_id, :compte, :libelle, :debit, :credit
+                )
+            """), {
+                "ecriture_id": ecriture_id,
+                "compte": compte,
+                "libelle": "A-nouveaux ouverture exercice",
+                "debit": round(debit, 2),
+                "credit": round(credit, 2),
+            })
+
+        ecart = round(total_debit - total_credit, 2)
+
+        if ecart != 0:
+            if not autoriser_compte_attente:
+                conn.execute(text("""
+                    UPDATE ecritures_v3
+                    SET statut = 'ANNULE',
+                        libelle = libelle || ' - ANNULE CAR DESEQUILIBRE'
+                    WHERE id = :id
+                """), {"id": ecriture_id})
+                return jsonify({
+                    "success": False,
+                    "error": "A-nouveaux déséquilibrés",
+                    "ecart": ecart,
+                    "ecriture_id": ecriture_id,
+                }), 400
+
+            conn.execute(text("""
+                INSERT INTO lignes_ecritures_v3 (
+                    ecriture_id, compte, libelle, debit, credit
+                )
+                VALUES (
+                    :ecriture_id,
+                    '471000',
+                    'Compte attente équilibrage à-nouveaux',
+                    :debit,
+                    :credit
+                )
+            """), {
+                "ecriture_id": ecriture_id,
+                "debit": abs(ecart) if ecart < 0 else 0,
+                "credit": ecart if ecart > 0 else 0,
+            })
+
+            if ecart < 0:
+                total_debit += abs(ecart)
+            else:
+                total_credit += ecart
+
+        return jsonify({
+            "success": True,
+            "ecriture_id": ecriture_id,
+            "total_debit": round(total_debit, 2),
+            "total_credit": round(total_credit, 2),
+            "ecart": round(total_debit - total_credit, 2),
+            "compte_attente_utilise": ecart != 0,
+        })

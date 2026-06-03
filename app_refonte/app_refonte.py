@@ -99,6 +99,10 @@ def create_app_refonte():
     def admin_comptable():
         return render_template("admin_comptable.html")
 
+    @app.get("/exercices")
+    def exercices():
+        return render_template("exercices.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
