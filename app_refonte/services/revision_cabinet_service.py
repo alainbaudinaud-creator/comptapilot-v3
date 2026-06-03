@@ -11,99 +11,98 @@ def _database_url():
 
 def charger_revision_cabinet():
     data = {
-        "comptes_a_controler": 18,
-        "priorite_haute": 6,
-        "ecritures_non_justifiees": 9,
-        "anomalies_tva": 4,
-        "anomalies_banque": 6,
-        "anomalies_tiers": 5,
-        "score_cloture": 78,
-        "points_bloquants": 7,
-        "statut": "DEMO_REPLI"
+        "comptes_a_controler": 0,
+        "priorite_haute": 0,
+        "ecritures_non_justifiees": 0,
+        "anomalies_tva": 0,
+        "anomalies_banque": 0,
+        "anomalies_tiers": 0,
+        "taches_ia_terminees": 0,
+        "points_bloquants_bruts": 0,
+        "points_bloquants": 0,
+        "score_cloture": 100,
+        "statut": "POSTGRES_REEL_V3"
     }
 
     try:
         engine = create_engine(_database_url(), pool_pre_ping=True)
 
         with engine.connect() as conn:
-            # Comptes avec soldes anormaux simples
-            try:
-                row = conn.execute(text("""
-                    SELECT COUNT(*) AS nb
-                    FROM (
-                        SELECT compte, SUM(debit - credit) AS solde
-                        FROM ecritures_premium
-                        GROUP BY compte
-                        HAVING ABS(SUM(debit - credit)) > 0
-                    ) x
-                """)).mappings().first()
-                data["comptes_a_controler"] = int(row["nb"] or 0)
-            except Exception:
-                pass
+            comptes_attente = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM lignes_ecritures_v3
+                WHERE compte LIKE '471%'
+                   OR compte LIKE '467%'
+            """)).scalar() or 0
 
-            # Ecritures non justifiées : libellé faible ou pièce absente si colonnes disponibles
-            try:
-                row = conn.execute(text("""
-                    SELECT COUNT(*) AS nb
-                    FROM ecritures_premium
-                    WHERE libelle IS NULL
-                       OR LENGTH(TRIM(libelle)) < 5
-                """)).mappings().first()
-                data["ecritures_non_justifiees"] = int(row["nb"] or 0)
-            except Exception:
-                pass
+            libelles_faibles = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM lignes_ecritures_v3
+                WHERE libelle IS NULL
+                   OR LENGTH(TRIM(libelle)) < 5
+            """)).scalar() or 0
 
-            # Anomalies TVA approximatives sur comptes TVA
-            try:
-                row = conn.execute(text("""
-                    SELECT COUNT(*) AS nb
-                    FROM ecritures_premium
-                    WHERE compte::text LIKE '445%'
-                      AND COALESCE(debit,0) = 0
-                      AND COALESCE(credit,0) = 0
-                """)).mappings().first()
-                data["anomalies_tva"] = int(row["nb"] or 0)
-            except Exception:
-                pass
+            anomalies_tva = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM lignes_ecritures_v3
+                WHERE compte LIKE '445%'
+                  AND COALESCE(debit,0) = 0
+                  AND COALESCE(credit,0) = 0
+            """)).scalar() or 0
 
-            # Anomalies banque approximatives
-            try:
-                row = conn.execute(text("""
-                    SELECT COUNT(*) AS nb
-                    FROM ecritures_premium
-                    WHERE compte::text LIKE '512%'
-                      AND (journal IS NULL OR TRIM(journal) = '')
-                """)).mappings().first()
-                data["anomalies_banque"] = int(row["nb"] or 0)
-            except Exception:
-                pass
+            anomalies_banque = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM lignes_ecritures_v3
+                WHERE compte LIKE '512%'
+                  AND COALESCE(debit,0) = 0
+                  AND COALESCE(credit,0) = 0
+            """)).scalar() or 0
 
-            # Tiers à surveiller
-            try:
-                row = conn.execute(text("""
-                    SELECT COUNT(*) AS nb
-                    FROM ecritures_premium
-                    WHERE compte::text LIKE '401%'
-                       OR compte::text LIKE '411%'
-                """)).mappings().first()
-                data["anomalies_tiers"] = min(int(row["nb"] or 0), 99)
-            except Exception:
-                pass
+            anomalies_tiers = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM lignes_ecritures_v3
+                WHERE (
+                    compte LIKE '401%'
+                    AND COALESCE(debit,0) > COALESCE(credit,0)
+                )
+                OR (
+                    compte LIKE '411%'
+                    AND COALESCE(credit,0) > COALESCE(debit,0)
+                )
+            """)).scalar() or 0
+
+            taches_ia_terminees = conn.execute(text("""
+                SELECT COUNT(*)
+                FROM taches_cabinet_v3
+                WHERE titre LIKE '[IA]%'
+                  AND statut = 'TERMINE'
+            """)).scalar() or 0
 
         total_alertes = (
-            data["comptes_a_controler"]
-            + data["ecritures_non_justifiees"]
-            + data["anomalies_tva"]
-            + data["anomalies_banque"]
-            + data["anomalies_tiers"]
+            comptes_attente
+            + libelles_faibles
+            + anomalies_tva
+            + anomalies_banque
+            + anomalies_tiers
         )
 
-        data["points_bloquants"] = min(total_alertes, 25)
-        data["priorite_haute"] = min(data["points_bloquants"], 10)
-        data["score_cloture"] = max(0, min(100, 100 - data["points_bloquants"] * 3))
-        data["statut"] = "POSTGRES_REEL"
+        points_bruts = min(int(total_alertes), 25)
+        reduction_taches = int(taches_ia_terminees) * 5
+        points_nets = max(0, points_bruts - reduction_taches)
+
+        data["comptes_a_controler"] = int(comptes_attente)
+        data["ecritures_non_justifiees"] = int(libelles_faibles)
+        data["anomalies_tva"] = int(anomalies_tva)
+        data["anomalies_banque"] = int(anomalies_banque)
+        data["anomalies_tiers"] = int(anomalies_tiers)
+        data["taches_ia_terminees"] = int(taches_ia_terminees)
+        data["points_bloquants_bruts"] = points_bruts
+        data["points_bloquants"] = points_nets
+        data["priorite_haute"] = min(points_nets, 10)
+        data["score_cloture"] = max(0, min(100, 100 - points_nets * 3))
 
     except Exception as e:
+        data["statut"] = "ERREUR"
         data["erreur"] = str(e)
 
     return data
