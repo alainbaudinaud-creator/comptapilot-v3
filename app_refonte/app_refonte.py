@@ -103,6 +103,10 @@ def create_app_refonte():
     def exercices():
         return render_template("exercices.html")
 
+    @app.get("/client-360")
+    def client_360():
+        return render_template("client_360.html")
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})

@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Client 360 — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Client 360</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Dossier client premium</p>
+        <h1 id="raisonSociale">Chargement...</h1>
+      </div>
+      <div class="status"><span></span><strong id="statutClient">-</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Vue complète du dossier</h2>
+        <p id="identite">Chargement des informations légales et fiscales.</p>
+        <div class="actions">
+          <a href="/refonte/exercices"><button>Exercices</button></a>
+          <a href="/refonte/balance"><button class="secondary">Balance</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Régime fiscal</span>
+        <strong id="regimeFiscal">-</strong>
+        <p id="regimeTva">-</p>
+      </div>
+    </section>
+
+    <section class="metrics">
+      <article><span>Écritures</span><strong id="nbEcritures">0</strong><em>Actives</em></article>
+      <article><span>Pièces OCR</span><strong id="nbPieces">0</strong><em>Documents</em></article>
+      <article><span>Exercices ouverts</span><strong id="exOuverts">0</strong><em>Production</em></article>
+      <article><span>Exercices clôturés</span><strong id="exClotures">0</strong><em>Historique</em></article>
+    </section>
+
+    <section class="metrics">
+      <article><span>Immobilisations</span><strong id="nbImmobilisations">0</strong><em>Registre</em></article>
+      <article><span>Emprunts</span><strong id="nbEmprunts">0</strong><em>Financement</em></article>
+      <article><span>Lettrages</span><strong id="nbLettrages">0</strong><em>Tiers</em></article>
+      <article><span>Banque à rapprocher</span><strong id="banqueARapprocher">0</strong><em>Contrôle</em></article>
+    </section>
+
+    <section class="grid">
+      <article class="module"><h3>Comptabilité</h3><p>Journal, grand livre, balance.</p><a href="/refonte/journal"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>OCR & documents</h3><p>Pièces, OCR PDF, validation humaine.</p><a href="/refonte/validation-ocr"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Banque</h3><p>Rapprochements bancaires.</p><a href="/refonte/rapprochement-bancaire"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Fiscalité</h3><p>TVA, FEC, bilan, résultat.</p><a href="/refonte/tva-ca3"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Clôture</h3><p>Contrôle, clôture, à-nouveaux.</p><a href="/refonte/cloture"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Patrimoine</h3><p>Immobilisations et emprunts.</p><a href="/refonte/immobilisations"><span>Ouvrir →</span></a></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Exercices du dossier</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Période</th><th>Statut</th><th>Résultat</th><th>Date clôture</th></tr></thead>
+        <tbody id="rowsExercices"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Écritures de clôture et d'ouverture</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Date</th><th>Pièce</th><th>Libellé</th><th>Source</th></tr></thead>
+        <tbody id="rowsSpeciales"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : '-'; }
+
+fetch('/refonte/api/refonte/client-360?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const c = data.client || {};
+  const k = data.kpis || {};
+
+  document.getElementById('raisonSociale').textContent = c.raison_sociale || 'Client';
+  document.getElementById('statutClient').textContent = c.statut || '-';
+  document.getElementById('identite').textContent =
+    'SIREN ' + (c.siren || '-') + ' — SIRET ' + (c.siret || '-') + ' — ' + (c.adresse || '-');
+  document.getElementById('regimeFiscal').textContent = c.regime_fiscal || '-';
+  document.getElementById('regimeTva').textContent = 'TVA : ' + (c.regime_tva || '-');
+
+  document.getElementById('nbEcritures').textContent = k.nb_ecritures || 0;
+  document.getElementById('nbPieces').textContent = k.nb_pieces || 0;
+  document.getElementById('exOuverts').textContent = k.exercices_ouverts || 0;
+  document.getElementById('exClotures').textContent = k.exercices_clotures || 0;
+  document.getElementById('nbImmobilisations').textContent = k.nb_immobilisations || 0;
+  document.getElementById('nbEmprunts').textContent = k.nb_emprunts || 0;
+  document.getElementById('nbLettrages').textContent = k.nb_lettrages || 0;
+  document.getElementById('banqueARapprocher').textContent = k.banque_a_rapprocher || 0;
+
+  document.getElementById('rowsExercices').innerHTML = (data.exercices || []).map(e=>`
+    <tr>
+      <td>${e.id}</td>
+      <td>${frDate(e.date_debut)} → ${frDate(e.date_fin)}</td>
+      <td><strong>${e.statut}</strong></td>
+      <td>${fmt(e.resultat_cloture)}</td>
+      <td>${frDate(e.date_cloture)}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsSpeciales').innerHTML = (data.ecritures_speciales || []).map(e=>`
+    <tr>
+      <td>${e.id}</td>
+      <td>${frDate(e.date_ecriture)}</td>
+      <td>${e.piece}</td>
+      <td>${e.libelle}</td>
+      <td>${e.source}</td>
+    </tr>
+  `).join('');
+});
+</script>
+</body>
+</html>

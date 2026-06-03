@@ -1882,3 +1882,56 @@ def api_a_nouveaux_generer():
             "ecart": round(total_debit - total_credit, 2),
             "compte_attente_utilise": ecart != 0,
         })
+
+@api_metier_demo.get("/api/refonte/client-360")
+def api_client_360():
+    client_id = int(request.args.get("client_id", 1))
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, siren, siret, raison_sociale, forme_juridique,
+                   regime_fiscal, regime_tva, adresse, statut, created_at
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        kpis = conn.execute(text("""
+            SELECT
+                (SELECT COUNT(*) FROM ecritures_v3 WHERE client_id = :client_id AND COALESCE(statut,'') <> 'ANNULE') AS nb_ecritures,
+                (SELECT COUNT(*) FROM pieces_v3 WHERE client_id = :client_id) AS nb_pieces,
+                (SELECT COUNT(*) FROM factures_v3 WHERE client_id = :client_id) AS nb_factures,
+                (SELECT COUNT(*) FROM immobilisations_v3) AS nb_immobilisations,
+                (SELECT COUNT(*) FROM emprunts_v3) AS nb_emprunts,
+                (SELECT COUNT(*) FROM lettrages_tiers_v3) AS nb_lettrages,
+                (SELECT COUNT(*) FROM rapprochements_bancaires_v3) AS nb_rapprochements,
+                (SELECT COUNT(*) FROM operations_bancaires_v3 WHERE statut <> 'RAPPROCHE') AS banque_a_rapprocher,
+                (SELECT COUNT(*) FROM exercices_v3 WHERE client_id = :client_id AND statut='OUVERT') AS exercices_ouverts,
+                (SELECT COUNT(*) FROM exercices_v3 WHERE client_id = :client_id AND statut IN ('CLOTURE','VERROUILLE')) AS exercices_clotures
+        """), {"client_id": client_id}).mappings().first()
+
+        exercices = conn.execute(text("""
+            SELECT id, date_debut, date_fin, statut, date_cloture, resultat_cloture
+            FROM exercices_v3
+            WHERE client_id = :client_id
+            ORDER BY date_debut DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        ecritures_speciales = conn.execute(text("""
+            SELECT id, exercice_id, date_ecriture, piece, libelle, statut, source
+            FROM ecritures_v3
+            WHERE client_id = :client_id
+              AND source IN ('CLOTURE_AUTO', 'A_NOUVEAUX_AUTO')
+              AND COALESCE(statut,'') <> 'ANNULE'
+            ORDER BY date_ecriture DESC, id DESC
+        """), {"client_id": client_id}).mappings().all()
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "kpis": dict(kpis),
+        "exercices": [dict(r) for r in exercices],
+        "ecritures_speciales": [dict(r) for r in ecritures_speciales],
+    })
