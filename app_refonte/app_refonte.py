@@ -2,6 +2,7 @@ from flask import Flask, render_template, jsonify, request
 from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
 from app_refonte.services.controle_ia_service import calculer_controles_ia
 from app_refonte.services.score_revision_service import calculer_score_revision
+from app_refonte.services.autorisation_fiscale_service import verifier_autorisation_fiscale
 from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
 from app_refonte.services.taches_ia_service import generer_taches_depuis_plan_ia
 from app_refonte.services.taches_revision_service import charger_taches_revision, modifier_statut_tache_revision
@@ -195,6 +196,14 @@ def create_app_refonte():
         return jsonify({
             "success": True,
             "plan": generer_plan_action_ia()
+        })
+
+
+    @app.get("/api/refonte/autorisation-fiscale")
+    def api_autorisation_fiscale():
+        return jsonify({
+            "success": True,
+            "autorisation": verifier_autorisation_fiscale()
         })
 
     @app.get("/api/refonte/score-revision")

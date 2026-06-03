@@ -6,6 +6,32 @@
   <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
 </head>
 <body>
+
+<div class="premium-card fiscal-lock-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Contrôle préalable</p>
+      <h2>Autorisation fiscale</h2>
+    </div>
+    <span id="badge-autorisation-fiscale" class="status-pill warning">Vérification...</span>
+  </div>
+
+  <div class="score-revision-layout">
+    <div class="score-revision-number">
+      <strong id="score-fiscal-revision">0</strong>
+      <span>/100</span>
+    </div>
+    <div>
+      <h3 id="titre-autorisation-fiscale">Analyse en cours</h3>
+      <p id="message-autorisation-fiscale">Contrôle du score de révision et des visas cabinet.</p>
+      <p class="muted">
+        Visas : <span id="visas-fiscal">0/3</span> · Seuil fiscal requis : 85/100
+      </p>
+    </div>
+  </div>
+</div>
+
+
 <div class="shell">
   <aside class="sidebar">
     <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Centre fiscal</span></div></div>
@@ -94,5 +120,43 @@ fetch('/refonte/api/refonte/centre-fiscal')
   `).join('');
 });
 </script>
+
+<script>
+async function chargerAutorisationFiscale() {
+  try {
+    const response = await fetch('/api/refonte/autorisation-fiscale');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.autorisation) return;
+
+    const a = payload.autorisation;
+
+    document.getElementById('score-fiscal-revision').textContent = a.score_global || 0;
+    document.getElementById('visas-fiscal').textContent = `${a.nb_visas || 0}/${a.nb_attendus || 3}`;
+    document.getElementById('message-autorisation-fiscale').textContent = a.message || '';
+
+    const badge = document.getElementById('badge-autorisation-fiscale');
+    const titre = document.getElementById('titre-autorisation-fiscale');
+
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (a.declarations_autorisees) {
+      badge.classList.add('success');
+      badge.textContent = 'Déclarations autorisées';
+      titre.textContent = 'Centre Fiscal déverrouillé';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'Déclarations bloquées';
+      titre.textContent = 'Centre Fiscal verrouillé';
+    }
+  } catch (e) {
+    console.error('Erreur autorisation fiscale', e);
+  }
+}
+
+chargerAutorisationFiscale();
+setInterval(chargerAutorisationFiscale, 30000);
+</script>
+
 </body>
 </html>
