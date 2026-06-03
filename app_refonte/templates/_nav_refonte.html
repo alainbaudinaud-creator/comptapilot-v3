@@ -1,4 +1,5 @@
 <nav>
+  <a class="{% if request.path == '/refonte/supervision-cabinet' %}active{% endif %}" href="/refonte/supervision-cabinet">🧭 Supervision</a>
   <a class="{% if request.path == '/refonte/workflow-cabinet' %}active{% endif %}" href="/refonte/workflow-cabinet">📋 Workflow</a>
   <a class="{% if request.path == '/refonte/' %}active{% endif %}" href="/refonte/">🏠 Cockpit</a>
   <a class="{% if request.path == '/refonte/admin-comptable' %}active{% endif %}" href="/refonte/admin-comptable">⚙ Admin comptable</a>

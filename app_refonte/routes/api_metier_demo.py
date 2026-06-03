@@ -2012,3 +2012,42 @@ def api_workflow_cabinet_statut():
         return jsonify({"success": False, "error": "Tâche introuvable"}), 404
 
     return jsonify({"success": True, "tache": dict(row)})
+
+@api_metier_demo.get("/api/refonte/supervision-cabinet")
+def api_supervision_cabinet():
+    with engine.begin() as conn:
+        dossiers = conn.execute(text("""
+            SELECT
+                c.id,
+                c.raison_sociale,
+                c.siren,
+                c.statut,
+                COUNT(DISTINCT e.id) AS nb_ecritures,
+                COUNT(DISTINCT t.id) FILTER (WHERE t.statut <> 'TERMINE') AS nb_taches_ouvertes,
+                COUNT(DISTINCT t.id) FILTER (WHERE t.priorite IN ('HAUTE','CRITIQUE') AND t.statut <> 'TERMINE') AS nb_taches_urgentes,
+                COUNT(DISTINCT ex.id) FILTER (WHERE ex.statut = 'OUVERT') AS exercices_ouverts,
+                COUNT(DISTINCT ex.id) FILTER (WHERE ex.statut IN ('CLOTURE','VERROUILLE')) AS exercices_clotures,
+                COALESCE(MAX(ex.resultat_cloture), 0) AS dernier_resultat
+            FROM clients_v3 c
+            LEFT JOIN ecritures_v3 e ON e.client_id = c.id AND COALESCE(e.statut,'') <> 'ANNULE'
+            LEFT JOIN taches_cabinet_v3 t ON t.client_id = c.id
+            LEFT JOIN exercices_v3 ex ON ex.client_id = c.id
+            GROUP BY c.id
+            ORDER BY nb_taches_urgentes DESC, nb_taches_ouvertes DESC, c.id
+        """)).mappings().all()
+
+    total = len(dossiers)
+    dossiers_a_traiter = len([d for d in dossiers if int(d["nb_taches_ouvertes"] or 0) > 0])
+    urgences = sum(int(d["nb_taches_urgentes"] or 0) for d in dossiers)
+    ecritures = sum(int(d["nb_ecritures"] or 0) for d in dossiers)
+
+    return jsonify({
+        "success": True,
+        "kpis": {
+            "total_dossiers": total,
+            "dossiers_a_traiter": dossiers_a_traiter,
+            "urgences": urgences,
+            "ecritures": ecritures,
+        },
+        "dossiers": [dict(d) for d in dossiers],
+    })
