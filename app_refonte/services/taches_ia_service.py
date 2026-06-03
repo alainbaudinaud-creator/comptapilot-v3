@@ -25,31 +25,32 @@ def generer_taches_depuis_plan_ia():
 
     with engine.begin() as conn:
         for action in actions:
-            titre = action.get("action")
+            titre = "[IA] " + action.get("action", "Action IA à traiter")
             priorite = action.get("priorite", "NORMALE")
 
             row = conn.execute(text("""
                 INSERT INTO taches_cabinet_v3
                 (
+                    client_id,
                     titre,
                     priorite,
                     statut,
-                    source,
+                    echeance,
                     created_at
                 )
                 SELECT
+                    1,
                     :titre,
                     :priorite,
                     'A_FAIRE',
-                    'PLAN_ACTION_IA',
+                    CURRENT_DATE,
                     NOW()
                 WHERE NOT EXISTS (
                     SELECT 1
                     FROM taches_cabinet_v3
                     WHERE titre = :titre
-                      AND source = 'PLAN_ACTION_IA'
                 )
-                RETURNING id, titre, priorite, statut
+                RETURNING id, client_id, titre, priorite, statut, echeance, created_at
             """), {
                 "titre": titre,
                 "priorite": priorite
