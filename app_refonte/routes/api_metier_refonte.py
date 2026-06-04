@@ -2486,6 +2486,129 @@ def api_historique_teletransmission_fiscale_v3():
         "historique": rows,
     })
 
+
+@api_metier_refonte.get("/api/refonte/programme-travail")
+def api_programme_travail_v3():
+    client_id = int(request.args.get("client_id", 1))
+
+    cycles_reference = [
+        {"code": "TRESORERIE", "libelle": "Trésorerie", "mots": ["banque", "trésorerie", "rapprochement", "512"]},
+        {"code": "ACHATS", "libelle": "Achats / Fournisseurs", "mots": ["achat", "fournisseur", "401", "facture"]},
+        {"code": "VENTES", "libelle": "Ventes / Clients", "mots": ["vente", "client", "706", "411"]},
+        {"code": "FISCAL", "libelle": "Fiscal / TVA", "mots": ["tva", "fiscal", "ca3", "liasse", "déclaration"]},
+        {"code": "SOCIAL", "libelle": "Social", "mots": ["social", "paie", "salaire", "urssaf"]},
+        {"code": "IMMOBILISATIONS", "libelle": "Immobilisations", "mots": ["immobilisation", "amortissement", "218", "281"]},
+        {"code": "EMPRUNTS", "libelle": "Emprunts", "mots": ["emprunt", "banque", "164", "intérêt"]},
+        {"code": "CAPITAUX", "libelle": "Capitaux propres", "mots": ["capital", "résultat", "120", "129", "capitaux"]},
+    ]
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, raison_sociale, statut
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        taches = conn.execute(text("""
+            SELECT id, titre, priorite, statut, echeance, created_at
+            FROM taches_cabinet_v3
+            WHERE client_id = :client_id
+            ORDER BY id
+        """), {"client_id": client_id}).mappings().all()
+
+        workflow = conn.execute(text("""
+            SELECT id, module, etape, statut, responsable, commentaire, created_at
+            FROM workflow_cabinet_v3
+            WHERE client_id = :client_id
+            ORDER BY id
+        """), {"client_id": client_id}).mappings().all()
+
+        pieces = conn.execute(text("""
+            SELECT id, nom_fichier, type_piece, statut_ocr, statut_validation
+            FROM pieces_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+            LIMIT 20
+        """), {"client_id": client_id}).mappings().all()
+
+    def progression_statut(statut):
+        mapping = {
+            "A_FAIRE": 0,
+            "EN_COURS": 40,
+            "REVISION": 65,
+            "VALIDATION_EC": 85,
+            "TERMINE": 100,
+            "CLOTURE": 100,
+            "TRANSMIS_SIMULATION": 100,
+        }
+        return mapping.get((statut or "").upper(), 25)
+
+    cycles = []
+    total_progression = 0
+
+    for cycle in cycles_reference:
+        mots = cycle["mots"]
+        taches_cycle = [
+            dict(t) for t in taches
+            if any(m in (t["titre"] or "").lower() for m in mots)
+        ]
+
+        workflow_cycle = [
+            dict(w) for w in workflow
+            if any(m in ((w["module"] or "") + " " + (w["etape"] or "") + " " + (w["commentaire"] or "")).lower() for m in mots)
+        ]
+
+        if cycle["code"] == "FISCAL":
+            workflow_cycle += [dict(w) for w in workflow if (w["module"] or "").upper() in ("CLOTURE", "REVISION")]
+        if cycle["code"] == "IMMOBILISATIONS":
+            workflow_cycle += []
+        if cycle["code"] == "EMPRUNTS":
+            workflow_cycle += []
+
+        elements = taches_cycle + workflow_cycle
+
+        if elements:
+            progression = round(sum(progression_statut(e.get("statut")) for e in elements) / len(elements))
+            statut = "TERMINE" if progression >= 100 else "VALIDATION_EC" if progression >= 85 else "REVISION" if progression >= 65 else "EN_COURS" if progression >= 40 else "A_FAIRE"
+        else:
+            progression = 0
+            statut = "A_FAIRE"
+
+        total_progression += progression
+
+        cycles.append({
+            "code": cycle["code"],
+            "libelle": cycle["libelle"],
+            "statut": statut,
+            "progression": progression,
+            "responsable": "alain.baudinaud" if statut in ("VALIDATION_EC", "TERMINE") else "collaborateur.cabinet",
+            "taches": taches_cycle,
+            "workflow": workflow_cycle,
+            "justificatifs": [dict(p) for p in pieces[:3]],
+            "visa_chef_mission": progression >= 85,
+            "visa_expert_comptable": progression >= 100,
+        })
+
+    moyenne = round(total_progression / len(cycles)) if cycles else 0
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "kpis": {
+            "cycles": len(cycles),
+            "progression_globale": moyenne,
+            "cycles_termines": len([c for c in cycles if c["progression"] >= 100]),
+            "cycles_a_revoir": len([c for c in cycles if c["progression"] < 85]),
+            "taches": len(taches),
+            "workflow": len(workflow),
+        },
+        "cycles": cycles,
+    })
+
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))

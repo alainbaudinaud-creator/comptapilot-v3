@@ -143,6 +143,10 @@ def create_app_refonte():
     def dossier_permanent():
         return render_template("dossier_permanent.html")
 
+    @app.get("/programme-travail")
+    def programme_travail():
+        return render_template("programme_travail.html")
+
     @app.get("/collaborateurs")
     def collaborateurs():
         return render_template("collaborateurs.html")
