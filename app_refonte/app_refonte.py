@@ -191,6 +191,13 @@ def create_app_refonte():
         kpis, risques, controles = charger_centre_qualite()
         return render_template("centre_qualite.html", kpis=kpis, risques=risques, controles=controles)
 
+
+    @app.route("/controle-interne")
+    def controle_interne_page():
+        from app_refonte.services.controle_interne_service import charger_controle_interne
+        kpis, risques, controles, pistes = charger_controle_interne()
+        return render_template("controle_interne.html", kpis=kpis, risques=risques, controles=controles, pistes=pistes)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
