@@ -226,6 +226,13 @@ def create_app_refonte():
         kpis, dossiers, blocages, decisions = charger_comite_cloture()
         return render_template("comite_cloture.html", kpis=kpis, dossiers=dossiers, blocages=blocages, decisions=decisions)
 
+
+    @app.route("/centre-decision")
+    def centre_decision_page():
+        from app_refonte.services.centre_decision_service import charger_centre_decision
+        kpis, decisions, alertes, priorites = charger_centre_decision()
+        return render_template("centre_decision.html", kpis=kpis, decisions=decisions, alertes=alertes, priorites=priorites)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
