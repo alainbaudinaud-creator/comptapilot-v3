@@ -1,15 +1,21 @@
 from app_refonte.services.orchestration_cabinet_service import charger_orchestration_cabinet
+from app_refonte.services.orchestration_postgres_service import charger_orchestration_postgres
 
 
 def charger_cockpit_direction():
     kpis, synthese = charger_orchestration_cabinet()
+    data_pg = charger_orchestration_postgres()
+
+    kpis["score_cabinet"] = data_pg["kpis"]["score_global"]
+    kpis["alertes_totales"] = data_pg["kpis"]["notifications_non_lues"]
+    kpis["dossiers_prioritaires"] = data_pg["kpis"]["taches_critiques"]
 
     indicateurs = [
-        ["Score cabinet", f"{kpis['score_cabinet']}%", "Pilotage global"],
-        ["Score qualité", f"{kpis['score_qualite']}%", "Qualité dossiers"],
-        ["Score conformité", f"{kpis['score_conformite']}%", "RGPD / LCB-FT"],
-        ["Score risque", f"{kpis['score_risque']}%", "Exposition cabinet"],
-        ["Score clôture", f"{kpis['score_cloture']}%", "Préparation clôture"],
+        ["Score cabinet réel", f"{data_pg['kpis']['score_global']}%", "Calcul PostgreSQL"],
+        ["Clients actifs", data_pg["kpis"]["clients_total"], "clients_v3"],
+        ["Clients en révision / validation", data_pg["kpis"]["clients_revision"], "clients_v3"],
+        ["Tâches ouvertes", data_pg["kpis"]["taches_ouvertes"], "taches_cabinet_v3"],
+        ["Tâches critiques", data_pg["kpis"]["taches_critiques"], "taches_cabinet_v3"],
     ]
 
     decisions = synthese["decisions"]
