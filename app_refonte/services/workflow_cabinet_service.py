@@ -1,95 +1,50 @@
-from datetime import datetime
+from sqlalchemy import text
+from database import engine
 
 
-STATUTS = [
-    "A_FAIRE",
-    "EN_COURS",
-    "EN_VALIDATION",
-    "TERMINE",
-]
+def charger_workflow_cabinet():
+    with engine.connect() as conn:
+        k = conn.execute(text("""
+            SELECT
+                COUNT(*) AS total,
+                COUNT(*) FILTER (WHERE UPPER(COALESCE(statut,'')) IN ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')) AS termines,
+                COUNT(*) FILTER (WHERE UPPER(COALESCE(statut,'')) NOT IN ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')) AS ouverts,
+                COUNT(DISTINCT client_id) AS dossiers,
+                COUNT(*) FILTER (WHERE UPPER(COALESCE(statut,'')) IN ('BLOQUANT','ERREUR')) AS bloquants
+            FROM workflow_cabinet_v3
+        """)).mappings().first()
 
-PRIORITES = [
-    "BASSE",
-    "NORMALE",
-    "HAUTE",
-    "CRITIQUE",
-]
+        rows = conn.execute(text("""
+            SELECT
+                COALESCE(c.raison_sociale, 'Client non identifié') AS client,
+                COALESCE(w.module, 'Workflow') AS module,
+                COALESCE(w.etape, 'Étape cabinet') AS etape,
+                COALESCE(w.statut, 'A_FAIRE') AS statut,
+                COALESCE(w.responsable, 'Non affecté') AS responsable
+            FROM workflow_cabinet_v3 w
+            LEFT JOIN clients_v3 c ON c.id = w.client_id
+            ORDER BY w.created_at DESC, w.id DESC
+            LIMIT 20
+        """)).mappings().all()
 
+    total = int(k["total"] or 0)
+    termines = int(k["termines"] or 0)
+    ouverts = int(k["ouverts"] or 0)
+    bloquants = int(k["bloquants"] or 0)
+    score = 100 if total == 0 else round((termines / total) * 100)
 
-def creer_tache(
-    titre,
-    collaborateur,
-    priorite="NORMALE",
-    echeance=None,
-):
-    return {
-        "titre": titre,
-        "collaborateur": collaborateur,
-        "priorite": priorite,
-        "statut": "A_FAIRE",
-        "date_creation": datetime.utcnow().isoformat(),
-        "echeance": echeance,
+    kpis = {
+        "total": total,
+        "termines": termines,
+        "ouverts": ouverts,
+        "bloquants": bloquants,
+        "dossiers": int(k["dossiers"] or 0),
+        "score": score,
     }
 
+    workflow = [
+        [r["client"], r["module"], r["etape"], r["statut"], r["responsable"]]
+        for r in rows
+    ]
 
-def changer_statut(tache, nouveau_statut):
-    if nouveau_statut not in STATUTS:
-        raise ValueError("Statut invalide")
-
-    tache["statut"] = nouveau_statut
-
-    return tache
-
-
-def calculer_score_priorite(tache):
-    mapping = {
-        "BASSE": 10,
-        "NORMALE": 30,
-        "HAUTE": 70,
-        "CRITIQUE": 100,
-    }
-
-    return mapping.get(tache.get("priorite"), 0)
-
-
-def detecter_retards(taches):
-    now = datetime.utcnow()
-
-    retards = []
-
-    for tache in taches:
-
-        echeance = tache.get("echeance")
-
-        if not echeance:
-            continue
-
-        dt = datetime.fromisoformat(echeance)
-
-        if dt < now and tache.get("statut") != "TERMINE":
-            retards.append(tache)
-
-    return retards
-
-
-def generer_resume_cabinet(taches):
-    total = len(taches)
-
-    terminees = len([
-        t for t in taches
-        if t["statut"] == "TERMINE"
-    ])
-
-    critiques = len([
-        t for t in taches
-        if t["priorite"] == "CRITIQUE"
-    ])
-
-    retards = len(detecter_retards(taches))
-
-    return {
-        "total_taches": total,
-        "taches_terminees": terminees,
-        "taches_critiques": critiques,
-        "taches_en_retard": retards,
-    }
+    return kpis, workflow

@@ -1,73 +1,45 @@
-def calcul_score_client(client):
-
-    score = 100
-
-    if client.get("retard"):
-        score -= 25
-
-    score -= client.get("alertes", 0) * 5
-
-    if client.get("tva_a_declarer", 0) > 5000:
-        score -= 10
-
-    if client.get("factures_pdp", 0) == 0:
-        score -= 10
-
-    return max(score, 0)
+from sqlalchemy import text
+from database import engine
 
 
-def analyser_client(client):
+def charger_supervision_ia():
+    with engine.connect() as conn:
+        k = conn.execute(text("""
+            SELECT
+                COUNT(*) AS pieces,
+                COUNT(*) FILTER (WHERE statut_ocr = 'TRAITE') AS ocr_traite,
+                COUNT(*) FILTER (WHERE statut_validation <> 'VALIDEE') AS a_valider,
+                COUNT(*) FILTER (WHERE analyse_ia IS NOT NULL) AS analyses_ia
+            FROM pieces_v3
+        """)).mappings().first()
 
-    score = calcul_score_client(client)
+        rows = conn.execute(text("""
+            SELECT
+                COALESCE(c.raison_sociale, 'Client non identifié') AS client,
+                COALESCE(p.nom_fichier, 'Pièce') AS fichier,
+                COALESCE(p.type_piece, 'NON_CLASSE') AS type_piece,
+                COALESCE(p.statut_ocr, 'A_TRAITER') AS statut_ocr,
+                COALESCE(p.statut_validation, 'A_VALIDER') AS statut_validation
+            FROM pieces_v3 p
+            LEFT JOIN clients_v3 c ON c.id = p.client_id
+            ORDER BY p.created_at DESC, p.id DESC
+            LIMIT 20
+        """)).mappings().all()
 
-    alertes = []
+    pieces = int(k["pieces"] or 0)
+    a_valider = int(k["a_valider"] or 0)
 
-    if client.get("retard"):
-        alertes.append("DOSSIER_EN_RETARD")
-
-    if client.get("alertes", 0) > 0:
-        alertes.append("ALERTES_ACTIVES")
-
-    if client.get("tva_a_declarer", 0) > 5000:
-        alertes.append("TVA_IMPORTANTE")
-
-    return {
-        "nom": client["nom"],
-        "score": score,
-        "alertes": alertes,
-        "priorite": 100 - score
+    kpis = {
+        "pieces": pieces,
+        "ocr_traite": int(k["ocr_traite"] or 0),
+        "a_valider": a_valider,
+        "analyses_ia": int(k["analyses_ia"] or 0),
+        "score_ia": 100 if pieces == 0 else round(((pieces - a_valider) / pieces) * 100),
     }
 
-
-def supervision_cabinet(clients):
-
-    analyses = [
-        analyser_client(client)
-        for client in clients
+    controles = [
+        [r["client"], r["fichier"], r["type_piece"], r["statut_ocr"], r["statut_validation"]]
+        for r in rows
     ]
 
-    score_global = int(
-        sum(x["score"] for x in analyses)
-        / len(analyses)
-    )
-
-    alertes = sum(
-        len(x["alertes"])
-        for x in analyses
-    )
-
-    dossiers_critiques = len([
-        x for x in analyses
-        if x["score"] < 60
-    ])
-
-    return {
-        "score_cabinet": score_global,
-        "alertes": alertes,
-        "dossiers_critiques": dossiers_critiques,
-        "clients": sorted(
-            analyses,
-            key=lambda x: x["priorite"],
-            reverse=True
-        )
-    }
+    return kpis, controles

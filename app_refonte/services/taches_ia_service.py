@@ -1,63 +1,58 @@
-import os
-from sqlalchemy import create_engine, text
-from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
+from sqlalchemy import text
+from database import engine
 
 
-def db_url():
-    return os.getenv(
-        "DATABASE_URL",
-        "postgresql://comptapilot:comptapilot@postgres:5432/comptapilot"
-    )
+def charger_taches_ia():
+    with engine.connect() as conn:
+        rows = conn.execute(text("""
+            SELECT
+                COALESCE(c.raison_sociale, 'Client non identifié') AS client,
+                COALESCE(t.titre, 'Contrôle IA') AS titre,
+                COALESCE(t.priorite, 'NORMALE') AS priorite,
+                COALESCE(t.statut, 'A_FAIRE') AS statut
+            FROM taches_cabinet_v3 t
+            LEFT JOIN clients_v3 c ON c.id = t.client_id
+            WHERE
+                t.titre ILIKE '%IA%'
+                OR t.titre ILIKE '%contrô%'
+                OR t.titre ILIKE '%controle%'
+                OR UPPER(COALESCE(t.priorite,'')) IN ('CRITIQUE','HAUTE','URGENT')
+            ORDER BY t.id DESC
+            LIMIT 20
+        """)).mappings().all()
 
+    taches = [[r["client"], r["titre"], r["priorite"], r["statut"]] for r in rows]
 
-def generer_taches_depuis_plan_ia():
-    plan = generer_plan_action_ia()
-    actions = plan.get("actions", [])
-
-    resultat = {
-        "success": True,
-        "nb_actions": len(actions),
-        "nb_taches_creees": 0,
-        "taches": []
+    kpis = {
+        "taches_ia": len(taches),
+        "critiques": sum(1 for t in taches if str(t[2]).upper() in ("CRITIQUE", "HAUTE", "URGENT")),
+        "a_traiter": sum(1 for t in taches if str(t[3]).upper() not in ("TERMINE", "TERMINEE", "VALIDEE", "VALIDÉE", "OK")),
     }
 
-    engine = create_engine(db_url(), pool_pre_ping=True)
+    return kpis, taches
 
-    with engine.begin() as conn:
-        for action in actions:
-            titre = "[IA] " + action.get("action", "Action IA à traiter")
-            priorite = action.get("priorite", "NORMALE")
 
-            row = conn.execute(text("""
-                INSERT INTO taches_cabinet_v3
-                (
-                    client_id,
-                    titre,
-                    priorite,
-                    statut,
-                    echeance,
-                    created_at
-                )
-                SELECT
-                    1,
-                    :titre,
-                    :priorite,
-                    'A_FAIRE',
-                    CURRENT_DATE,
-                    NOW()
-                WHERE NOT EXISTS (
-                    SELECT 1
-                    FROM taches_cabinet_v3
-                    WHERE titre = :titre
-                )
-                RETURNING id, client_id, titre, priorite, statut, echeance, created_at
-            """), {
-                "titre": titre,
-                "priorite": priorite
-            }).mappings().first()
+def generer_taches_depuis_plan_ia(plan=None, client_id=None):
+    """
+    Compatibilité avec app_refonte.py.
+    Génère une liste de tâches IA à partir des données PostgreSQL actuelles.
+    """
+    kpis, taches = charger_taches_ia()
 
-            if row:
-                resultat["nb_taches_creees"] += 1
-                resultat["taches"].append(dict(row))
+    suggestions = []
+    for t in taches[:10]:
+        suggestions.append({
+            "client": t[0],
+            "titre": t[1],
+            "priorite": t[2],
+            "statut": t[3],
+            "source": "PostgreSQL",
+        })
 
-    return resultat
+    return {
+        "success": True,
+        "kpis": kpis,
+        "taches": suggestions,
+        "client_id": client_id,
+        "plan": plan or "plan_ia_cabinet",
+    }
