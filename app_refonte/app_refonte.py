@@ -247,6 +247,13 @@ def create_app_refonte():
         commandement, synthese = charger_centre_commandement()
         return render_template("centre_commandement.html", commandement=commandement, synthese=synthese)
 
+
+    @app.route("/orchestration-temps-reel")
+    def orchestration_temps_reel_page():
+        from app_refonte.services.orchestration_temps_reel_service import charger_orchestration_temps_reel
+        cerveau, synthese, actions_du_jour, flux = charger_orchestration_temps_reel()
+        return render_template("orchestration_temps_reel.html", cerveau=cerveau, synthese=synthese, actions_du_jour=actions_du_jour, flux=flux)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
