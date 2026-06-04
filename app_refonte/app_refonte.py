@@ -212,6 +212,13 @@ def create_app_refonte():
         kpis, risques, plans = charger_gestion_risques()
         return render_template("gestion_risques.html", kpis=kpis, risques=risques, plans=plans)
 
+
+    @app.route("/salle-supervision")
+    def salle_supervision_page():
+        from app_refonte.services.salle_supervision_service import charger_salle_supervision
+        kpis, dossiers, alertes, charge = charger_salle_supervision()
+        return render_template("salle_supervision.html", kpis=kpis, dossiers=dossiers, alertes=alertes, charge=charge)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
