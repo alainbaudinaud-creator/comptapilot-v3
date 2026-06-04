@@ -757,13 +757,42 @@ def api_bilan():
             "solde": solde,
         }
 
-        if solde >= 0:
-            actif.append(item)
-            total_actif += solde
-        else:
+        compte = str(r["compte"] or "")
+        classe = str(r["classe"] or "")
+
+        # Classement bilan par nature comptable.
+        # - Classe 1 : capitaux propres / dettes financières => passif
+        # - Comptes 28 : amortissements => passif / correction d'actif
+        # - Classe 2 hors 28 : immobilisations => actif
+        # - Classe 3 : stocks => actif
+        # - Classe 4 : tiers, actif si débiteur, passif si créditeur
+        # - Classe 5 : trésorerie, actif si débiteur, passif si créditeur
+        if classe == "1" or compte.startswith("28"):
             item["solde"] = abs(solde)
             passif.append(item)
             total_passif += abs(solde)
+        elif classe in ("2", "3"):
+            item["solde"] = abs(solde)
+            actif.append(item)
+            total_actif += abs(solde)
+        elif classe in ("4", "5"):
+            if solde >= 0:
+                item["solde"] = abs(solde)
+                actif.append(item)
+                total_actif += abs(solde)
+            else:
+                item["solde"] = abs(solde)
+                passif.append(item)
+                total_passif += abs(solde)
+        else:
+            if solde >= 0:
+                item["solde"] = abs(solde)
+                actif.append(item)
+                total_actif += abs(solde)
+            else:
+                item["solde"] = abs(solde)
+                passif.append(item)
+                total_passif += abs(solde)
 
     return jsonify({
         "success": True,
@@ -1724,7 +1753,7 @@ def api_a_nouveaux_generer():
     data = request.get_json(silent=True) or {}
     exercice_source_id = data.get("exercice_source_id")
     exercice_cible_id = data.get("exercice_cible_id")
-    autoriser_compte_attente = bool(data.get("autoriser_compte_attente", True))
+    autoriser_compte_attente = bool(data.get("autoriser_compte_attente", False))
 
     if not exercice_source_id or not exercice_cible_id:
         return jsonify({
@@ -2292,19 +2321,36 @@ def api_liasse_fiscale_v3():
     charges = float(lignes["charges"] or 0)
     produits = float(lignes["produits"] or 0)
     resultat = round(produits - charges, 2)
+
+    actif_immo = float(lignes["actif_immo"] or 0)
+    capitaux = float(lignes["capitaux"] or 0)
+    tiers = float(lignes["tiers"] or 0)
+    tresorerie = float(lignes["tresorerie"] or 0)
+
     valeur_immos = float(immos["valeur"] or 0)
     capital_emprunts = float(emprunts["capital"] or 0)
+
+    total_actif = round(actif_immo + max(tiers, 0) + tresorerie, 2)
+    total_passif = round(capitaux + capital_emprunts + abs(min(tiers, 0)), 2)
 
     formulaires = [
         {"formulaire": "2033-A", "rubrique": "Identification", "valeur": client["raison_sociale"], "statut": "PREPARE"},
         {"formulaire": "2033-A", "rubrique": "SIREN", "valeur": client["siren"], "statut": "PREPARE"},
-        {"formulaire": "2033-A", "rubrique": "Actif immobilisé", "valeur": round(valeur_immos, 2), "statut": "PREPARE"},
-        {"formulaire": "2033-A", "rubrique": "Dettes financières", "valeur": round(capital_emprunts, 2), "statut": "PREPARE"},
-        {"formulaire": "2033-B", "rubrique": "Produits d'exploitation", "valeur": round(produits, 2), "statut": "PREPARE"},
-        {"formulaire": "2033-B", "rubrique": "Charges d'exploitation", "valeur": round(charges, 2), "statut": "PREPARE"},
-        {"formulaire": "2033-B", "rubrique": "Résultat fiscal", "valeur": resultat, "statut": "PREPARE"},
-        {"formulaire": "2033-C", "rubrique": "Nombre immobilisations", "valeur": int(immos["nb"] or 0), "statut": "PREPARE"},
-        {"formulaire": "2033-C", "rubrique": "Valeur immobilisations", "valeur": round(valeur_immos, 2), "statut": "PREPARE"},
+        {"formulaire": "2033-A", "rubrique": "Actif immobilisé", "valeur": round(actif_immo or valeur_immos, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Créances / comptes de tiers", "valeur": round(max(tiers, 0), 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Trésorerie", "valeur": round(tresorerie, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Total actif", "valeur": total_actif, "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Capitaux propres", "valeur": round(capitaux, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Dettes financières", "valeur": round(capital_emprunts, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Dettes tiers", "valeur": round(abs(min(tiers, 0)), 2), "statut": "CALCULE"},
+        {"formulaire": "2033-A", "rubrique": "Total passif", "valeur": total_passif, "statut": "CALCULE"},
+        {"formulaire": "2033-B", "rubrique": "Produits d'exploitation", "valeur": round(produits, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-B", "rubrique": "Charges d'exploitation", "valeur": round(charges, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-B", "rubrique": "Résultat fiscal", "valeur": resultat, "statut": "CALCULE"},
+        {"formulaire": "2033-C", "rubrique": "Nombre immobilisations", "valeur": int(immos["nb"] or 0), "statut": "CALCULE"},
+        {"formulaire": "2033-C", "rubrique": "Valeur immobilisations", "valeur": round(valeur_immos, 2), "statut": "CALCULE"},
+        {"formulaire": "2033-C", "rubrique": "Nombre emprunts", "valeur": int(emprunts["nb"] or 0), "statut": "CALCULE"},
+        {"formulaire": "2033-C", "rubrique": "Capital emprunts", "valeur": round(capital_emprunts, 2), "statut": "CALCULE"},
     ]
 
     autorisation = verifier_autorisation_fiscale()
@@ -2314,6 +2360,7 @@ def api_liasse_fiscale_v3():
         "exercice_present": len(exercices) > 0,
         "ecritures_presentes": total_ecritures > 0,
         "liasse_preparee": True,
+        "bilan_equilibre": round(total_actif, 2) == round(total_passif, 2),
         "autorisation_fiscale": bool(autorisation.get("declarations_autorisees")),
     }
 
@@ -2329,6 +2376,9 @@ def api_liasse_fiscale_v3():
             "nb_factures": int(factures["nb"] or 0),
             "valeur_immobilisations": round(valeur_immos, 2),
             "capital_emprunts": round(capital_emprunts, 2),
+            "total_actif": total_actif,
+            "total_passif": total_passif,
+            "equilibre_bilan": round(total_actif, 2) == round(total_passif, 2),
             "resultat_fiscal": resultat,
             "type_resultat": "BENEFICE" if resultat >= 0 else "PERTE",
         },
