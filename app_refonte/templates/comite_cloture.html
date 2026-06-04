@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Comité de Clôture Cabinet V3</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
+    nav{display:flex;gap:14px;flex-wrap:wrap;padding:18px 28px;background:#020617;border-bottom:1px solid #1e293b}
+    nav a{color:#cbd5e1;text-decoration:none;font-weight:700}
+    main{padding:32px}
+    h1{font-size:36px;margin-bottom:6px}
+    .sub{color:#94a3b8;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:24px}
+    .card,.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px}
+    .card span{color:#94a3b8;font-weight:700}
+    .card strong{display:block;font-size:32px;margin-top:8px;color:#7dd3fc}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{padding:12px;border-bottom:1px solid #1f2937;text-align:left}
+    th{color:#93c5fd}
+    .danger{color:#fca5a5;font-weight:800}
+    .warn{color:#facc15;font-weight:800}
+    .ok{color:#86efac;font-weight:800}
+  </style>
+</head>
+<body>
+{% include "_nav_refonte.html" %}
+
+<main>
+  <h1>Comité de Clôture Cabinet V3</h1>
+  <p class="sub">Décision GO / NO GO de clôture, arbitrages expert-comptable, blocages restants et score global de clôture.</p>
+
+  <section class="grid">
+    <div class="card"><span>Dossiers comité</span><strong>{{ kpis.dossiers_comite }}</strong></div>
+    <div class="card"><span>GO clôture</span><strong>{{ kpis.go_cloture }}</strong></div>
+    <div class="card"><span>NO GO</span><strong>{{ kpis.no_go }}</strong></div>
+    <div class="card"><span>À arbitrer</span><strong>{{ kpis.a_arbitrer }}</strong></div>
+    <div class="card"><span>Score clôture</span><strong>{{ kpis.score_cloture }}%</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>Dossiers présentés au comité</h2>
+    <table>
+      <thead><tr><th>Dossier</th><th>Préparation</th><th>Validation</th><th>État</th><th>Décision</th></tr></thead>
+      <tbody>
+      {% for d in dossiers %}
+        <tr>
+          <td>{{ d[0] }}</td>
+          <td>{{ d[1] }}</td>
+          <td>{{ d[2] }}</td>
+          <td>{{ d[3] }}</td>
+          <td class="{% if d[4] == 'GO' %}ok{% elif d[4] == 'NO GO' %}danger{% else %}warn{% endif %}">{{ d[4] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Blocages restants</h2>
+    <table>
+      <thead><tr><th>Domaine</th><th>Dossier</th><th>Blocage</th><th>Niveau</th></tr></thead>
+      <tbody>
+      {% for b in blocages %}
+        <tr>
+          <td>{{ b[0] }}</td>
+          <td>{{ b[1] }}</td>
+          <td>{{ b[2] }}</td>
+          <td class="{% if b[3] == 'Critique' %}danger{% else %}warn{% endif %}">{{ b[3] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Synthèse des décisions</h2>
+    <table>
+      <thead><tr><th>Décision</th><th>Signification</th><th>Nombre</th></tr></thead>
+      <tbody>
+      {% for d in decisions %}
+        <tr>
+          <td class="{% if d[0] == 'GO' %}ok{% elif d[0] == 'NO GO' %}danger{% else %}warn{% endif %}">{{ d[0] }}</td>
+          <td>{{ d[1] }}</td>
+          <td>{{ d[2] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>

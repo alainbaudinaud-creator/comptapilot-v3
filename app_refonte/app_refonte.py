@@ -219,6 +219,13 @@ def create_app_refonte():
         kpis, dossiers, alertes, charge = charger_salle_supervision()
         return render_template("salle_supervision.html", kpis=kpis, dossiers=dossiers, alertes=alertes, charge=charge)
 
+
+    @app.route("/comite-cloture")
+    def comite_cloture_page():
+        from app_refonte.services.comite_cloture_service import charger_comite_cloture
+        kpis, dossiers, blocages, decisions = charger_comite_cloture()
+        return render_template("comite_cloture.html", kpis=kpis, dossiers=dossiers, blocages=blocages, decisions=decisions)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
