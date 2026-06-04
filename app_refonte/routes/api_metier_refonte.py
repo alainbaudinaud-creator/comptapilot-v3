@@ -2393,6 +2393,27 @@ def api_liasse_fiscale_v3():
     })
 
 
+
+@api_metier_refonte.get("/api/refonte/liasse-fiscale/pdf")
+def api_liasse_fiscale_pdf_v3():
+    from app_refonte.services.liasse_pdf_v3_service import generer_pdf_liasse_v3
+
+    client_id = int(request.args.get("client_id", 1))
+
+    response = api_liasse_fiscale_v3()
+    payload = response.get_json()
+
+    if not payload or not payload.get("success"):
+        return jsonify({"success": False, "error": "Liasse non générable"}), 400
+
+    pdf = generer_pdf_liasse_v3(payload)
+
+    return jsonify({
+        "success": True,
+        "pdf": pdf,
+        "message": "PDF fiscal généré avec succès"
+    })
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))
