@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Gestion des Risques Cabinet V3</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
+    nav{display:flex;gap:14px;flex-wrap:wrap;padding:18px 28px;background:#020617;border-bottom:1px solid #1e293b}
+    nav a{color:#cbd5e1;text-decoration:none;font-weight:700}
+    main{padding:32px}
+    h1{font-size:36px;margin-bottom:6px}
+    .sub{color:#94a3b8;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:24px}
+    .card,.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px}
+    .card span{color:#94a3b8;font-weight:700}
+    .card strong{display:block;font-size:32px;margin-top:8px;color:#7dd3fc}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:12px;border-bottom:1px solid #1f2937;text-align:left}
+    th{color:#93c5fd}
+  </style>
+</head>
+<body>
+
+{% include "_nav_refonte.html" %}
+
+<main>
+
+<h1>Gestion des Risques Cabinet V3</h1>
+
+<p class="sub">
+Pilotage centralisé des risques fiscaux, qualité, conformité, GED,
+révision et visa expert-comptable.
+</p>
+
+<div class="grid">
+  <div class="card"><span>Risques</span><strong>{{ kpis.risques_total }}</strong></div>
+  <div class="card"><span>Critiques</span><strong>{{ kpis.risques_critiques }}</strong></div>
+  <div class="card"><span>Maîtrisés</span><strong>{{ kpis.risques_maitrises }}</strong></div>
+  <div class="card"><span>Plans d'action</span><strong>{{ kpis.plans_actions }}</strong></div>
+  <div class="card"><span>Score global</span><strong>{{ kpis.score_global }}%</strong></div>
+</div>
+
+<div class="panel">
+  <h2>Matrice des risques</h2>
+
+  <table>
+    <tr>
+      <th>Domaine</th>
+      <th>Risque</th>
+      <th>Criticité</th>
+      <th>Impact</th>
+      <th>Responsable</th>
+      <th>Statut</th>
+    </tr>
+
+    {% for r in risques %}
+    <tr>
+      <td>{{ r[0] }}</td>
+      <td>{{ r[1] }}</td>
+      <td>{{ r[2] }}</td>
+      <td>{{ r[3] }}</td>
+      <td>{{ r[4] }}</td>
+      <td>{{ r[5] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="panel">
+  <h2>Plans d'action</h2>
+
+  <table>
+    <tr>
+      <th>Domaine</th>
+      <th>Action</th>
+      <th>Responsable</th>
+      <th>Priorité</th>
+    </tr>
+
+    {% for p in plans %}
+    <tr>
+      <td>{{ p[0] }}</td>
+      <td>{{ p[1] }}</td>
+      <td>{{ p[2] }}</td>
+      <td>{{ p[3] }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+</main>
+</body>
+</html>

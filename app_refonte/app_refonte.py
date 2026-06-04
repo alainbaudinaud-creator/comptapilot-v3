@@ -205,6 +205,13 @@ def create_app_refonte():
         kpis, obligations, risques, actions = charger_conformite_reglementaire()
         return render_template("conformite_reglementaire.html", kpis=kpis, obligations=obligations, risques=risques, actions=actions)
 
+
+    @app.route("/gestion-risques")
+    def gestion_risques_page():
+        from app_refonte.services.gestion_risques_service import charger_gestion_risques
+        kpis, risques, plans = charger_gestion_risques()
+        return render_template("gestion_risques.html", kpis=kpis, risques=risques, plans=plans)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
