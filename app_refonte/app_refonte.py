@@ -163,6 +163,12 @@ def create_app_refonte():
     @app.get("/planning-cabinet")
     def planning_cabinet():
         return render_template("planning_cabinet.html")
+    @app.route("/ged-cabinet")
+    def ged_cabinet_page():
+        from app_refonte.services.ged_cabinet_service import charger_ged_cabinet
+        kpis, dossiers, pieces = charger_ged_cabinet()
+        return render_template("ged_cabinet.html", kpis=kpis, dossiers=dossiers, pieces=pieces)
+
 
     @app.get("/health")
     def health():

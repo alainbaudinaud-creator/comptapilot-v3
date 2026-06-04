@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>GED Cabinet Premium V3</title>
+</head>
+<body style="font-family:Arial;background:#0f172a;color:white;padding:40px;">
+  <h1>GED Cabinet Premium V3</h1>
+
+  <h2>Documents indexés : {{ kpis.documents }}</h2>
+  <h2>Pièces manquantes : {{ kpis.manquants }}</h2>
+  <h2>Score documentaire : {{ kpis.score }}%</h2>
+
+  <h2>Classement documentaire</h2>
+  <ul>
+    {% for dossier in dossiers %}
+      <li>{{ dossier.nom }} - {{ dossier.statut }} - {{ dossier.documents }} documents</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Dernières pièces analysées</h2>
+  <ul>
+    {% for piece in pieces %}
+      <li>{{ piece.nom }} - {{ piece.cycle }} - {{ piece.statut }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
