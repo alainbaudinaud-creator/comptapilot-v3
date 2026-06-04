@@ -1,45 +1,57 @@
 from decimal import Decimal, ROUND_HALF_UP
 
-def tableau_amortissement_emprunt(montant, taux_annuel, duree_mois):
-    capital = Decimal(str(montant or 0))
-    taux = Decimal(str(taux_annuel or 0)) / Decimal("100")
-    mois = int(duree_mois or 0)
 
-    if capital <= 0 or mois <= 0:
-        return []
+def _money(value):
+    return Decimal(str(value or 0)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
+def tableau_amortissement_emprunt(montant, taux_annuel, duree_mois):
+    capital = _money(montant)
+    taux = Decimal(str(taux_annuel or 0)) / Decimal("100")
+    duree = int(duree_mois or 0)
+
+    if capital <= 0 or duree <= 0:
+        return {
+            "success": False,
+            "message": "Paramètres emprunt invalides",
+            "tableau": [],
+        }
 
     taux_mensuel = taux / Decimal("12")
 
     if taux_mensuel == 0:
-        echeance = (capital / Decimal(mois)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        mensualite = _money(capital / Decimal(duree))
     else:
-        echeance = (
-            capital * taux_mensuel / (1 - (1 + taux_mensuel) ** (-mois))
-        ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        mensualite = _money(capital * taux_mensuel / (1 - (1 + taux_mensuel) ** Decimal(-duree)))
 
     restant = capital
-    lignes = []
+    tableau = []
 
-    for i in range(1, mois + 1):
-        interets = (restant * taux_mensuel).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-        principal = echeance - interets
+    for mois in range(1, duree + 1):
+        interets = _money(restant * taux_mensuel)
+        principal = _money(mensualite - interets)
 
-        if i == mois:
+        if mois == duree:
             principal = restant
-            echeance_finale = principal + interets
+            mensualite_reelle = _money(principal + interets)
         else:
-            echeance_finale = echeance
+            mensualite_reelle = mensualite
 
-        restant -= principal
-        if restant < Decimal("0.01"):
-            restant = Decimal("0.00")
+        restant = _money(restant - principal)
 
-        lignes.append({
-            "mois": i,
-            "echeance": float(echeance_finale),
+        tableau.append({
+            "mois": mois,
+            "mensualite": float(mensualite_reelle),
             "interets": float(interets),
-            "capital": float(principal),
-            "capital_restant": float(restant),
+            "capital_rembourse": float(principal),
+            "capital_restant": float(max(restant, Decimal("0.00"))),
         })
 
-    return lignes
+    return {
+        "success": True,
+        "montant": float(capital),
+        "taux_annuel": float(taux_annuel or 0),
+        "duree_mois": duree,
+        "mensualite": float(mensualite),
+        "tableau": tableau,
+    }

@@ -1,26 +1,44 @@
 from decimal import Decimal, ROUND_HALF_UP
 
+
+def _money(value):
+    return Decimal(str(value or 0)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+
+
 def amortissement_lineaire(valeur_origine, duree_mois):
-    valeur = Decimal(str(valeur_origine or 0))
-    mois = int(duree_mois or 0)
+    valeur = _money(valeur_origine)
+    duree = int(duree_mois or 0)
 
-    if mois <= 0:
-        return []
+    if duree <= 0:
+        return {
+            "success": False,
+            "message": "Durée d'amortissement invalide",
+            "valeur_origine": float(valeur),
+            "duree_mois": duree,
+            "mensualite": 0,
+            "tableau": [],
+        }
 
-    mensualite = (valeur / Decimal(mois)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    mensualite = _money(valeur / Decimal(duree))
+    tableau = []
     cumul = Decimal("0.00")
-    lignes = []
 
-    for i in range(1, mois + 1):
-        dotation = mensualite if i < mois else valeur - cumul
-        cumul += dotation
-        vnc = valeur - cumul
+    for mois in range(1, duree + 1):
+        dotation = mensualite if mois < duree else _money(valeur - cumul)
+        cumul = _money(cumul + dotation)
+        valeur_nette = _money(valeur - cumul)
 
-        lignes.append({
-            "mois": i,
+        tableau.append({
+            "mois": mois,
             "dotation": float(dotation),
-            "cumul": float(cumul),
-            "vnc": float(vnc),
+            "cumul_amortissement": float(cumul),
+            "valeur_nette": float(valeur_nette),
         })
 
-    return lignes
+    return {
+        "success": True,
+        "valeur_origine": float(valeur),
+        "duree_mois": duree,
+        "mensualite": float(mensualite),
+        "tableau": tableau,
+    }

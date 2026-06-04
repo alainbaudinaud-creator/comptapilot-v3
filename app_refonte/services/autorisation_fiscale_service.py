@@ -1,38 +1,36 @@
-from app_refonte.services.score_revision_service import calculer_score_revision
+from sqlalchemy import text
+from database import engine
 
 
 def verifier_autorisation_fiscale():
-    score = calculer_score_revision()
-    detail = score.get("detail", {})
+    with engine.connect() as conn:
+        stats = conn.execute(text("""
+            SELECT
+                (SELECT COUNT(*) FROM exercices_v3) AS exercices,
+                (SELECT COUNT(*) FROM teletransmissions_fiscales_v3) AS teletransmissions,
+                (SELECT COUNT(*) FROM cabinet_visas WHERE valide IS TRUE) AS visas,
+                (SELECT COUNT(*) FROM pieces_v3 WHERE statut_validation <> 'VALIDEE') AS pieces_a_valider,
+                (SELECT COUNT(*) FROM taches_cabinet_v3
+                 WHERE UPPER(COALESCE(priorite,'')) IN ('CRITIQUE','HAUTE','URGENT')
+                 AND UPPER(COALESCE(statut,'')) NOT IN ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')) AS points_bloquants
+        """)).mappings().first()
 
-    score_global = int(score.get("score_global", 0) or 0)
-    cloture_autorisee = bool(detail.get("cloture_autorisee", False))
-    nb_visas = int(detail.get("nb_visas", 0) or 0)
-    nb_attendus = int(detail.get("nb_attendus", 3) or 3)
+    pieces = int(stats["pieces_a_valider"] or 0)
+    bloquants = int(stats["points_bloquants"] or 0)
+    visas = int(stats["visas"] or 0)
 
-    declarations_autorisees = (
-        score_global >= 85
-        and cloture_autorisee
-        and nb_visas >= nb_attendus
-    )
-
-    if declarations_autorisees:
-        statut = "DECLARATIONS_AUTORISEES"
-        message = "Le dossier est suffisamment révisé. Les déclarations fiscales peuvent être préparées."
-    elif not cloture_autorisee or nb_visas < nb_attendus:
-        statut = "VISAS_INCOMPLETS"
-        message = "Les déclarations fiscales sont bloquées : tous les visas cabinet ne sont pas validés."
-    else:
-        statut = "SCORE_REVISION_INSUFFISANT"
-        message = "Les déclarations fiscales sont bloquées : le score global de révision doit atteindre 85/100."
+    autorise = pieces == 0 and bloquants == 0 and visas > 0
 
     return {
-        "declarations_autorisees": declarations_autorisees,
-        "statut": statut,
-        "message": message,
-        "score_global": score_global,
-        "seuil_score": 85,
-        "nb_visas": nb_visas,
-        "nb_attendus": nb_attendus,
-        "score_revision": score
+        "success": True,
+        "autorise": autorise,
+        "statut": "AUTORISE" if autorise else "BLOQUE",
+        "controles": {
+            "exercices": int(stats["exercices"] or 0),
+            "teletransmissions": int(stats["teletransmissions"] or 0),
+            "visas_valides": visas,
+            "pieces_a_valider": pieces,
+            "points_bloquants": bloquants,
+        },
+        "message": "Autorisation fiscale validée" if autorise else "Autorisation fiscale bloquée par contrôles métier",
     }
