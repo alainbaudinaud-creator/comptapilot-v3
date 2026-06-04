@@ -2435,6 +2435,57 @@ def api_liasse_fiscale_edi_tdfc_v3():
         "message": "Préparation EDI-TDFC générée avec succès"
     })
 
+
+@api_metier_refonte.get("/api/refonte/liasse-fiscale/teletransmission/preparer")
+def api_preparer_teletransmission_fiscale_v3():
+    from app_refonte.services.teletransmission_fiscale_v3_service import preparer_teletransmission_fiscale_v3
+
+    client_id = int(request.args.get("client_id", 1))
+
+    response = api_liasse_fiscale_v3()
+    payload = response.get_json()
+
+    if not payload or not payload.get("success"):
+        return jsonify({"success": False, "error": "Liasse non générable"}), 400
+
+    depot = preparer_teletransmission_fiscale_v3(payload)
+
+    return jsonify({
+        "success": True,
+        "depot": depot,
+        "message": "Télétransmission fiscale préparée"
+    })
+
+
+@api_metier_refonte.post("/api/refonte/liasse-fiscale/teletransmission/envoyer")
+def api_envoyer_teletransmission_fiscale_v3():
+    from app_refonte.services.teletransmission_fiscale_v3_service import simuler_envoi_teletransmission_fiscale_v3
+
+    data = request.get_json(silent=True) or {}
+    depot_id = data.get("depot_id")
+
+    if not depot_id:
+        return jsonify({"success": False, "error": "depot_id obligatoire"}), 400
+
+    resultat = simuler_envoi_teletransmission_fiscale_v3(int(depot_id))
+    return jsonify(resultat), 200 if resultat.get("success") else 404
+
+
+@api_metier_refonte.get("/api/refonte/liasse-fiscale/teletransmission/historique")
+def api_historique_teletransmission_fiscale_v3():
+    from app_refonte.services.teletransmission_fiscale_v3_service import historique_teletransmissions_fiscales_v3
+
+    client_id = request.args.get("client_id")
+    rows = historique_teletransmissions_fiscales_v3(
+        client_id=int(client_id) if client_id else None
+    )
+
+    return jsonify({
+        "success": True,
+        "total": len(rows),
+        "historique": rows,
+    })
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))

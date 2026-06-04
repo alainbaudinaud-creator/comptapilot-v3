@@ -37,6 +37,7 @@
           <a href="/refonte/fec-export"><button class="secondary">Export FEC</button></a>
           <button onclick="genererPdfFiscal()">Générer PDF fiscal</button>
           <button onclick="genererEdiTdfc()">Générer EDI-TDFC</button>
+          <button onclick="preparerTeletransmission()">Préparer télétransmission</button>
         </div>
       </div>
       <div class="hero-card">
@@ -125,6 +126,16 @@ async function genererEdiTdfc(){
     alert('EDI-TDFC préparé : ' + data.edi.txt_filename);
   } else {
     alert('Erreur génération EDI-TDFC');
+  }
+}
+
+async function preparerTeletransmission(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/teletransmission/preparer?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('Télétransmission préparée : ' + data.depot.numero_transmission);
+  } else {
+    alert('Erreur préparation télétransmission');
   }
 }
 </script>
