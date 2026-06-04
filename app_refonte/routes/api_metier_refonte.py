@@ -2609,6 +2609,133 @@ def api_programme_travail_v3():
     })
 
 
+
+@api_metier_refonte.get("/api/refonte/justification-comptes")
+def api_justification_comptes_v3():
+    client_id = int(request.args.get("client_id", 1))
+
+    comptes_cibles = {
+        "401": "Fournisseurs",
+        "411": "Clients",
+        "445": "TVA",
+        "471": "Comptes d'attente",
+        "512": "Banque",
+        "164": "Emprunts",
+        "218": "Immobilisations",
+        "281": "Amortissements",
+        "120": "Résultat",
+        "129": "Report à nouveau",
+    }
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, raison_sociale, statut
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        soldes = conn.execute(text("""
+            SELECT
+              l.compte,
+              COUNT(*) AS nb_lignes,
+              COALESCE(SUM(l.debit),0) AS debit,
+              COALESCE(SUM(l.credit),0) AS credit,
+              COALESCE(SUM(l.debit - l.credit),0) AS solde
+            FROM lignes_ecritures_v3 l
+            JOIN ecritures_v3 e ON e.id = l.ecriture_id
+            WHERE e.client_id = :client_id
+              AND COALESCE(e.statut,'') <> 'ANNULE'
+            GROUP BY l.compte
+            ORDER BY l.compte
+        """), {"client_id": client_id}).mappings().all()
+
+        pieces = conn.execute(text("""
+            SELECT id, nom_fichier, type_piece, statut_ocr, statut_validation, ecriture_id
+            FROM pieces_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+        """), {"client_id": client_id}).mappings().all()
+
+    comptes = []
+    alertes = []
+
+    for row in soldes:
+        compte = str(row["compte"])
+        prefixe = compte[:3]
+        libelle = comptes_cibles.get(prefixe)
+        if not libelle:
+            continue
+
+        solde = float(row["solde"] or 0)
+        nb_lignes = int(row["nb_lignes"] or 0)
+
+        pieces_liees = [dict(p) for p in pieces if p.get("ecriture_id")]
+
+        risque = "FAIBLE"
+        statut_justification = "JUSTIFIE"
+
+        if prefixe in ("471", "467") and abs(solde) > 0:
+            risque = "CRITIQUE"
+            statut_justification = "A_JUSTIFIER"
+            alertes.append(f"Compte d'attente {compte} à solder : {round(solde,2)} €")
+        elif prefixe == "512" and abs(solde) > 100000:
+            risque = "ELEVE"
+            statut_justification = "A_CONTROLER"
+            alertes.append(f"Solde bancaire significatif sur {compte}")
+        elif prefixe in ("120", "129") and abs(solde) > 0:
+            risque = "MOYEN"
+            statut_justification = "A_CONTROLER"
+        elif prefixe in ("164", "218", "281") and abs(solde) > 0:
+            risque = "MOYEN"
+            statut_justification = "PIECE_ATTENDUE"
+        elif prefixe in ("401", "411", "445") and abs(solde) > 0:
+            risque = "MOYEN"
+            statut_justification = "A_CONTROLER"
+
+        score = 100
+        if statut_justification == "A_CONTROLER":
+            score = 65
+        if statut_justification == "PIECE_ATTENDUE":
+            score = 55
+        if statut_justification == "A_JUSTIFIER":
+            score = 25
+
+        comptes.append({
+            "compte": compte,
+            "libelle": libelle,
+            "nb_lignes": nb_lignes,
+            "debit": float(row["debit"] or 0),
+            "credit": float(row["credit"] or 0),
+            "solde": solde,
+            "risque": risque,
+            "statut_justification": statut_justification,
+            "score": score,
+            "pieces": pieces_liees[:5],
+            "commentaire": "Contrôle automatique ComptaPilot V3",
+            "visa_chef_mission": score >= 80,
+            "visa_expert_comptable": score >= 95,
+        })
+
+    score_global = round(sum(c["score"] for c in comptes) / len(comptes)) if comptes else 0
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "kpis": {
+            "comptes": len(comptes),
+            "score_global": score_global,
+            "a_justifier": len([c for c in comptes if c["statut_justification"] == "A_JUSTIFIER"]),
+            "a_controler": len([c for c in comptes if c["statut_justification"] in ("A_CONTROLER", "PIECE_ATTENDUE")]),
+            "alertes": len(alertes),
+        },
+        "alertes": alertes,
+        "comptes": comptes,
+    })
+
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))

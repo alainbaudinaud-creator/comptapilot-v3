@@ -147,6 +147,10 @@ def create_app_refonte():
     def programme_travail():
         return render_template("programme_travail.html")
 
+    @app.get("/justification-comptes")
+    def justification_comptes():
+        return render_template("justification_comptes.html")
+
     @app.get("/collaborateurs")
     def collaborateurs():
         return render_template("collaborateurs.html")
