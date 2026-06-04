@@ -4,43 +4,125 @@ from database import engine
 
 def charger_salle_supervision():
     with engine.connect() as conn:
-        k = conn.execute(text("""
+
+        stats = conn.execute(text("""
+            WITH clients AS (
+                SELECT COUNT(*) AS total
+                FROM clients_v3
+            ),
+            taches AS (
+                SELECT COUNT(*) AS ouvertes
+                FROM taches_cabinet_v3
+                WHERE UPPER(COALESCE(statut,'')) NOT IN
+                ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')
+            ),
+            workflow AS (
+                SELECT COUNT(*) AS ouvertes
+                FROM workflow_cabinet_v3
+                WHERE UPPER(COALESCE(statut,'')) NOT IN
+                ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')
+            ),
+            pieces AS (
+                SELECT COUNT(*) AS a_valider
+                FROM pieces_v3
+                WHERE COALESCE(statut_validation,'') <> 'VALIDEE'
+            )
             SELECT
-                (SELECT COUNT(*) FROM clients_v3) AS clients,
-                (SELECT COUNT(*) FROM taches_cabinet_v3 WHERE UPPER(COALESCE(statut,'')) NOT IN ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')) AS taches_ouvertes,
-                (SELECT COUNT(*) FROM workflow_cabinet_v3 WHERE UPPER(COALESCE(statut,'')) NOT IN ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')) AS workflow_ouverts,
-                (SELECT COUNT(*) FROM pieces_v3 WHERE statut_validation <> 'VALIDEE') AS pieces_a_valider,
-                (SELECT COUNT(*) FROM notifications_cabinet_v3) AS notifications
+                clients.total AS clients,
+                taches.ouvertes AS taches,
+                workflow.ouvertes AS workflow,
+                pieces.a_valider AS pieces
+            FROM clients,taches,workflow,pieces
         """)).mappings().first()
 
-        rows = conn.execute(text("""
+        workflow_rows = conn.execute(text("""
             SELECT
-                COALESCE(c.raison_sociale, 'Client non identifié') AS client,
-                COALESCE(w.module, 'Supervision') AS module,
-                COALESCE(w.etape, 'Contrôle cabinet') AS etape,
-                COALESCE(w.statut, 'A_FAIRE') AS statut,
-                COALESCE(w.responsable, 'Système') AS responsable
+                COALESCE(c.raison_sociale,'Client non identifié') AS client,
+                COALESCE(w.etape,'Étape cabinet') AS etape,
+                COALESCE(w.responsable,'Non affecté') AS responsable,
+                CASE
+                    WHEN UPPER(COALESCE(w.statut,'')) IN ('BLOQUANT','ERREUR')
+                    THEN 'Élevé'
+                    ELSE 'Moyen'
+                END AS risque,
+                '80%' AS score,
+                COALESCE(w.statut,'A_FAIRE') AS statut
             FROM workflow_cabinet_v3 w
-            LEFT JOIN clients_v3 c ON c.id = w.client_id
-            ORDER BY w.created_at DESC, w.id DESC
+            LEFT JOIN clients_v3 c
+                ON c.id = w.client_id
+            ORDER BY w.id DESC
             LIMIT 20
         """)).mappings().all()
 
-    alertes = int(k["taches_ouvertes"] or 0) + int(k["workflow_ouverts"] or 0) + int(k["pieces_a_valider"] or 0)
-    score = max(0, min(100, 100 - alertes * 2))
+        taches_rows = conn.execute(text("""
+            SELECT
+                COALESCE(c.raison_sociale,'Client non identifié') AS client,
+                COALESCE(t.titre,'Tâche cabinet') AS titre
+            FROM taches_cabinet_v3 t
+            LEFT JOIN clients_v3 c
+                ON c.id = t.client_id
+            WHERE UPPER(COALESCE(t.priorite,'')) IN
+            ('CRITIQUE','HAUTE','URGENT')
+            ORDER BY t.id DESC
+            LIMIT 10
+        """)).mappings().all()
+
+    clients = int(stats["clients"] or 0)
+    taches = int(stats["taches"] or 0)
+    workflow = int(stats["workflow"] or 0)
+    pieces = int(stats["pieces"] or 0)
+
+    score = max(0, 100 - (taches * 2) - (workflow))
 
     kpis = {
-        "clients": int(k["clients"] or 0),
-        "taches_ouvertes": int(k["taches_ouvertes"] or 0),
-        "workflow_ouverts": int(k["workflow_ouverts"] or 0),
-        "pieces_a_valider": int(k["pieces_a_valider"] or 0),
-        "notifications": int(k["notifications"] or 0),
-        "score": score,
+        "dossiers_actifs": clients,
+        "alertes_bloquantes": taches,
+        "retards": workflow,
+        "prets_visa": max(0, clients - pieces),
+        "prets_cloture": max(0, clients - taches),
+        "score_global": score
     }
 
-    supervision = [
-        [r["client"], r["module"], r["etape"], r["statut"], r["responsable"]]
-        for r in rows
+    dossiers = [
+        [
+            r["client"],
+            r["etape"],
+            r["responsable"],
+            r["risque"],
+            r["score"],
+            r["statut"]
+        ]
+        for r in workflow_rows
     ]
 
-    return kpis, supervision
+    alertes = [
+        [
+            "Bloquant",
+            r["client"],
+            r["titre"]
+        ]
+        for r in taches_rows
+    ]
+
+    charge = [
+        [
+            "Collaborateurs",
+            clients,
+            taches,
+            "En charge"
+        ],
+        [
+            "Chefs de mission",
+            clients,
+            workflow,
+            "Supervision"
+        ],
+        [
+            "Expert-comptable",
+            max(1, clients),
+            pieces,
+            "Visa"
+        ]
+    ]
+
+    return kpis, dossiers, alertes, charge
