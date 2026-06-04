@@ -135,6 +135,10 @@ def create_app_refonte():
     def liasse_fiscale():
         return render_template("liasse_fiscale.html")
 
+    @app.get("/teletransmission-fiscale")
+    def teletransmission_fiscale():
+        return render_template("teletransmission_fiscale.html")
+
     @app.get("/dossier-permanent")
     def dossier_permanent():
         return render_template("dossier_permanent.html")
