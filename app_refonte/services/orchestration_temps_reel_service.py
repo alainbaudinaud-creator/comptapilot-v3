@@ -1,43 +1,49 @@
-from app_refonte.services.orchestration_cabinet_service import charger_orchestration_cabinet
+from app_refonte.services.orchestration_postgres_service import charger_orchestration_postgres
+from app_refonte.services.centre_decision_service import charger_centre_decision
+from app_refonte.services.salle_supervision_service import charger_salle_supervision
+from app_refonte.services.gestion_risques_service import charger_gestion_risques
 
 
 def charger_orchestration_temps_reel():
-    kpis, synthese = charger_orchestration_cabinet()
+    data_pg = charger_orchestration_postgres()
+    pg = data_pg["kpis"]
 
-    score_global = round(
-        (
-            kpis["score_cabinet"]
-            + kpis["score_supervision"]
-            + kpis["score_risque"]
-            + kpis["score_controle"]
-            + kpis["score_conformite"]
-            + kpis["score_qualite"]
-            + kpis["score_cloture"]
-        ) / 7
-    )
+    decision_kpis, decisions, alertes, priorites = charger_centre_decision()
+    supervision_kpis, dossiers, alertes_supervision, charge = charger_salle_supervision()
+    risques_kpis, risques, plans = charger_gestion_risques()
 
     cerveau = {
-        "score_global": score_global,
-        "alertes_totales": kpis["alertes_totales"],
-        "dossiers_prioritaires": kpis["dossiers_prioritaires"],
-        "dossiers_prets_visa": kpis["dossiers_prets_visa"],
-        "dossiers_prets_cloture": kpis["dossiers_prets_cloture"],
-        "niveau_action": "Prioritaire" if kpis["alertes_totales"] > 30 else "Normal",
+        "score_global": pg["score_global"],
+        "alertes_totales": pg["notifications_non_lues"],
+        "dossiers_prioritaires": pg["taches_critiques"],
+        "dossiers_prets_visa": pg["clients_revision"],
+        "dossiers_prets_cloture": max(0, pg["clients_total"] - pg["clients_revision"]),
+        "niveau_action": "Prioritaire" if pg["taches_critiques"] >= 10 else "Normal",
     }
 
-    actions_du_jour = [
-        ["1", "Traiter les blocages critiques", "Expert-comptable", "Immédiat"],
-        ["2", "Valider les dossiers prêts au visa", "Expert-comptable", "Aujourd'hui"],
-        ["3", "Relancer les pièces GED manquantes", "Collaborateur", "48h"],
-        ["4", "Arbitrer les risques fiscaux sensibles", "Chef de mission", "48h"],
-    ]
+    synthese = {
+        "decisions": decisions[:5],
+        "dossiers_supervision": dossiers[:5],
+        "risques": risques[:5],
+        "blocages": risques[:5],
+        "priorites": priorites[:5],
+    }
+
+    actions_du_jour = []
+    for index, t in enumerate(data_pg["taches"][:5], start=1):
+        actions_du_jour.append([
+            str(index),
+            t.get("titre") or "Tâche prioritaire",
+            "Chef de mission" if t.get("priorite") in ("CRITIQUE", "HAUTE") else "Collaborateur",
+            "Aujourd'hui" if t.get("priorite") in ("CRITIQUE", "HAUTE") else "48h",
+        ])
 
     flux = [
-        ["Centre décision", "Décisions prioritaires", len(synthese["decisions"])],
-        ["Salle supervision", "Dossiers suivis", len(synthese["dossiers_supervision"])],
-        ["Gestion risques", "Risques majeurs", len(synthese["risques"])],
-        ["Comité clôture", "Blocages restants", len(synthese["blocages"])],
-        ["Priorités", "Actions actives", len(synthese["priorites"])],
+        ["PostgreSQL", "Clients actifs", pg["clients_total"]],
+        ["PostgreSQL", "Tâches ouvertes", pg["taches_ouvertes"]],
+        ["PostgreSQL", "Tâches critiques", pg["taches_critiques"]],
+        ["PostgreSQL", "Notifications non lues", pg["notifications_non_lues"]],
+        ["PostgreSQL", "Score global réel", f"{pg['score_global']}%"],
     ]
 
     return cerveau, synthese, actions_du_jour, flux
