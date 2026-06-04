@@ -2540,6 +2540,56 @@ def api_dossier_permanent():
             ORDER BY id DESC
         """), {"client_id": client_id}).mappings().all()
 
+        affectations = conn.execute(text("""
+            SELECT
+                a.id,
+                a.role_dossier,
+                a.statut,
+                col.nom,
+                col.email,
+                col.role
+            FROM affectations_dossiers_v3 a
+            LEFT JOIN collaborateurs_cabinet_v3 col
+                ON col.id = a.collaborateur_id
+            WHERE a.client_id = :client_id
+            ORDER BY a.id
+        """), {"client_id": client_id}).mappings().all()
+
+        workflow = conn.execute(text("""
+            SELECT *
+            FROM workflow_cabinet_v3
+            WHERE client_id = :client_id
+            ORDER BY id
+        """), {"client_id": client_id}).mappings().all()
+
+        teletransmissions = conn.execute(text("""
+            SELECT *
+            FROM teletransmissions_fiscales_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+            LIMIT 20
+        """), {"client_id": client_id}).mappings().all()
+
+        score = 0
+        score += 15 if client else 0
+        score += 15 if pieces else 0
+        score += 15 if exercices else 0
+        score += 15 if immobilisations else 0
+        score += 15 if emprunts else 0
+        score += 15 if affectations else 0
+        score += 10 if teletransmissions else 0
+
+        alertes = []
+
+        if not pieces:
+            alertes.append("Aucun document permanent")
+
+        if not affectations:
+            alertes.append("Aucun collaborateur affecté")
+
+        if not teletransmissions:
+            alertes.append("Aucune télétransmission fiscale")
+
         kpis = {
             "documents": len(pieces),
             "imports": len(imports),
@@ -2548,6 +2598,7 @@ def api_dossier_permanent():
             "emprunts": len(emprunts),
             "valeur_immobilisations": float(sum([i["valeur_origine"] or 0 for i in immobilisations])),
             "capital_emprunts": float(sum([e["capital"] or 0 for e in emprunts])),
+            "score_completude": score
         }
 
     return jsonify({
@@ -2559,6 +2610,10 @@ def api_dossier_permanent():
         "exercices": [dict(e) for e in exercices],
         "immobilisations": [dict(i) for i in immobilisations],
         "emprunts": [dict(e) for e in emprunts],
+        "affectations": [dict(a) for a in affectations],
+        "workflow": [dict(w) for w in workflow],
+        "teletransmissions": [dict(t) for t in teletransmissions],
+        "alertes": alertes,
     })
 
 @api_metier_refonte.get("/api/refonte/collaborateurs")

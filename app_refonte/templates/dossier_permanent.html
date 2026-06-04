@@ -51,11 +51,50 @@
       <article><span>Statut</span><strong id="statut2">-</strong><em>Dossier</em></article>
     </section>
 
+    <section class="metrics">
+      <article><span>Complétude</span><strong id="scoreCompletude">0%</strong><em>Dossier permanent</em></article>
+      <article><span>Responsables</span><strong id="kAffectations">0</strong><em>Collaborateurs</em></article>
+      <article><span>Workflow</span><strong id="kWorkflow">0</strong><em>Étapes cabinet</em></article>
+      <article><span>Télétransmissions</span><strong id="kTeletransmissions">0</strong><em>Historique fiscal</em></article>
+    </section>
+
     <section class="grid">
       <article class="module"><h3>Identité</h3><p>SIREN, SIRET, régime fiscal et TVA.</p><span>Permanent</span></article>
       <article class="module"><h3>Documents</h3><p>Pièces OCR, imports et justificatifs permanents.</p><a href="/refonte/ocr-pdf"><span>Ouvrir →</span></a></article>
       <article class="module"><h3>Exercices</h3><p>Historique des exercices, clôtures et à-nouveaux.</p><a href="/refonte/exercices"><span>Ouvrir →</span></a></article>
       <article class="module"><h3>Patrimoine</h3><p>Immobilisations et emprunts du dossier.</p><a href="/refonte/immobilisations"><span>Ouvrir →</span></a></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Alertes permanentes</h2>
+      <table>
+        <thead><tr><th>Type</th><th>Message</th></tr></thead>
+        <tbody id="rowsAlertes"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Equipe dossier</h2>
+      <table>
+        <thead><tr><th>Collaborateur</th><th>Email</th><th>Rôle cabinet</th><th>Rôle dossier</th><th>Statut</th></tr></thead>
+        <tbody id="rowsAffectations"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Workflow cabinet</h2>
+      <table>
+        <thead><tr><th>Module</th><th>Étape</th><th>Responsable</th><th>Statut</th><th>Commentaire</th></tr></thead>
+        <tbody id="rowsWorkflow"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Historique fiscal</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Type</th><th>Statut</th><th>Numéro</th><th>AR</th></tr></thead>
+        <tbody id="rowsTeletransmissions"></tbody>
+      </table>
     </section>
 
     <section class="table-card">
@@ -112,6 +151,45 @@ fetch('/refonte/api/refonte/dossier-permanent?client_id=1')
   document.getElementById('kEmprunts').textContent = k.emprunts || 0;
   document.getElementById('valImmos').textContent = fmt(k.valeur_immobilisations) + ' €';
   document.getElementById('capEmprunts').textContent = fmt(k.capital_emprunts) + ' €';
+  document.getElementById('scoreCompletude').textContent = (k.score_completude || 0) + '%';
+  document.getElementById('kAffectations').textContent = (data.affectations || []).length;
+  document.getElementById('kWorkflow').textContent = (data.workflow || []).length;
+  document.getElementById('kTeletransmissions').textContent = (data.teletransmissions || []).length;
+
+  const alertes = data.alertes || [];
+  document.getElementById('rowsAlertes').innerHTML = alertes.length
+    ? alertes.map(a=>`<tr><td>ALERTE</td><td>${a}</td></tr>`).join('')
+    : '<tr><td>OK</td><td>Dossier permanent complet</td></tr>';
+
+  document.getElementById('rowsAffectations').innerHTML = (data.affectations || []).map(a=>`
+    <tr>
+      <td>${a.nom || '-'}</td>
+      <td>${a.email || '-'}</td>
+      <td>${a.role || '-'}</td>
+      <td>${a.role_dossier || '-'}</td>
+      <td>${a.statut || '-'}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsWorkflow').innerHTML = (data.workflow || []).map(w=>`
+    <tr>
+      <td>${w.module || '-'}</td>
+      <td>${w.etape || '-'}</td>
+      <td>${w.responsable || '-'}</td>
+      <td><strong>${w.statut || '-'}</strong></td>
+      <td>${w.commentaire || '-'}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsTeletransmissions').innerHTML = (data.teletransmissions || []).map(t=>`
+    <tr>
+      <td>${t.id}</td>
+      <td>${t.type_declaration || '-'}</td>
+      <td><strong>${t.statut || '-'}</strong></td>
+      <td>${t.numero_transmission || '-'}</td>
+      <td>${t.accuse_reception || '-'}</td>
+    </tr>
+  `).join('');
 
   document.getElementById('rowsExercices').innerHTML = (data.exercices || []).map(e=>`
     <tr>
