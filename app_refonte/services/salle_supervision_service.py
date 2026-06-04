@@ -1,128 +1,23 @@
-from sqlalchemy import text
-from database import engine
-
+from app_refonte.services.taches_revision_service import charger_taches_revision
+from app_refonte.services.taches_ia_service import charger_taches_ia
+from app_refonte.services.workflow_cabinet_service import charger_workflow_cabinet
 
 def charger_salle_supervision():
-    with engine.connect() as conn:
-
-        stats = conn.execute(text("""
-            WITH clients AS (
-                SELECT COUNT(*) AS total
-                FROM clients_v3
-            ),
-            taches AS (
-                SELECT COUNT(*) AS ouvertes
-                FROM taches_cabinet_v3
-                WHERE UPPER(COALESCE(statut,'')) NOT IN
-                ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')
-            ),
-            workflow AS (
-                SELECT COUNT(*) AS ouvertes
-                FROM workflow_cabinet_v3
-                WHERE UPPER(COALESCE(statut,'')) NOT IN
-                ('TERMINE','TERMINEE','VALIDEE','VALIDÉE','OK')
-            ),
-            pieces AS (
-                SELECT COUNT(*) AS a_valider
-                FROM pieces_v3
-                WHERE COALESCE(statut_validation,'') <> 'VALIDEE'
-            )
-            SELECT
-                clients.total AS clients,
-                taches.ouvertes AS taches,
-                workflow.ouvertes AS workflow,
-                pieces.a_valider AS pieces
-            FROM clients,taches,workflow,pieces
-        """)).mappings().first()
-
-        workflow_rows = conn.execute(text("""
-            SELECT
-                COALESCE(c.raison_sociale,'Client non identifié') AS client,
-                COALESCE(w.etape,'Étape cabinet') AS etape,
-                COALESCE(w.responsable,'Non affecté') AS responsable,
-                CASE
-                    WHEN UPPER(COALESCE(w.statut,'')) IN ('BLOQUANT','ERREUR')
-                    THEN 'Élevé'
-                    ELSE 'Moyen'
-                END AS risque,
-                '80%' AS score,
-                COALESCE(w.statut,'A_FAIRE') AS statut
-            FROM workflow_cabinet_v3 w
-            LEFT JOIN clients_v3 c
-                ON c.id = w.client_id
-            ORDER BY w.id DESC
-            LIMIT 20
-        """)).mappings().all()
-
-        taches_rows = conn.execute(text("""
-            SELECT
-                COALESCE(c.raison_sociale,'Client non identifié') AS client,
-                COALESCE(t.titre,'Tâche cabinet') AS titre
-            FROM taches_cabinet_v3 t
-            LEFT JOIN clients_v3 c
-                ON c.id = t.client_id
-            WHERE UPPER(COALESCE(t.priorite,'')) IN
-            ('CRITIQUE','HAUTE','URGENT')
-            ORDER BY t.id DESC
-            LIMIT 10
-        """)).mappings().all()
-
-    clients = int(stats["clients"] or 0)
-    taches = int(stats["taches"] or 0)
-    workflow = int(stats["workflow"] or 0)
-    pieces = int(stats["pieces"] or 0)
-
-    score = max(0, 100 - (taches * 2) - (workflow))
+    kpis_workflow, workflow_rows = charger_workflow_cabinet()
+    kpis_revision, revision_rows = charger_taches_revision()
+    kpis_ia, ia_rows = charger_taches_ia()
 
     kpis = {
-        "dossiers_actifs": clients,
-        "alertes_bloquantes": taches,
-        "retards": workflow,
-        "prets_visa": max(0, clients - pieces),
-        "prets_cloture": max(0, clients - taches),
-        "score_global": score
+        "dossiers_actifs": kpis_workflow["ouverts"] + kpis_revision["ouvertes"],
+        "alertes_bloquantes": kpis_revision["critiques"] + kpis_ia["critiques"],
+        "retards": kpis_revision["retards"] if "retards" in kpis_revision else 0,
+        "prets_visa": kpis_workflow["termines"],
+        "prets_cloture": kpis_workflow["bloquants"],
+        "score_global": round((kpis_workflow["termines"] / max(1,kpis_workflow["total"])) * 100)
     }
 
-    dossiers = [
-        [
-            r["client"],
-            r["etape"],
-            r["responsable"],
-            r["risque"],
-            r["score"],
-            r["statut"]
-        ]
-        for r in workflow_rows
-    ]
-
-    alertes = [
-        [
-            "Bloquant",
-            r["client"],
-            r["titre"]
-        ]
-        for r in taches_rows
-    ]
-
-    charge = [
-        [
-            "Collaborateurs",
-            clients,
-            taches,
-            "En charge"
-        ],
-        [
-            "Chefs de mission",
-            clients,
-            workflow,
-            "Supervision"
-        ],
-        [
-            "Expert-comptable",
-            max(1, clients),
-            pieces,
-            "Visa"
-        ]
-    ]
+    dossiers = workflow_rows[:20]
+    alertes = revision_rows[:20] + ia_rows[:20]
+    charge = [{"profil": "Collaborateur", "dossiers": 5, "priorites": 2, "etat": "En cours"}]
 
     return kpis, dossiers, alertes, charge
