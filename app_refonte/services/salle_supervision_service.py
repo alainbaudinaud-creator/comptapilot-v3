@@ -1,33 +1,46 @@
+from app_refonte.services.orchestration_postgres_service import charger_orchestration_postgres
+
+
 def charger_salle_supervision():
+    data_pg = charger_orchestration_postgres()
+    pg = data_pg["kpis"]
+
     kpis = {
-        "dossiers_actifs": 32,
-        "alertes_bloquantes": 7,
-        "retards": 5,
-        "prets_visa": 9,
-        "prets_cloture": 6,
-        "score_global": 88,
+        "dossiers_actifs": pg["clients_total"],
+        "alertes_bloquantes": pg["notifications_non_lues"],
+        "retards": pg["taches_critiques"],
+        "prets_visa": pg["clients_revision"],
+        "prets_cloture": max(0, pg["clients_total"] - pg["clients_revision"]),
+        "score_global": pg["score_global"],
     }
 
-    dossiers = [
-        ["Orange SA", "Révision", "Chef mission", "Risque moyen", "92%", "À viser"],
-        ["IFG Holding", "Conformité", "Responsable conformité", "Risque élevé", "71%", "Bloqué"],
-        ["Cabinet Demo", "Clôture", "Expert-comptable", "Risque faible", "96%", "Prêt clôture"],
-        ["SAS Lumière", "GED", "Collaborateur", "Risque élevé", "68%", "Pièces manquantes"],
-        ["SCI Patrimoine", "Fiscal", "Chef mission", "Risque moyen", "89%", "À contrôler"],
-    ]
+    dossiers = []
+    for client in data_pg["clients"]:
+        statut = client.get("statut") or "INCONNU"
+        risque = "Risque élevé" if statut in ("REVISION", "VALIDATION_EC") else "Risque moyen"
+        score = f"{pg['score_global']}%"
+        decision = "À superviser" if statut in ("REVISION", "VALIDATION_EC") else "Suivi normal"
+        dossiers.append([
+            client.get("raison_sociale"),
+            statut,
+            "Cabinet",
+            risque,
+            score,
+            decision,
+        ])
 
-    alertes = [
-        ["Bloquant", "IFG Holding", "LCB-FT incomplet"],
-        ["Bloquant", "SAS Lumière", "Pièces GED manquantes"],
-        ["Haute", "Orange SA", "Visa EC en attente"],
-        ["Haute", "SCI Patrimoine", "Cadrage fiscal à revoir"],
-    ]
+    alertes = []
+    for n in data_pg["notifications"]:
+        niveau = n.get("niveau") or "INFO"
+        dossier = n.get("raison_sociale") or "Cabinet"
+        titre = n.get("titre") or "Notification"
+        alertes.append([niveau, dossier, titre])
 
     charge = [
-        ["Collaborateur A", 8, 3, "Charge normale"],
-        ["Collaborateur B", 11, 5, "Surcharge"],
-        ["Chef mission", 14, 6, "Prioritaire"],
-        ["Expert-comptable", 9, 4, "Visa en attente"],
+        ["Tâches ouvertes", pg["taches_ouvertes"], pg["taches_critiques"], "Charge réelle PostgreSQL"],
+        ["Notifications non lues", pg["notifications_non_lues"], pg["notifications_non_lues"], "À traiter"],
+        ["Clients en révision", pg["clients_revision"], pg["clients_revision"], "Prioritaire"],
+        ["Clients actifs", pg["clients_total"], pg["clients_total"], "Portefeuille"],
     ]
 
     return kpis, dossiers, alertes, charge
