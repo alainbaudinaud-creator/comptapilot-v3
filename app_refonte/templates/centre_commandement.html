@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Centre de Commandement Cabinet V3</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
+    main{padding:32px}
+    h1{font-size:38px;margin-bottom:6px}
+    .sub{color:#94a3b8;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;margin-bottom:24px}
+    .card,.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px}
+    .card span{color:#94a3b8;font-weight:700}
+    .card strong{display:block;font-size:34px;margin-top:8px;color:#7dd3fc}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{padding:12px;border-bottom:1px solid #1f2937;text-align:left}
+    th{color:#93c5fd}
+  </style>
+</head>
+<body>
+{% include "_nav_refonte.html" %}
+<main>
+  <h1>Centre de Commandement Cabinet V3</h1>
+  <p class="sub">Tour de contrôle temps réel : alertes, décisions, risques, blocages, visas et clôtures.</p>
+
+  <section class="grid">
+    <div class="card"><span>Score global</span><strong>{{ commandement.score_global }}%</strong></div>
+    <div class="card"><span>Alertes totales</span><strong>{{ commandement.alertes_totales }}</strong></div>
+    <div class="card"><span>Dossiers prioritaires</span><strong>{{ commandement.dossiers_prioritaires }}</strong></div>
+    <div class="card"><span>Prêts visa</span><strong>{{ commandement.prets_visa }}</strong></div>
+    <div class="card"><span>Prêts clôture</span><strong>{{ commandement.prets_cloture }}</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>Décisions immédiates</h2>
+    <table>
+      {% for d in synthese.decisions %}
+      <tr><td>{{ d[0] }}</td><td>{{ d[1] }}</td><td>{{ d[3] }}</td><td>{{ d[4] }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Risques et blocages</h2>
+    <table>
+      {% for r in synthese.risques %}
+      <tr><td>{{ r[0] }}</td><td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[4] }}</td></tr>
+      {% endfor %}
+      {% for b in synthese.blocages %}
+      <tr><td>{{ b[0] }}</td><td>{{ b[2] }}</td><td>{{ b[3] }}</td><td>{{ b[1] }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Priorités du jour</h2>
+    <table>
+      {% for p in synthese.priorites %}
+      <tr><td>{{ p[0] }}</td><td>{{ p[1] }}</td><td>{{ p[2] }}</td></tr>
+      {% endfor %}
+    </table>
+  </section>
+</main>
+</body>
+</html>

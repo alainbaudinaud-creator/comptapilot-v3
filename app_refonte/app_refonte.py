@@ -240,6 +240,13 @@ def create_app_refonte():
         kpis, indicateurs, decisions, risques, blocages, priorites = charger_cockpit_direction()
         return render_template("cockpit_direction.html", kpis=kpis, indicateurs=indicateurs, decisions=decisions, risques=risques, blocages=blocages, priorites=priorites)
 
+
+    @app.route("/centre-commandement")
+    def centre_commandement_page():
+        from app_refonte.services.centre_commandement_service import charger_centre_commandement
+        commandement, synthese = charger_centre_commandement()
+        return render_template("centre_commandement.html", commandement=commandement, synthese=synthese)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
