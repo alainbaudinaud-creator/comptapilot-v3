@@ -1,33 +1,44 @@
+from app_refonte.services.orchestration_postgres_service import charger_orchestration_postgres
+
+
 def charger_centre_decision():
+    data_pg = charger_orchestration_postgres()
+    pg = data_pg["kpis"]
+
     kpis = {
-        "decisions_urgentes": 8,
-        "arbitrages_ec": 5,
-        "dossiers_prioritaires": 12,
-        "alertes_globales": 21,
-        "score_cabinet": 86,
+        "decisions_urgentes": pg["taches_critiques"],
+        "arbitrages_ec": pg["clients_revision"],
+        "dossiers_prioritaires": pg["taches_critiques"],
+        "alertes_globales": pg["notifications_non_lues"],
+        "score_cabinet": pg["score_global"],
     }
 
-    decisions = [
-        ["IFG Holding", "NO GO clôture", "Expert-comptable", "Critique", "Arbitrer blocage LCB-FT"],
-        ["SAS Lumière", "Pièces GED manquantes", "Chef mission", "Critique", "Demander justificatifs client"],
-        ["Orange SA", "Visa EC final", "Expert-comptable", "Haute", "Valider clôture sous réserve"],
-        ["SCI Patrimoine", "Cadrage fiscal", "Chef mission", "Haute", "Arbitrer TVA avant comité"],
-        ["Cabinet Demo", "Clôture prête", "Expert-comptable", "Normale", "Autoriser clôture"],
-    ]
+    decisions = []
+    for t in data_pg["taches"]:
+        priorite = t.get("priorite") or "NORMALE"
+        niveau = "Critique" if priorite == "CRITIQUE" else "Haute" if priorite == "HAUTE" else "Normale"
+        responsable = "Chef de mission" if priorite in ("CRITIQUE", "HAUTE") else "Collaborateur"
+        decisions.append([
+            t.get("raison_sociale") or "Cabinet",
+            t.get("titre") or "Décision cabinet",
+            responsable,
+            niveau,
+            "Traiter la tâche prioritaire",
+        ])
 
-    alertes = [
-        ["Qualité", "5 points bloquants cabinet"],
-        ["Conformité", "4 alertes LCB-FT"],
-        ["Révision", "11 contrôles obligatoires non finalisés"],
-        ["GED", "7 pièces manquantes avant clôture"],
-        ["Visa", "4 dossiers en attente expert-comptable"],
-    ]
+    alertes = []
+    for n in data_pg["notifications"]:
+        alertes.append([
+            n.get("niveau") or "INFO",
+            n.get("titre") or "Notification cabinet",
+        ])
 
-    priorites = [
-        ["1", "Lever les blocages critiques", "Aujourd'hui"],
-        ["2", "Valider les dossiers prêts au visa", "Aujourd'hui"],
-        ["3", "Arbitrer les dossiers fiscaux sensibles", "48h"],
-        ["4", "Relancer les pièces GED manquantes", "48h"],
-    ]
+    priorites = []
+    for index, t in enumerate(data_pg["taches"][:5], start=1):
+        priorites.append([
+            str(index),
+            t.get("titre") or "Tâche prioritaire",
+            "Aujourd'hui" if t.get("priorite") in ("CRITIQUE", "HAUTE") else "48h",
+        ])
 
-    return kpis, decisions, alertes, priorites
+    return kpis, decisions[:10], alertes[:10], priorites
