@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Référentiel de Contrôle de Révision V3</title>
+  <style>
+    body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#e5e7eb; }
+    nav { display:flex; gap:14px; flex-wrap:wrap; padding:18px 28px; background:#020617; border-bottom:1px solid #1e293b; }
+    nav a { color:#cbd5e1; text-decoration:none; font-weight:700; }
+    main { padding:32px; }
+    h1 { font-size:36px; margin-bottom:6px; }
+    .sub { color:#94a3b8; margin-bottom:28px; }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; margin-bottom:24px; }
+    .card,.panel { background:#111827; border:1px solid #1f2937; border-radius:20px; padding:20px; }
+    .card span { color:#94a3b8; font-weight:700; }
+    .card strong { display:block; font-size:32px; margin-top:8px; color:#7dd3fc; }
+    table { width:100%; border-collapse:collapse; margin-top:14px; }
+    th,td { padding:12px; border-bottom:1px solid #1f2937; text-align:left; }
+    th { color:#93c5fd; }
+    .badge { display:inline-block; padding:5px 10px; border-radius:999px; background:#1e293b; color:#7dd3fc; font-weight:800; font-size:12px; }
+    .danger { color:#fca5a5; font-weight:800; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Cockpit</a>
+    <a href="/ged-cabinet">GED Cabinet</a>
+    <a href="/justification-comptes">Justification</a>
+    <a href="/revision-cabinet">Révision Cabinet</a>
+    <a href="/feuille-maitresse-cloture">Feuille Maîtresse</a>
+    <a href="/referentiel-revision">Référentiel Révision</a>
+  </nav>
+
+  <main>
+    <h1>Référentiel de Contrôle de Révision V3</h1>
+    <p class="sub">Cycles comptables, contrôles obligatoires, validation collaborateur, chef de mission et visa expert-comptable.</p>
+
+    <section class="grid">
+      <div class="card"><span>Cycles</span><strong>{{ kpis.cycles }}</strong></div>
+      <div class="card"><span>Contrôles obligatoires</span><strong>{{ kpis.controles_obligatoires }}</strong></div>
+      <div class="card"><span>Contrôles réalisés</span><strong>{{ kpis.controles_realises }}</strong></div>
+      <div class="card"><span>Points bloquants</span><strong>{{ kpis.points_bloquants }}</strong></div>
+      <div class="card"><span>Score révision</span><strong>{{ kpis.score_revision }}%</strong></div>
+    </section>
+
+    <section class="panel">
+      <h2>Cycles de révision</h2>
+      <table>
+        <thead><tr><th>Cycle</th><th>Risque</th><th>Obligatoires</th><th>Réalisés</th><th>Statut</th></tr></thead>
+        <tbody>
+          {% for c in cycles %}
+          <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+            <td><span class="badge">{{ c[4] }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Contrôles obligatoires</h2>
+      <table>
+        <thead><tr><th>Cycle</th><th>Point de contrôle</th><th>Statut</th><th>Niveau de validation</th></tr></thead>
+        <tbody>
+          {% for c in controles %}
+          <tr>
+            <td>{{ c[0] }}</td>
+            <td>{{ c[1] }}</td>
+            <td class="{% if c[2] == 'Bloquant' %}danger{% endif %}">{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

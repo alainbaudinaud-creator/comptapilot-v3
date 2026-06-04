@@ -170,6 +170,13 @@ def create_app_refonte():
         return render_template("ged_cabinet.html", kpis=kpis, dossiers=dossiers, pieces=pieces)
 
 
+
+    @app.route("/referentiel-revision")
+    def referentiel_revision_page():
+        from app_refonte.services.referentiel_revision_service import charger_referentiel_revision
+        kpis, cycles, controles = charger_referentiel_revision()
+        return render_template("referentiel_revision.html", kpis=kpis, cycles=cycles, controles=controles)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
