@@ -36,6 +36,7 @@
           <a href="/refonte/centre-fiscal"><button class="secondary">Centre fiscal</button></a>
           <a href="/refonte/fec-export"><button class="secondary">Export FEC</button></a>
           <button onclick="genererPdfFiscal()">Générer PDF fiscal</button>
+          <button onclick="genererEdiTdfc()">Générer EDI-TDFC</button>
         </div>
       </div>
       <div class="hero-card">
@@ -114,6 +115,16 @@ async function genererPdfFiscal(){
     alert('PDF fiscal généré : ' + data.pdf.filename);
   } else {
     alert('Erreur génération PDF fiscal');
+  }
+}
+
+async function genererEdiTdfc(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/edi-tdfc?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('EDI-TDFC préparé : ' + data.edi.txt_filename);
+  } else {
+    alert('Erreur génération EDI-TDFC');
   }
 }
 </script>
