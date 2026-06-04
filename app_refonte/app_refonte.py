@@ -151,6 +151,11 @@ def create_app_refonte():
     def justification_comptes():
         return render_template("justification_comptes.html")
 
+
+    @app.get("/feuille-maitresse-cloture")
+    def feuille_maitresse_cloture():
+        return render_template("feuille_maitresse_cloture.html")
+
     @app.get("/collaborateurs")
     def collaborateurs():
         return render_template("collaborateurs.html")

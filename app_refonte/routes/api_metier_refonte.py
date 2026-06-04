@@ -2736,6 +2736,135 @@ def api_justification_comptes_v3():
     })
 
 
+
+@api_metier_refonte.get("/api/refonte/feuille-maitresse-cloture")
+def api_feuille_maitresse_cloture_v3():
+    client_id = int(request.args.get("client_id", 1))
+
+    with engine.begin() as conn:
+        client = conn.execute(text("""
+            SELECT id, raison_sociale, statut
+            FROM clients_v3
+            WHERE id = :client_id
+        """), {"client_id": client_id}).mappings().first()
+
+        if not client:
+            return jsonify({"success": False, "error": "Client introuvable"}), 404
+
+        exercices = conn.execute(text("""
+            SELECT id, date_debut, date_fin, statut, date_cloture, resultat_cloture
+            FROM exercices_v3
+            WHERE client_id = :client_id
+            ORDER BY date_debut DESC
+        """), {"client_id": client_id}).mappings().all()
+
+        teletransmissions = conn.execute(text("""
+            SELECT id, statut, numero_transmission, accuse_reception, transmitted_at
+            FROM teletransmissions_fiscales_v3
+            WHERE client_id = :client_id
+            ORDER BY id DESC
+            LIMIT 5
+        """), {"client_id": client_id}).mappings().all()
+
+    programme_response = api_programme_travail_v3()
+    programme = programme_response.get_json() or {}
+
+    justification_response = api_justification_comptes_v3()
+    justification = justification_response.get_json() or {}
+
+    modules = []
+
+    prog_score = int((programme.get("kpis") or {}).get("progression_globale") or 0)
+    just_score = int((justification.get("kpis") or {}).get("score_global") or 0)
+
+    exercices_clotures = len([e for e in exercices if e["statut"] in ("CLOTURE", "VERROUILLE")])
+    dernier_exercice = dict(exercices[0]) if exercices else None
+
+    tele_ok = any(t["statut"] in ("TRANSMIS_SIMULATION", "TRANSMIS") for t in teletransmissions)
+
+    modules.append({
+        "code": "PROGRAMME_TRAVAIL",
+        "libelle": "Programme de travail",
+        "score": prog_score,
+        "statut": "VALIDE" if prog_score >= 85 else "A_FINALISER",
+        "bloquant": prog_score < 70,
+        "detail": "Cycles de révision et tâches cabinet"
+    })
+
+    modules.append({
+        "code": "JUSTIFICATION",
+        "libelle": "Justification des comptes",
+        "score": just_score,
+        "statut": "VALIDE" if just_score >= 85 else "A_CONTROLER",
+        "bloquant": (justification.get("kpis") or {}).get("a_justifier", 0) > 0,
+        "detail": "Comptes 471/512/445/401/164/120/129"
+    })
+
+    modules.append({
+        "code": "REVISION",
+        "libelle": "Révision cabinet",
+        "score": max(prog_score, just_score),
+        "statut": "EN_COURS" if min(prog_score, just_score) < 85 else "VALIDE",
+        "bloquant": min(prog_score, just_score) < 70,
+        "detail": "Synthèse programme + justification"
+    })
+
+    modules.append({
+        "code": "CLOTURE",
+        "libelle": "Clôture comptable",
+        "score": 100 if exercices_clotures else 50,
+        "statut": "CLOTUREE" if exercices_clotures else "A_PREPARER",
+        "bloquant": not bool(exercices),
+        "detail": f"{exercices_clotures} exercice(s) clôturé(s)"
+    })
+
+    modules.append({
+        "code": "FISCAL",
+        "libelle": "Liasse fiscale",
+        "score": 85 if exercices_clotures else 55,
+        "statut": "PREPAREE" if exercices_clotures else "A_PREPARER",
+        "bloquant": False if exercices_clotures else True,
+        "detail": "Liasse, PDF fiscal et EDI-TDFC préparatoire"
+    })
+
+    modules.append({
+        "code": "TELETRANSMISSION",
+        "libelle": "Télétransmission fiscale",
+        "score": 100 if tele_ok else 40,
+        "statut": "TRANSMISE_SIMULATION" if tele_ok else "A_TRANSMETTRE",
+        "bloquant": False if tele_ok else True,
+        "detail": "Historique dépôts et accusés de réception"
+    })
+
+    score_global = round(sum(m["score"] for m in modules) / len(modules)) if modules else 0
+    bloquants = [m for m in modules if m["bloquant"]]
+    points_attention = []
+    points_attention += justification.get("alertes", [])
+
+    pret_cloture = score_global >= 85 and not bloquants
+    visa_chef = score_global >= 75 and len(bloquants) <= 1
+    visa_ec = pret_cloture
+
+    return jsonify({
+        "success": True,
+        "client": dict(client),
+        "kpis": {
+            "score_global": score_global,
+            "modules": len(modules),
+            "bloquants": len(bloquants),
+            "points_attention": len(points_attention),
+            "pret_cloture": pret_cloture,
+            "visa_chef_mission": visa_chef,
+            "visa_expert_comptable": visa_ec,
+        },
+        "modules": modules,
+        "bloquants": bloquants,
+        "points_attention": points_attention,
+        "dernier_exercice": dernier_exercice,
+        "teletransmissions": [dict(t) for t in teletransmissions],
+    })
+
+
 @api_metier_refonte.get("/api/refonte/dossier-permanent")
 def api_dossier_permanent():
     client_id = int(request.args.get("client_id", 1))
