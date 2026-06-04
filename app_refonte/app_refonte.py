@@ -184,6 +184,13 @@ def create_app_refonte():
         kpis, dossiers, validations = charger_visa_expert()
         return render_template("visa_expert.html", kpis=kpis, dossiers=dossiers, validations=validations)
 
+
+    @app.route("/centre-qualite")
+    def centre_qualite_page():
+        from app_refonte.services.centre_qualite_service import charger_centre_qualite
+        kpis, risques, controles = charger_centre_qualite()
+        return render_template("centre_qualite.html", kpis=kpis, risques=risques, controles=controles)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
