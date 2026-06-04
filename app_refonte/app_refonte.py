@@ -177,6 +177,13 @@ def create_app_refonte():
         kpis, cycles, controles = charger_referentiel_revision()
         return render_template("referentiel_revision.html", kpis=kpis, cycles=cycles, controles=controles)
 
+
+    @app.route("/visa-expert")
+    def visa_expert_page():
+        from app_refonte.services.visa_expert_service import charger_visa_expert
+        kpis, dossiers, validations = charger_visa_expert()
+        return render_template("visa_expert.html", kpis=kpis, dossiers=dossiers, validations=validations)
+
     @app.get("/health")
     def health():
         return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})

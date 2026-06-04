@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Visa Expert-Comptable V3</title>
+  <style>
+    body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#e5e7eb; }
+    nav { display:flex; gap:14px; flex-wrap:wrap; padding:18px 28px; background:#020617; border-bottom:1px solid #1e293b; }
+    nav a { color:#cbd5e1; text-decoration:none; font-weight:700; }
+    main { padding:32px; }
+    h1 { font-size:36px; margin-bottom:6px; }
+    .sub { color:#94a3b8; margin-bottom:28px; }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; margin-bottom:24px; }
+    .card,.panel { background:#111827; border:1px solid #1f2937; border-radius:20px; padding:20px; }
+    .card span { color:#94a3b8; font-weight:700; }
+    .card strong { display:block; font-size:32px; margin-top:8px; color:#7dd3fc; }
+    table { width:100%; border-collapse:collapse; margin-top:14px; }
+    th,td { padding:12px; border-bottom:1px solid #1f2937; text-align:left; }
+    th { color:#93c5fd; }
+    .badge { display:inline-block; padding:5px 10px; border-radius:999px; background:#1e293b; color:#7dd3fc; font-weight:800; font-size:12px; }
+    .danger { color:#fca5a5; font-weight:800; }
+    .ok { color:#86efac; font-weight:800; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Cockpit</a>
+    <a href="/ged-cabinet">GED Cabinet</a>
+    <a href="/referentiel-revision">Référentiel Révision</a>
+    <a href="/revision-cabinet">Révision Cabinet</a>
+    <a href="/feuille-maitresse-cloture">Feuille Maîtresse</a>
+    <a href="/visa-expert">Visa Expert-Comptable</a>
+  </nav>
+
+  <main>
+    <h1>Workflow de Visa Expert-Comptable V3</h1>
+    <p class="sub">Validation collaborateur, revue chef de mission, visa expert-comptable et blocage automatique de clôture.</p>
+
+    <section class="grid">
+      <div class="card"><span>Dossiers prêts</span><strong>{{ kpis.dossiers_prets }}</strong></div>
+      <div class="card"><span>À valider chef</span><strong>{{ kpis.a_valider_chef }}</strong></div>
+      <div class="card"><span>À viser EC</span><strong>{{ kpis.a_visa_ec }}</strong></div>
+      <div class="card"><span>Bloqués</span><strong>{{ kpis.bloques }}</strong></div>
+      <div class="card"><span>Score conformité</span><strong>{{ kpis.score_conformite }}%</strong></div>
+    </section>
+
+    <section class="panel">
+      <h2>Dossiers en circuit de visa</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Dossier</th>
+            <th>État métier</th>
+            <th>Niveau actuel</th>
+            <th>Décision</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in dossiers %}
+          <tr>
+            <td>{{ d[0] }}</td>
+            <td>{{ d[1] }}</td>
+            <td>{{ d[2] }}</td>
+            <td class="{% if d[3] == 'Bloqué' %}danger{% elif d[3] == 'Visa final' %}ok{% endif %}">{{ d[3] }}</td>
+            <td>{{ d[4] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Chaîne de validation</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Niveau</th>
+            <th>Contrôle</th>
+            <th>Statut</th>
+            <th>Commentaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in validations %}
+          <tr>
+            <td>{{ v[0] }}</td>
+            <td>{{ v[1] }}</td>
+            <td><span class="badge">{{ v[2] }}</span></td>
+            <td>{{ v[3] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
