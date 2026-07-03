@@ -12,6 +12,34 @@ from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
 from app_refonte.routes.api_metier_refonte import api_metier_refonte
 
 
+def _default_cockpit_kpis():
+    return {
+        "total_societes": 0,
+        "total_ecritures": 0,
+        "total_documents": 0,
+        "documents_a_traiter": 0,
+        "taches_urgentes": 0,
+        "alertes_critiques": 0,
+        "total_debit": 0.0,
+        "total_credit": 0.0,
+        "equilibre_comptable": True,
+        "score_production": 0,
+        "exercice_actif": "-",
+        "exercice_actif_statut": "ABSENT",
+        "dernier_resultat": 0.0,
+        "dernier_exercice_cloture": None,
+        "a_nouveaux_id": None,
+        "operations_non_rapprochees": 0,
+        "rapprochements_valides": 0,
+        "lettrages_valides": 0,
+        "immobilisations_actives": 0,
+        "valeur_immobilisations": 0.0,
+        "emprunts_actifs": 0,
+        "capital_emprunts": 0.0,
+        "taches_ouvertes": 0,
+    }
+
+
 def create_app_refonte():
     app = Flask(
         __name__,
@@ -24,7 +52,11 @@ def create_app_refonte():
 
     @app.get("/")
     def cockpit():
-        kpis, priorites = charger_cockpit_reel()
+        try:
+            kpis, priorites = charger_cockpit_reel()
+        except Exception as exc:
+            app.logger.exception("Cockpit refonte indisponible: %s", exc)
+            kpis, priorites = _default_cockpit_kpis(), []
         return render_template(
             "cockpit_premium_dynamic.html",
             kpis=kpis,
