@@ -18,7 +18,7 @@
 
         <h3>Importer un document</h3>
 
-        <form method="post" enctype="multipart/form-data">
+        <form id="ocr-form" method="post" enctype="multipart/form-data">
 
             <label>Dossier client</label>
 
@@ -34,18 +34,23 @@
 
             <label>Document</label>
 
-            <input
-                type="file"
-                name="file"
-                accept="image/*,.pdf"
-                capture="environment"
-                required
-            >
+            <div id="dropzone" class="upload-zone" tabindex="0" role="button" aria-label="Déposer un fichier ici ou cliquer pour ouvrir le sélecteur de fichiers">
+                <strong>Déposer un fichier ici</strong>
+                <span>ou cliquer pour choisir un PDF ou une image</span>
+                <input
+                    id="file-input"
+                    type="file"
+                    name="file"
+                    accept=".pdf,.png,.jpg,.jpeg,.webp,image/*,application/pdf"
+                    required
+                >
+            </div>
+            <div id="file-name" class="file-name">Aucun fichier sélectionné</div>
 
             <br><br>
 
             <button class="btn" type="submit">
-                Scanner et analyser
+                Importer et analyser
             </button>
 
         </form>
@@ -68,6 +73,89 @@
     </div>
 
 </div>
+
+<style>
+.upload-zone {
+    border: 1px dashed #8aa0b8;
+    border-radius: 12px;
+    padding: 18px;
+    display: grid;
+    gap: 6px;
+    cursor: pointer;
+    background: #f8fbff;
+    color: #1e3a5f;
+}
+.upload-zone.is-dragover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+.upload-zone input[type="file"] {
+    display: none;
+}
+.upload-zone strong {
+    font-size: 1rem;
+}
+.upload-zone span,
+.file-name {
+    font-size: 0.95rem;
+    color: #475569;
+}
+.file-name {
+    margin-top: 8px;
+}
+</style>
+
+<script>
+(function () {
+    const form = document.getElementById("ocr-form");
+    const dropzone = document.getElementById("dropzone");
+    const input = document.getElementById("file-input");
+    const fileName = document.getElementById("file-name");
+
+    function updateFileName() {
+        const file = input.files && input.files[0];
+        fileName.textContent = file ? file.name : "Aucun fichier sélectionné";
+    }
+
+    dropzone.addEventListener("click", () => input.click());
+    dropzone.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            input.click();
+        }
+    });
+
+    input.addEventListener("change", updateFileName);
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropzone.classList.add("is-dragover");
+        });
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropzone.classList.remove("is-dragover");
+        });
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+        const files = event.dataTransfer.files;
+        if (files && files.length > 0) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(files[0]);
+            input.files = dataTransfer.files;
+            updateFileName();
+        }
+    });
+
+    form.addEventListener("submit", () => updateFileName());
+})();
+</script>
 
 {% if result %}
 

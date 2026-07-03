@@ -1,7 +1,8 @@
-﻿from flask import Blueprint, Response
-import sqlite3
+from flask import Blueprint, Response
 import csv
 import io
+from sqlalchemy import text
+from database import engine
 from controllers.auth import login_required
 from services.permission_service import permission_required
 
@@ -9,26 +10,24 @@ grand_livre_routes = Blueprint("grand_livre", __name__)
 
 
 def get_grand_livre():
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-
-    c.execute("""
+    sql = """
         SELECT
             p.numero,
-            p.libelle,
+            p.libelle AS compte_libelle,
             e.date_ecriture,
-            e.piece,
-            e.libelle,
-            e.debit,
-            e.credit
+            e.journal AS piece,
+            e.libelle AS ecriture_libelle,
+            CASE WHEN e.compte_debit = p.numero THEN e.montant_ttc ELSE 0 END AS debit,
+            CASE WHEN e.compte_credit = p.numero THEN e.montant_ttc ELSE 0 END AS credit
         FROM plan_comptable p
-        LEFT JOIN ecritures e ON e.compte_id = p.id
+        LEFT JOIN ecritures_premium e
+            ON (e.compte_debit = p.numero OR e.compte_credit = p.numero)
+           AND (e.societe_id = p.societe_id OR p.societe_id IS NULL)
         ORDER BY p.numero, e.date_ecriture, e.id
-    """)
+    """
 
-    rows = c.fetchall()
-    conn.close()
-    return rows
+    with engine.begin() as conn:
+        return conn.execute(text(sql)).fetchall()
 
 
 @grand_livre_routes.route("/")
@@ -47,7 +46,7 @@ def grand_livre_home():
     </head>
     <body class="bg-light">
         <div class="container py-5">
-            <h1 class="mb-4">Grand livre comptable</h1>
+            <h1 class="mb-4">Grand livre comptable PostgreSQL</h1>
 
             <div class="mb-3">
                 <a href="/grand-livre/export.csv" class="btn btn-success">Export CSV</a>
@@ -97,8 +96,8 @@ def grand_livre_home():
                 <tbody>
             """
 
-        debit = row[5] or 0
-        credit = row[6] or 0
+        debit = float(row[5] or 0)
+        credit = float(row[6] or 0)
         total_debit += debit
         total_credit += credit
         solde_ligne = total_debit - total_credit
@@ -164,8 +163,5 @@ def grand_livre_export_csv():
         mimetype="text/csv; charset=utf-8-sig",
         headers={
             "Content-Disposition": "attachment; filename=grand_livre.csv"
-        }
+        },
     )
-
-
-

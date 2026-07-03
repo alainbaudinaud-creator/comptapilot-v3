@@ -1,0 +1,76 @@
+<nav class="cabinet-nav">
+  <div class="nav-brand">
+    <a href="/refonte/">🏠 ComptaPilot V3</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Pilotage</span>
+    <a class="{% if request.path == '/refonte/' %}active{% endif %}" href="/refonte/">Cockpit</a>
+    <a class="{% if request.path == '/refonte/supervision-cabinet' %}active{% endif %}" href="/refonte/supervision-cabinet">Supervision</a>
+    <a class="{% if request.path == '/salle-supervision' %}active{% endif %}" href="/salle-supervision">Salle supervision</a>
+    <a class="{% if request.path == '/centre-decision' %}active{% endif %}" href="/centre-decision">Centre décision</a>
+    <a class="{% if request.path == '/cockpit-direction' %}active{% endif %}" href="/cockpit-direction">Cockpit direction</a>
+    <a class="{% if request.path == '/centre-commandement' %}active{% endif %}" href="/centre-commandement">Centre commandement</a>
+    <a class="{% if request.path == '/orchestration-temps-reel' %}active{% endif %}" href="/orchestration-temps-reel">Orchestration temps réel</a>
+    <a class="{% if request.path == '/centre-qualite' %}active{% endif %}" href="/centre-qualite">Centre qualité</a>
+    <a class="{% if request.path == '/controle-interne' %}active{% endif %}" href="/controle-interne">Contrôle interne</a>
+    <a class="{% if request.path == '/conformite-reglementaire' %}active{% endif %}" href="/conformite-reglementaire">Conformité</a>
+    <a class="{% if request.path == '/gestion-risques' %}active{% endif %}" href="/gestion-risques">Gestion risques</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Cabinet</span>
+    <a class="{% if request.path == '/refonte/client-360' %}active{% endif %}" href="/refonte/client-360">Client 360</a>
+    <a class="{% if request.path == '/refonte/workflow-cabinet' %}active{% endif %}" href="/refonte/workflow-cabinet">Workflow</a>
+    <a class="{% if request.path == '/refonte/planning-cabinet' %}active{% endif %}" href="/refonte/planning-cabinet">Planning</a>
+    <a class="{% if request.path == '/refonte/collaborateurs' %}active{% endif %}" href="/refonte/collaborateurs">Collaborateurs</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Révision</span>
+    <a class="{% if request.path == '/ged-cabinet' %}active{% endif %}" href="/ged-cabinet">GED Cabinet</a>
+    <a class="{% if request.path == '/refonte/dossier-permanent' %}active{% endif %}" href="/refonte/dossier-permanent">Dossier permanent</a>
+    <a class="{% if request.path == '/refonte/programme-travail' %}active{% endif %}" href="/refonte/programme-travail">Programme travail</a>
+    <a class="{% if request.path == '/referentiel-revision' %}active{% endif %}" href="/referentiel-revision">Référentiel</a>
+    <a class="{% if request.path == '/refonte/justification-comptes' %}active{% endif %}" href="/refonte/justification-comptes">Justification</a>
+    <a class="{% if request.path == '/revision-cabinet' %}active{% endif %}" href="/revision-cabinet">Révision</a>
+    <a class="{% if request.path == '/refonte/feuille-maitresse-cloture' %}active{% endif %}" href="/refonte/feuille-maitresse-cloture">Feuille maîtresse</a>
+    <a class="{% if request.path == '/visa-expert' %}active{% endif %}" href="/visa-expert">Visa EC</a>
+    <a class="{% if request.path == '/comite-cloture' %}active{% endif %}" href="/comite-cloture">Comité clôture</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Production</span>
+    <a class="{% if request.path == '/refonte/production-cabinet' %}active{% endif %}" href="/refonte/production-cabinet">Production</a>
+    <a class="{% if request.path == '/refonte/journal' %}active{% endif %}" href="/refonte/journal">Journal</a>
+    <a class="{% if request.path == '/refonte/grand-livre' %}active{% endif %}" href="/refonte/grand-livre">Grand livre</a>
+    <a class="{% if request.path == '/refonte/balance' %}active{% endif %}" href="/refonte/balance">Balance</a>
+    <a class="{% if request.path == '/refonte/bilan' %}active{% endif %}" href="/refonte/bilan">Bilan</a>
+    <a class="{% if request.path == '/refonte/compte-resultat' %}active{% endif %}" href="/refonte/compte-resultat">Résultat</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Fiscal</span>
+    <a class="{% if request.path == '/refonte/centre-fiscal' %}active{% endif %}" href="/refonte/centre-fiscal">Centre fiscal</a>
+    <a class="{% if request.path == '/refonte/liasse-fiscale' %}active{% endif %}" href="/refonte/liasse-fiscale">Liasse</a>
+    <a class="{% if request.path == '/refonte/teletransmission-fiscale' %}active{% endif %}" href="/refonte/teletransmission-fiscale">Télétransmission</a>
+    <a class="{% if request.path == '/refonte/tva' %}active{% endif %}" href="/refonte/tva">TVA</a>
+    <a class="{% if request.path == '/refonte/tva-ca3' %}active{% endif %}" href="/refonte/tva-ca3">TVA CA3</a>
+    <a class="{% if request.path == '/refonte/fec' %}active{% endif %}" href="/refonte/fec">Contrôle FEC</a>
+    <a class="{% if request.path == '/refonte/fec-export' %}active{% endif %}" href="/refonte/fec-export">Export FEC</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Patrimoine</span>
+    <a class="{% if request.path == '/refonte/immobilisations' %}active{% endif %}" href="/refonte/immobilisations">Immobilisations</a>
+    <a class="{% if request.path == '/refonte/emprunts' %}active{% endif %}" href="/refonte/emprunts">Emprunts</a>
+    <a class="{% if request.path == '/refonte/rapprochement-bancaire' %}active{% endif %}" href="/refonte/rapprochement-bancaire">Banque</a>
+  </div>
+
+  <div class="nav-section">
+    <span>Paramètres</span>
+    <a class="{% if request.path == '/refonte/pcg' %}active{% endif %}" href="/refonte/pcg">Plan comptable</a>
+    <a class="{% if request.path == '/refonte/exercices' %}active{% endif %}" href="/refonte/exercices">Exercices</a>
+    <a class="{% if request.path == '/refonte/admin-comptable' %}active{% endif %}" href="/refonte/admin-comptable">Admin</a>
+  </div>
+</nav>

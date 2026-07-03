@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Supervision Cabinet — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Supervision cabinet</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Pilotage portefeuille cabinet</p>
+        <h1>Supervision multi-clients</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Dossiers</span><strong id="totalDossiers">0</strong><em>Portefeuille</em></article>
+      <article><span>À traiter</span><strong id="dossiersATraiter">0</strong><em>Tâches ouvertes</em></article>
+      <article><span>Urgences</span><strong id="urgences">0</strong><em>HAUTE / CRITIQUE</em></article>
+      <article><span>Écritures</span><strong id="ecritures">0</strong><em>Total actif</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Vision cabinet consolidée</h2>
+        <p>Surveillez l’état de production de tous les dossiers, les tâches urgentes, les exercices ouverts et les clôtures.</p>
+        <button onclick="charger()">Rafraîchir</button>
+      </div>
+      <div class="hero-card">
+        <span>Mode</span>
+        <strong>Portefeuille</strong>
+        <p>Prêt pour plusieurs dizaines ou centaines de dossiers.</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Dossiers clients</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Statut</th>
+            <th>Écritures</th>
+            <th>Tâches</th>
+            <th>Urgences</th>
+            <th>Exercices</th>
+            <th>Résultat</th>
+            <th>Accès</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+async function charger(){
+  const res = await fetch('/refonte/api/refonte/supervision-cabinet');
+  const data = await res.json();
+  const k = data.kpis || {};
+
+  document.getElementById('resume').textContent = (k.total_dossiers || 0) + ' dossier(s)';
+  document.getElementById('totalDossiers').textContent = k.total_dossiers || 0;
+  document.getElementById('dossiersATraiter').textContent = k.dossiers_a_traiter || 0;
+  document.getElementById('urgences').textContent = k.urgences || 0;
+  document.getElementById('ecritures').textContent = k.ecritures || 0;
+
+  document.getElementById('rows').innerHTML = (data.dossiers || []).map(d => `
+    <tr>
+      <td><strong>${d.raison_sociale}</strong><br><small>${d.siren || '-'}</small></td>
+      <td>${d.statut || '-'}</td>
+      <td>${d.nb_ecritures || 0}</td>
+      <td>${d.nb_taches_ouvertes || 0}</td>
+      <td>${d.nb_taches_urgentes || 0}</td>
+      <td>${d.exercices_ouverts || 0} ouvert / ${d.exercices_clotures || 0} clôturé</td>
+      <td>${fmt(d.dernier_resultat)}</td>
+      <td>
+        <a href="/refonte/client-360?client_id=${d.id}"><span>Client 360 →</span></a><br>
+        <a href="/refonte/workflow-cabinet?client_id=${d.id}"><span>Workflow →</span></a>
+      </td>
+    </tr>
+  `).join('');
+}
+
+charger();
+</script>
+</body>
+</html>

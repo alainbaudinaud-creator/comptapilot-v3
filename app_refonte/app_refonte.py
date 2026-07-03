@@ -1,0 +1,380 @@
+from flask import Flask, render_template, jsonify, request
+from app_refonte.services.revision_cabinet_service import charger_revision_cabinet
+from app_refonte.services.controle_ia_service import calculer_controles_ia
+from app_refonte.services.score_revision_service import calculer_score_revision
+from app_refonte.services.autorisation_fiscale_service import verifier_autorisation_fiscale
+from app_refonte.services.plan_action_ia_service import generer_plan_action_ia
+from app_refonte.services.taches_ia_service import generer_taches_depuis_plan_ia
+from app_refonte.services.taches_revision_service import charger_taches_revision, modifier_statut_tache_revision
+from app_refonte.services.visas_cabinet_service import charger_visas_cabinet, enregistrer_visa_cabinet
+
+from app_refonte.services.cockpit_reel_service import charger_cockpit_reel
+from app_refonte.routes.api_metier_refonte import api_metier_refonte
+
+
+def create_app_refonte():
+    app = Flask(
+        __name__,
+        template_folder="templates",
+        static_folder="static",
+        static_url_path="/refonte-static",
+    )
+
+    app.register_blueprint(api_metier_refonte)
+
+    @app.get("/")
+    def cockpit():
+        kpis, priorites = charger_cockpit_reel()
+        return render_template(
+            "cockpit_premium_dynamic.html",
+            kpis=kpis,
+            priorites=priorites,
+        )
+
+    @app.get("/pcg")
+    def pcg():
+        return render_template("pcg.html")
+
+    @app.get("/immobilisations")
+    def immobilisations():
+        return render_template("immobilisations.html")
+
+    @app.get("/emprunts")
+    def emprunts():
+        return render_template("emprunts.html")
+
+    @app.get("/tva")
+    def tva():
+        return render_template("tva.html")
+
+    @app.get("/fec")
+    def fec():
+        return render_template("fec.html")
+
+    @app.get("/balance")
+    def balance():
+        return render_template("balance.html")
+
+    @app.get("/grand-livre")
+    def grand_livre():
+        return render_template("grand_livre.html")
+
+    @app.get("/journal")
+    def journal():
+        return render_template("journal.html")
+
+    @app.get("/fec-export")
+    def fec_export():
+        return render_template("fec_export.html")
+
+    @app.get("/compte-resultat")
+    def compte_resultat():
+        return render_template("compte_resultat.html")
+
+    @app.get("/bilan")
+    def bilan():
+        return render_template("bilan.html")
+
+    @app.get("/ocr")
+    def ocr():
+        return render_template("ocr.html")
+
+    @app.get("/ocr-pdf")
+    def ocr_pdf():
+        return render_template("ocr_pdf.html")
+
+    @app.get("/validation-ocr")
+    def validation_ocr():
+        return render_template("validation_ocr.html")
+
+    @app.get("/rapprochement-bancaire")
+    def rapprochement_bancaire():
+        return render_template("rapprochement_bancaire.html")
+
+    @app.get("/tva-ca3")
+    def tva_ca3():
+        return render_template("tva_ca3.html")
+
+    @app.get("/cloture")
+    def cloture():
+        return render_template("cloture.html")
+
+    @app.get("/cloture-simulation")
+    def cloture_simulation():
+        return render_template("cloture_simulation.html")
+
+    @app.get("/admin-comptable")
+    def admin_comptable():
+        return render_template("admin_comptable.html")
+
+    @app.get("/exercices")
+    def exercices():
+        return render_template("exercices.html")
+
+    @app.get("/client-360")
+    def client_360():
+        return render_template("client_360.html")
+
+    @app.get("/workflow-cabinet")
+    def workflow_cabinet():
+        return render_template("workflow_cabinet.html")
+
+    @app.get("/supervision-cabinet")
+    def supervision_cabinet():
+        return render_template("supervision_cabinet.html")
+
+    @app.get("/production-cabinet")
+    def production_cabinet():
+        return render_template("production_cabinet.html")
+
+    @app.get("/centre-fiscal")
+    def centre_fiscal():
+        return render_template("centre_fiscal.html")
+
+    @app.get("/liasse-fiscale")
+    def liasse_fiscale():
+        return render_template("liasse_fiscale.html")
+
+    @app.get("/teletransmission-fiscale")
+    def teletransmission_fiscale():
+        return render_template("teletransmission_fiscale.html")
+
+    @app.get("/dossier-permanent")
+    def dossier_permanent():
+        return render_template("dossier_permanent.html")
+
+    @app.get("/programme-travail")
+    def programme_travail():
+        return render_template("programme_travail.html")
+
+    @app.get("/justification-comptes")
+    def justification_comptes():
+        return render_template("justification_comptes.html")
+
+
+    @app.get("/feuille-maitresse-cloture")
+    def feuille_maitresse_cloture():
+        return render_template("feuille_maitresse_cloture.html")
+
+    @app.get("/collaborateurs")
+    def collaborateurs():
+        return render_template("collaborateurs.html")
+
+    @app.get("/planning-cabinet")
+    def planning_cabinet():
+        return render_template("planning_cabinet.html")
+    @app.route("/ged-cabinet")
+    def ged_cabinet_page():
+        from app_refonte.services.ged_cabinet_service import charger_ged_cabinet
+        kpis, dossiers, pieces = charger_ged_cabinet()
+        return render_template("ged_cabinet.html", kpis=kpis, dossiers=dossiers, pieces=pieces)
+
+
+
+    @app.route("/referentiel-revision")
+    def referentiel_revision_page():
+        from app_refonte.services.referentiel_revision_service import charger_referentiel_revision
+        kpis, cycles, controles = charger_referentiel_revision()
+        return render_template("referentiel_revision.html", kpis=kpis, cycles=cycles, controles=controles)
+
+
+    @app.route("/visa-expert")
+    def visa_expert_page():
+        from app_refonte.services.visa_expert_service import charger_visa_expert
+        kpis, dossiers, validations = charger_visa_expert()
+        return render_template("visa_expert.html", kpis=kpis, dossiers=dossiers, validations=validations)
+
+
+    @app.route("/centre-qualite")
+    def centre_qualite_page():
+        from app_refonte.services.centre_qualite_service import charger_centre_qualite
+        kpis, risques, controles = charger_centre_qualite()
+        return render_template("centre_qualite.html", kpis=kpis, risques=risques, controles=controles)
+
+
+    @app.route("/controle-interne")
+    def controle_interne_page():
+        from app_refonte.services.controle_interne_service import charger_controle_interne
+        kpis, risques, controles, pistes = charger_controle_interne()
+        return render_template("controle_interne.html", kpis=kpis, risques=risques, controles=controles, pistes=pistes)
+
+
+    @app.route("/conformite-reglementaire")
+    def conformite_reglementaire_page():
+        from app_refonte.services.conformite_reglementaire_service import charger_conformite_reglementaire
+        kpis, obligations, risques, actions = charger_conformite_reglementaire()
+        return render_template("conformite_reglementaire.html", kpis=kpis, obligations=obligations, risques=risques, actions=actions)
+
+
+    @app.route("/gestion-risques")
+    def gestion_risques_page():
+        from app_refonte.services.gestion_risques_service import charger_gestion_risques
+        kpis, risques, plans = charger_gestion_risques()
+        return render_template("gestion_risques.html", kpis=kpis, risques=risques, plans=plans)
+
+
+    @app.route("/salle-supervision")
+    def salle_supervision_page():
+        from app_refonte.services.salle_supervision_service import charger_salle_supervision
+        kpis, dossiers, alertes, charge = charger_salle_supervision()
+        return render_template("salle_supervision.html", kpis=kpis, dossiers=dossiers, alertes=alertes, charge=charge)
+
+
+    @app.route("/comite-cloture")
+    def comite_cloture_page():
+        from app_refonte.services.comite_cloture_service import charger_comite_cloture
+        kpis, dossiers, blocages, decisions = charger_comite_cloture()
+        return render_template("comite_cloture.html", kpis=kpis, dossiers=dossiers, blocages=blocages, decisions=decisions)
+
+
+    @app.route("/centre-decision")
+    def centre_decision_page():
+        from app_refonte.services.centre_decision_service import charger_centre_decision
+        kpis, decisions, alertes, priorites = charger_centre_decision()
+        return render_template("centre_decision.html", kpis=kpis, decisions=decisions, alertes=alertes, priorites=priorites)
+
+
+    @app.route("/cockpit-direction")
+    def cockpit_direction_page():
+        from app_refonte.services.cockpit_direction_service import charger_cockpit_direction
+        kpis, indicateurs, decisions, risques, blocages, priorites = charger_cockpit_direction()
+        return render_template("cockpit_direction.html", kpis=kpis, indicateurs=indicateurs, decisions=decisions, risques=risques, blocages=blocages, priorites=priorites)
+
+
+    @app.route("/centre-commandement")
+    def centre_commandement_page():
+        from app_refonte.services.centre_commandement_service import charger_centre_commandement
+        commandement, synthese = charger_centre_commandement()
+        return render_template("centre_commandement.html", commandement=commandement, synthese=synthese)
+
+
+    @app.route("/orchestration-temps-reel")
+    def orchestration_temps_reel_page():
+        from app_refonte.services.orchestration_temps_reel_service import charger_orchestration_temps_reel
+        cerveau, synthese, actions_du_jour, flux = charger_orchestration_temps_reel()
+        return render_template("orchestration_temps_reel.html", cerveau=cerveau, synthese=synthese, actions_du_jour=actions_du_jour, flux=flux)
+
+    @app.get("/health")
+    def health():
+        return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
+
+
+
+
+
+    @app.post("/api/refonte/visas-cabinet/valider")
+    def api_valider_visa_cabinet():
+        payload = request.get_json(silent=True) or {}
+        type_visa = payload.get("type_visa")
+        utilisateur = payload.get("utilisateur", "alain.baudinaud")
+        commentaire = payload.get("commentaire")
+        resultat = enregistrer_visa_cabinet(
+            type_visa=type_visa,
+            utilisateur=utilisateur,
+            commentaire=commentaire
+        )
+        return jsonify(resultat), 200 if resultat.get("success") else 400
+
+
+
+
+
+
+
+
+    @app.post("/api/refonte/taches-revision/statut")
+    def api_modifier_statut_tache_revision():
+        payload = request.get_json(silent=True) or {}
+        resultat = modifier_statut_tache_revision(
+            tache_id=payload.get("tache_id"),
+            statut=payload.get("statut")
+        )
+        return jsonify(resultat), 200 if resultat.get("success") else 400
+
+    @app.get("/api/refonte/taches-revision")
+    def api_taches_revision():
+        return jsonify({
+            "success": True,
+            "data": charger_taches_revision()
+        })
+
+    @app.post("/api/refonte/plan-action-ia/generer-taches")
+    def api_generer_taches_ia():
+        return jsonify(generer_taches_depuis_plan_ia())
+
+    @app.get("/api/refonte/plan-action-ia")
+    def api_plan_action_ia():
+        return jsonify({
+            "success": True,
+            "plan": generer_plan_action_ia()
+        })
+
+
+    @app.get("/api/refonte/autorisation-fiscale")
+    def api_autorisation_fiscale():
+        return jsonify({
+            "success": True,
+            "autorisation": verifier_autorisation_fiscale()
+        })
+
+    @app.get("/api/refonte/score-revision")
+    def api_score_revision():
+        return jsonify({
+            "success": True,
+            "score": calculer_score_revision()
+        })
+
+    @app.get("/api/refonte/controle-ia")
+    def api_controle_ia():
+        return jsonify({
+            "success": True,
+            "controle": calculer_controles_ia()
+        })
+
+    @app.get("/api/refonte/cloture/statut")
+    def api_cloture_statut():
+        visas = charger_visas_cabinet()
+
+        return jsonify({
+            "success": True,
+            "cloture_autorisee": visas["cloture_autorisee"],
+            "nb_visas": visas["nb_visas"],
+            "nb_attendus": visas["nb_attendus"],
+            "statut": visas["statut"]
+        })
+
+    @app.get("/api/refonte/visas-cabinet")
+    def api_visas_cabinet():
+        return jsonify({
+            "success": True,
+            "visas": charger_visas_cabinet()
+        })
+
+    @app.get("/api/refonte/revision-cabinet")
+    def api_revision_cabinet():
+        return jsonify({
+            "success": True,
+            "revision": charger_revision_cabinet()
+        })
+
+
+    @app.get("/cloture-controle")
+    def cloture_controle():
+        return render_template("cloture_controle.html")
+
+    @app.get("/revision-cabinet")
+    def revision_cabinet():
+        return render_template("revision_cabinet.html")
+
+    return app
+
+
+
+
+
+if __name__ == "__main__":
+    app = create_app_refonte()
+    app.run(host="127.0.0.1", port=5099, debug=True)
+
+# Instance WSGI pour Gunicorn
+app = create_app_refonte()

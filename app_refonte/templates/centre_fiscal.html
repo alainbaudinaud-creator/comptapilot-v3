@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Centre Fiscal — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+
+<div class="premium-card fiscal-lock-card">
+  <div class="section-header">
+    <div>
+      <p class="eyebrow">Contrôle préalable</p>
+      <h2>Autorisation fiscale</h2>
+    </div>
+    <span id="badge-autorisation-fiscale" class="status-pill warning">Vérification...</span>
+  </div>
+
+  <div class="score-revision-layout">
+    <div class="score-revision-number">
+      <strong id="score-fiscal-revision">0</strong>
+      <span>/100</span>
+    </div>
+    <div>
+      <h3 id="titre-autorisation-fiscale">Analyse en cours</h3>
+      <p id="message-autorisation-fiscale">Contrôle du score de révision et des visas cabinet.</p>
+      <p class="muted">
+        Visas : <span id="visas-fiscal">0/3</span> · Seuil fiscal requis : 85/100
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Centre fiscal</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Fiscalité cabinet</p>
+        <h1>Centre Fiscal Cabinet</h1>
+      </div>
+      <div class="status"><span></span><strong id="resume">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>TVA collectée</span><strong id="tvaCollectee">0</strong><em>4457</em></article>
+      <article><span>TVA déductible</span><strong id="tvaDeductible">0</strong><em>4456</em></article>
+      <article><span>TVA à payer</span><strong id="tvaAPayer">0</strong><em>Solde fiscal</em></article>
+      <article><span>Résultat fiscal</span><strong id="resultatFiscal">0</strong><em id="typeResultat">-</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Sorties fiscales du dossier</h2>
+        <p>Suivez TVA, résultat fiscal, FEC, bilan, compte de résultat et exercices.</p>
+        <div class="actions">
+          <a href="/refonte/tva-ca3"><button>TVA CA3</button></a>
+          <a href="/refonte/fec-export"><button class="secondary">Export FEC</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Contrôles disponibles</span>
+        <strong id="controles">-</strong>
+        <p>Balance, bilan, résultat, FEC</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="module"><h3>TVA</h3><p>Préparation CA3 et contrôle des comptes 445.</p><a href="/refonte/tva-ca3"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>FEC</h3><p>Contrôle et export du fichier des écritures comptables.</p><a href="/refonte/fec-export"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Bilan</h3><p>Analyse patrimoniale et présentation annuelle.</p><a href="/refonte/bilan"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Compte de résultat</h3><p>Produits, charges et résultat fiscal.</p><a href="/refonte/compte-resultat"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Clôture</h3><p>Contrôles préalables et clôture définitive.</p><a href="/refonte/cloture"><span>Ouvrir →</span></a></article>
+      <article class="module"><h3>Exercices</h3><p>Historique, ouverture et à-nouveaux.</p><a href="/refonte/exercices"><span>Ouvrir →</span></a></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Exercices fiscaux</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Période</th><th>Statut</th><th>Résultat clôturé</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function frDate(v){ return v ? new Date(v).toLocaleDateString('fr-FR') : '-'; }
+
+fetch('/refonte/api/refonte/centre-fiscal')
+.then(r=>r.json())
+.then(data=>{
+  const t = data.tva || {};
+  const r = data.resultat || {};
+  const c = data.controles || {};
+
+  document.getElementById('resume').textContent = data.success ? 'OK' : 'Erreur';
+  document.getElementById('tvaCollectee').textContent = fmt(t.collectee);
+  document.getElementById('tvaDeductible').textContent = fmt(t.deductible);
+  document.getElementById('tvaAPayer').textContent = fmt(t.a_payer);
+  document.getElementById('resultatFiscal').textContent = fmt(r.resultat_fiscal);
+  document.getElementById('typeResultat').textContent = r.type || '-';
+
+  const nb = Object.values(c).filter(Boolean).length;
+  document.getElementById('controles').textContent = nb + ' actif(s)';
+
+  document.getElementById('rows').innerHTML = (data.exercices || []).map(e=>`
+    <tr>
+      <td>${e.id}</td>
+      <td>${frDate(e.date_debut)} → ${frDate(e.date_fin)}</td>
+      <td><strong>${e.statut}</strong></td>
+      <td>${fmt(e.resultat_cloture)}</td>
+    </tr>
+  `).join('');
+});
+</script>
+
+<script>
+async function chargerAutorisationFiscale() {
+  try {
+    const response = await fetch('/api/refonte/autorisation-fiscale');
+    const payload = await response.json();
+
+    if (!payload.success || !payload.autorisation) return;
+
+    const a = payload.autorisation;
+
+    document.getElementById('score-fiscal-revision').textContent = a.score_global || 0;
+    document.getElementById('visas-fiscal').textContent = `${a.nb_visas || 0}/${a.nb_attendus || 3}`;
+    document.getElementById('message-autorisation-fiscale').textContent = a.message || '';
+
+    const badge = document.getElementById('badge-autorisation-fiscale');
+    const titre = document.getElementById('titre-autorisation-fiscale');
+
+    badge.classList.remove('success', 'warning', 'danger');
+
+    if (a.declarations_autorisees) {
+      badge.classList.add('success');
+      badge.textContent = 'Déclarations autorisées';
+      titre.textContent = 'Centre Fiscal déverrouillé';
+    } else {
+      badge.classList.add('danger');
+      badge.textContent = 'Déclarations bloquées';
+      titre.textContent = 'Centre Fiscal verrouillé';
+    }
+  } catch (e) {
+    console.error('Erreur autorisation fiscale', e);
+  }
+}
+
+chargerAutorisationFiscale();
+setInterval(chargerAutorisationFiscale, 30000);
+</script>
+
+</body>
+</html>

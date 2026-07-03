@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Conformité Réglementaire Cabinet V3</title>
+  <style>
+    body { margin:0; font-family:Arial, sans-serif; background:#0f172a; color:#e5e7eb; }
+    nav { display:flex; gap:14px; flex-wrap:wrap; padding:18px 28px; background:#020617; border-bottom:1px solid #1e293b; }
+    nav a { color:#cbd5e1; text-decoration:none; font-weight:700; }
+    main { padding:32px; }
+    h1 { font-size:36px; margin-bottom:6px; }
+    .sub { color:#94a3b8; margin-bottom:28px; }
+    .grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; margin-bottom:24px; }
+    .card,.panel { background:#111827; border:1px solid #1f2937; border-radius:20px; padding:20px; }
+    .card span { color:#94a3b8; font-weight:700; }
+    .card strong { display:block; font-size:32px; margin-top:8px; color:#7dd3fc; }
+    table { width:100%; border-collapse:collapse; margin-top:14px; }
+    th,td { padding:12px; border-bottom:1px solid #1f2937; text-align:left; }
+    th { color:#93c5fd; }
+    .danger { color:#fca5a5; font-weight:800; }
+    .warn { color:#facc15; font-weight:800; }
+    .ok { color:#86efac; font-weight:800; }
+    .badge { display:inline-block; padding:5px 10px; border-radius:999px; background:#1e293b; color:#7dd3fc; font-weight:800; font-size:12px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Cockpit</a>
+    <a href="/centre-qualite">Centre Qualité</a>
+    <a href="/controle-interne">Contrôle Interne</a>
+    <a href="/conformite-reglementaire">Conformité</a>
+    <a href="/visa-expert">Visa EC</a>
+  </nav>
+
+  <main>
+    <h1>Conformité & Réglementaire Cabinet V3</h1>
+    <p class="sub">RGPD, LCB-FT, acceptation client, lettres de mission, indépendance et dossier qualité Ordre EC.</p>
+
+    <section class="grid">
+      <div class="card"><span>Score conformité</span><strong>{{ kpis.score_conformite }}%</strong></div>
+      <div class="card"><span>Dossiers RGPD</span><strong>{{ kpis.dossiers_rgpd }}</strong></div>
+      <div class="card"><span>Alertes LCB-FT</span><strong>{{ kpis.alertes_lcbft }}</strong></div>
+      <div class="card"><span>Lettres mission</span><strong>{{ kpis.lettres_mission }}</strong></div>
+      <div class="card"><span>Revues annuelles</span><strong>{{ kpis.revues_annuelles }}</strong></div>
+    </section>
+
+    <section class="panel">
+      <h2>Obligations réglementaires</h2>
+      <table>
+        <thead><tr><th>Domaine</th><th>Obligation</th><th>Statut</th><th>Détail</th></tr></thead>
+        <tbody>
+          {% for o in obligations %}
+          <tr>
+            <td>{{ o[0] }}</td>
+            <td>{{ o[1] }}</td>
+            <td class="{% if o[2] == 'OK' or o[2] == 'À jour' %}ok{% elif o[2] == 'Attention' %}warn{% else %}danger{% endif %}">{{ o[2] }}</td>
+            <td>{{ o[3] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Risques conformité</h2>
+      <table>
+        <thead><tr><th>Domaine</th><th>Risque</th><th>Niveau</th><th>Impact</th></tr></thead>
+        <tbody>
+          {% for r in risques %}
+          <tr>
+            <td>{{ r[0] }}</td>
+            <td>{{ r[1] }}</td>
+            <td class="{% if r[2] == 'Élevé' %}danger{% else %}warn{% endif %}">{{ r[2] }}</td>
+            <td>{{ r[3] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Plan d'action conformité</h2>
+      <table>
+        <thead><tr><th>Action</th><th>Responsable</th><th>Statut</th></tr></thead>
+        <tbody>
+          {% for a in actions %}
+          <tr>
+            <td>{{ a[0] }}</td>
+            <td>{{ a[1] }}</td>
+            <td><span class="badge">{{ a[2] }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

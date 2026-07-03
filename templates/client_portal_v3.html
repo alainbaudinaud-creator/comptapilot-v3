@@ -61,7 +61,7 @@ Dépôt de pièces, OCR et suivi automatisé du dossier
     </h2>
 
     <p style="color: var(--text-secondary);">
-        Formats acceptés : PDF, PNG, JPG, JPEG, WEBP.
+        Formats acceptés : PDF, PNG, JPG, JPEG, WEBP, CSV, XLSX, XLS.
     </p>
 
     <input
@@ -139,25 +139,30 @@ async function uploadDocument() {
     formData.append("societe_id", "1");
     formData.append("file", fileInput.files[0]);
 
-    const response = await fetch(
-        "/api/v3/client-portal/upload",
-        {
-            method: "POST",
-            body: formData
+    try {
+        const response = await fetch(
+            "/api/v3/client-portal/upload",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const result = await response.json();
+        const data = result.data || result;
+
+        if (!response.ok || !data.success) {
+            document.getElementById("upload_result").innerText =
+                data.message || "Le dépôt a échoué.";
+            return;
         }
-    );
 
-    const result = await response.json();
-    const data = result.data;
-
-    if (!data.success) {
         document.getElementById("upload_result").innerText =
-            data.message;
-        return;
+            "Pièce reçue — OCR en attente — document #" + data.document_id;
+    } catch (error) {
+        document.getElementById("upload_result").innerText =
+            "Erreur réseau ou serveur : " + error.message;
     }
-
-    document.getElementById("upload_result").innerText =
-        "Pièce reçue — OCR en attente — document #" + data.document_id;
 }
 
 

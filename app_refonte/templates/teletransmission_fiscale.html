@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Télétransmission fiscale — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Télétransmission</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Fiscalité annuelle</p>
+        <h1>Télétransmission fiscale V3</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">Simulation active</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Dépôts</span><strong id="totalDepots">0</strong><em>Historique</em></article>
+      <article><span>Prêts</span><strong id="prets">0</strong><em>À transmettre</em></article>
+      <article><span>Transmis</span><strong id="transmis">0</strong><em>Simulation</em></article>
+      <article><span>AR reçus</span><strong id="ars">0</strong><em>Accusés</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Chaîne fiscale</h2>
+        <p>Préparation EDI-TDFC, dépôt simulé, accusé de réception et historique fiscal. Le connecteur DGFiP réel reste à brancher.</p>
+        <div class="actions">
+          <button onclick="preparerDepot()">Préparer dépôt fiscal</button>
+          <a href="/refonte/liasse-fiscale"><button class="secondary">Retour liasse</button></a>
+          <a href="/refonte/centre-fiscal"><button class="secondary">Centre fiscal</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Mode</span>
+        <strong>SIMULATION</strong>
+        <p>Compatible avec le futur branchement partenaire EDI.</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Historique des télétransmissions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Dossier</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Numéro</th>
+            <th>AR</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+async function chargerHistorique(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/teletransmission/historique?client_id=1');
+  const data = await res.json();
+  const rows = data.historique || [];
+
+  document.getElementById('totalDepots').textContent = rows.length;
+  document.getElementById('prets').textContent = rows.filter(x=>x.statut === 'PRET_A_TRANSMETTRE').length;
+  document.getElementById('transmis').textContent = rows.filter(x=>x.statut === 'TRANSMIS_SIMULATION').length;
+  document.getElementById('ars').textContent = rows.filter(x=>x.accuse_reception).length;
+
+  document.getElementById('rows').innerHTML = rows.map(x=>`
+    <tr>
+      <td>${x.id}</td>
+      <td>${x.raison_sociale || '-'}</td>
+      <td>${x.type_declaration || '-'}</td>
+      <td><strong>${x.statut || '-'}</strong></td>
+      <td>${x.numero_transmission || '-'}</td>
+      <td>${x.accuse_reception || '-'}</td>
+      <td>
+        ${x.statut === 'PRET_A_TRANSMETTRE'
+          ? `<button onclick="envoyerDepot(${x.id})">Envoyer simulation</button>`
+          : `<span>OK</span>`}
+      </td>
+    </tr>
+  `).join('');
+}
+
+async function preparerDepot(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/teletransmission/preparer?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('Dépôt préparé : ' + data.depot.numero_transmission);
+    chargerHistorique();
+  } else {
+    alert('Erreur préparation dépôt');
+  }
+}
+
+async function envoyerDepot(id){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/teletransmission/envoyer', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({depot_id:id})
+  });
+  const data = await res.json();
+  if(data.success){
+    alert('Transmission simulée. AR : ' + data.accuse_reception);
+    chargerHistorique();
+  } else {
+    alert('Erreur envoi simulé');
+  }
+}
+
+chargerHistorique();
+</script>
+</body>
+</html>

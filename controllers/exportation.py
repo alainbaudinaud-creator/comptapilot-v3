@@ -1,12 +1,12 @@
-﻿
-from flask import Blueprint, session, Response, request, send_file
-import sqlite3
+
+from flask import Blueprint, session, Response, request
 import csv
 import io
 import os
-import shutil
 from datetime import datetime
 from controllers.auth import login_required
+from sqlalchemy import text
+from database import engine
 
 from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, PatternFill
@@ -22,70 +22,92 @@ from services.permission_service import permission_required
 exportation_routes = Blueprint('exportation', __name__)
 
 
-def get_ecritures(date_debut=None, date_fin=None, societe_id=None, compte_id=None):
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
 
-    query = """
+def get_ecritures(date_debut=None, date_fin=None, societe_id=None, compte_id=None):
+    sql = """
+        WITH lignes AS (
+            SELECT
+                e.id,
+                e.date_ecriture,
+                e.journal AS piece,
+                e.libelle,
+                e.montant_ttc AS debit,
+                0::numeric AS credit,
+                e.societe_id,
+                e.compte_debit AS compte_numero
+            FROM ecritures_premium e
+
+            UNION ALL
+
+            SELECT
+                e.id,
+                e.date_ecriture,
+                e.journal AS piece,
+                e.libelle,
+                0::numeric AS debit,
+                e.montant_ttc AS credit,
+                e.societe_id,
+                e.compte_credit AS compte_numero
+            FROM ecritures_premium e
+        )
         SELECT
-            e.id,
-            e.date_ecriture,
-            e.piece,
-            e.libelle,
-            e.debit,
-            e.credit,
-            s.societe.name AS societe,
-            p.numero AS compte_numero,
-            p.libelle AS compte_libelle
-        FROM ecritures e
-        LEFT JOIN societes s ON e.societe_id = s.id
-        LEFT JOIN plan_comptable p ON e.compte_id = p.id
+            l.id,
+            l.date_ecriture,
+            l.piece,
+            l.libelle,
+            l.debit,
+            l.credit,
+            s.nom AS societe,
+            l.compte_numero,
+            COALESCE(p.libelle, '') AS compte_libelle
+        FROM lignes l
+        LEFT JOIN societes_clientes_premium s ON s.id = l.societe_id
+        LEFT JOIN plan_comptable p
+            ON p.numero = l.compte_numero
+           AND (p.societe_id = l.societe_id OR p.societe_id IS NULL)
         WHERE 1=1
     """
 
-    params = []
+    params = {}
 
     if date_debut:
-        query += " AND e.date_ecriture >= ?"
-        params.append(date_debut)
+        sql += " AND l.date_ecriture >= :date_debut"
+        params["date_debut"] = date_debut
 
     if date_fin:
-        query += " AND e.date_ecriture <= ?"
-        params.append(date_fin)
+        sql += " AND l.date_ecriture <= :date_fin"
+        params["date_fin"] = date_fin
 
     if societe_id:
-        query += " AND e.societe_id = ?"
-        params.append(societe_id)
+        sql += " AND l.societe_id = :societe_id"
+        params["societe_id"] = int(societe_id)
 
     if compte_id:
-        query += " AND e.compte_id = ?"
-        params.append(compte_id)
+        sql += " AND p.id = :compte_id"
+        params["compte_id"] = int(compte_id)
 
-    query += " ORDER BY e.date_ecriture DESC, e.id DESC"
+    sql += " ORDER BY l.date_ecriture DESC, l.id DESC, l.compte_numero"
 
-    c.execute(query, params)
-    rows = c.fetchall()
-    conn.close()
-
-    return rows
+    with engine.begin() as conn:
+        return conn.execute(text(sql), params).fetchall()
 
 
 def get_societes():
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-    c.execute("SELECT id, nom FROM societes ORDER BY nom")
-    rows = c.fetchall()
-    conn.close()
-    return rows
+    with engine.begin() as conn:
+        return conn.execute(text("""
+            SELECT id, nom
+            FROM societes_clientes_premium
+            ORDER BY nom
+        """)).fetchall()
 
 
 def get_comptes():
-    conn = sqlite3.connect("db.sqlite")
-    c = conn.cursor()
-    c.execute("SELECT id, numero, libelle FROM plan_comptable ORDER BY numero")
-    rows = c.fetchall()
-    conn.close()
-    return rows
+    with engine.begin() as conn:
+        return conn.execute(text("""
+            SELECT id, numero, libelle
+            FROM plan_comptable
+            ORDER BY numero
+        """)).fetchall()
 
 
 @exportation_routes.route("/")
@@ -149,19 +171,19 @@ def export_home():
                         </div>
                     </div>
 
-                    <button formaction="/export/ecritures.csv" class="btn btn-success">
+                    <button formaction="/exportations/ecritures.csv" class="btn btn-success">
                         Export CSV
                     </button>
 
-                    <button formaction="/export/ecritures.xlsx" class="btn btn-primary">
+                    <button formaction="/exportations/ecritures.xlsx" class="btn btn-primary">
                         Export Excel
                     </button>
 
-                    <button formaction="/export/journal.pdf" class="btn btn-danger">
+                    <button formaction="/exportations/journal.pdf" class="btn btn-danger">
                         Export PDF
                     </button>
-                    <button formaction="/export/backup-db" class="btn btn-dark">
-                        Sauvegarde SQLite
+                    <button formaction="/exportations/backup-db" class="btn btn-dark">
+                        Export complet PostgreSQL
                     </button>
                 </form>
             </div>
@@ -349,25 +371,33 @@ def export_journal_pdf():
             "Content-Disposition": "attachment; filename=journal_comptable.pdf"
         }
     )
+
 @exportation_routes.route("/backup-db")
 @login_required
 @permission_required("ACCESS_EXPORT")
 def backup_db():
-    if not os.path.exists("backups"):
-        os.makedirs("backups")
-
     date_backup = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_filename = f"backup_db_{date_backup}.sqlite"
-    backup_path = os.path.join("backups", backup_filename)
+    backup_filename = f"postgres_export_{date_backup}.csv"
 
-    shutil.copyfile("db.sqlite", backup_path)
+    rows = get_ecritures()
 
-    return send_file(
-        backup_path,
-        as_attachment=True,
-        download_name=backup_filename,
-        mimetype="application/octet-stream"
+    output = io.StringIO()
+    writer = csv.writer(output, delimiter=";")
+    writer.writerow([
+        "ID", "Date", "Pièce", "Libellé", "Débit", "Crédit",
+        "Société", "Compte", "Libellé compte"
+    ])
+
+    for row in rows:
+        writer.writerow(row)
+
+    csv_data = "\ufeff" + output.getvalue()
+    output.close()
+
+    return Response(
+        csv_data,
+        mimetype="text/csv; charset=utf-8-sig",
+        headers={
+            "Content-Disposition": f"attachment; filename={backup_filename}"
+        }
     )
-
-
-

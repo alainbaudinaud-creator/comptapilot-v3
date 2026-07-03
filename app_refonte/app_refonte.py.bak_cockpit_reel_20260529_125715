@@ -1,0 +1,40 @@
+from flask import Flask, render_template, jsonify
+
+from app_refonte.data.demo_cockpit import DEMO_COCKPIT_DATA
+from app_refonte.services.kpi_cockpit_service import calculer_kpis_cockpit, priorites_cockpit
+from app_refonte.routes.api_metier_demo import api_metier_demo
+
+
+def create_app_refonte():
+    app = Flask(
+        __name__,
+        template_folder="templates",
+        static_folder="static",
+        static_url_path="/refonte-static",
+    )
+
+    app.register_blueprint(api_metier_demo)
+
+    @app.get("/")
+    def cockpit():
+        kpis = calculer_kpis_cockpit(DEMO_COCKPIT_DATA)
+        priorites = priorites_cockpit(DEMO_COCKPIT_DATA)
+        return render_template(
+            "cockpit_premium_dynamic.html",
+            kpis=kpis,
+            priorites=priorites,
+        )
+
+    @app.get("/health")
+    def health():
+        return jsonify({"success": True, "app": "ComptaPilot V3 Refonte", "status": "OK"})
+
+    return app
+
+
+if __name__ == "__main__":
+    app = create_app_refonte()
+    app.run(host="127.0.0.1", port=5099, debug=True)
+
+# Instance WSGI pour Gunicorn
+app = create_app_refonte()

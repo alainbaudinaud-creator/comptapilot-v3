@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Salle de Supervision Cabinet V3</title>
+  <style>
+    body{margin:0;font-family:Arial,sans-serif;background:#0f172a;color:#e5e7eb}
+    nav{display:flex;gap:14px;flex-wrap:wrap;padding:18px 28px;background:#020617;border-bottom:1px solid #1e293b}
+    nav a{color:#cbd5e1;text-decoration:none;font-weight:700}
+    main{padding:32px}
+    h1{font-size:36px;margin-bottom:6px}
+    .sub{color:#94a3b8;margin-bottom:28px}
+    .grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px;margin-bottom:24px}
+    .card,.panel{background:#111827;border:1px solid #1f2937;border-radius:20px;padding:20px}
+    .card span{color:#94a3b8;font-weight:700}
+    .card strong{display:block;font-size:32px;margin-top:8px;color:#7dd3fc}
+    table{width:100%;border-collapse:collapse;margin-top:14px}
+    th,td{padding:12px;border-bottom:1px solid #1f2937;text-align:left}
+    th{color:#93c5fd}
+    .danger{color:#fca5a5;font-weight:800}
+    .warn{color:#facc15;font-weight:800}
+    .ok{color:#86efac;font-weight:800}
+  </style>
+</head>
+<body>
+{% include "_nav_refonte.html" %}
+
+<main>
+  <h1>Salle de Supervision Cabinet V3</h1>
+  <p class="sub">Vue temps réel des dossiers, alertes bloquantes, charge collaborateurs, visas et clôtures.</p>
+
+  <section class="grid">
+    <div class="card"><span>Dossiers actifs</span><strong>{{ kpis.dossiers_actifs }}</strong></div>
+    <div class="card"><span>Alertes bloquantes</span><strong>{{ kpis.alertes_bloquantes }}</strong></div>
+    <div class="card"><span>Retards</span><strong>{{ kpis.retards }}</strong></div>
+    <div class="card"><span>Prêts visa</span><strong>{{ kpis.prets_visa }}</strong></div>
+    <div class="card"><span>Prêts clôture</span><strong>{{ kpis.prets_cloture }}</strong></div>
+    <div class="card"><span>Score global</span><strong>{{ kpis.score_global }}%</strong></div>
+  </section>
+
+  <section class="panel">
+    <h2>Dossiers supervisés</h2>
+    <table>
+      <thead><tr><th>Dossier</th><th>Étape</th><th>Responsable</th><th>Risque</th><th>Score</th><th>Statut</th></tr></thead>
+      <tbody>
+      {% for d in dossiers %}
+        <tr>
+          <td>{{ d[0] }}</td>
+          <td>{{ d[1] }}</td>
+          <td>{{ d[2] }}</td>
+          <td>{{ d[3] }}</td>
+          <td>{{ d[4] }}</td>
+          <td class="{% if d[5] == 'Bloqué' or d[5] == 'Pièces manquantes' %}danger{% elif d[5] == 'Prêt clôture' %}ok{% else %}warn{% endif %}">{{ d[5] }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Alertes prioritaires</h2>
+    <table>
+      <thead><tr><th>Niveau</th><th>Dossier</th><th>Alerte</th></tr></thead>
+      <tbody>
+      {% for a in alertes %}
+        <tr><td class="{% if a[0] == 'Bloquant' %}danger{% else %}warn{% endif %}">{{ a[0] }}</td><td>{{ a[1] }}</td><td>{{ a[2] }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>Charge collaborateurs</h2>
+    <table>
+      <thead><tr><th>Profil</th><th>Dossiers</th><th>Priorités</th><th>État</th></tr></thead>
+      <tbody>
+      {% for c in charge %}
+        <tr><td>{{ c[0] }}</td><td>{{ c[1] }}</td><td>{{ c[2] }}</td><td>{{ c[3] }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+</body>
+</html>

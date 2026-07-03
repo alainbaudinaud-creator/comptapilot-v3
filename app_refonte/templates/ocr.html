@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>OCR IA — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>OCR IA</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Automatisation comptable</p>
+        <h1>OCR IA → Écriture comptable</h1>
+      </div>
+      <div class="status"><span></span><strong id="score">0%</strong></div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2>Texte facture OCR</h2>
+        <p>Colle ici le texte extrait d'une facture. ComptaPilot détecte fournisseur, HT, TVA, TTC et comptabilise.</p>
+        <textarea id="texte" style="width:100%;height:160px;background:#091827;color:white;border:1px solid rgba(92,200,255,.25);border-radius:12px;padding:14px;">Facture Orange Total HT 100.00 TVA 20.00 Total TTC 120.00</textarea>
+        <br><br>
+        <button type="button" onclick="analyser()">Analyser et comptabiliser</button>
+      </div>
+      <div class="hero-card">
+        <span>Fournisseur</span>
+        <strong id="fournisseur">-</strong>
+        <p>Compte : <span id="compte">-</span></p>
+      </div>
+    </section>
+
+    <div class="section-grid">
+      <div class="card">
+        <h3>Importer un fichier</h3>
+        <p>Déposez un PDF, une image, un CSV ou un Excel pour lancer l’analyse automatiquement.</p>
+        <div id="dropzone" class="upload-zone" tabindex="0" role="button" aria-label="Déposer un fichier ici ou cliquer pour ouvrir le sélecteur de fichiers">
+          <strong>Déposer un fichier ici</strong>
+          <span>ou cliquer pour choisir un PDF, une image, un CSV ou un Excel</span>
+          <input id="file" type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.webp,.csv,.xlsx,image/*,application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        </div>
+        <div id="file-name" class="file-name">Aucun fichier sélectionné</div>
+        <br>
+        <button type="button" onclick="uploadDocument()">Importer et analyser</button>
+      </div>
+    </div>
+
+    <section class="table-card">
+      <h2>Écriture générée</h2>
+      <table>
+        <thead><tr><th>Compte</th><th>Débit</th><th>Crédit</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+function renderResult(data){
+  document.getElementById('score').textContent = (data.analyse?.score_ia || 0) + '%';
+  document.getElementById('fournisseur').textContent = data.analyse?.fournisseur || '-';
+  document.getElementById('compte').textContent = data.analyse?.compte_charge || '-';
+
+  document.getElementById('rows').innerHTML = (data.ecriture?.lignes || []).map(l => `
+    <tr><td><strong>${l.compte}</strong></td><td>${fmt(l.debit)}</td><td>${fmt(l.credit)}</td></tr>
+  `).join('');
+}
+
+async function analyser(){
+  const res = await fetch('/refonte/api/refonte/ocr/analyser-comptabiliser', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({texte: document.getElementById('texte').value})
+  });
+  const data = await res.json();
+  renderResult(data);
+}
+
+function updateFileName(){
+  const file = document.getElementById('file').files[0];
+  document.getElementById('file-name').textContent = file ? file.name : 'Aucun fichier sélectionné';
+}
+
+function bindDropzone(){
+  const dropzone = document.getElementById('dropzone');
+  const input = document.getElementById('file');
+
+  dropzone.addEventListener('click', () => input.click());
+  dropzone.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      input.click();
+    }
+  });
+  input.addEventListener('change', updateFileName);
+
+  ['dragenter', 'dragover'].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropzone.classList.add('is-dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropzone.classList.remove('is-dragover');
+    });
+  });
+
+  dropzone.addEventListener('drop', (event) => {
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(files[0]);
+      input.files = dataTransfer.files;
+      updateFileName();
+    }
+  });
+}
+
+async function uploadDocument(){
+  const f = document.getElementById('file').files[0];
+  if(!f){ alert('Choisis un fichier'); return; }
+
+  const form = new FormData();
+  form.append('file', f);
+
+  const res = await fetch('/refonte/api/refonte/ocr/upload-document', {
+    method:'POST',
+    body: form
+  });
+  const data = await res.json();
+  if (!res.ok) {
+    alert(data.error || 'Import impossible');
+    return;
+  }
+
+  document.getElementById('texte').value = data.texte_ocr || '';
+  renderResult(data);
+}
+
+bindDropzone();
+</script>
+
+<style>
+.upload-zone {
+  border: 1px dashed rgba(92,200,255,.35);
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 6px;
+  cursor: pointer;
+  background: rgba(9,24,39,.45);
+}
+.upload-zone.is-dragover {
+  border-color: #5eead4;
+  background: rgba(15,118,110,.25);
+}
+.upload-zone input[type="file"] {
+  display: none;
+}
+.upload-zone strong {
+  color: #fff;
+}
+.upload-zone span,
+.file-name {
+  color: #cbd5e1;
+}
+.file-name {
+  margin-top: 8px;
+}
+</style>
+</body>
+</html>

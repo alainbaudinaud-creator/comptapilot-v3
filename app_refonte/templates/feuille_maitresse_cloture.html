@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Feuille Maîtresse de Clôture — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Feuille maîtresse</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Clôture annuelle</p>
+        <h1 id="titre">Feuille Maîtresse de Clôture V3</h1>
+      </div>
+      <div class="status"><span></span><strong id="statutGlobal">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Score clôture</span><strong id="scoreGlobal">0</strong><em>Global</em></article>
+      <article><span>Modules</span><strong id="modules">0</strong><em>Contrôlés</em></article>
+      <article><span>Bloquants</span><strong id="bloquants">0</strong><em>À lever</em></article>
+      <article><span>Attention</span><strong id="attention">0</strong><em>Points</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Synthèse finale avant clôture</h2>
+        <p id="decision">Analyse en cours.</p>
+        <div class="actions">
+          <a href="/refonte/programme-travail"><button>Programme travail</button></a>
+          <a href="/refonte/justification-comptes"><button class="secondary">Justification</button></a>
+          <a href="/refonte/cloture-simulation"><button class="secondary">Simulation clôture</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Visas</span>
+        <strong id="visas">-</strong>
+        <p id="visasDetail">Chef de mission / Expert-comptable</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Modules de clôture</h2>
+      <table>
+        <thead><tr><th>Module</th><th>Statut</th><th>Score</th><th>Bloquant</th><th>Détail</th></tr></thead>
+        <tbody id="rowsModules"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Points bloquants</h2>
+      <table>
+        <thead><tr><th>Module</th><th>Statut</th><th>Détail</th></tr></thead>
+        <tbody id="rowsBloquants"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Points d'attention</h2>
+      <table>
+        <thead><tr><th>Type</th><th>Message</th></tr></thead>
+        <tbody id="rowsAttention"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Historique fiscal récent</h2>
+      <table>
+        <thead><tr><th>ID</th><th>Statut</th><th>Transmission</th><th>AR</th></tr></thead>
+        <tbody id="rowsTeletransmissions"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+fetch('/refonte/api/refonte/feuille-maitresse-cloture?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const k = data.kpis || {};
+  const c = data.client || {};
+  const modules = data.modules || [];
+  const bloquants = data.bloquants || [];
+  const points = data.points_attention || [];
+  const tele = data.teletransmissions || [];
+
+  document.getElementById('titre').textContent = 'Feuille Maîtresse — ' + (c.raison_sociale || 'Client');
+  document.getElementById('scoreGlobal').textContent = k.score_global || 0;
+  document.getElementById('modules').textContent = k.modules || 0;
+  document.getElementById('bloquants').textContent = k.bloquants || 0;
+  document.getElementById('attention').textContent = k.points_attention || 0;
+
+  document.getElementById('statutGlobal').textContent = k.pret_cloture ? 'Prêt clôture' : 'Clôture bloquée';
+  document.getElementById('decision').textContent = k.pret_cloture
+    ? 'Le dossier est prêt pour clôture définitive.'
+    : 'La clôture reste bloquée tant que les points critiques ne sont pas levés.';
+
+  document.getElementById('visas').textContent =
+    (k.visa_chef_mission ? 'Chef OK' : 'Chef à faire') + ' / ' +
+    (k.visa_expert_comptable ? 'EC OK' : 'EC à faire');
+
+  document.getElementById('rowsModules').innerHTML = modules.map(m=>`
+    <tr>
+      <td><strong>${m.libelle}</strong></td>
+      <td>${m.statut}</td>
+      <td>${m.score}</td>
+      <td>${m.bloquant ? 'OUI' : 'NON'}</td>
+      <td>${m.detail}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsBloquants').innerHTML = bloquants.length
+    ? bloquants.map(m=>`<tr><td>${m.libelle}</td><td>${m.statut}</td><td>${m.detail}</td></tr>`).join('')
+    : '<tr><td>OK</td><td>Aucun</td><td>Aucun point bloquant</td></tr>';
+
+  document.getElementById('rowsAttention').innerHTML = points.length
+    ? points.map(p=>`<tr><td>ALERTE</td><td>${p}</td></tr>`).join('')
+    : '<tr><td>OK</td><td>Aucun point d’attention</td></tr>';
+
+  document.getElementById('rowsTeletransmissions').innerHTML = tele.length
+    ? tele.map(t=>`<tr><td>${t.id}</td><td>${t.statut}</td><td>${t.numero_transmission || '-'}</td><td>${t.accuse_reception || '-'}</td></tr>`).join('')
+    : '<tr><td>-</td><td>Aucun dépôt</td><td>-</td><td>-</td></tr>';
+});
+</script>
+</body>
+</html>

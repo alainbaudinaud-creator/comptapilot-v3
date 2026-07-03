@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Liasse fiscale — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Liasse fiscale</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Fiscalité annuelle</p>
+        <h1>Liasse fiscale V3</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Formulaires</span><strong id="nbFormulaires">0</strong><em>2033 A/B/C</em></article>
+      <article><span>Résultat fiscal</span><strong id="resultatFiscal">0</strong><em id="typeResultat">-</em></article>
+      <article><span>Immobilisations</span><strong id="immobilisations">0</strong><em>2033-C</em></article>
+      <article><span>Emprunts</span><strong id="emprunts">0</strong><em>Annexe dettes</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Préparation de la liasse</h2>
+        <p id="message">Agrégation automatique du bilan, du compte de résultat, des immobilisations, des emprunts et des exercices.</p>
+        <div class="actions">
+          <a href="/refonte/centre-fiscal"><button class="secondary">Centre fiscal</button></a>
+          <a href="/refonte/fec-export"><button class="secondary">Export FEC</button></a>
+          <button onclick="genererPdfFiscal()">Générer PDF fiscal</button>
+          <button onclick="genererEdiTdfc()">Générer EDI-TDFC</button>
+          <button onclick="preparerTeletransmission()">Préparer télétransmission</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Autorisation fiscale</span>
+        <strong id="autorisation">-</strong>
+        <p id="autorisationDetail">Contrôle score + visas cabinet</p>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="module"><h3>2033-A</h3><p>Bilan simplifié : actif, passif, capitaux propres et dettes.</p><span id="statut2033A">À préparer</span></article>
+      <article class="module"><h3>2033-B</h3><p>Compte de résultat simplifié : produits, charges, résultat fiscal.</p><span id="statut2033B">À préparer</span></article>
+      <article class="module"><h3>2033-C</h3><p>Immobilisations, amortissements et éléments patrimoniaux.</p><span id="statut2033C">À préparer</span></article>
+    </section>
+
+    <section class="table-card">
+      <h2>Synthèse formulaires</h2>
+      <table>
+        <thead><tr><th>Formulaire</th><th>Rubrique</th><th>Valeur</th><th>Statut</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Contrôles préalables</h2>
+      <table>
+        <thead><tr><th>Contrôle</th><th>Résultat</th></tr></thead>
+        <tbody id="rowsControles"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/liasse-fiscale?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const k = data.kpis || {};
+  const a = data.autorisation || {};
+  const rows = data.formulaires || [];
+  const controles = data.controles || {};
+
+  document.getElementById('statut').textContent = data.success ? 'Préparée' : 'Erreur';
+  document.getElementById('nbFormulaires').textContent = rows.length;
+  document.getElementById('resultatFiscal').textContent = fmt(k.resultat_fiscal);
+  document.getElementById('typeResultat').textContent = k.type_resultat || '-';
+  document.getElementById('immobilisations').textContent = k.nb_immobilisations || 0;
+  document.getElementById('emprunts').textContent = k.nb_emprunts || 0;
+
+  document.getElementById('autorisation').textContent = a.declarations_autorisees ? 'Autorisée' : 'Bloquée';
+  document.getElementById('autorisationDetail').textContent = a.message || '';
+
+  document.getElementById('statut2033A').textContent = data.statuts?.['2033-A'] || '-';
+  document.getElementById('statut2033B').textContent = data.statuts?.['2033-B'] || '-';
+  document.getElementById('statut2033C').textContent = data.statuts?.['2033-C'] || '-';
+
+  document.getElementById('rows').innerHTML = rows.map(x=>`
+    <tr>
+      <td><strong>${x.formulaire}</strong></td>
+      <td>${x.rubrique}</td>
+      <td>${typeof x.valeur === 'number' ? fmt(x.valeur) : x.valeur}</td>
+      <td>${x.statut}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsControles').innerHTML = Object.entries(controles).map(([k,v])=>`
+    <tr><td>${k}</td><td><strong>${v ? 'OK' : 'À contrôler'}</strong></td></tr>
+  `).join('');
+});
+async function genererPdfFiscal(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/pdf?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('PDF fiscal généré : ' + data.pdf.filename);
+  } else {
+    alert('Erreur génération PDF fiscal');
+  }
+}
+
+async function genererEdiTdfc(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/edi-tdfc?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('EDI-TDFC préparé : ' + data.edi.txt_filename);
+  } else {
+    alert('Erreur génération EDI-TDFC');
+  }
+}
+
+async function preparerTeletransmission(){
+  const res = await fetch('/refonte/api/refonte/liasse-fiscale/teletransmission/preparer?client_id=1');
+  const data = await res.json();
+  if(data.success){
+    alert('Télétransmission préparée : ' + data.depot.numero_transmission);
+  } else {
+    alert('Erreur préparation télétransmission');
+  }
+}
+</script>
+</body>
+</html>

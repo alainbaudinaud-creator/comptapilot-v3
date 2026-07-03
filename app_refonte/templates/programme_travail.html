@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Programme de Travail — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Programme de travail</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Révision cabinet</p>
+        <h1 id="titre">Programme de Travail V3</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Progression</span><strong id="progression">0%</strong><em>Globale</em></article>
+      <article><span>Cycles</span><strong id="cycles">0</strong><em>Programme</em></article>
+      <article><span>Terminés</span><strong id="termines">0</strong><em>Cycles validés</em></article>
+      <article><span>À revoir</span><strong id="aRevoir">0</strong><em>Avant visa</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Cycles de révision</h2>
+        <p>Suivi par cycle : trésorerie, achats, ventes, fiscal, social, immobilisations, emprunts et capitaux propres.</p>
+        <div class="actions">
+          <a href="/refonte/dossier-permanent"><button>Dossier permanent</button></a>
+          <a href="/refonte/revision-cabinet"><button class="secondary">Révision cabinet</button></a>
+          <a href="/refonte/centre-fiscal"><button class="secondary">Centre fiscal</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Objectif</span>
+        <strong>Visa EC</strong>
+        <p>Préparer la validation chef de mission et expert-comptable.</p>
+      </div>
+    </section>
+
+    <section class="grid" id="cardsCycles"></section>
+
+    <section class="table-card">
+      <h2>Détail du programme</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Cycle</th>
+            <th>Statut</th>
+            <th>Responsable</th>
+            <th>Progression</th>
+            <th>Visa Chef</th>
+            <th>Visa EC</th>
+          </tr>
+        </thead>
+        <tbody id="rowsCycles"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Points de contrôle et justificatifs</h2>
+      <table>
+        <thead><tr><th>Cycle</th><th>Tâches</th><th>Workflow</th><th>Justificatifs</th></tr></thead>
+        <tbody id="rowsDetails"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+fetch('/refonte/api/refonte/programme-travail?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const k = data.kpis || {};
+  const c = data.client || {};
+  const cycles = data.cycles || [];
+
+  document.getElementById('titre').textContent = 'Programme de Travail — ' + (c.raison_sociale || 'Client');
+  document.getElementById('statut').textContent = c.statut || '-';
+  document.getElementById('progression').textContent = (k.progression_globale || 0) + '%';
+  document.getElementById('cycles').textContent = k.cycles || 0;
+  document.getElementById('termines').textContent = k.cycles_termines || 0;
+  document.getElementById('aRevoir').textContent = k.cycles_a_revoir || 0;
+
+  document.getElementById('cardsCycles').innerHTML = cycles.map(x=>`
+    <article class="module">
+      <h3>${x.libelle}</h3>
+      <p>Responsable : ${x.responsable}</p>
+      <span>${x.statut} — ${x.progression}%</span>
+    </article>
+  `).join('');
+
+  document.getElementById('rowsCycles').innerHTML = cycles.map(x=>`
+    <tr>
+      <td><strong>${x.libelle}</strong></td>
+      <td>${x.statut}</td>
+      <td>${x.responsable}</td>
+      <td>${x.progression}%</td>
+      <td>${x.visa_chef_mission ? 'OK' : 'À faire'}</td>
+      <td>${x.visa_expert_comptable ? 'OK' : 'À faire'}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsDetails').innerHTML = cycles.map(x=>`
+    <tr>
+      <td>${x.libelle}</td>
+      <td>${(x.taches || []).map(t=>t.titre).join('<br>') || '-'}</td>
+      <td>${(x.workflow || []).map(w=>w.etape + ' — ' + w.statut).join('<br>') || '-'}</td>
+      <td>${(x.justificatifs || []).map(j=>j.nom_fichier).join('<br>') || '-'}</td>
+    </tr>
+  `).join('');
+});
+</script>
+</body>
+</html>

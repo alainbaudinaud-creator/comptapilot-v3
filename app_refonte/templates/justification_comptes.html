@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Justification des Comptes — ComptaPilot V3</title>
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">CP</div><div><strong>ComptaPilot V3</strong><span>Justification comptes</span></div></div>
+    {% include "_nav_refonte.html" %}
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Révision des comptes</p>
+        <h1 id="titre">Justification des Comptes V3</h1>
+      </div>
+      <div class="status"><span></span><strong id="statut">Chargement</strong></div>
+    </header>
+
+    <section class="metrics">
+      <article><span>Score</span><strong id="score">0</strong><em>Global</em></article>
+      <article><span>Comptes</span><strong id="nbComptes">0</strong><em>À réviser</em></article>
+      <article><span>À justifier</span><strong id="aJustifier">0</strong><em>Critique</em></article>
+      <article><span>Alertes</span><strong id="alertes">0</strong><em>IA contrôle</em></article>
+    </section>
+
+    <section class="hero">
+      <div>
+        <h2>Contrôle par compte</h2>
+        <p>Vue cabinet des comptes à justifier : soldes, risques, pièces, commentaires et visas.</p>
+        <div class="actions">
+          <a href="/refonte/programme-travail"><button>Programme de travail</button></a>
+          <a href="/refonte/revision-cabinet"><button class="secondary">Révision cabinet</button></a>
+          <a href="/refonte/dossier-permanent"><button class="secondary">Dossier permanent</button></a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <span>Priorité</span>
+        <strong>471 / 512</strong>
+        <p>Comptes d'attente et banque à sécuriser avant clôture.</p>
+      </div>
+    </section>
+
+    <section class="table-card">
+      <h2>Alertes de justification</h2>
+      <table>
+        <thead><tr><th>Type</th><th>Message</th></tr></thead>
+        <tbody id="rowsAlertes"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Comptes à justifier</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Compte</th>
+            <th>Libellé</th>
+            <th>Solde</th>
+            <th>Risque</th>
+            <th>Statut</th>
+            <th>Score</th>
+            <th>Visa Chef</th>
+            <th>Visa EC</th>
+          </tr>
+        </thead>
+        <tbody id="rowsComptes"></tbody>
+      </table>
+    </section>
+
+    <section class="table-card">
+      <h2>Pièces et commentaires</h2>
+      <table>
+        <thead><tr><th>Compte</th><th>Commentaire</th><th>Pièces liées</th></tr></thead>
+        <tbody id="rowsPieces"></tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script>
+function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+fetch('/refonte/api/refonte/justification-comptes?client_id=1')
+.then(r=>r.json())
+.then(data=>{
+  const k = data.kpis || {};
+  const c = data.client || {};
+  const comptes = data.comptes || [];
+  const alertes = data.alertes || [];
+
+  document.getElementById('titre').textContent = 'Justification des Comptes — ' + (c.raison_sociale || 'Client');
+  document.getElementById('statut').textContent = c.statut || '-';
+  document.getElementById('score').textContent = k.score_global || 0;
+  document.getElementById('nbComptes').textContent = k.comptes || 0;
+  document.getElementById('aJustifier').textContent = k.a_justifier || 0;
+  document.getElementById('alertes').textContent = k.alertes || 0;
+
+  document.getElementById('rowsAlertes').innerHTML = alertes.length
+    ? alertes.map(a=>`<tr><td>ALERTE</td><td>${a}</td></tr>`).join('')
+    : '<tr><td>OK</td><td>Aucune alerte critique</td></tr>';
+
+  document.getElementById('rowsComptes').innerHTML = comptes.map(x=>`
+    <tr>
+      <td><strong>${x.compte}</strong></td>
+      <td>${x.libelle}</td>
+      <td>${fmt(x.solde)} €</td>
+      <td>${x.risque}</td>
+      <td>${x.statut_justification}</td>
+      <td>${x.score}</td>
+      <td>${x.visa_chef_mission ? 'OK' : 'À faire'}</td>
+      <td>${x.visa_expert_comptable ? 'OK' : 'À faire'}</td>
+    </tr>
+  `).join('');
+
+  document.getElementById('rowsPieces').innerHTML = comptes.map(x=>`
+    <tr>
+      <td>${x.compte}</td>
+      <td>${x.commentaire}</td>
+      <td>${(x.pieces || []).map(p=>p.nom_fichier).join('<br>') || '-'}</td>
+    </tr>
+  `).join('');
+});
+</script>
+</body>
+</html>

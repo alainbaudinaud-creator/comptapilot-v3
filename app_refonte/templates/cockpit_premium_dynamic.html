@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>ComptaPilot V3 — Cockpit Cabinet Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/refonte-static/css/cockpit_premium.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <strong>ComptaPilot V3</strong>
+          <span>Cockpit Cabinet Premium</span>
+        </div>
+      </div>
+      {% include "_nav_refonte.html" %}
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Pilotage cabinet temps réel</p>
+          <h1>Vue de contrôle complète de la production comptable.</h1>
+        </div>
+        <div class="status"><span></span>Score production {{ kpis.score_production }}%</div>
+      </header>
+
+      <section class="metrics">
+        <article><span>Exercice actif</span><strong>{{ kpis.exercice_actif_statut }}</strong><em>{{ kpis.exercice_actif }}</em></article>
+        <article><span>Résultat clôturé</span><strong>{{ "%.2f"|format(kpis.dernier_resultat) }}</strong><em>Exercice {{ kpis.dernier_exercice_cloture or "-" }}</em></article>
+        <article><span>Écritures</span><strong>{{ kpis.total_ecritures }}</strong><em>Équilibre : {{ "OK" if kpis.equilibre_comptable else "KO" }}</em></article>
+        <article><span>Documents à traiter</span><strong>{{ kpis.documents_a_traiter }}</strong><em>OCR / factures</em></article>
+      </section>
+
+      <section class="hero">
+        <div>
+          <h2>Cockpit cabinet opérationnel</h2>
+          <p>
+            Supervision directe des exercices, clôtures, à-nouveaux, banque,
+            lettrage, OCR, immobilisations et emprunts.
+          </p>
+          <div class="actions">
+            <a href="/refonte/exercices"><button>Gérer les exercices</button></a>
+            <a href="/refonte/cloture"><button class="secondary">Contrôler la clôture</button></a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <span>Débit / Crédit</span>
+          <strong>{{ "%.2f"|format(kpis.total_debit) }}</strong>
+          <p>Crédit : {{ "%.2f"|format(kpis.total_credit) }} — AN : {{ kpis.a_nouveaux_id or "-" }}</p>
+        </div>
+      </section>
+
+      <section class="metrics">
+        <article><span>Banque à rapprocher</span><strong>{{ kpis.operations_non_rapprochees }}</strong><em>{{ kpis.rapprochements_valides }} rapprochement(s)</em></article>
+        <article><span>Lettrages</span><strong>{{ kpis.lettrages_valides }}</strong><em>Tiers validés</em></article>
+        <article><span>Immobilisations</span><strong>{{ kpis.immobilisations_actives }}</strong><em>{{ "%.2f"|format(kpis.valeur_immobilisations) }} €</em></article>
+        <article><span>Emprunts</span><strong>{{ kpis.emprunts_actifs }}</strong><em>{{ "%.2f"|format(kpis.capital_emprunts) }} €</em></article>
+      </section>
+
+      <section>
+        <h2>Priorités intelligentes</h2>
+        <div class="grid">
+          {% for p in priorites %}
+          <article class="module">
+            <h3>{{ p.type }}</h3>
+            <p>{{ p.titre }}</p>
+            <span>{{ p.niveau }}</span>
+          </article>
+          {% endfor %}
+          {% if not priorites %}
+          <article class="module">
+            <h3>Production stable</h3>
+            <p>Aucune alerte critique détectée sur les contrôles principaux.</p>
+            <span>OK</span>
+          </article>
+          {% endif %}
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="module"><h3>Exercices</h3><p>Clôtures, ouvertures et à-nouveaux.</p><a href="/refonte/exercices"><span>Ouvrir →</span></a></article>
+        <article class="module"><h3>Banque</h3><p>Rapprochements bancaires et propositions.</p><a href="/refonte/rapprochement-bancaire"><span>Ouvrir →</span></a></article>
+        <article class="module"><h3>OCR</h3><p>Documents, factures et validation humaine.</p><a href="/refonte/validation-ocr"><span>Ouvrir →</span></a></article>
+        <article class="module"><h3>États</h3><p>Balance, bilan, résultat et grand livre.</p><a href="/refonte/balance"><span>Ouvrir →</span></a></article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

@@ -63,17 +63,36 @@ def api_client_portal():
 @permission_required("ACCESS_ECRITURES")
 def api_upload_client_document():
 
-    societe_id = request.form.get("societe_id", 1)
-    file = request.files.get("file")
+    try:
+        societe_id = request.form.get("societe_id", 1)
+        file = request.files.get("file")
 
-    result = upload_client_document(
-        file=file,
-        societe_id=societe_id
-    )
+        result = upload_client_document(
+            file=file,
+            societe_id=societe_id
+        )
 
-    return jsonify(
-        success_response(result)
-    )
+        return jsonify(
+            success_response(result)
+        )
+    except Exception as exc:
+        return jsonify({
+            "success": False,
+            "data": {
+                "success": False,
+                "message": f"Erreur lors du dépôt du document : {exc}"
+            }
+        }), 500
+
+
+@bp_client_portal.route(
+    "/api/refonte/portail-client/document/upload",
+    methods=["POST"]
+)
+@login_required
+@permission_required("ACCESS_ECRITURES")
+def api_upload_client_document_compat():
+    return api_upload_client_document()
 
 
 @bp_client_portal.route(
