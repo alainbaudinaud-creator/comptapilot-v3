@@ -25,9 +25,14 @@
       <div>
         <h2>Upload PDF → OCR → Comptabilité</h2>
         <p>Le fichier est stocké dans pieces_v3, analysé, puis comptabilisé automatiquement.</p>
-        <input id="file" type="file" accept="application/pdf">
+        <div id="dropzone" class="upload-zone" tabindex="0" role="button" aria-label="Déposer un PDF ici ou cliquer pour ouvrir le sélecteur de fichiers">
+          <strong>Déposer un PDF, CSV ou Excel ici</strong>
+          <span>ou cliquer pour choisir un fichier</span>
+          <input id="file" type="file" accept=".pdf,.csv,.xlsx,application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+        </div>
+        <div id="file-name" class="file-name">Aucun fichier sélectionné</div>
         <br><br>
-        <button onclick="uploadPDF()">Analyser et comptabiliser</button>
+        <button type="button" onclick="uploadPDF()">Analyser et comptabiliser</button>
       </div>
       <div class="hero-card">
         <span>Fournisseur</span>
@@ -54,9 +59,54 @@
 <script>
 function fmt(v){ return Number(v||0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 
+function updateFileName(){
+  const file = document.getElementById('file').files[0];
+  document.getElementById('file-name').textContent = file ? file.name : 'Aucun fichier sélectionné';
+}
+
+function bindDropzone(){
+  const dropzone = document.getElementById('dropzone');
+  const input = document.getElementById('file');
+
+  dropzone.addEventListener('click', () => input.click());
+  dropzone.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      input.click();
+    }
+  });
+  input.addEventListener('change', updateFileName);
+
+  ['dragenter', 'dragover'].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropzone.classList.add('is-dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      dropzone.classList.remove('is-dragover');
+    });
+  });
+
+  dropzone.addEventListener('drop', (event) => {
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(files[0]);
+      input.files = dataTransfer.files;
+      updateFileName();
+    }
+  });
+}
+
 async function uploadPDF(){
   const f = document.getElementById('file').files[0];
-  if(!f){ alert('Choisis un PDF'); return; }
+  if(!f){ alert('Choisis un fichier'); return; }
 
   const form = new FormData();
   form.append('file', f);
@@ -77,6 +127,37 @@ async function uploadPDF(){
     <tr><td><strong>${l.compte}</strong></td><td>${fmt(l.debit)}</td><td>${fmt(l.credit)}</td></tr>
   `).join('');
 }
+
+bindDropzone();
 </script>
+
+<style>
+.upload-zone {
+  border: 1px dashed rgba(92,200,255,.35);
+  border-radius: 12px;
+  padding: 18px;
+  display: grid;
+  gap: 6px;
+  cursor: pointer;
+  background: rgba(9,24,39,.45);
+}
+.upload-zone.is-dragover {
+  border-color: #5eead4;
+  background: rgba(15,118,110,.25);
+}
+.upload-zone input[type="file"] {
+  display: none;
+}
+.upload-zone strong {
+  color: #fff;
+}
+.upload-zone span,
+.file-name {
+  color: #cbd5e1;
+}
+.file-name {
+  margin-top: 8px;
+}
+</style>
 </body>
 </html>

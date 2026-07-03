@@ -10,6 +10,40 @@ from app_refonte.services.fec_service import controle_colonnes_fec, REQUIRED_FEC
 api_metier_refonte = Blueprint("api_metier_refonte", __name__)
 
 
+def _extraire_texte_document_ocr(path):
+    from pathlib import Path
+    import pandas as pd
+
+    path = Path(path)
+    suffix = path.suffix.lower()
+
+    if suffix == ".pdf":
+        from app_refonte.services.ocr_pdf_service import extraire_texte_pdf
+
+        return extraire_texte_pdf(path)
+
+    if suffix in {".csv", ".xlsx"}:
+        if suffix == ".csv":
+            try:
+                df = pd.read_csv(path, dtype=str, sep=None, engine="python").fillna("")
+            except Exception:
+                df = pd.read_csv(path, dtype=str, sep=";", encoding="utf-8-sig").fillna("")
+        else:
+            df = pd.read_excel(path, dtype=str).fillna("")
+
+        lignes = []
+        colonnes = [str(col).strip() for col in df.columns.tolist()]
+        if colonnes:
+            lignes.append(" | ".join(colonnes))
+        for _, row in df.head(100).iterrows():
+            lignes.append(" | ".join(str(value).strip() for value in row.tolist()))
+        return "\n".join(lignes).strip()
+
+    from services.ocr_service import extract_text
+
+    return extract_text(path)
+
+
 @api_metier_refonte.get("/api/refonte/health")
 def health():
     return jsonify({
@@ -839,11 +873,92 @@ def api_ocr_analyser_comptabiliser():
 
 
 
+@api_metier_refonte.post("/api/refonte/ocr/upload-document")
+def api_ocr_upload_document():
+    from pathlib import Path
+    from werkzeug.utils import secure_filename
+    from app_refonte.services.ocr_ia_service import analyser_facture, generer_ecriture_achat
+    from app_refonte.services.validation_service import controle_equilibre_piece
+    from app_refonte.services.comptabilisation_ocr_service import comptabiliser_ecriture_ocr
+
+    file = request.files.get("file")
+    if not file:
+        return jsonify({"success": False, "error": "Aucun fichier transmis"}), 400
+
+    upload_dir = Path("/app/uploads/ocr")
+    upload_dir.mkdir(parents=True, exist_ok=True)
+
+    filename = secure_filename(file.filename or "document")
+    path = upload_dir / filename
+    file.save(path)
+
+    texte = _extraire_texte_document_ocr(path)
+
+    if not texte.strip():
+        return jsonify({
+            "success": False,
+            "filename": filename,
+            "error": "Impossible d'extraire du texte depuis ce fichier"
+        }), 400
+
+    analyse = analyser_facture(texte)
+    ecriture = generer_ecriture_achat(analyse)
+    controle = controle_equilibre_piece(ecriture["lignes"])
+
+    if not controle["equilibre"]:
+        return jsonify({
+            "success": False,
+            "filename": filename,
+            "texte_ocr": texte,
+            "analyse": analyse,
+            "ecriture": ecriture,
+            "controle": controle,
+            "error": "Ecriture déséquilibrée"
+        }), 400
+
+    comptabilisation = comptabiliser_ecriture_ocr(ecriture, client_id=1)
+
+    with engine.begin() as conn:
+        piece_id = conn.execute(text("""
+            INSERT INTO pieces_v3 (
+                client_id,
+                nom_fichier,
+                type_piece,
+                chemin_stockage,
+                statut_ocr,
+                texte_ocr
+            )
+            VALUES (
+                1,
+                :nom_fichier,
+                'FACTURE_ACHAT',
+                :chemin_stockage,
+                'TRAITE',
+                :texte_ocr
+            )
+            RETURNING id
+        """), {
+            "nom_fichier": filename,
+            "chemin_stockage": str(path),
+            "texte_ocr": texte,
+        }).scalar()
+
+    return jsonify({
+        "success": True,
+        "piece_id": piece_id,
+        "filename": filename,
+        "texte_ocr": texte[:3000],
+        "analyse": analyse,
+        "ecriture": ecriture,
+        "controle": controle,
+        "comptabilisation": comptabilisation,
+    })
+
+
 @api_metier_refonte.post("/api/refonte/ocr/upload-pdf")
 def api_ocr_upload_pdf():
     from pathlib import Path
     from werkzeug.utils import secure_filename
-    from app_refonte.services.ocr_pdf_service import extraire_texte_pdf
     from app_refonte.services.ocr_ia_service import analyser_facture, generer_ecriture_achat
     from app_refonte.services.validation_service import controle_equilibre_piece
     from app_refonte.services.comptabilisation_ocr_service import comptabiliser_ecriture_ocr
@@ -859,7 +974,7 @@ def api_ocr_upload_pdf():
     path = upload_dir / filename
     file.save(path)
 
-    texte = extraire_texte_pdf(path)
+    texte = _extraire_texte_document_ocr(path)
 
     analyse = analyser_facture(texte)
     ecriture = generer_ecriture_achat(analyse)

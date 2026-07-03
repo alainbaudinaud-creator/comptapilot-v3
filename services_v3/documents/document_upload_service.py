@@ -14,7 +14,10 @@ ALLOWED_EXTENSIONS = {
     "png",
     "jpg",
     "jpeg",
-    "webp"
+    "webp",
+    "csv",
+    "xlsx",
+    "xls"
 }
 
 
