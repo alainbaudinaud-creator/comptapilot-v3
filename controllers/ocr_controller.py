@@ -27,7 +27,12 @@ def ocr():
         clients = []
 
     if request.method == "POST":
-        file = request.files.get("file")
+        file = (
+            request.files.get("file")
+            or request.files.get("document")
+            or request.files.get("piece")
+            or request.files.get("fichier")
+        )
         client_id = request.form.get("client_id")
 
         if file and file.filename and client_id:

@@ -65,7 +65,12 @@ def api_upload_client_document():
 
     try:
         societe_id = request.form.get("societe_id", 1)
-        file = request.files.get("file")
+        file = (
+            request.files.get("file")
+            or request.files.get("document")
+            or request.files.get("piece")
+            or request.files.get("fichier")
+        )
 
         result = upload_client_document(
             file=file,

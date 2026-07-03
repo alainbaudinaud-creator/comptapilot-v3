@@ -1,10 +1,21 @@
-﻿<h1>Importation des documents comptables extérieurs</h1>
+<h1>Importation des documents comptables extérieurs</h1>
 
 <form method="POST" enctype="multipart/form-data">
     <p>Document :</p>
-    <input type="file" name="file" required>
+    <div id="dropzone" style="border:1px dashed #94a3b8;padding:18px;border-radius:12px;cursor:pointer;background:#f8fafc;">
+        <strong>Déposer un fichier ici</strong><br>
+        <span>ou cliquer pour choisir un PDF, une image, un CSV, un TXT ou un Excel</span>
+        <input
+            id="file"
+            type="file"
+            name="file"
+            required
+            accept=".pdf,.xml,.csv,.txt,.xlsx,.xls,.png,.jpg,.jpeg,application/pdf,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,image/*"
+            style="display:none;"
+        >
+    </div>
 
-    <p>Type de document :</p>
+    <p style="margin-top:16px;">Type de document :</p>
     <select name="type_document">
         <option value="FACTURE_CLIENT">Facture client</option>
         <option value="FACTURE_FOURNISSEUR">Facture fournisseur</option>
@@ -16,10 +27,9 @@
     </select>
 
     <p>Commentaire :</p>
-    <textarea name="commentaire"></textarea>
+    <textarea name="commentaire" style="width:100%;min-height:100px;"></textarea>
 
     <br><br>
-
     <button type="submit">Importer le document</button>
 </form>
 
@@ -67,3 +77,47 @@
 <br>
 
 <a href="/ecritures/pro-suite">Retour PRO</a>
+
+<script>
+(function () {
+    const dropzone = document.getElementById("dropzone");
+    const input = document.getElementById("file");
+
+    function sync() {
+        const file = input.files && input.files[0];
+        dropzone.querySelector("strong").textContent = file ? file.name : "Déposer un fichier ici";
+    }
+
+    dropzone.addEventListener("click", () => input.click());
+
+    input.addEventListener("change", sync);
+
+    ["dragenter", "dragover"].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropzone.style.borderColor = "#2563eb";
+            dropzone.style.background = "#eff6ff";
+        });
+    });
+
+    ["dragleave", "drop"].forEach((eventName) => {
+        dropzone.addEventListener(eventName, (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            dropzone.style.borderColor = "#94a3b8";
+            dropzone.style.background = "#f8fafc";
+        });
+    });
+
+    dropzone.addEventListener("drop", (event) => {
+        const files = event.dataTransfer.files;
+        if (files && files.length > 0) {
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(files[0]);
+            input.files = dataTransfer.files;
+            sync();
+        }
+    });
+})();
+</script>

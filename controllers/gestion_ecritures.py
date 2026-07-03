@@ -3033,6 +3033,7 @@ def import_documents_comptables():
     import os
     import hashlib
     from datetime import datetime
+    import pandas as pd
 
     os.makedirs("imports_documents_comptables", exist_ok=True)
 
@@ -3108,6 +3109,8 @@ def import_documents_comptables():
         "xml",
         "csv",
         "txt",
+        "xlsx",
+        "xls",
         "png",
         "jpg",
         "jpeg"
@@ -3118,7 +3121,7 @@ def import_documents_comptables():
         conn.close()
 
         flash(
-            "Extension non autorisée. Formats acceptés : PDF, XML, CSV, TXT, PNG, JPG.",
+            "Extension non autorisée. Formats acceptés : PDF, XML, CSV, TXT, XLSX, XLS, PNG, JPG.",
             "danger"
         )
 
@@ -3161,7 +3164,21 @@ def import_documents_comptables():
 
             doc.close()
 
-        elif extension in ["txt", "csv", "xml"]:
+        elif extension == "csv":
+
+            try:
+                df = pd.read_csv(chemin, sep=None, engine="python")
+            except Exception:
+                df = pd.read_csv(chemin, sep=";")
+
+            texte_ocr = df.fillna("").to_csv(index=False)
+
+        elif extension in ["xls", "xlsx"]:
+
+            df = pd.read_excel(chemin)
+            texte_ocr = df.fillna("").to_csv(index=False)
+
+        elif extension in ["txt", "xml"]:
 
             with open(chemin, "r", encoding="utf-8", errors="ignore") as f:
                 texte_ocr = f.read()
